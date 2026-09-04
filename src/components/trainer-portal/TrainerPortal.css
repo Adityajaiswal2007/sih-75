@@ -1,0 +1,596 @@
+/* Trainer Portal Dedicated Pages Styling */
+
+.portal-view-container {
+  animation: fadeIn 0.28s ease-out both;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Page Header & Actions Bar */
+.portal-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(119, 173, 234, 0.15);
+}
+
+.portal-title-block h1 {
+  font-size: 26px;
+  color: #f1f7ff;
+  margin: 0 0 6px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.portal-title-block p {
+  margin: 0;
+  color: #8daac4;
+  font-size: 13px;
+}
+
+.portal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Filter Controls Bar */
+.portal-filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 18px;
+  border: 1px solid #1c4263;
+  border-radius: 9px;
+  background: #091f38;
+}
+
+.portal-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
+  padding: 9px 14px;
+  border: 1px solid #264b6a;
+  border-radius: 7px;
+  background: #07192d;
+  color: #8bb0d2;
+}
+
+.portal-search-box input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #f3f8ff;
+  font-size: 13px;
+  outline: none;
+}
+
+.portal-search-box input::placeholder {
+  color: #6484a4;
+}
+
+.portal-tab-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.portal-pill-btn {
+  padding: 7px 14px;
+  border: 1px solid #22476b;
+  border-radius: 20px;
+  background: transparent;
+  color: #8faec9;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.portal-pill-btn:hover {
+  color: #f0f7ff;
+  border-color: #388eff;
+}
+
+.portal-pill-btn.active {
+  background: #1759af;
+  border-color: #3b9cf8;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(23, 89, 175, 0.35);
+}
+
+/* Stat KPI Grid */
+.portal-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.portal-kpi-card {
+  padding: 18px;
+  border: 1px solid #1c4263;
+  border-radius: 9px;
+  background: linear-gradient(145deg, #0b2948, #081d35);
+  position: relative;
+}
+
+.portal-kpi-card .kpi-icon {
+  font-size: 22px;
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+.portal-kpi-card .kpi-label {
+  font-size: 12px;
+  color: #8ba9c5;
+}
+
+.portal-kpi-card .kpi-val {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f5f9ff;
+  margin: 6px 0;
+}
+
+.portal-kpi-card .kpi-note {
+  font-size: 11px;
+  color: #34d399;
+}
+
+/* Course Grid */
+.portal-grid-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.portal-card {
+  border: 1px solid #1c4263;
+  border-radius: 10px;
+  background: #09213d;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.portal-card:hover {
+  transform: translateY(-3px);
+  border-color: #388eff;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.portal-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.portal-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.portal-badge.published, .portal-badge.active, .portal-badge.good {
+  background: rgba(45, 174, 151, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.portal-badge.draft, .portal-badge.warning {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.portal-badge.urgent {
+  background: rgba(239, 68, 68, 0.16);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.portal-card h3 {
+  font-size: 16px;
+  color: #f1f7ff;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.portal-card p.card-desc {
+  font-size: 12px;
+  color: #8da8c2;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+.portal-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #7997b4;
+  padding-top: 12px;
+  border-top: 1px solid #163654;
+  margin-top: 14px;
+}
+
+.portal-card-meta b {
+  color: #38bdf8;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.card-tags span {
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: #0d2e50;
+  color: #9ac2e6;
+  border: 1px solid #1a456e;
+}
+
+/* Progress bar inside cards */
+.portal-progress-track {
+  height: 6px;
+  width: 100%;
+  border-radius: 8px;
+  background: #143654;
+  overflow: hidden;
+  margin: 12px 0 6px;
+}
+
+.portal-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2583ff, #2cd0d3);
+}
+
+/* Tables in portal views */
+.portal-table-container {
+  overflow-x: auto;
+  border: 1px solid #1c4263;
+  border-radius: 10px;
+  background: #091f38;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+  min-width: 650px;
+}
+
+.portal-table th {
+  padding: 14px 18px;
+  background: #071a30;
+  color: #7999b8;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #1a4267;
+}
+
+.portal-table td {
+  padding: 14px 18px;
+  color: #cfe1f5;
+  border-bottom: 1px solid #153859;
+}
+
+.portal-table tr:last-child td {
+  border-bottom: none;
+}
+
+.portal-table tr:hover td {
+  background: rgba(32, 105, 194, 0.08);
+}
+
+/* Avatar Chips */
+.portal-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1b62b3, #153966);
+  color: #e5f3ff;
+  font-weight: 700;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.portal-user-cell strong {
+  display: block;
+  color: #f4f8ff;
+  font-size: 13px;
+}
+
+.portal-user-cell small {
+  color: #7d9cb9;
+  font-size: 11px;
+}
+
+/* Action Buttons inside tables / cards */
+.portal-btn-sm {
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid #295b87;
+  background: rgba(30, 94, 161, 0.2);
+  color: #5bb3ff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.portal-btn-sm:hover {
+  background: #2580eb;
+  border-color: #3b9cf8;
+  color: #ffffff;
+}
+
+/* Competency Bar list */
+.portal-competency-card {
+  padding: 18px 20px;
+  border: 1px solid #1c4263;
+  border-radius: 9px;
+  background: #09213d;
+  margin-bottom: 12px;
+}
+
+.portal-comp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.portal-comp-header strong {
+  color: #f1f7ff;
+  font-size: 14px;
+}
+
+.portal-comp-header span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.portal-comp-desc {
+  font-size: 12px;
+  color: #8da9c4;
+  margin: 0 0 10px;
+}
+
+.portal-benchmark-note {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #6a8ba9;
+  margin-top: 6px;
+}
+
+/* Announcement Feed */
+.portal-announcement-card {
+  padding: 20px;
+  border: 1px solid #1c4263;
+  border-radius: 9px;
+  background: #09213d;
+  margin-bottom: 16px;
+}
+
+.portal-ann-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.portal-ann-top h3 {
+  font-size: 16px;
+  color: #f0f7ff;
+  margin: 0;
+}
+
+.portal-ann-top small {
+  color: #7b9ab8;
+  font-size: 11px;
+}
+
+.portal-announcement-card p {
+  color: #9bb7d2;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+.portal-ann-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #5aa9e8;
+  padding-top: 10px;
+  border-top: 1px solid #15395c;
+}
+
+/* Feedback review cards */
+.portal-feedback-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.portal-feedback-card {
+  padding: 20px;
+  border: 1px solid #1c4263;
+  border-radius: 9px;
+  background: #09213d;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.portal-feedback-rating {
+  color: #f59e0b;
+  font-size: 14px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.portal-feedback-card p {
+  font-size: 13px;
+  color: #bed2e8;
+  line-height: 1.6;
+  margin: 0 0 16px;
+  font-style: italic;
+}
+
+.portal-feedback-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #16385a;
+}
+
+/* FAQ Accordion */
+.portal-faq-item {
+  border: 1px solid #1c4263;
+  border-radius: 8px;
+  background: #09213d;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.portal-faq-q {
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: #f1f7ff;
+  font-size: 14px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.portal-faq-q:hover {
+  background: rgba(37, 120, 222, 0.08);
+}
+
+.portal-faq-a {
+  padding: 0 20px 16px;
+  color: #92b0ce;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Settings Form */
+.portal-settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.portal-settings-card {
+  padding: 24px;
+  border: 1px solid #1c4263;
+  border-radius: 9px;
+  background: #09213d;
+}
+
+.portal-settings-card h3 {
+  font-size: 16px;
+  color: #f1f7ff;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #173b5e;
+}
+
+.portal-form-group {
+  margin-bottom: 16px;
+}
+
+.portal-form-group label {
+  display: block;
+  font-size: 12px;
+  color: #8da9c5;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.portal-form-group input,
+.portal-form-group select,
+.portal-form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #234d74;
+  border-radius: 6px;
+  background: #07192d;
+  color: #f0f7ff;
+  font-size: 13px;
+  outline: none;
+}
+
+.portal-form-group input:focus,
+.portal-form-group select:focus,
+.portal-form-group textarea:focus {
+  border-color: #388eff;
+  box-shadow: 0 0 0 2px rgba(56, 142, 255, 0.15);
+}
+
+/* Responsive queries */
+@media (max-width: 1100px) {
+  .portal-grid-cards, .portal-feedback-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .portal-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .portal-settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .portal-grid-cards, .portal-feedback-grid {
+    grid-template-columns: 1fr;
+  }
+  .portal-kpi-row {
+    grid-template-columns: 1fr;
+  }
+}
