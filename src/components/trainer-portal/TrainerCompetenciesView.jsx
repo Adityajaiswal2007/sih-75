@@ -37,7 +37,7 @@ export function TrainerCompetenciesView({ competencies }) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 20 }}>
+      <div className="portal-two-col-grid">
         <div>
           <h2 style={{ fontSize: 18, color: '#f2f8ff', margin: '0 0 16px' }}>Domain Competency Progress</h2>
           {competencies.map((comp) => (
@@ -72,12 +72,12 @@ export function TrainerCompetenciesView({ competencies }) {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ padding: 22, border: '1px solid #1c4263', borderRadius: 10, background: '#09213d' }}>
-            <h3 style={{ fontSize: 16, color: '#f1f7ff', margin: '0 0 12px' }}>AI Competency Matching Engine</h3>
-            <p style={{ fontSize: 12, color: '#90acc6', lineHeight: 1.6, margin: '0 0 14px' }}>
+          <div className="portal-info-card">
+            <h3>AI Competency Matching Engine</h3>
+            <p>
               CapacityConnect continuously assesses your training delivery outcomes against required syllabus competencies to calculate automated match scores for newly scheduled courses.
             </p>
-            <div style={{ padding: 14, borderRadius: 8, background: '#07182c', border: '1px solid #1b436a' }}>
+            <div className="portal-sub-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: 12, color: '#d8e8f8' }}>Weather Data Analysis Match</span>
                 <strong style={{ fontSize: 18, color: '#38bdf8' }}>92%</strong>
@@ -89,12 +89,12 @@ export function TrainerCompetenciesView({ competencies }) {
             </div>
           </div>
 
-          <div style={{ padding: 22, border: '1px solid #1c4263', borderRadius: 10, background: '#09213d' }}>
-            <h3 style={{ fontSize: 16, color: '#f1f7ff', margin: '0 0 12px' }}>Target Growth Recommendation</h3>
+          <div className="portal-info-card">
+            <h3>Target Growth Recommendation</h3>
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-              <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', color: '#f87171', display: 'grid', placeItems: 'center', fontWeight: 'bold' }}>!</div>
+              <div style={{ width: 34, height: 34, minWidth: 34, minHeight: 34, borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', color: '#f87171', display: 'grid', placeItems: 'center', fontWeight: 'bold', flexShrink: 0 }}>!</div>
               <div>
-                <strong style={{ color: '#f1f7ff', fontSize: 13 }}>Machine Learning in Climatology (48%)</strong>
+                <strong style={{ color: '#f1f7ff', fontSize: 13, display: 'block' }}>Machine Learning in Climatology (48%)</strong>
                 <p style={{ color: '#8aa6c0', fontSize: 12, margin: '4px 0 10px', lineHeight: 1.5 }}>
                   Completing the advanced CNN Nowcasting certification will elevate your profile match for next month's AI meteorology cohort.
                 </p>

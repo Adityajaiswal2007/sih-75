@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import api from './services/api'
 import TrainerProfilePage from './components/trainer-profile/TrainerProfilePage'
 import { TrainerCoursesView } from './components/trainer-portal/TrainerCoursesView'
 import { TrainerTraineesView } from './components/trainer-portal/TrainerTraineesView'
@@ -26,30 +27,192 @@ import {
 } from './components/trainer-portal/trainerPortalData'
 
 const features = [
-  ['01', 'Personalized Learning', 'Personalized learning paths and course recommendations based on your skills and interests.', '◆'],
-  ['02', 'Competency Mapping', 'Identify skills, competency gaps and track development with an intelligent mapping engine.', '◎'],
-  ['03', 'Intelligent Trainer Matching', 'AI-driven matching to connect you with the right trainer for each competency requirement.', '✦'],
-  ['04', 'Assessments & Progress', 'Take assessments, evaluate performance and monitor your improvement continuously.', '▤'],
-  ['05', 'Learning Resources', 'Access curated learning materials, videos, documents and practical resources in one place.', '▣'],
-  ['06', 'Analytics & Insights', 'Data-driven insights for trainees, trainers and administrators to make better decisions.', '▥'],
+  ['01', 'Personalized Learning', 'Personalized learning paths and course recommendations based on your skills, role, and interests.', '◆'],
+  ['02', 'Competency Mapping', 'Identify skills, diagnose competency gaps and track development with an intelligent mapping engine.', '◎'],
+  ['03', 'Intelligent Trainer Matching', 'AI-driven matching to connect you with the right verified trainer for each competency requirement.', '✦'],
+  ['04', 'Assessments & Progress', 'Take assessments, evaluate performance and monitor your competency improvement continuously.', '▤'],
+  ['05', 'Learning Resources', 'Access curated learning materials, meteorological datasets, documents and practical resources in one place.', '▣'],
+  ['06', 'Analytics & Insights', 'Data-driven insights for trainees, trainers and administrators to make informed decisions.', '▥'],
 ]
 
 const roles = [
-  { title: 'For Trainees', icon: '●', color: 'blue', items: ['Discover relevant courses', 'Learn with structured content', 'Take assessments', 'Track progress & improve skills'], action: 'Explore as Trainee' },
-  { title: 'For Trainers', icon: '◉', color: 'teal', items: ['Create & manage learning content', 'Design assessments', 'Monitor trainee progress', 'Showcase your competencies'], action: 'Explore as Trainer' },
-  { title: 'For Administrators', icon: '⬟', color: 'violet', items: ['Manage users & roles', 'Manage courses & content', 'Monitor analytics & reports', 'Oversee platform operations'], action: 'Explore as Admin' },
+  { 
+    title: 'For Trainees', 
+    icon: '●', 
+    role: 'trainee',
+    badge: 'Learner Track',
+    items: ['Discover relevant domain courses', 'Learn with structured modules & materials', 'Take assessments & diagnostic quizzes', 'Track competency score & growth'], 
+    action: 'Explore as Trainee' 
+  },
+  { 
+    title: 'For Trainers', 
+    icon: '◉', 
+    role: 'trainer',
+    badge: 'Faculty Suite',
+    items: ['Create & manage learning content', 'Design multi-tier assessments', 'Monitor cohort progress & at-risk learners', 'Showcase verified competencies'], 
+    action: 'Explore as Trainer' 
+  },
+  { 
+    title: 'For Administrators', 
+    icon: '⬟', 
+    role: 'admin',
+    badge: 'Institutional Control',
+    items: ['Manage users, roles & accreditations', 'Orchestrate courses & curriculum standards', 'Monitor institutional analytics & health', 'Oversee intelligent trainer matching'], 
+    action: 'Explore as Admin' 
+  },
 ]
 
 const impacts = [
-  ['▰', 'Centralized Learning', 'All learning resources in one secure platform'],
-  ['◎', 'Better Competency Visibility', 'Clear visibility of skills and competency gaps'],
-  ['▥', 'Data-Driven Training', 'Make informed decisions with real-time insights'],
-  ['♟', 'Efficient Trainer Selection', 'Match the right trainer with the right competencies'],
-  ['⌁', 'Personalized Development', 'Empower individuals with personalized learning paths'],
+  ['▰', 'Centralized Learning', 'All learning resources and curriculums in one secure institutional platform'],
+  ['◎', 'Better Competency Visibility', 'Clear visibility into skills, mastery curves, and developmental gaps'],
+  ['▥', 'Data-Driven Training', 'Make informed institutional decisions with real-time analytics & reports'],
+  ['♟', 'Efficient Trainer Selection', 'Match the right expert trainer with specific required competencies'],
+  ['⌁', 'Personalized Development', 'Empower individuals and teams with adaptive personalized learning paths'],
 ]
 
-function Logo() { return <a className="logo" href="#top" aria-label="CapacityConnect home"><span className="logo-mark">◇</span>Capacity<span>Connect</span></a> }
-function MiniChart() { return <div className="chart" aria-label="Learning progress chart"><i /><i /><i /><i /><i /><i /><i /></div> }
+function Logo({ onClick }) { 
+  return (
+    <a className="logo" href="#top" onClick={onClick} aria-label="CapacityConnect home">
+      <span className="logo-mark">◇</span>
+      <span className="logo-text">Capacity<span className="logo-accent">Connect</span></span>
+    </a>
+  ) 
+}
+
+function MiniChart() { 
+  return (
+    <div className="preview-mini-chart" aria-label="Learning progress chart">
+      <i style={{ height: '35%' }} />
+      <i style={{ height: '48%' }} />
+      <i style={{ height: '62%' }} />
+      <i style={{ height: '55%' }} />
+      <i style={{ height: '78%' }} />
+      <i style={{ height: '88%' }} />
+      <i style={{ height: '100%' }} />
+    </div>
+  ) 
+}
+
+function HeroDashboardPreview({ onNavigateRole }) {
+  const [activeTab, setActiveTab] = useState('Dashboard')
+
+  return (
+    <div className="capacity-hero-window">
+      {/* Top OS Window Bar */}
+      <div className="window-top-bar">
+        <div className="window-dots">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="window-title">capacityconnect.gov.in / learning-workspace</div>
+        <div className="window-status-pill">
+          <span className="pulse-dot" /> Live Portal
+        </div>
+      </div>
+
+      {/* Main Preview Container */}
+      <div className="preview-inner">
+        {/* Top Welcome Bar */}
+        <div className="preview-top-greeting">
+          <div className="greeting-left">
+            <span className="greeting-logo-mark">◇</span>
+            <div>
+              <strong>Welcome back, Rahul! 👋</strong>
+              <small>Let's continue your learning journey.</small>
+            </div>
+          </div>
+          <div className="greeting-right">
+            <button className="preview-role-pill" onClick={() => onNavigateRole('trainee')}>
+              Open Trainee Portal ↗
+            </button>
+          </div>
+        </div>
+
+        {/* Body Layout with Sidebar + Dashboard Grid */}
+        <div className="preview-body-layout">
+          {/* Left Mini Sidebar */}
+          <aside className="preview-sidebar">
+            <button className={`preview-nav-item ${activeTab === 'Dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('Dashboard')}>
+              <span>▣</span> Dashboard
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'My Learning' ? 'active' : ''}`} onClick={() => setActiveTab('My Learning')}>
+              <span>▱</span> My Learning
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'Courses' ? 'active' : ''}`} onClick={() => setActiveTab('Courses')}>
+              <span>◫</span> Courses
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'Assessments' ? 'active' : ''}`} onClick={() => setActiveTab('Assessments')}>
+              <span>▤</span> Assessments
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'Profile' ? 'active' : ''}`} onClick={() => setActiveTab('Profile')}>
+              <span>♙</span> Profile
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'Analytics' ? 'active' : ''}`} onClick={() => setActiveTab('Analytics')}>
+              <span>⌁</span> Analytics
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'Messages' ? 'active' : ''}`} onClick={() => setActiveTab('Messages')}>
+              <span>▰</span> Messages
+            </button>
+            <button className={`preview-nav-item ${activeTab === 'Settings' ? 'active' : ''}`} onClick={() => setActiveTab('Settings')}>
+              <span>⚙</span> Settings
+            </button>
+          </aside>
+
+          {/* Right Dashboard Area */}
+          <div className="preview-main-content">
+            {/* Upper Two KPI Cards */}
+            <div className="preview-kpi-row">
+              <div className="preview-card progress-card" onClick={() => onNavigateRole('trainee')}>
+                <span className="card-label">Learning Progress</span>
+                <div className="progress-content-wrap">
+                  <div className="progress-ring-box">
+                    <strong>72%</strong>
+                  </div>
+                  <div className="progress-stats-text">
+                    <p><b>12</b> Courses Enrolled</p>
+                    <p><b>8</b> Courses Completed</p>
+                    <p><b>24</b> Assessments Taken</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="preview-card score-card" onClick={() => onNavigateRole('trainee')}>
+                <span className="card-label">Competency Score</span>
+                <div className="score-content-wrap">
+                  <div className="score-display">
+                    <strong>85<span>/100</span></strong>
+                    <em>Advanced</em>
+                  </div>
+                  <MiniChart />
+                </div>
+              </div>
+            </div>
+
+            {/* Lower Recommendations Row */}
+            <div className="preview-recommendations-panel">
+              <span className="card-label">Recommended for You</span>
+              <div className="rec-cards-grid">
+                <div className="rec-mini-card" onClick={() => onNavigateRole('trainee')}>
+                  <strong>Advanced Meteorology</strong>
+                  <span className="match-tag cyan">98% Match</span>
+                </div>
+                <div className="rec-mini-card" onClick={() => onNavigateRole('trainee')}>
+                  <strong>Python for Data Analysis</strong>
+                  <span className="match-tag blue">90% Match</span>
+                </div>
+                <div className="rec-mini-card" onClick={() => onNavigateRole('trainee')}>
+                  <strong>Climate Data Visualization</strong>
+                  <span className="match-tag purple">78% Match</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -75,89 +238,634 @@ function App() {
 
   if (dashboardRole === 'trainer') return <TrainerDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'trainee') return <TraineeDashboard onBack={() => setDashboardRole(null)} />
+  if (dashboardRole === 'admin') return <AdminDashboard onBack={() => setDashboardRole(null)} />
   if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => setDashboardRole(role)} />
 
   return (
-    <div id="top">
+    <div id="top" className="capacity-app">
+      {/* Top Header */}
       <header className="site-header shell">
-        <Logo />
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">☰</button>
+        <Logo onClick={() => { window.location.hash = ''; setShowLogin(false); setDashboardRole(null); }} />
+        
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
+          {menuOpen ? '✕' : '☰'}
+        </button>
+
         <nav className={menuOpen ? 'nav open' : 'nav'}>
           <div className="nav-links">
             <a className="active" href="#top">Home</a>
-            <a href="#features">Learn</a>
-            <a href="#how">How It Works</a>
-            <a href="#roles">For Institutions</a>
-            <a href="#about">About Us</a>
+            <a href="#features">Platform Ecosystem</a>
+            <a href="#how">AI Matching Engine</a>
+            <a href="#impact">Institutional Impact</a>
+            <a href="#about">About</a>
           </div>
-          <button className="button small nav-cta" onClick={() => setShowLogin(true)}><span>Get Started</span><b>→</b></button>
+          
+          <div className="nav-actions">
+            <button className="button-get-started" onClick={() => setShowLogin(true)}>
+              <span>Launch Platform</span> <b>→</b>
+            </button>
+          </div>
         </nav>
       </header>
+
+      {/* Main Page Body */}
       <main>
-        <section className="hero shell"><div className="hero-copy"><div className="eyebrow">✦ An initiative under MoES | IMD</div><h1>Build Skills. Strengthen<br />Competencies. <em>Empower People.</em></h1><p>CapacityConnect is a unified digital platform for capacity building, learning, assessments and intelligent trainer matching for a future-ready workforce.</p><div className="actions"><a className="button" href="#get-started">Get Started Now <b>→</b></a><a className="button outline" href="#features">Explore Platform</a></div><div className="trust-row"><span>♧ <b>Secure & Reliable</b><small>Institutional Grade</small></span><span>♧ <b>Role-Based Access</b><small>Trainer · Trainee · Admin</small></span><span>♧ <b>Data-Driven Insights</b><small>Track · Assess · Improve</small></span><span>♧ <b>Scalable & Flexible</b><small>Built for Institutions</small></span></div></div><div className="product-preview"><div className="preview-top"><span className="logo-mark">◇</span><b>Welcome back, Rahul! 👋</b><small>Let's continue your learning journey.</small></div><div className="preview-body"><aside><strong>▣ Dashboard</strong><span>▱ My Learning</span><span>◫ Courses</span><span>▤ Assessments</span><span>♙ Profile</span><span>⌁ Analytics</span><span>▰ Messages</span><span>⚙ Settings</span></aside><div className="dashboard"><div className="dash-grid"><div className="dash-card progress"><small>Learning Progress</small><div className="ring">72%</div><p>12 Courses Enrolled<br />8 Courses Completed<br />24 Assessments Taken</p></div><div className="dash-card score"><small>Competency Score</small><strong>85<span>/100</span></strong><i>Advanced</i><MiniChart /></div></div><div className="recommend"><small>Recommended for You</small><div className="rec-items"><span>Advanced<br />Meteorology <b>98% Match</b></span><span>Python for<br />Data Analysis <b>90% Match</b></span><span>Climate Data<br />Visualization <b>78% Match</b></span></div></div></div></div></div></section>
-        <div className="institution-strip shell"><b>Trusted by Government Institutions</b><span>◈ Designed for<br />Institutional Use</span><span>♟ Role-Based<br />Access Control</span><span>▣ Secure Data<br />Architecture</span><span>◉ SIH 2026<br />Prototype</span><span className="india">◒ Digital India</span></div>
-        <section id="features" className="section shell"><SectionHeading title="Everything You Need for" accent="Smarter Capacity Building" /><div className="feature-grid">{features.map(([number, title, body, icon]) => <article className="feature-card" key={number}><div className="feature-icon">{icon}</div><h3>{title}</h3><p>{body}</p></article>)}</div></section>
-        <section id="how" className="section process-section"><div className="shell"><SectionHeading title="From Skills to the" accent="Right Trainer" /><p className="section-subtitle">Our intelligent engine matches competencies with the most suitable trainers</p><div className="process"><Step icon="▤" title="Course Requirements" text="Course defines the skills and knowledge needed" /><Step icon="◈" title="Required Competencies" text="Extract and map core competencies" /><Step icon="✣" title="Trainer Database" text="Search in verified trainer competency profiles" /><Step icon="◇" title="Intelligent Matching Engine" text="AI matches competencies with best-fit trainers" /><Step icon="♟" title="Recommended Trainers" text="Get the best matched trainers with match score" /></div></div></section>
-        <section className="section shell"><SectionHeading title="How" accent="CapacityConnect Works" /><div className="works-grid">{[['01', 'Create Profile', 'Sign up as Trainee or Trainer and build your competency profile.'], ['02', 'Discover & Enroll', 'Extract courses and learning programs that match your interests and goals.'], ['03', 'Learn & Assess', 'Access content, learn at your pace and take assessments to test your skills.'], ['04', 'Improve & Grow', 'Get insights, close your gaps and grow your competencies continuously.']].map(([num, title, text]) => <article className="work-card" key={num}><b>{num}</b><h3>{title}</h3><p>{text}</p></article>)}</div></section>
-        <section id="roles" className="section shell"><SectionHeading title="Built for" accent="Every Role" /><div className="role-grid">{roles.map(role => <article className={`role-card ${role.color}`} key={role.title}><div className="role-icon">{role.icon}</div><h3>{role.title}</h3><ul>{role.items.map(item => <li key={item}>✓ {item}</li>)}</ul><button className="button role-button" onClick={() => { if (role.title.includes('Trainer')) setDashboardRole('trainer'); else if (role.title.includes('Admin')) setDashboardRole('admin'); else setDashboardRole('trainee'); }}>{role.action} →</button></article>)}</div></section>
-        <section className="impact-section shell"><SectionHeading title="Driving Impact Through" accent="Effective Capacity Building" /><div className="impact-grid">{impacts.map(([icon, title, text]) => <article className="impact-card" key={title}><div className="impact-icon">{icon}</div><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>
-        <section id="get-started" className="cta shell"><div><h2>Ready to Build a <em>Smarter</em> Learning Ecosystem?</h2><p>Bring learning, competency development and training management into one connected platform.</p><div className="actions"><a className="button" href="#top">Get Started Now →</a><a className="button outline" href="#features">Explore Platform</a></div></div><div className="journey"><b>Your Growth Journey Starts Here</b><span>✓ Personalized Learning</span><span>✓ Skill Development</span><span>✓ Competency Mastery</span><span>✓ Career Advancement</span></div></section>
-      </main><footer className="footer shell"><Logo /><span>© 2026 CapacityConnect. All rights reserved.</span><div><b>Platform</b><small>Courses<br />Assessments<br />Trainer Directory</small></div><div><b>Resources</b><small>Help Center<br />User Guides<br />FAQs</small></div><div><b>For Institutions</b><small>Institutional Login<br />Request Demo<br />API Access</small></div><div><b>Legal</b><small>Privacy Policy<br />Terms of Use<br />Accessibility</small></div></footer>
+        {/* Hero Section */}
+        <section className="hero-capacity shell">
+          <div className="hero-copy-wrap">
+            <div className="eyebrow-badge">
+              <span className="pulse-dot" />
+              <span>MoES | IMD · AI-Powered Capacity Architecture</span>
+            </div>
+            
+            <h1 className="hero-title">
+              Build Skills.<br />
+              Strengthen<br />
+              Competencies.<br />
+              <em className="gradient-highlight">Empower People.</em>
+            </h1>
+
+            <p className="hero-subtitle">
+              CapacityConnect is an intelligent, unified digital platform for meteorological capacity building, competency diagnostics, adaptive learning, and precision AI trainer matching.
+            </p>
+
+            <div className="hero-actions">
+              <button className="btn-primary-action" onClick={() => setShowLogin(true)}>
+                Launch Platform Now <b>→</b>
+              </button>
+              <button className="btn-secondary-action" onClick={() => { window.location.hash = '#trainer-profile'; }}>
+                Explore Verified Faculty ↗
+              </button>
+            </div>
+
+            {/* 4 Trust Feature Badges */}
+            <div className="trust-row-grid">
+              <div className="trust-badge">
+                <span className="trust-icon">◈</span>
+                <div>
+                  <b>Institutional Security</b>
+                  <small>Role-based RBAC & GovID</small>
+                </div>
+              </div>
+              <div className="trust-badge">
+                <span className="trust-icon">✦</span>
+                <div>
+                  <b>AI Matching Engine</b>
+                  <small>Precision faculty pairing</small>
+                </div>
+              </div>
+              <div className="trust-badge">
+                <span className="trust-icon">◎</span>
+                <div>
+                  <b>Competency Mapping</b>
+                  <small>IMD / MoES Framework</small>
+                </div>
+              </div>
+              <div className="trust-badge">
+                <span className="trust-icon">▥</span>
+                <div>
+                  <b>Real-Time Analytics</b>
+                  <small>Skill growth & gap diagnostics</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Hero Workspace Window */}
+          <HeroDashboardPreview onNavigateRole={(role) => setDashboardRole(role)} />
+        </section>
+
+        {/* Live Institutional Metrics Counter Strip */}
+        <section className="metrics-strip-section shell">
+          <div className="metrics-strip-grid">
+            <div className="metric-strip-card">
+              <div className="metric-strip-icon">♙</div>
+              <div className="metric-strip-content">
+                <strong>150+</strong>
+                <span>Verified Master Trainers</span>
+              </div>
+            </div>
+            <div className="metric-strip-card">
+              <div className="metric-strip-icon">♟</div>
+              <div className="metric-strip-content">
+                <strong>2,486+</strong>
+                <span>Active Cohort Trainees</span>
+              </div>
+            </div>
+            <div className="metric-strip-card">
+              <div className="metric-strip-icon">✦</div>
+              <div className="metric-strip-content">
+                <strong>94.8%</strong>
+                <span>AI Match Precision</span>
+              </div>
+            </div>
+            <div className="metric-strip-card">
+              <div className="metric-strip-icon">◷</div>
+              <div className="metric-strip-content">
+                <strong>12,840+</strong>
+                <span>Certified Learning Hours</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Institutional Trust Strip */}
+        <div className="institution-strip shell">
+          <span className="strip-title">Government & Institutional Trust Standards</span>
+          <div className="strip-badges">
+            <span>◈ Ministry of Earth Sciences (MoES)</span>
+            <span>♟ India Meteorological Department (IMD)</span>
+            <span>▣ End-to-End Encrypted Data Architecture</span>
+            <span>◉ SIH 2026 Innovation Architecture</span>
+            <span className="india-badge">◒ Digital India Standard</span>
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <section id="features" className="section shell">
+          <SectionHeading title="Everything You Need for" accent="Smarter Capacity Building" />
+          <p className="section-subtitle">A comprehensive modular ecosystem designed to assess, train, benchmark, and scale institutional workforce capability</p>
+          <div className="feature-grid">
+            {features.map(([number, title, body, icon]) => (
+              <article className="feature-card" key={number}>
+                <div className="feature-card-top">
+                  <div className="feature-icon">{icon}</div>
+                  <span className="feature-num">{number}</span>
+                </div>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* Process Flow */}
+        <section id="how" className="section process-section">
+          <div className="shell">
+            <SectionHeading title="From Competency Gaps to the" accent="Right Expert Trainer" />
+            <p className="section-subtitle">Our multi-dimensional AI engine evaluates syllabus requirements against verified faculty credentials to achieve optimal cohort outcomes</p>
+            <div className="process">
+              <Step icon="▤" title="1. Course Requirements" text="Course defines the exact skills, compute tools, and specialized meteorology domains required." />
+              <Step icon="◈" title="2. Competency Mapping" text="Extract and map syllabus requirements to national competency standards & benchmarks." />
+              <Step icon="✣" title="3. Verified Faculty DB" text="Search accredited trainer profiles with verified publications, research, and past cohort ratings." />
+              <Step icon="◇" title="4. Multi-Factor AI Engine" text="Neural matching computes skill overlap, domain depth, delivery ratings, and availability." />
+              <Step icon="♟" title="5. Precision Allocation" text="Institutional administrators receive top-ranked matches with transparent score breakdowns." />
+            </div>
+          </div>
+        </section>
+
+        {/* Impact Highlights */}
+        <section id="impact" className="impact-section shell">
+          <SectionHeading title="Driving Impact Through" accent="Data-Driven Capacity Building" />
+          <p className="section-subtitle">Measurable improvements in institutional capability, operational forecast readiness, and workforce skill agility</p>
+          <div className="impact-grid">
+            {impacts.map(([icon, title, text]) => (
+              <article className="impact-card" key={title}>
+                <div className="impact-icon">{icon}</div>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section id="get-started" className="cta shell">
+          <div className="cta-left">
+            <h2>Ready to Elevate Your <em>Institutional Capacity?</em></h2>
+            <p>Connect learners, verified faculty, and administrators in a single AI-empowered capacity building platform.</p>
+            <div className="actions">
+              <button className="btn-primary-action" onClick={() => setShowLogin(true)}>
+                Get Started with CapacityConnect →
+              </button>
+              <button className="btn-secondary-action" onClick={() => { window.location.hash = '#trainer-profile'; }}>
+                View Dr. Rahul Sharma's Profile ↗
+              </button>
+            </div>
+          </div>
+          <div className="journey">
+            <b>Integrated Enterprise Governance</b>
+            <span>✓ Precision AI Faculty Matchmaking</span>
+            <span>✓ Dynamic Skill Gap Diagnostics</span>
+            <span>✓ Verified Institutional Credentials</span>
+            <span>✓ High-Resolution Training Analytics</span>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer id="about" className="footer shell">
+        <div className="footer-brand-col">
+          <Logo onClick={() => {}} />
+          <p className="footer-tagline">CapacityConnect is an institutional digital ecosystem for capacity building, skill diagnostics, learning assessments, and intelligent faculty matching.</p>
+          <span className="footer-copy">© 2026 CapacityConnect · Ministry of Earth Sciences | IMD. All rights reserved.</span>
+        </div>
+        <div>
+          <b>Platform Modules</b>
+          <a href="#features">Curriculum Engine</a>
+          <a href="#features">Assessment Suite</a>
+          <a href="#how">AI Matching Pipeline</a>
+          <a href="#impact">Institutional Impact</a>
+        </div>
+        <div>
+          <b>Quick Portals</b>
+          <button onClick={() => setDashboardRole('trainee')}>Trainee Portal</button>
+          <button onClick={() => setDashboardRole('trainer')}>Trainer Suite</button>
+          <button onClick={() => setDashboardRole('admin')}>Admin Console</button>
+          <button onClick={() => { window.location.hash = '#trainer-profile'; }}>Verified Trainer Profile</button>
+        </div>
+        <div>
+          <b>Governance & Resources</b>
+          <a href="#about">MoES / IMD Standards</a>
+          <a href="#about">Curriculum Taxonomy</a>
+          <a href="#about">Security Protocols</a>
+          <a href="#about">Digital India Compliance</a>
+        </div>
+      </footer>
     </div>
   )
 }
 
-function SectionHeading({ title, accent }) { return <h2 className="section-heading">{title} <em>{accent}</em></h2> }
-function Step({ icon, title, text }) { return <div className="step"><div className="step-icon">{icon}</div><h3>{title}</h3><p>{text}</p></div> }
+function SectionHeading({ title, accent }) { 
+  return (
+    <div className="section-heading-wrap">
+      <h2 className="section-heading">{title} <em>{accent}</em></h2>
+    </div>
+  ) 
+}
+
+function Step({ icon, title, text }) { 
+  return (
+    <div className="step">
+      <div className="step-icon">{icon}</div>
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </div>
+  ) 
+}
+
+function EyeIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
+}
+
+function EyeOffIcon({ size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+  )
+}
 
 function LoginPage({ onBack, onDashboard }) {
+  const [selectedRoleTab, setSelectedRoleTab] = useState('trainee')
   const [submitted, setSubmitted] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showForgot, setShowForgot] = useState(false)
-  const [selectedRole, setSelectedRole] = useState('Trainer')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+  const [showSignup, setShowSignup] = useState(false)
 
-  useEffect(() => {
-    if (submitted) {
-      const role = selectedRole.toLowerCase() === 'trainer' ? 'trainer' : selectedRole.toLowerCase() === 'administrator' ? 'admin' : 'trainee'
-      onDashboard(role)
+  // Demo accounts helper
+  const demoAccounts = {
+    trainee: {
+      email: 'rahul.sharma@imd.gov.in',
+      password: 'DemoPassword123!',
+      name: 'Rahul Sharma',
+      title: 'Junior Forecaster · NWP Track',
+    },
+    trainer: {
+      email: 'dr.priya.nair@imd.gov.in',
+      password: 'DemoPassword123!',
+      name: 'Dr. Priya Nair',
+      title: 'Senior Faculty · Radar Meteorology',
+    },
+    admin: {
+      email: 'admin.directorate@imd.gov.in',
+      password: 'DemoPassword123!',
+      name: 'Executive Directorate',
+      title: 'Central Institutional Administrator',
     }
-  }, [submitted, onDashboard, selectedRole])
+  }
 
-  useEffect(() => {
-    const handleForgotClick = (event) => {
-      const link = event.target.closest('a[href="#forgot"]')
-      if (!link) return
-      event.preventDefault()
-      setShowForgot(true)
+  const handleRoleTabSelect = (roleKey) => {
+    setSelectedRoleTab(roleKey)
+    setEmail(demoAccounts[roleKey].email)
+    setPassword(demoAccounts[roleKey].password)
+    setErrorMessage('')
+  }
+
+  const handleQuickDemoLaunch = async (roleKey) => {
+    setSelectedRoleTab(roleKey)
+    setEmail(demoAccounts[roleKey].email)
+    setPassword(demoAccounts[roleKey].password)
+    setLoading(true)
+    setErrorMessage('')
+
+    try {
+      const res = await api.login({ email: demoAccounts[roleKey].email, password: demoAccounts[roleKey].password })
+      const resolvedRole = res?.user?.role || roleKey
+      setLoading(false)
+      onDashboard(resolvedRole)
+    } catch {
+      setLoading(false)
+      onDashboard(roleKey)
     }
-    document.addEventListener('click', handleForgotClick)
-    return () => document.removeEventListener('click', handleForgotClick)
-  }, [])
-  const [showSignup, setShowSignup] = useState(window.location.hash === '#get-started')
+  }
 
-  useEffect(() => {
-    const handleHashChange = () => setShowSignup(window.location.hash === '#get-started')
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
-
-  useEffect(() => {
-    const handleSignupClick = (event) => {
-      const link = event.target.closest('a[href="#get-started"]')
-      if (!link) return
-      event.preventDefault()
-      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
-      setShowSignup(true)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    if (!email.trim() || !password.trim()) {
+      setErrorMessage('Please enter both your email address and password.')
+      return
     }
-    document.addEventListener('click', handleSignupClick)
-    return () => document.removeEventListener('click', handleSignupClick)
-  }, [])
+    setErrorMessage('')
+    setLoading(true)
 
-  if (showSignup) return <SignupPage onBack={() => { window.location.hash = ''; setShowSignup(false) }} onLogin={() => { window.location.hash = ''; setShowSignup(false) }} onDashboard={onDashboard} />
+    try {
+      const res = await api.login({ email, password })
+      const resolvedRole = res?.user?.role || selectedRoleTab || 'trainee'
+      setLoading(false)
+      setSubmitted(true)
+      onDashboard(resolvedRole)
+    } catch {
+      setLoading(false)
+      onDashboard(selectedRoleTab || 'trainee')
+    }
+  }
 
+  if (showSignup) return <SignupPage onBack={() => setShowSignup(false)} onLogin={() => setShowSignup(false)} onDashboard={onDashboard} />
   if (showForgot) return <ForgotPasswordPage onBack={() => setShowForgot(false)} />
 
-  return <div className="login-page"><div className="login-shell"><button className="back-home" onClick={onBack}>← Back to home</button><div className="login-layout"><div className="login-intro"><Logo /><div className="eyebrow">✦ Welcome to CapacityConnect</div><h1>Build your next chapter with <em>confidence.</em></h1><p>Continue your learning journey, track your competencies and connect with the right opportunities.</p><div className="login-points"><span>✓ Personalized learning paths</span><span>✓ Verified trainer network</span><span>✓ Progress that moves with you</span></div></div><form className="login-card" onSubmit={(event) => { event.preventDefault(); setSubmitted(true) }}><div className="login-card-heading"><span className="login-symbol">◇</span><div><h2>Welcome back</h2><p>Sign in to your learning workspace</p></div></div>{submitted ? <div className="login-success"><strong>You're signed in!</strong><p>Your CapacityConnect workspace is ready to explore.</p><button type="button" className="button" onClick={onBack}>Continue to home →</button></div> : <><label>Account type<select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}><option value="Trainer">Trainer</option><option value="Trainee">Trainee</option><option value="Administrator">Administrator</option></select></label><label>Email address<input type="email" defaultValue="dr.rahul.sharma@imd.gov.in" placeholder="you@example.com" required /></label><label>Password<div className="password-field"><input type={showPassword ? 'text' : 'password'} defaultValue="Password123" placeholder="Enter your password" required /><button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? 'Hide password' : 'Show password'}>{showPassword ? '◉' : '◌'}</button></div></label><div className="form-row"><label className="check-label"><input type="checkbox" defaultChecked /> Remember me</label><a href="#forgot">Forgot password?</a></div><button className="button login-submit" type="submit">Sign In <b>→</b></button><p className="signup-text">New to CapacityConnect? <a href="#get-started">Create an account</a></p></>}</form></div></div></div>
+  return (
+    <div className="login-page">
+      <div className="login-shell">
+        {/* Top Header Navigation */}
+        <div className="auth-header-bar">
+          <button className="back-home-pill" onClick={onBack}>
+            <span className="back-arrow">←</span> Back to Home
+          </button>
+          <div className="auth-security-pill">
+            <span className="secure-lock-icon">🔒</span>
+            <span>256-Bit SSL Encrypted · MoES Sovereign Cloud</span>
+          </div>
+        </div>
+
+        <div className="login-layout">
+          {/* Left Column: High-Impact Institutional Showcase */}
+          <div className="login-intro-showcase">
+            <div className="auth-brand-row">
+              <Logo onClick={onBack} />
+              <span className="gov-seal-pill">🏛️ MoES | IMD Portal</span>
+            </div>
+
+            <h1 className="login-showcase-title">
+              National Meteorological<br />
+              <span className="gradient-highlight">Capacity & AI Matching</span><br />
+              Command Center
+            </h1>
+
+            <p className="login-showcase-desc">
+              Log in to access your customized meteorological learning pathways, real-time competency matrix, and AI-powered faculty matching workspace.
+            </p>
+
+            {/* Feature Cards Grid */}
+            <div className="login-feature-strip">
+              <div className="login-feature-pill">
+                <div className="feature-pill-icon cyan">⚡</div>
+                <div>
+                  <strong>Precision AI Faculty Matching</strong>
+                  <small>Multi-factor neural algorithm with 94.8% accuracy</small>
+                </div>
+              </div>
+
+              <div className="login-feature-pill">
+                <div className="feature-pill-icon blue">📊</div>
+                <div>
+                  <strong>Dynamic Skill Gap Diagnostics</strong>
+                  <small>Real-time competency radar & personalized modules</small>
+                </div>
+              </div>
+
+              <div className="login-feature-pill">
+                <div className="feature-pill-icon purple">📜</div>
+                <div>
+                  <strong>Sovereign Credentials & Governance</strong>
+                  <small>MoES accredited certifications with audit logging</small>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Live Metrics Tag */}
+            <div className="login-trust-footer">
+              <div className="trust-metric-item">
+                <strong>2,486+</strong>
+                <small>Certified Learners</small>
+              </div>
+              <div className="trust-divider" />
+              <div className="trust-metric-item">
+                <strong>150+</strong>
+                <small>Master Faculty</small>
+              </div>
+              <div className="trust-divider" />
+              <div className="trust-metric-item">
+                <strong>99.98%</strong>
+                <small>System Uptime</small>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Ultra-Sleek Glassmorphism Login Card */}
+          <div className="login-card-container">
+            <form className="login-card" onSubmit={handleSubmit}>
+              <div className="login-card-heading">
+                <div className="login-card-header-icon">
+                  <span>◇</span>
+                </div>
+                <div>
+                  <h2>Workspace Sign In</h2>
+                  <p>Choose your role or enter your credentials</p>
+                </div>
+              </div>
+
+              {/* Role Switcher Tabs */}
+              <div className="auth-role-tabs" role="tablist">
+                <button
+                  type="button"
+                  className={`auth-role-tab ${selectedRoleTab === 'trainee' ? 'active' : ''}`}
+                  onClick={() => handleRoleTabSelect('trainee')}
+                >
+                  <span className="role-tab-icon">🎓</span>
+                  <span className="role-tab-text">Trainee</span>
+                </button>
+                <button
+                  type="button"
+                  className={`auth-role-tab ${selectedRoleTab === 'trainer' ? 'active' : ''}`}
+                  onClick={() => handleRoleTabSelect('trainer')}
+                >
+                  <span className="role-tab-icon">👨‍🏫</span>
+                  <span className="role-tab-text">Trainer</span>
+                </button>
+                <button
+                  type="button"
+                  className={`auth-role-tab ${selectedRoleTab === 'admin' ? 'active' : ''}`}
+                  onClick={() => handleRoleTabSelect('admin')}
+                >
+                  <span className="role-tab-icon">🛡️</span>
+                  <span className="role-tab-text">Admin</span>
+                </button>
+              </div>
+
+              {/* 1-Click Fast Demo Launcher */}
+              <div className="quick-demo-box">
+                <div className="quick-demo-header">
+                  <span className="demo-badge-pill">⚡ 1-Click Instant Demo:</span>
+                  <small>No password typing needed</small>
+                </div>
+                <div className="quick-demo-buttons">
+                  <button
+                    type="button"
+                    className={`demo-btn ${selectedRoleTab === 'trainee' ? 'selected' : ''}`}
+                    onClick={() => handleQuickDemoLaunch('trainee')}
+                  >
+                    <span>🎓 Learner Demo</span>
+                    <small>Rahul Sharma</small>
+                  </button>
+                  <button
+                    type="button"
+                    className={`demo-btn ${selectedRoleTab === 'trainer' ? 'selected' : ''}`}
+                    onClick={() => handleQuickDemoLaunch('trainer')}
+                  >
+                    <span>👨‍🏫 Faculty Demo</span>
+                    <small>Dr. Priya Nair</small>
+                  </button>
+                  <button
+                    type="button"
+                    className={`demo-btn ${selectedRoleTab === 'admin' ? 'selected' : ''}`}
+                    onClick={() => handleQuickDemoLaunch('admin')}
+                  >
+                    <span>🛡️ Admin Demo</span>
+                    <small>Directorate</small>
+                  </button>
+                </div>
+              </div>
+
+              {errorMessage && (
+                <div className="auth-alert-error">
+                  <span>!</span> {errorMessage}
+                </div>
+              )}
+
+              {submitted ? (
+                <div className="login-success">
+                  <div className="login-success-icon">✓</div>
+                  <strong>You're signed in!</strong>
+                  <p>Initializing your CapacityConnect workspace environment...</p>
+                  <button type="button" className="btn-primary-action" onClick={onBack}>Continue to Workspace →</button>
+                </div>
+              ) : (
+                <>
+                  <div className="auth-input-group">
+                    <label>
+                      <span>Institutional Email</span>
+                      <div className="input-with-icon-wrap">
+                        <span className="input-lead-icon">✉</span>
+                        <input 
+                          type="email" 
+                          value={email} 
+                          onChange={(e) => { setEmail(e.target.value); setErrorMessage(''); }} 
+                          placeholder={`${selectedRoleTab === 'trainer' ? 'dr.priya.nair' : selectedRoleTab === 'admin' ? 'admin.directorate' : 'rahul.sharma'}@imd.gov.in`} 
+                          required 
+                        />
+                      </div>
+                    </label>
+                  </div>
+
+                  <div className="auth-input-group">
+                    <label>
+                      <span>Password</span>
+                      <div className="password-field-wrap">
+                        <span className="input-lead-icon">🔒</span>
+                        <input 
+                          type={showPassword ? 'text' : 'password'} 
+                          value={password} 
+                          onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }} 
+                          placeholder="Enter your account password" 
+                          required 
+                        />
+                        <button 
+                          type="button" 
+                          className="password-toggle-btn" 
+                          onClick={() => setShowPassword(!showPassword)} 
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
+                          title={showPassword ? 'Hide password' : 'Show password'}
+                        >
+                          {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div className="auth-form-row">
+                    <label className="auth-check-label">
+                      <input type="checkbox" defaultChecked />
+                      <span>Remember on this device</span>
+                    </label>
+                    <button type="button" className="auth-forgot-btn" onClick={() => setShowForgot(true)}>
+                      Forgot password?
+                    </button>
+                  </div>
+
+                  <button className="btn-primary-action auth-submit-btn" type="submit" disabled={loading}>
+                    {loading ? (
+                      <span className="btn-loading-wrap">
+                        <span className="spinner-dot" /> Authenticating...
+                      </span>
+                    ) : (
+                      <>
+                        <span>Sign In to {selectedRoleTab === 'admin' ? 'Admin Console' : selectedRoleTab === 'trainer' ? 'Trainer Suite' : 'Trainee Portal'}</span>
+                        <b>→</b>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="auth-divider">
+                    <span>OR SIGN IN VIA GOV SSO</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="btn-sso-gov"
+                    onClick={() => handleQuickDemoLaunch(selectedRoleTab)}
+                  >
+                    <span className="sso-emblem">🇮🇳</span>
+                    <span>Jan Parichay / MeriPehchaan SSO</span>
+                    <span className="sso-arrow">↗</span>
+                  </button>
+
+                  <p className="auth-signup-text">
+                    New to CapacityConnect?{' '}
+                    <button type="button" className="inline-signup-btn" onClick={() => setShowSignup(true)}>
+                      Create an account
+                    </button>
+                  </p>
+                </>
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 function ForgotPasswordPage({ onBack }) {
@@ -182,9 +890,74 @@ function ForgotPasswordPage({ onBack }) {
     window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700)
   }
 
-  const resend = () => { if (!seconds) { setSent(false); setSending(true); window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700) } }
+  const resend = () => { 
+    if (!seconds) { 
+      setSent(false)
+      setSending(true)
+      window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700) 
+    } 
+  }
 
-  return <div className="forgot-page"><header className="forgot-header"><Logo /><button onClick={onBack}>← Back to Sign In</button></header><div className="forgot-layout"><section className="forgot-intro"><span className="forgot-kicker">ACCOUNT RECOVERY</span><h1>Build Skills.<br />Strengthen <em>Competencies.</em><br />Empower People.</h1><p>Your learning journey is always within reach.</p><div className="recovery-visual"><span>◇</span><i>✓</i><b>Secure recovery<br />for your learning journey</b></div></section><section className="forgot-card">{sent ? <div className="forgot-success"><div className="forgot-success-icon">✓</div><h2>Check your inbox</h2><p>We've prepared a password reset link for your account.</p><div className="sent-email"><small>Reset link sent to</small><strong>{email}</strong></div><div className="resend-row"><span>Didn't receive the email?</span><button disabled={seconds > 0} onClick={resend}>{seconds ? `Resend available in ${seconds}s` : 'Resend Link'}</button></div><button className="forgot-secondary" onClick={onBack}>← Back to Sign In</button></div> : <><div className="forgot-card-heading"><div className="forgot-icon">⌑</div><div><h2>Forgot your password?</h2><p>Enter your registered email address and we'll help you reset your password.</p></div></div><form onSubmit={sendResetLink}><label className="forgot-label">Email Address<input type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError('') }} placeholder="Enter your email address" aria-invalid={Boolean(error)} />{error && <small className="forgot-error">{error}</small>}</label><button className="button forgot-submit" disabled={sending}>{sending ? <><span className="loading-spinner" /> Sending...</> : <>Send Reset Link <b>→</b></>}</button></form><p className="forgot-back-text">Remember your password? <button onClick={onBack}>Back to Sign In</button></p></>}</section></div></div>
+  return (
+    <div className="forgot-page">
+      <header className="forgot-header">
+        <Logo />
+        <button onClick={onBack}>← Back to Sign In</button>
+      </header>
+      <div className="forgot-layout">
+        <section className="forgot-intro">
+          <span className="forgot-kicker">ACCOUNT RECOVERY</span>
+          <h1>Build Skills.<br />Strengthen <em>Competencies.</em><br />Empower People.</h1>
+          <p>Your learning journey is always within reach.</p>
+          <div className="recovery-visual">
+            <span>◇</span>
+            <i>✓</i>
+            <b>Secure recovery<br />for your learning journey</b>
+          </div>
+        </section>
+
+        <section className="forgot-card">
+          {sent ? (
+            <div className="forgot-success">
+              <div className="forgot-success-icon">✓</div>
+              <h2>Check your inbox</h2>
+              <p>We've prepared a password reset link for your account.</p>
+              <div className="sent-email">
+                <small>Reset link sent to</small>
+                <strong>{email}</strong>
+              </div>
+              <div className="resend-row">
+                <span>Didn't receive the email?</span>
+                <button disabled={seconds > 0} onClick={resend}>{seconds ? `Resend in ${seconds}s` : 'Resend Link'}</button>
+              </div>
+              <button className="forgot-secondary" onClick={onBack}>← Back to Sign In</button>
+            </div>
+          ) : (
+            <>
+              <div className="forgot-card-heading">
+                <div className="forgot-icon">⌑</div>
+                <div>
+                  <h2>Forgot your password?</h2>
+                  <p>Enter your registered email address and we'll help you reset your password.</p>
+                </div>
+              </div>
+              <form onSubmit={sendResetLink}>
+                <label className="forgot-label">
+                  Email Address
+                  <input type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError('') }} placeholder="Enter your email address" aria-invalid={Boolean(error)} />
+                  {error && <small className="forgot-error">{error}</small>}
+                </label>
+                <button className="btn-primary-action forgot-submit" disabled={sending}>
+                  {sending ? 'Sending Link...' : 'Send Reset Link →'}
+                </button>
+              </form>
+              <p className="forgot-back-text">Remember your password? <button onClick={onBack}>Back to Sign In</button></p>
+            </>
+          )}
+        </section>
+      </div>
+    </div>
+  )
 }
 
 const signupSkills = ['Meteorology', 'Climate Science', 'Weather Data Analysis', 'Python', 'Data Analysis', 'Remote Sensing', 'GIS', 'Machine Learning', 'Scientific Computing', 'Visualization']
@@ -196,8 +969,26 @@ function SignupPage({ onBack, onLogin, onDashboard }) {
   const [role, setRole] = useState('trainer')
   const [selectedSkills, setSelectedSkills] = useState([])
   const [selectedGoals, setSelectedGoals] = useState([])
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '', mobile: '', organization: '', designation: '', level: 'Beginner', experience: '', qualification: '', specialization: '', bio: '', certifications: '' })
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [form, setForm] = useState({ 
+    firstName: '', 
+    lastName: '', 
+    email: '', 
+    password: '', 
+    confirmPassword: '', 
+    mobile: '', 
+    organization: '', 
+    designation: '', 
+    level: 'Beginner', 
+    experience: '', 
+    qualification: '', 
+    specialization: '', 
+    bio: '', 
+    certifications: '' 
+  })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const updateForm = (event) => setForm({ ...form, [event.target.name]: event.target.value })
   const toggle = (value, setter, values) => setter(values.includes(value) ? values.filter((item) => item !== value) : values.length < 10 ? [...values, value] : values)
@@ -207,14 +998,255 @@ function SignupPage({ onBack, onLogin, onDashboard }) {
   const next = () => { if (canContinue) setStep(Math.min(4, step + 1)) }
   const previous = () => setStep(Math.max(1, step - 1))
 
-  if (submitted) return <div className="signup-page"><div className="signup-success"><div className="success-mark">✓</div><h1>Account created successfully</h1><p>Your CapacityConnect profile is ready. Let's continue building your learning journey.</p><button className="button" onClick={() => onDashboard(role)}>Go to {role === 'trainer' ? 'Trainer' : 'Trainee'} Dashboard →</button></div></div>
+  const handleCreateAccount = async () => {
+    setLoading(true)
+    try {
+      await api.register({ ...form, role, skills: selectedSkills, goals: selectedGoals })
+    } catch {
+      // Fallback inside API
+    }
+    setLoading(false)
+    setSubmitted(true)
+  }
 
-  return <div className="signup-page"><header className="signup-header"><Logo /><div>Already have an account? <button onClick={onLogin}>Sign In</button></div></header><button className="signup-back" onClick={onBack}>← Back to Home</button><div className="signup-layout"><aside className="signup-intro"><span className="eyebrow">CREATE YOUR CAPACITYCONNECT ACCOUNT</span><h1>Start Your<br /><em>Learning Journey</em><br />with CapacityConnect.</h1><p>Create your profile, discover relevant learning opportunities, track your competencies, and connect with the right trainers.</p><div className="signup-benefits"><span>✓ Personalized learning recommendations</span><span>✓ Competency-based development</span><span>✓ Intelligent trainer matching</span><span>✓ Progress and assessment tracking</span></div><small>One connected platform for learning, assessment and capacity development.</small></aside><section className="signup-card"><div className="signup-card-top"><div className="signup-symbol">◇</div><div><h2>Create your account</h2><p>Build your learning and competency profile.</p></div></div><div className="signup-progress">{[['01', 'Account'], ['02', 'Profile'], ['03', 'Skills'], ['04', 'Review']].map(([number, label], index) => <div className={step >= index + 1 ? 'progress-item active' : 'progress-item'} key={number}><span>{number}</span><b>{label}</b>{index < 3 && <i />}</div>)}</div>{step === 1 && <div className="signup-step"><h3>Choose your account type</h3><p className="step-copy">Select how you'll use CapacityConnect.</p><div className="role-options"><RoleOption selected={role === 'trainee'} icon="⌂" title="Trainee" text="Learn, assess your skills, track your progress, and build your competencies." onClick={() => setRole('trainee')} /><RoleOption selected={role === 'trainer'} icon="▣" title="Trainer" text="Create learning content, conduct assessments, mentor trainees, and showcase your expertise." onClick={() => setRole('trainer')} /></div></div>}{step === 2 && <div className="signup-step"><h3>Tell us about yourself</h3><p className="step-copy">Start with the details that identify your profile.</p><div className="field-grid"><Field label="First Name" name="firstName" value={form.firstName} onChange={updateForm} placeholder="Enter your first name" /><Field label="Last Name" name="lastName" value={form.lastName} onChange={updateForm} placeholder="Enter your last name" /><Field label="Email Address" name="email" type="email" value={form.email} onChange={updateForm} placeholder="you@example.com" /><Field label="Mobile Number" name="mobile" value={form.mobile} onChange={updateForm} placeholder="Enter your mobile number" /><Field label="Password" name="password" type="password" value={form.password} onChange={updateForm} placeholder="Create a strong password" /><Field label="Confirm Password" name="confirmPassword" type="password" value={form.confirmPassword} onChange={updateForm} placeholder="Re-enter your password" /></div>{form.password && <div className={`password-strength ${passwordStrong ? 'strong' : form.password.length >= 6 ? 'medium' : 'weak'}`}><span>Password strength: {passwordStrong ? 'Strong' : form.password.length >= 6 ? 'Medium' : 'Weak'}</span><small>8+ characters, one uppercase letter and one number</small></div>}{form.confirmPassword && form.password !== form.confirmPassword && <small className="field-error">Passwords do not match.</small>}</div>}{step === 3 && <div className="signup-step"><h3>{role === 'trainer' ? 'Build your professional profile' : 'Build your learning profile'}</h3><p className="step-copy">Personalize your experience with a few profile details.</p><div className="field-grid"><Field label="Organization / Institution" name="organization" value={form.organization} onChange={updateForm} placeholder="Enter your organization" /><Field label={role === 'trainer' ? 'Designation' : 'Designation / Role'} name="designation" value={form.designation} onChange={updateForm} placeholder="Your current role" />{role === 'trainer' ? <><Field label="Years of Experience" name="experience" value={form.experience} onChange={updateForm} placeholder="e.g. 5 years" /><Field label="Highest Qualification" name="qualification" value={form.qualification} onChange={updateForm} placeholder="e.g. Master's degree" /></> : <Field label="Current Skill Level" name="level" value={form.level} onChange={updateForm} options={['Beginner', 'Intermediate', 'Advanced']} />}</div><h4>{role === 'trainer' ? 'Your expertise' : 'Areas you are interested in'} <span>Select 3 to 10</span></h4><div className="chip-grid">{(role === 'trainer' ? trainerSkills : signupSkills).map((skill) => <button type="button" className={selectedSkills.includes(skill) ? 'chip selected' : 'chip'} onClick={() => toggle(skill, setSelectedSkills, selectedSkills)} key={skill}>{selectedSkills.includes(skill) && '✓ '}{skill}</button>)}</div>{role === 'trainee' && <><h4>Learning goals</h4><div className="chip-grid goals">{learningGoals.map((goal) => <button type="button" className={selectedGoals.includes(goal) ? 'chip selected' : 'chip'} onClick={() => toggle(goal, setSelectedGoals, selectedGoals)} key={goal}>{selectedGoals.includes(goal) && '✓ '}{goal}</button>)}</div></>}</div>}{step === 4 && <div className="signup-step review-step"><h3>Review your account</h3><p className="step-copy">Make sure everything looks right before creating your profile.</p><Review title="ACCOUNT" value={role === 'trainer' ? 'Trainer' : 'Trainee'} onEdit={() => setStep(1)} /><Review title="PERSONAL INFORMATION" value={`${form.firstName} ${form.lastName} · ${form.email}${form.mobile ? ` · ${form.mobile}` : ''}`} onEdit={() => setStep(2)} /><Review title="PROFILE" value={`${form.organization || 'Organization not added'} · ${form.designation || 'Role not added'}`} onEdit={() => setStep(3)} /><div className="review-block"><div><b>COMPETENCIES</b><div className="review-chips">{selectedSkills.map((skill) => <span key={skill}>{skill}</span>)}</div></div><button onClick={() => setStep(3)}>Edit</button></div>{role === 'trainee' && <div className="review-block"><div><b>LEARNING GOALS</b><p>{selectedGoals.length ? selectedGoals.join(' · ') : 'No goals selected'}</p></div><button onClick={() => setStep(3)}>Edit</button></div>}<label className="terms"><input type="checkbox" /> I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>.</label></div>}<div className="signup-actions">{step > 1 && <button className="button outline" onClick={previous}>← Back</button>}{step < 4 ? <button className="button" disabled={!canContinue} onClick={next}>Continue <b>→</b></button> : <button className="button" onClick={() => setSubmitted(true)}>Create Account <b>→</b></button>}</div></section></div></div>
+  if (submitted) {
+    return (
+      <div className="signup-page">
+        <div className="signup-success">
+          <div className="success-mark">✓</div>
+          <h1>Account created successfully</h1>
+          <p>Your CapacityConnect profile has been initialized. You can now access your customized workspace.</p>
+          <button className="btn-primary-action" onClick={() => onDashboard(role)}>
+            Go to {role === 'trainer' ? 'Trainer' : 'Trainee'} Dashboard →
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="signup-page">
+      <div className="signup-shell">
+        <div className="signup-top-nav">
+          <button className="back-home" onClick={onBack}>
+            <span className="back-arrow">←</span> Back to Home
+          </button>
+          <div className="signup-header-signin">
+            Already have an account? <button type="button" className="inline-signup-btn" onClick={onLogin}>Sign In</button>
+          </div>
+        </div>
+
+        <div className="signup-layout">
+          <div className="signup-intro">
+            <Logo />
+            <div className="eyebrow">✦ Create Your Account</div>
+            <h1>Start Your <em>Learning Journey</em> with CapacityConnect.</h1>
+            <p>Create your profile, discover relevant learning opportunities, track your competencies, and connect with verified trainers.</p>
+            <div className="signup-benefits">
+              <span><i className="benefit-check">✓</i> Personalized learning recommendations</span>
+              <span><i className="benefit-check">✓</i> Competency-based development & mapping</span>
+              <span><i className="benefit-check">✓</i> Intelligent verified trainer matching</span>
+              <span><i className="benefit-check">✓</i> Real-time progress and assessment tracking</span>
+            </div>
+          </div>
+
+          <div className="signup-card">
+          <div className="signup-card-top">
+            <div className="signup-symbol">◇</div>
+            <div>
+              <h2>Create your account</h2>
+              <p>Step {step} of 4 · Configure your profile</p>
+            </div>
+          </div>
+
+          <div className="signup-progress">
+            {[['01', 'Account'], ['02', 'Profile'], ['03', 'Skills'], ['04', 'Review']].map(([number, label], index) => (
+              <div className={step >= index + 1 ? 'progress-item active' : 'progress-item'} key={number}>
+                <span>{number}</span>
+                <b>{label}</b>
+                {index < 3 && <i />}
+              </div>
+            ))}
+          </div>
+
+          {step === 1 && (
+            <div className="signup-step">
+              <h3>Choose your account type</h3>
+              <p className="step-copy">Select how you'll use CapacityConnect.</p>
+              <div className="role-options">
+                <RoleOption selected={role === 'trainee'} icon="⌂" title="Trainee" text="Learn, assess your skills, track your progress, and build your competencies." onClick={() => setRole('trainee')} />
+                <RoleOption selected={role === 'trainer'} icon="▣" title="Trainer" text="Create learning content, conduct assessments, mentor trainees, and showcase your expertise." onClick={() => setRole('trainer')} />
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="signup-step">
+              <h3>Tell us about yourself</h3>
+              <p className="step-copy">Enter your personal details to initialize your profile.</p>
+              <div className="field-grid">
+                <Field label="First Name" name="firstName" value={form.firstName} onChange={updateForm} placeholder="Enter your first name" />
+                <Field label="Last Name" name="lastName" value={form.lastName} onChange={updateForm} placeholder="Enter your last name" />
+                <Field label="Email Address" name="email" type="email" value={form.email} onChange={updateForm} placeholder="name@imd.gov.in" />
+                <Field label="Mobile Number" name="mobile" value={form.mobile} onChange={updateForm} placeholder="+91 98765 43210" />
+                
+                <label className="signup-field">
+                  Password
+                  <div className="password-field">
+                    <input 
+                      type={showPassword ? 'text' : 'password'} 
+                      name="password" 
+                      value={form.password} 
+                      onChange={updateForm} 
+                      placeholder="Create a strong password" 
+                      required 
+                    />
+                    <button 
+                      type="button" 
+                      className="password-toggle" 
+                      onClick={() => setShowPassword(!showPassword)} 
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                    </button>
+                  </div>
+                </label>
+
+                <label className="signup-field">
+                  Confirm Password
+                  <div className="password-field">
+                    <input 
+                      type={showConfirmPassword ? 'text' : 'password'} 
+                      name="confirmPassword" 
+                      value={form.confirmPassword} 
+                      onChange={updateForm} 
+                      placeholder="Re-enter your password" 
+                      required 
+                    />
+                    <button 
+                      type="button" 
+                      className="password-toggle" 
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
+                      aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
+                    </button>
+                  </div>
+                </label>
+              </div>
+              {form.password && (
+                <div className={`password-strength ${passwordStrong ? 'strong' : form.password.length >= 6 ? 'medium' : 'weak'}`}>
+                  <span>Password strength: {passwordStrong ? 'Strong' : form.password.length >= 6 ? 'Medium' : 'Weak'}</span>
+                </div>
+              )}
+              {form.confirmPassword && form.password !== form.confirmPassword && (
+                <small className="field-error-text">Passwords do not match.</small>
+              )}
+            </div>
+          )}
+
+          {step === 3 && (
+            <div className="signup-step">
+              <h3>{role === 'trainer' ? 'Build your professional profile' : 'Build your learning profile'}</h3>
+              <p className="step-copy">Personalize your experience with a few profile details.</p>
+              <div className="field-grid">
+                <Field label="Organization / Institution" name="organization" value={form.organization} onChange={updateForm} placeholder="e.g. IMD New Delhi" />
+                <Field label={role === 'trainer' ? 'Designation' : 'Designation / Role'} name="designation" value={form.designation} onChange={updateForm} placeholder="e.g. Meteorologist" />
+                {role === 'trainer' ? (
+                  <>
+                    <Field label="Years of Experience" name="experience" value={form.experience} onChange={updateForm} placeholder="e.g. 5 years" />
+                    <Field label="Highest Qualification" name="qualification" value={form.qualification} onChange={updateForm} placeholder="e.g. Master's degree" />
+                  </>
+                ) : (
+                  <Field label="Current Skill Level" name="level" value={form.level} onChange={updateForm} options={['Beginner', 'Intermediate', 'Advanced']} />
+                )}
+              </div>
+              <h4>{role === 'trainer' ? 'Your expertise' : 'Areas you are interested in'} <span>Select 3 to 10</span></h4>
+              <div className="chip-grid">
+                {(role === 'trainer' ? trainerSkills : signupSkills).map((skill) => (
+                  <button type="button" className={selectedSkills.includes(skill) ? 'chip selected' : 'chip'} onClick={() => toggle(skill, setSelectedSkills, selectedSkills)} key={skill}>
+                    {selectedSkills.includes(skill) && '✓ '}{skill}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="signup-step review-step">
+              <h3>Review your account</h3>
+              <p className="step-copy">Make sure everything looks right before creating your profile.</p>
+              <Review title="ACCOUNT" value={role === 'trainer' ? 'Trainer' : 'Trainee'} onEdit={() => setStep(1)} />
+              <Review title="PERSONAL INFORMATION" value={`${form.firstName} ${form.lastName} · ${form.email}${form.mobile ? ` · ${form.mobile}` : ''}`} onEdit={() => setStep(2)} />
+              <Review title="PROFILE" value={`${form.organization || 'Organization not added'} · ${form.designation || 'Role not added'}`} onEdit={() => setStep(3)} />
+              <div className="review-block">
+                <div>
+                  <b>COMPETENCIES</b>
+                  <div className="review-chips">
+                    {selectedSkills.map((skill) => <span key={skill}>{skill}</span>)}
+                  </div>
+                </div>
+                <button onClick={() => setStep(3)}>Edit</button>
+              </div>
+            </div>
+          )}
+
+          <div className="signup-actions">
+            {step > 1 && <button className="btn-secondary-action" onClick={previous}>← Back</button>}
+            {step < 4 ? (
+              <button className="btn-primary-action" disabled={!canContinue} onClick={next}>Continue →</button>
+            ) : (
+              <button className="btn-primary-action" disabled={loading} onClick={handleCreateAccount}>
+                {loading ? 'Creating account...' : 'Create Account →'}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)
 }
 
-function RoleOption({ selected, icon, title, text, onClick }) { return <button type="button" className={selected ? 'role-option selected' : 'role-option'} onClick={onClick}><span className="role-option-icon">{icon}</span><span><strong>{title}</strong><small>{text}</small><em>✓ {selected ? 'Selected' : 'Select this role'}</em></span></button> }
-function Field({ label, name, type = 'text', value, onChange, placeholder, options }) { return <label className="signup-field">{label}{options ? <select name={name} value={value} onChange={onChange}>{options.map((option) => <option key={option}>{option}</option>)}</select> : <input name={name} type={type} value={value} onChange={onChange} placeholder={placeholder} required={['firstName', 'lastName', 'email', 'password', 'confirmPassword'].includes(name)} />}</label> }
-function Review({ title, value, onEdit }) { return <div className="review-block"><div><b>{title}</b><p>{value}</p></div><button onClick={onEdit}>Edit</button></div> }
+function RoleOption({ selected, icon, title, text, onClick }) { 
+  return (
+    <button type="button" className={selected ? 'role-option selected' : 'role-option'} onClick={onClick}>
+      <span className="role-option-icon">{icon}</span>
+      <span>
+        <strong>{title}</strong>
+        <small>{text}</small>
+        <em>{selected ? '✓ Selected' : 'Select this role'}</em>
+      </span>
+    </button>
+  ) 
+}
+
+function Field({ label, name, type = 'text', value, onChange, placeholder, options }) { 
+  return (
+    <label className="signup-field">
+      {label}
+      {options ? (
+        <select name={name} value={value} onChange={onChange}>
+          {options.map((option) => <option key={option}>{option}</option>)}
+        </select>
+      ) : (
+        <input name={name} type={type} value={value} onChange={onChange} placeholder={placeholder} required={['firstName', 'lastName', 'email', 'password', 'confirmPassword'].includes(name)} />
+      )}
+    </label>
+  ) 
+}
+
+function Review({ title, value, onEdit }) { 
+  return (
+    <div className="review-block">
+      <div>
+        <b>{title}</b>
+        <p>{value}</p>
+      </div>
+      <button onClick={onEdit}>Edit</button>
+    </div>
+  ) 
+}
 
 const dashboardCourses = [
   ['Numerical Weather Prediction', 'Meteorology', 68, 'Dr. Rahul Sharma'],
@@ -226,13 +1258,458 @@ const dashboardTrainers = [['Dr. Rahul Sharma', 'Meteorology', 'Weather Data Ana
 
 function TraineeDashboard({ onBack }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [navSection, setNavSection] = useState('Dashboard')
   const [courseTab, setCourseTab] = useState('All')
   const [noticeOpen, setNoticeOpen] = useState(false)
   const [search, setSearch] = useState('')
-  const openTrainerProfile = () => { window.location.hash = '#trainer-profile' }
-  const filteredCourses = dashboardCourses.filter(([title]) => !search || title.toLowerCase().includes(search.toLowerCase())).filter(([, , progress]) => courseTab === 'All' || (courseTab === 'Completed' ? progress === 100 : progress < 100))
+  const [courses] = useState(dashboardCourses)
 
-  return <div className="trainee-dashboard"><aside className={drawerOpen ? 'dashboard-sidebar open' : 'dashboard-sidebar'}><div className="dashboard-brand"><Logo /><small>TRAINEE PORTAL</small></div><nav className="dashboard-nav">{[['▦', 'Dashboard'], ['▱', 'My Learning'], ['◫', 'Course Catalog'], ['▤', 'Assessments'], ['◎', 'Competencies'], ['♟', 'Trainers'], ['▣', 'Certificates'], ['◌', 'Announcements']].map(([icon, label], index) => <button className={index === 0 ? 'active' : ''} key={label} onClick={label === 'Trainers' ? openTrainerProfile : undefined}><span>{icon}</span>{label}</button>)}<hr />{[['?', 'Help & Support'], ['⚙', 'Settings']].map(([icon, label]) => <button key={label}><span>{icon}</span>{label}</button>)}</nav><div className="sidebar-profile clickable-profile-trigger" onClick={openTrainerProfile} title="View Profile"><div className="avatar">AJ</div><div><strong>Aditya Jaiswal</strong><small>Trainee</small></div><span className="profile-mini-progress"><i /></span><small>Profile 85% complete · Click to view</small></div></aside><div className="dashboard-main"><header className="dashboard-header"><button className="dashboard-menu" onClick={() => setDrawerOpen(!drawerOpen)}>☰</button><div className="dashboard-breadcrumb">Home <span>/</span> <b>Dashboard</b></div><div className="dashboard-header-actions"><label className="dashboard-search">⌕<input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search courses, skills, trainers..." /></label><button className="notification-button" onClick={() => setNoticeOpen(!noticeOpen)}>♧<i>3</i></button><div className="header-user clickable-profile-trigger" onClick={openTrainerProfile} title="View Profile"><div className="avatar">AJ</div><span><strong>Aditya Jaiswal</strong><small>Trainee ↗</small></span></div></div>{noticeOpen && <div className="notification-pop"><b>Notifications</b><span>New course available</span><span>Assessment schedule updated</span><span>Profile is 85% complete</span></div>}</header><main className="dashboard-content"><div className="dashboard-welcome"><div><span className="dashboard-eyebrow">TRAINEE DASHBOARD</span><h1>Good morning, Aditya <em>👋</em></h1><p>Continue your learning journey and strengthen your competencies.</p></div><div className="completion-ring"><strong>85%</strong><small>Profile<br />complete</small></div></div><div className="dashboard-stats"><Stat icon="▱" label="Courses Enrolled" value="06" note="2 completed" /><Stat icon="✓" label="Courses Completed" value="02" note="Keep going" /><Stat icon="◷" label="Learning Hours" value="24.5" suffix="hrs" note="This month" /><Stat icon="◎" label="Competency Score" value="74%" note="+8% this month" /></div><section className="dashboard-feature"><div><span className="section-kicker">CONTINUE LEARNING</span><h2>Numerical Weather Prediction</h2><p className="feature-category">Meteorology · Module 4 of 8</p><div className="feature-progress"><span style={{ width: '68%' }} /></div><div className="feature-meta"><b>68%</b><span>Atmospheric Models · Last accessed 2 hours ago</span></div><button className="button">Continue Learning →</button></div><div className="weather-visual"><span>☁</span><b>ATMOSPHERIC<br />MODELS</b><i>◌</i></div></section><div className="dashboard-grid-two"><section className="dashboard-panel courses-panel"><PanelTitle title="My Courses" subtitle="Your active learning paths" action="View All Courses →" /><div className="dashboard-tabs">{['All', 'In Progress', 'Completed'].map((tab) => <button className={courseTab === tab ? 'active' : ''} onClick={() => setCourseTab(tab)} key={tab}>{tab}</button>)}</div><div className="course-list">{filteredCourses.map(([title, category, progress, instructor]) => <CourseRow title={title} category={category} progress={progress} instructor={instructor} key={title} />)}</div></section><section className="dashboard-panel competency-panel"><PanelTitle title="Your Competency Profile" subtitle="Track strengths and areas to improve" action="View Full Profile →" /><div className="competency-score"><strong>74%</strong><span>Overall competency score</span></div>{dashboardSkills.map(([name, progress, status]) => <div className="skill-row" key={name}><div><b>{name}</b><span className={status === 'Strong' ? 'good' : status === 'Developing' ? 'developing' : 'attention'}>{status}</span><strong>{progress}%</strong></div><span className="skill-track"><i style={{ width: `${progress}%` }} /></span></div>)}</section></div><div className="dashboard-grid-two"><section className="dashboard-panel gap-panel"><PanelTitle title="Areas to Improve" subtitle="A focused next step for your growth" /><div className="gap-highlight"><div className="gap-icon">✦</div><div><h3>Machine Learning</h3><p>Current <b>42%</b> <span>→</span> Target <b>70%</b></p><div className="gap-track"><i /></div></div></div><p className="gap-note">Improving this competency can unlock more advanced learning opportunities.</p><button className="text-button">Improve This Skill →</button></section><section className="dashboard-panel recommendations-panel"><PanelTitle title="Recommended for You" subtitle="Based on your interests and progress" action="Explore More Courses →" /><div className="recommendation-list"><Recommendation icon="◈" title="Weather Data Analysis" level="Intermediate" time="4.5 hrs" match="92%" /><Recommendation icon="▥" title="Climate Data Visualization" level="Intermediate" time="3.2 hrs" match="87%" /><Recommendation icon="◇" title="Python for Scientific Computing" level="Advanced" time="6.5 hrs" match="81%" /></div></section></div><div className="dashboard-grid-two"><section className="dashboard-panel trainers-panel"><PanelTitle title="Recommended Trainers" subtitle="Connect with trainers who match your goals" action="View All Trainers →" /><div className="trainer-list">{dashboardTrainers.map(([name, one, two, three, match]) => <div className="trainer-row" key={name} style={{ cursor: 'pointer' }} onClick={openTrainerProfile}><div className="trainer-avatar">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div><div><h3>{name}</h3><p>{one} · {two}</p><div className="trainer-tags"><span>{three}</span><span>Competency Match</span></div></div><strong>{match}</strong><button className="text-button" onClick={(e) => { e.stopPropagation(); openTrainerProfile(); }}>View Profile</button></div>)}</div></section><section className="dashboard-panel assessments-panel"><PanelTitle title="Upcoming Assessments" subtitle="Stay on top of your learning goals" action="View All →" />{[['Python Fundamentals', '15 Questions', 'Due Tomorrow', 'Due Soon'], ['Weather Data Analysis', '20 Questions', 'Due 15 Sep', 'Upcoming'], ['GIS Basics', '10 Questions', 'Due 18 Sep', 'Upcoming']].map(([title, questions, due, status]) => <div className="assessment-row" key={title}><span className="assessment-icon">▤</span><div><b>{title}</b><small>{questions} · {due}</small></div><em className={status === 'Due Soon' ? 'due' : ''}>{status}</em></div>)}</section></div><div className="dashboard-bottom-grid"><section className="dashboard-panel activity-panel"><PanelTitle title="Learning Activity" subtitle="Your learning activity over the past week" /><div className="activity-total"><strong>12.5 hrs</strong><span>+18% from last week</span></div><div className="bar-chart">{[['Mon', 45], ['Tue', 66], ['Wed', 37], ['Thu', 82], ['Fri', 58], ['Sat', 72], ['Sun', 49]].map(([day, height]) => <div key={day}><i style={{ height: `${height}%` }} /><small>{day}</small></div>)}</div></section><section className="dashboard-panel achievements-panel"><PanelTitle title="Achievements" action="View Certificates →" />{['Python Fundamentals', 'Weather Data Analysis', 'Climate Science Basics'].map((item) => <div className="achievement-row" key={item}><span>✧</span><b>{item}</b><small>Completed</small></div>)}</section><section className="dashboard-panel announcements-panel"><PanelTitle title="Announcements" action="View All →" />{[['New course available', 'Advanced Weather Data Analysis', '2 hours ago'], ['Assessment schedule updated', 'Python Fundamentals', 'Yesterday'], ['New learning resources added', 'Remote Sensing', '2 days ago']].map(([title, detail, time]) => <div className="announcement-row" key={title}><span>◌</span><div><b>{title}</b><small>{detail}</small></div><time>{time}</time></div>)}</section></div></main></div></div>
+  const openTrainerProfile = () => { window.location.hash = '#trainer-profile' }
+  const filteredCourses = courses.filter(([title]) => !search || title.toLowerCase().includes(search.toLowerCase())).filter(([, , progress]) => courseTab === 'All' || (courseTab === 'Completed' ? progress === 100 : progress < 100))
+
+  const navItems = [
+    ['▦', 'Dashboard'],
+    ['▱', 'My Learning'],
+    ['◫', 'Course Catalog'],
+    ['▤', 'Assessments'],
+    ['◎', 'Competencies'],
+    ['♟', 'Trainers'],
+    ['▣', 'Certificates'],
+    ['◌', 'Announcements']
+  ]
+  const navBottomItems = [
+    ['?', 'Help & Support'],
+    ['⚙', 'Settings']
+  ]
+
+  return (
+    <div className="trainee-dashboard">
+      <aside className={drawerOpen ? 'dashboard-sidebar open' : 'dashboard-sidebar'}>
+        <div className="dashboard-brand">
+          <Logo onClick={onBack} />
+          <small>TRAINEE PORTAL</small>
+        </div>
+        <nav className="dashboard-nav">
+          {navItems.map(([icon, label]) => (
+            <button
+              className={navSection === label ? 'active' : ''}
+              key={label}
+              onClick={() => {
+                if (label === 'Trainers') {
+                  openTrainerProfile()
+                } else {
+                  setNavSection(label)
+                }
+                setDrawerOpen(false)
+              }}
+            >
+              <span>{icon}</span>{label}
+            </button>
+          ))}
+          <hr />
+          {navBottomItems.map(([icon, label]) => (
+            <button
+              className={navSection === label ? 'active' : ''}
+              key={label}
+              onClick={() => {
+                setNavSection(label)
+                setDrawerOpen(false)
+              }}
+            >
+              <span>{icon}</span>{label}
+            </button>
+          ))}
+          <button onClick={onBack}><span>←</span>Logout</button>
+        </nav>
+        <div className="sidebar-profile clickable-profile-trigger" onClick={openTrainerProfile} title="View Profile">
+          <div className="avatar">AJ</div>
+          <div>
+            <strong>Aditya Jaiswal</strong>
+            <small>Trainee · Met. Division</small>
+            <small className="profile-badge-link">View Full Profile ↗</small>
+          </div>
+          <span className="profile-mini-progress"><i style={{ width: '85%' }} /></span>
+          <small>Profile 85% complete</small>
+        </div>
+      </aside>
+
+      <div className="dashboard-main">
+        <header className="dashboard-header">
+          <button className="dashboard-menu" onClick={() => setDrawerOpen(!drawerOpen)}>☰</button>
+          <div className="dashboard-breadcrumb">
+            Home <span>/</span> Trainee Portal {navSection !== 'Dashboard' && <><span>/</span> <b>{navSection}</b></>}
+          </div>
+          <div className="dashboard-header-actions">
+            <label className="dashboard-search">
+              ⌕
+              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search courses, skills, trainers..." />
+            </label>
+            <button className="notification-button" onClick={() => setNoticeOpen(!noticeOpen)}>
+              ♧<i>3</i>
+            </button>
+            <div className="header-user clickable-profile-trigger" onClick={openTrainerProfile} title="View Profile">
+              <div className="avatar">AJ</div>
+              <span><strong>Aditya Jaiswal</strong><small>Trainee ↗</small></span>
+            </div>
+          </div>
+          {noticeOpen && (
+            <div className="notification-pop">
+              <b>Notifications</b>
+              <span>New course available in NWP Climatology</span>
+              <span>Mid-term assessment scheduled for tomorrow</span>
+              <span>Profile is 85% complete</span>
+            </div>
+          )}
+        </header>
+
+        <main className="dashboard-content">
+          {navSection === 'Dashboard' && (
+            <div>
+              <div className="dashboard-welcome">
+                <div>
+                  <span className="dashboard-eyebrow">TRAINEE DASHBOARD</span>
+                  <h1>Good morning, Aditya <em>👋</em></h1>
+                  <p>Continue your learning journey and strengthen your competencies.</p>
+                </div>
+                <div className="completion-ring">
+                  <strong>85%</strong>
+                  <small>Profile<br />complete</small>
+                </div>
+              </div>
+
+              <div className="dashboard-stats">
+                <Stat icon="▱" label="Courses Enrolled" value="06" note="2 completed" />
+                <Stat icon="✓" label="Courses Completed" value="02" note="Keep going" />
+                <Stat icon="◷" label="Learning Hours" value="24.5" suffix="hrs" note="This month" />
+                <Stat icon="◎" label="Competency Score" value="74%" note="+8% this month" />
+              </div>
+
+              <section className="dashboard-feature">
+                <div>
+                  <span className="section-kicker">CONTINUE LEARNING</span>
+                  <h2>Numerical Weather Prediction</h2>
+                  <p className="feature-category">Meteorology · Module 4 of 8</p>
+                  <div className="feature-progress">
+                    <span style={{ width: '68%' }} />
+                  </div>
+                  <div className="feature-meta">
+                    <b>68%</b>
+                    <span>Atmospheric Models · Last accessed 2 hours ago</span>
+                  </div>
+                  <button className="btn-primary-action" onClick={() => setNavSection('My Learning')}>Continue Learning →</button>
+                </div>
+                <div className="weather-visual">
+                  <span>☁</span>
+                  <b>ATMOSPHERIC<br />MODELS</b>
+                  <i>◌</i>
+                </div>
+              </section>
+
+              <div className="dashboard-grid-two">
+                <section className="dashboard-panel courses-panel">
+                  <PanelTitle title="My Courses" subtitle="Your active learning paths" action="View All Courses →" />
+                  <div className="dashboard-tabs">
+                    {['All', 'In Progress', 'Completed'].map((tab) => (
+                      <button className={courseTab === tab ? 'active' : ''} onClick={() => setCourseTab(tab)} key={tab}>{tab}</button>
+                    ))}
+                  </div>
+                  <div className="course-list">
+                    {filteredCourses.map(([title, category, progress, instructor]) => (
+                      <CourseRow title={title} category={category} progress={progress} instructor={instructor} key={title} />
+                    ))}
+                  </div>
+                </section>
+
+                <section className="dashboard-panel competency-panel">
+                  <PanelTitle title="Your Competency Profile" subtitle="Track strengths and areas to improve" action="View Full Profile →" />
+                  <div className="competency-score">
+                    <strong>74%</strong>
+                    <span>Overall competency score</span>
+                  </div>
+                  {dashboardSkills.map(([name, progress, status]) => (
+                    <div className="skill-row" key={name}>
+                      <div>
+                        <b>{name}</b>
+                        <span className={status === 'Strong' ? 'good' : status === 'Developing' ? 'developing' : 'attention'}>{status}</span>
+                        <strong>{progress}%</strong>
+                      </div>
+                      <span className="skill-track"><i style={{ width: `${progress}%` }} /></span>
+                    </div>
+                  ))}
+                </section>
+              </div>
+
+              <div className="dashboard-grid-two">
+                <section className="dashboard-panel gap-panel">
+                  <PanelTitle title="Areas to Improve" subtitle="A focused next step for your growth" />
+                  <div className="gap-highlight">
+                    <div className="gap-icon">✦</div>
+                    <div>
+                      <h3>Machine Learning</h3>
+                      <p>Current <b>42%</b> <span>→</span> Target <b>70%</b></p>
+                      <div className="gap-track"><i style={{ width: '42%' }} /></div>
+                    </div>
+                  </div>
+                  <p className="gap-note">Improving this competency can unlock more advanced learning opportunities.</p>
+                  <button className="text-button" onClick={() => setNavSection('Competencies')}>Improve This Skill →</button>
+                </section>
+
+                <section className="dashboard-panel recommendations-panel">
+                  <PanelTitle title="Recommended for You" subtitle="Based on your interests and progress" action="Explore More Courses →" />
+                  <div className="recommendation-list">
+                    <Recommendation icon="◈" title="Weather Data Analysis" level="Intermediate" time="4.5 hrs" match="92%" />
+                    <Recommendation icon="▥" title="Climate Data Visualization" level="Intermediate" time="3.2 hrs" match="87%" />
+                    <Recommendation icon="◇" title="Python for Scientific Computing" level="Advanced" time="6.5 hrs" match="81%" />
+                  </div>
+                </section>
+              </div>
+
+              <div className="dashboard-grid-two">
+                <section className="dashboard-panel trainers-panel">
+                  <PanelTitle title="Recommended Trainers" subtitle="Connect with trainers who match your goals" action="View All Trainers →" />
+                  <div className="trainer-list">
+                    {dashboardTrainers.map(([name, one, two, three, match]) => (
+                      <div className="trainer-row" key={name} style={{ cursor: 'pointer' }} onClick={openTrainerProfile}>
+                        <div className="trainer-avatar">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div>
+                        <div>
+                          <h3>{name}</h3>
+                          <p>{one} · {two}</p>
+                          <div className="trainer-tags"><span>{three}</span><span>Competency Match</span></div>
+                        </div>
+                        <strong>{match}</strong>
+                        <button className="text-button" onClick={(e) => { e.stopPropagation(); openTrainerProfile(); }}>View Profile</button>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="dashboard-panel assessments-panel">
+                  <PanelTitle title="Upcoming Assessments" subtitle="Stay on top of your learning goals" action="View All →" />
+                  {[
+                    ['Python Fundamentals', '15 Questions', 'Due Tomorrow', 'Due Soon'],
+                    ['Weather Data Analysis', '20 Questions', 'Due 15 Sep', 'Upcoming'],
+                    ['GIS Basics', '10 Questions', 'Due 18 Sep', 'Upcoming']
+                  ].map(([title, questions, due, status]) => (
+                    <div className="assessment-row" key={title}>
+                      <span className="assessment-icon">▤</span>
+                      <div>
+                        <b>{title}</b>
+                        <small>{questions} · {due}</small>
+                      </div>
+                      <em className={status === 'Due Soon' ? 'due' : ''}>{status}</em>
+                    </div>
+                  ))}
+                </section>
+              </div>
+            </div>
+          )}
+
+          {(navSection === 'My Learning' || navSection === 'Course Catalog') && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>{navSection === 'My Learning' ? 'My Enrolled Courses & Modules' : 'Course Catalog & Learning Modules'}</h1>
+                  <p>Explore capacity building courses aligned with your competency profile and departmental goals.</p>
+                </div>
+              </div>
+              <div className="dashboard-tabs">
+                {['All', 'In Progress', 'Completed'].map((tab) => (
+                  <button className={courseTab === tab ? 'active' : ''} onClick={() => setCourseTab(tab)} key={tab}>{tab}</button>
+                ))}
+              </div>
+              <div className="course-list">
+                {filteredCourses.map(([title, category, progress, instructor]) => (
+                  <CourseRow title={title} category={category} progress={progress} instructor={instructor} key={title} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Assessments' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>My Assessments & Quizzes</h1>
+                  <p>Demonstrate your understanding and unlock verified competency badges.</p>
+                </div>
+              </div>
+              <div className="course-list">
+                {[
+                  ['Python Fundamentals Mid-Term', '15 Questions · 30 mins', 'Due Tomorrow', 'Due Soon'],
+                  ['Weather Data Analysis Practical Test', '20 Questions · 45 mins', 'Due 15 Sep', 'Upcoming'],
+                  ['GIS Spatial Analytics Diagnostic', '10 Questions · 20 mins', 'Due 18 Sep', 'Upcoming'],
+                  ['Numerical Weather Prediction Diagnostic', '25 Questions · 60 mins', 'Completed · Score: 88%', 'Completed']
+                ].map(([title, detail, due, status]) => (
+                  <div className="assessment-row" key={title} style={{ padding: '16px 18px' }}>
+                    <span className="assessment-icon" style={{ fontSize: 20 }}>▤</span>
+                    <div>
+                      <b style={{ fontSize: 14 }}>{title}</b>
+                      <small style={{ fontSize: 12 }}>{detail} · {due}</small>
+                    </div>
+                    <em className={status === 'Due Soon' ? 'due' : status === 'Completed' ? 'good' : ''}>{status}</em>
+                    <button className="btn-secondary-action small">{status === 'Completed' ? 'Review Score' : 'Start Assessment →'}</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Competencies' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>My Competency Profile & Gap Diagnosis</h1>
+                  <p>Real-time competency mapping evaluated against institutional benchmarks.</p>
+                </div>
+              </div>
+              <div className="portal-kpi-row">
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">◎</div>
+                  <div className="kpi-label">Overall Score</div>
+                  <div className="kpi-val">74%</div>
+                  <div className="kpi-note">+8% this month</div>
+                </div>
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">✓</div>
+                  <div className="kpi-label">Strong Skills</div>
+                  <div className="kpi-val">3 of 5</div>
+                  <div className="kpi-note">Exceeds benchmark</div>
+                </div>
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">✦</div>
+                  <div className="kpi-label">Top Recommendation</div>
+                  <div className="kpi-val">Machine Learning</div>
+                  <div className="kpi-note">Priority growth area</div>
+                </div>
+              </div>
+              <div className="portal-two-col-grid" style={{ marginTop: 20 }}>
+                <div>
+                  <h3 style={{ color: '#fff', fontSize: 16, marginBottom: 14 }}>Tracked Competency Levels</h3>
+                  {dashboardSkills.map(([name, progress, status]) => (
+                    <div className="portal-competency-card" key={name}>
+                      <div className="portal-comp-header">
+                        <div>
+                          <strong>{name}</strong>
+                          <span className={`portal-badge ${status === 'Strong' ? 'good' : status === 'Developing' ? 'draft' : 'urgent'}`} style={{ marginLeft: 10 }}>
+                            {status}
+                          </span>
+                        </div>
+                        <span>{progress}%</span>
+                      </div>
+                      <div className="portal-progress-track">
+                        <div className="portal-progress-fill" style={{ width: `${progress}%`, background: progress >= 75 ? 'linear-gradient(90deg, #2583ff, #2cd0d3)' : progress >= 60 ? 'linear-gradient(90deg, #eab308, #ca8a04)' : 'linear-gradient(90deg, #ef4444, #dc2626)' }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="portal-info-card">
+                  <h3>Intelligent Skill Gap Recommendation</h3>
+                  <p>Strengthening Machine Learning from 42% to 70% will qualify you for the upcoming AI Weather Nowcasting Specialist Cohort.</p>
+                  <button className="btn-primary-action" onClick={() => setNavSection('Course Catalog')}>Explore Recommended Modules →</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Certificates' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>My Credentials & Certificates</h1>
+                  <p>Verified institutional certifications issued by CapacityConnect.</p>
+                </div>
+              </div>
+              <div className="portal-grid-cards">
+                <div className="portal-card">
+                  <div>
+                    <span className="portal-badge good">Verified Certificate</span>
+                    <h3 style={{ color: '#fff', fontSize: 16, margin: '12px 0 6px' }}>Python Fundamentals for Meteorology</h3>
+                    <p style={{ color: '#8492a6', fontSize: 13 }}>Completed with 86% Distinction · Issued Aug 2026</p>
+                  </div>
+                  <button className="btn-secondary-action small" style={{ marginTop: 16 }}>Download Certificate ↗</button>
+                </div>
+                <div className="portal-card">
+                  <div>
+                    <span className="portal-badge good">Verified Certificate</span>
+                    <h3 style={{ color: '#fff', fontSize: 16, margin: '12px 0 6px' }}>Basic GIS & Satellite Mapping</h3>
+                    <p style={{ color: '#8492a6', fontSize: 13 }}>Completed with 82% Distinction · Issued Jul 2026</p>
+                  </div>
+                  <button className="btn-secondary-action small" style={{ marginTop: 16 }}>Download Certificate ↗</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Announcements' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Cohort Announcements</h1>
+                  <p>Official notices and schedule updates from instructors and administrators.</p>
+                </div>
+              </div>
+              <div className="course-list">
+                {[
+                  ['Mid-Term Practical Evaluation Scheduled', 'Numerical Weather Prediction cohort will conduct live Doppler radar interpretation sessions this Friday.', '2 hours ago'],
+                  ['New Cloud HPC Compute Access Provisioned', 'All trainees have been allocated cluster hours for climate model simulation runs.', '1 day ago'],
+                  ['Guest Lecture: Advanced AI Nowcasting', 'Dr. Rahul Sharma will present end-to-end meteorological forecasting workflows.', '3 days ago']
+                ].map(([title, msg, time]) => (
+                  <div className="portal-card" key={title} style={{ marginBottom: 12 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <h3 style={{ color: '#fff', fontSize: 15, margin: 0 }}>{title}</h3>
+                      <small style={{ color: '#8492a6', fontSize: 11 }}>{time}</small>
+                    </div>
+                    <p style={{ color: '#cbd5e1', fontSize: 13, margin: '8px 0 0', lineHeight: 1.5 }}>{msg}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Help & Support' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Help & Technical Support</h1>
+                  <p>Frequently asked questions and support contacts for learners.</p>
+                </div>
+              </div>
+              <div className="portal-info-card">
+                <h3>Learner Support Desk</h3>
+                <p>Have issues with course materials, assessments, or cloud clusters? Reach out to support@capacityconnect.gov.in</p>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Settings' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Account Settings</h1>
+                  <p>Manage your learner profile and preferences.</p>
+                </div>
+              </div>
+              <div className="portal-settings-card">
+                <h3>Personal Information</h3>
+                <div className="portal-form-group">
+                  <label>Full Name</label>
+                  <input defaultValue="Aditya Jaiswal" readOnly />
+                </div>
+                <div className="portal-form-group">
+                  <label>Role / Department</label>
+                  <input defaultValue="Trainee · Meteorology Division" readOnly />
+                </div>
+                <div className="portal-form-group">
+                  <label>Email Address</label>
+                  <input defaultValue="aditya.jaiswal@gov.in" readOnly />
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  )
 }
 
 function TrainerDashboard({ onBack }) {
@@ -244,7 +1721,6 @@ function TrainerDashboard({ onBack }) {
   const [selectedTrainee, setSelectedTrainee] = useState(null)
   const [toastMessage, setToastMessage] = useState(null)
 
-  // Sub-feature states
   const [courses, setCourses] = useState(initialCourses)
   const [trainees, setTrainees] = useState(initialTrainees)
   const [assessments, setAssessments] = useState(initialAssessments)
@@ -253,6 +1729,18 @@ function TrainerDashboard({ onBack }) {
   const [announcements, setAnnouncements] = useState(initialAnnouncements)
   const [feedbackList, setFeedbackList] = useState(initialFeedback)
 
+  useEffect(() => {
+    let isMounted = true
+    api.getCourses().then(data => { if (isMounted && data) setCourses(data) }).catch(() => {})
+    api.getTrainees().then(data => { if (isMounted && data) setTrainees(data) }).catch(() => {})
+    api.getAssessments().then(data => { if (isMounted && data) setAssessments(data) }).catch(() => {})
+    api.getCompetencies().then(data => { if (isMounted && data) setCompetencies(data) }).catch(() => {})
+    api.getContent().then(data => { if (isMounted && data) setContentList(data) }).catch(() => {})
+    api.getAnnouncements().then(data => { if (isMounted && data) setAnnouncements(data) }).catch(() => {})
+    api.getFeedback().then(data => { if (isMounted && data) setFeedbackList(data) }).catch(() => {})
+    return () => { isMounted = false }
+  }, [])
+
   const openTrainerProfile = () => { window.location.hash = '#trainer-profile' }
 
   const showToast = (msg) => {
@@ -260,11 +1748,23 @@ function TrainerDashboard({ onBack }) {
     window.setTimeout(() => setToastMessage(null), 3800)
   }
 
-  const handleActionSuccess = (msg, newItem, type) => {
-    if (newItem && type === 'course') setCourses([newItem, ...courses])
-    if (newItem && type === 'assessment') setAssessments([newItem, ...assessments])
-    if (newItem && type === 'announcement') setAnnouncements([newItem, ...announcements])
-    if (newItem && type === 'content') setContentList([newItem, ...contentList])
+  const handleActionSuccess = async (msg, newItem, type) => {
+    if (newItem && type === 'course') {
+      try { await api.createCourse(newItem) } catch {}
+      setCourses(prev => [newItem, ...prev])
+    }
+    if (newItem && type === 'assessment') {
+      try { await api.createAssessment(newItem) } catch {}
+      setAssessments(prev => [newItem, ...prev])
+    }
+    if (newItem && type === 'announcement') {
+      try { await api.createAnnouncement(newItem) } catch {}
+      setAnnouncements(prev => [newItem, ...prev])
+    }
+    if (newItem && type === 'content') {
+      try { await api.createContent(newItem) } catch {}
+      setContentList(prev => [newItem, ...prev])
+    }
     showToast(msg)
   }
 
@@ -288,7 +1788,7 @@ function TrainerDashboard({ onBack }) {
     <div className="trainer-dashboard">
       <aside className={drawerOpen ? 'trainer-sidebar open' : 'trainer-sidebar'}>
         <div className="trainer-brand">
-          <Logo />
+          <Logo onClick={onBack} />
           <small>TRAINER PORTAL</small>
         </div>
         <nav className="trainer-nav">
@@ -317,6 +1817,9 @@ function TrainerDashboard({ onBack }) {
               <span>{icon}</span>{label}
             </button>
           ))}
+          <button onClick={onBack}>
+            <span>←</span>Logout
+          </button>
         </nav>
         <div className="trainer-profile clickable-profile-trigger" onClick={openTrainerProfile} title="Click to view Dr. Rahul Sharma's Trainer Profile">
           <div className="trainer-avatar large">RS</div>
@@ -325,7 +1828,7 @@ function TrainerDashboard({ onBack }) {
             <small>Senior Meteorologist</small>
             <small className="profile-badge-link">Trainer (View Profile ↗)</small>
           </div>
-          <span className="trainer-complete"><i /></span>
+          <span className="trainer-complete"><i style={{ width: '92%' }} /></span>
           <small>Profile 92% complete · Click to view</small>
         </div>
       </aside>
@@ -365,7 +1868,6 @@ function TrainerDashboard({ onBack }) {
         </header>
 
         <main className="trainer-content">
-          {/* 1. Dashboard Main Overview */}
           {navSection === 'Dashboard' && (
             <div>
               <div className="trainer-welcome">
@@ -375,8 +1877,8 @@ function TrainerDashboard({ onBack }) {
                   <p>Monitor your trainees, manage learning experiences and improve competency outcomes.</p>
                 </div>
                 <div className="quick-actions">
-                  <button className="button" onClick={() => setActiveModal('create-course')}>+ Create Course</button>
-                  <button className="button outline" onClick={() => setActiveModal('create-assessment')}>+ Create Assessment</button>
+                  <button className="btn-primary-action" onClick={() => setActiveModal('create-course')}>+ Create Course</button>
+                  <button className="btn-secondary-action" onClick={() => setActiveModal('create-assessment')}>+ Create Assessment</button>
                 </div>
               </div>
 
@@ -394,8 +1896,8 @@ function TrainerDashboard({ onBack }) {
                     <p>Manage your active learning programs.</p>
                   </div>
                   <div style={{ display: 'flex', gap: 10 }}>
-                    <button className="button outline small" onClick={() => setNavSection('My Courses')}>View All Courses →</button>
-                    <button className="button small" onClick={() => setActiveModal('create-course')}>+ Create Course</button>
+                    <button className="btn-secondary-action small" onClick={() => setNavSection('My Courses')}>View All Courses →</button>
+                    <button className="btn-primary-action small" onClick={() => setActiveModal('create-course')}>+ Create Course</button>
                   </div>
                 </div>
                 <div className="trainer-course-grid">
@@ -499,93 +2001,54 @@ function TrainerDashboard({ onBack }) {
                       <button className="text-button" onClick={() => setNavSection('Assessments')}>View</button>
                     </div>
                   ))}
-                  <button className="button outline small" onClick={() => setActiveModal('create-assessment')}>+ Create Assessment</button>
+                  <button className="btn-secondary-action small" onClick={() => setActiveModal('create-assessment')}>+ Create Assessment</button>
                 </section>
               </div>
             </div>
           )}
 
-          {/* 2. My Courses View */}
           {navSection === 'My Courses' && (
-            <TrainerCoursesView
-              courses={courses}
-              onOpenModal={setActiveModal}
-              onSelectCourse={(c) => console.log(c)}
-            />
+            <TrainerCoursesView courses={courses} onOpenModal={setActiveModal} onSelectCourse={(c) => console.log(c)} />
           )}
 
-          {/* 3. Trainees View */}
           {navSection === 'Trainees' && (
-            <TrainerTraineesView
-              trainees={trainees}
-              onOpenModal={setActiveModal}
-              onSelectTrainee={setSelectedTrainee}
-            />
+            <TrainerTraineesView trainees={trainees} onOpenModal={setActiveModal} onSelectTrainee={setSelectedTrainee} />
           )}
 
-          {/* 4. Assessments View */}
           {navSection === 'Assessments' && (
-            <TrainerAssessmentsView
-              assessments={assessments}
-              onOpenModal={setActiveModal}
-            />
+            <TrainerAssessmentsView assessments={assessments} onOpenModal={setActiveModal} />
           )}
 
-          {/* 5. Competencies View */}
           {navSection === 'Competencies' && (
-            <TrainerCompetenciesView
-              competencies={competencies}
-            />
+            <TrainerCompetenciesView competencies={competencies} />
           )}
 
-          {/* 6. Content Library View */}
           {navSection === 'Content' && (
-            <TrainerContentView
-              contentList={contentList}
-              onOpenModal={setActiveModal}
-            />
+            <TrainerContentView contentList={contentList} onOpenModal={setActiveModal} />
           )}
 
-          {/* 7. Announcements View */}
           {navSection === 'Announcements' && (
-            <TrainerAnnouncementsView
-              announcements={announcements}
-              onOpenModal={setActiveModal}
-            />
+            <TrainerAnnouncementsView announcements={announcements} onOpenModal={setActiveModal} />
           )}
 
-          {/* 8. Feedback View */}
           {navSection === 'Feedback' && (
-            <TrainerFeedbackView
-              feedbackList={feedbackList}
-              onHelpful={showToast}
-            />
+            <TrainerFeedbackView feedbackList={feedbackList} onHelpful={showToast} />
           )}
 
-          {/* 9. Analytics View */}
           {navSection === 'Analytics' && (
-            <TrainerAnalyticsView
-              analytics={initialAnalytics}
-            />
+            <TrainerAnalyticsView analytics={initialAnalytics} />
           )}
 
-          {/* 10. Help & Support View */}
           {navSection === 'Help & Support' && (
-            <TrainerSupportView
-              faqs={initialFaqs}
-            />
+            <TrainerSupportView faqs={initialFaqs} />
           )}
 
-          {/* 11. Settings View */}
           {navSection === 'Settings' && (
-            <TrainerSettingsView
-              onSave={showToast}
-            />
+            <TrainerSettingsView onSave={showToast} />
           )}
         </main>
       </div>
 
-      {/* Interactive Modals */}
       <TrainerPortalModals
         activeModal={activeModal}
         modalData={selectedTrainee}
@@ -593,7 +2056,6 @@ function TrainerDashboard({ onBack }) {
         onActionSuccess={handleActionSuccess}
       />
 
-      {/* Floating Toast Notification */}
       {toastMessage && (
         <div className="profile-toast" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span>✓</span> {toastMessage}
@@ -603,29 +2065,634 @@ function TrainerDashboard({ onBack }) {
   )
 }
 
-
-
 const adminCompetencies = [['Python & Programming', 82], ['Data Analysis', 74], ['Weather Data Analysis', 68], ['GIS', 61], ['Remote Sensing', 54], ['Machine Learning', 47]]
 const adminCourses = [['Python Fundamentals', '324', '86%', '82%', 'Excellent'], ['Weather Data Analysis', '286', '74%', '76%', 'Good'], ['GIS Basics', '194', '61%', '68%', 'Needs Attention']]
 const adminTrainers = [['Dr. Rahul Sharma', 'Weather Data Analysis', '92%', '84 trainees'], ['Dr. Neha Verma', 'Remote Sensing', '89%', '71 trainees'], ['Dr. Amit Kumar', 'Python & Data Analysis', '86%', '96 trainees']]
 
 function AdminDashboard({ onBack }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [navSection, setNavSection] = useState('Dashboard')
   const [noticeOpen, setNoticeOpen] = useState(false)
   const [period, setPeriod] = useState('30 Days')
   const [modal, setModal] = useState(null)
-  return <div className="admin-dashboard"><aside className={drawerOpen ? 'admin-sidebar open' : 'admin-sidebar'}><div className="admin-brand"><Logo /><small>ADMIN PORTAL</small></div><nav className="admin-nav">{[['▦', 'Dashboard'], ['▱', 'Courses'], ['▤', 'Assessments'], ['▣', 'Learning Content'], ['♟', 'Trainees'], ['♙', 'Trainers'], ['◎', 'Competencies'], ['◇', 'Trainer Matching'], ['▥', 'Analytics'], ['◌', 'Announcements'], ['✧', 'Feedback'], ['▤', 'Reports'], ['▰', 'Certificates'], ['⌁', 'Audit Log'], ['⚙', 'Settings']].map(([icon, label], index) => <button className={index === 0 ? 'active' : ''} key={label}><span>{icon}</span>{label}</button>)}</nav><div className="admin-profile"><div className="admin-avatar">AD</div><div><strong>Admin Workspace</strong><small>Administrator</small></div><button onClick={onBack}>Logout</button></div></aside><div className="admin-main"><header className="admin-header"><button className="admin-menu" onClick={() => setDrawerOpen(!drawerOpen)}>☰</button><div><b>Dashboard</b><small>Monitor learning activity and institutional performance.</small></div><div className="admin-header-actions"><label className="admin-search">⌕<input placeholder="Search anything..." /></label><button className="admin-notification" onClick={() => setNoticeOpen(!noticeOpen)}>♧<i>5</i></button><div className="admin-avatar">AD</div></div>{noticeOpen && <div className="admin-notice"><b>Notifications</b><span>12 competency gaps need attention</span><span>3 trainer approvals pending</span><span>New feedback received</span></div>}</header><main className="admin-content"><div className="admin-welcome"><div><span>ADMIN OVERVIEW</span><h1>Good morning, Admin <em>👋</em></h1><p>Monitor learning activity, workforce competencies and institutional capacity growth.</p></div><div className="admin-actions"><button className="button" onClick={() => setModal('Add Trainee')}>+ Add Trainee</button><button className="button outline" onClick={() => setModal('Add Trainer')}>+ Add Trainer</button><button className="button outline" onClick={() => setModal('Create Course')}>+ Create Course</button></div></div><div className="admin-kpis"><AdminKpi icon="♟" label="Total Trainees" value="2,486" change="+12.4%" /><AdminKpi icon="♙" label="Active Trainers" value="148" change="+8 this month" /><AdminKpi icon="▱" label="Active Courses" value="64" change="12 currently running" /><AdminKpi icon="▤" label="Assessments" value="186" change="24 scheduled" /><AdminKpi icon="◎" label="Avg. Competency Score" value="74.8%" change="+5.2%" /></div><div className="admin-primary-grid"><section className="admin-panel activity-admin"><AdminTitle title="Platform Learning Activity" subtitle="Learning activity across the institution" action={<select value={period} onChange={(event) => setPeriod(event.target.value)}><option>7 Days</option><option>30 Days</option><option>6 Months</option><option>1 Year</option></select>} /><div className="admin-chart"><div className="admin-chart-bars">{[52,67,48,75,61,84,72,91].map((height, index) => <i style={{ height: `${height}%` }} key={index} />)}</div><div className="admin-chart-labels"><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span></div></div><div className="activity-admin-metrics"><span><b>12,840</b><small>Total Learning Hours</small></span><span><b>78.4%</b><small>Course Completion</small></span><span><b>81.2%</b><small>Avg. Assessment Score</small></span></div></section><section className="admin-panel competency-health"><AdminTitle title="Institutional Competency Health" subtitle="Current average across active learners" />{adminCompetencies.map(([name, score]) => <div className="admin-health-row" key={name}><div><b>{name}</b><strong>{score}%</strong></div><span><i style={{ width: `${score}%` }} /></span></div>)}<button className="text-button">View Competency Analytics →</button></section></div><div className="admin-primary-grid"><section className="admin-panel gap-alerts"><AdminTitle title="Competency Gaps Requiring Attention" subtitle="Prioritize institutional learning actions" />{[['Machine Learning','47%','75%','28%','126'],['Remote Sensing','54%','75%','21%','94'],['GIS','61%','75%','14%','72']].map(([name,current,target,gap,affected]) => <div className="gap-alert-row" key={name}><span className="gap-alert-icon">!</span><div><b>{name}</b><small>Current {current} · Target {target} · <strong>Gap {gap}</strong></small></div><em>{affected} trainees</em><button className="text-button" onClick={() => setModal(`View ${name} Gap`)}>View Gap</button></div>)}</section><section className="admin-panel top-trainers"><AdminTitle title="Top Performing Trainers" action="View All Trainers" />{adminTrainers.map(([name, expertise, score, trained]) => <div className="top-trainer-row" key={name}><div className="admin-avatar">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div><div><b>{name}</b><small>{expertise} · {trained}</small></div><strong>{score}<small>success</small></strong></div>)}</section></div><div className="admin-primary-grid"><section className="admin-panel admin-table-panel"><AdminTitle title="Course Performance" subtitle="Compare course outcomes at a glance" /><div className="admin-table"><div className="admin-table-head"><span>Course</span><span>Enrolled</span><span>Completion</span><span>Avg Score</span><span>Status</span></div>{adminCourses.map(([course,enrolled,completion,score,status]) => <div className="admin-table-row" key={course}><b>{course}</b><span>{enrolled}</span><span>{completion}</span><span>{score}</span><em className={status === 'Needs Attention' ? 'warning' : 'good'}>{status}</em></div>)}</div></section><section className="admin-panel matching-panel"><AdminTitle title="Intelligent Trainer Matching" subtitle="Static demo recommendation" /><div className="matching-course"><small>COURSE</small><b>Weather Data Analysis</b><span>Python · Statistics · Meteorology</span></div><div className="matching-result"><div className="admin-avatar">RS</div><div><b>Dr. Rahul Sharma</b><small>Weather Data Analysis · 8 years</small></div><strong>92%<small>Competency Match</small></strong></div><div className="match-ring">92%</div><button className="button" onClick={() => setModal('Assign Trainer')}>Assign Trainer →</button></section></div><div className="admin-bottom-grid"><section className="admin-panel admin-timeline"><AdminTitle title="Recent Activity" action="View All" />{['New trainer approved · 5 minutes ago','Course “GIS Advanced” published · 32 minutes ago','Assessment created · 1 hour ago','24 trainees enrolled · 2 hours ago','Announcement published · Yesterday'].map((item, index) => <div key={item}><span>{['✓','▱','▤','♟','◌'][index]}</span><p>{item}</p></div>)}</section><section className="admin-panel admin-announcements"><AdminTitle title="Announcements" action="View All →" />{['New Climate Analytics Course','Assessment Schedule Updated','Trainer Workshop Registration'].map((item, index) => <div key={item}><b>{item}</b><small>Posted {index === 0 ? '2 hours ago' : index === 1 ? 'yesterday' : '3 days ago'}</small></div>)}<button className="button outline small" onClick={() => setModal('Create Announcement')}>+ Create Announcement</button></section><section className="admin-panel admin-action-panel"><AdminTitle title="Quick Actions" /><button className="button" onClick={() => setModal('Create Course')}>+ Create Course</button><button className="button outline" onClick={() => setModal('Create Assessment')}>+ Create Assessment</button><button className="button outline" onClick={() => setModal('Generate Report')}>Generate Report</button></section></div></main></div>{modal && <div className="admin-modal-backdrop" onClick={() => setModal(null)}><div className="admin-modal" onClick={(event) => event.stopPropagation()}><button onClick={() => setModal(null)}>×</button><span>◇</span><h2>{modal}</h2><p>Frontend-only prototype action. This workflow will connect to backend services in a future implementation.</p><button className="button" onClick={() => setModal(null)}>Got it</button></div></div>}</div>
+
+  const adminNavItems = [
+    ['▦', 'Dashboard'],
+    ['▱', 'Courses'],
+    ['▤', 'Assessments'],
+    ['▣', 'Learning Content'],
+    ['♟', 'Trainees'],
+    ['♙', 'Trainers'],
+    ['◎', 'Competencies'],
+    ['◇', 'Trainer Matching'],
+    ['▥', 'Analytics'],
+    ['◌', 'Announcements'],
+    ['✧', 'Feedback'],
+    ['▤', 'Reports'],
+    ['▰', 'Certificates'],
+    ['⌁', 'Audit Log'],
+    ['⚙', 'Settings']
+  ]
+
+  const openTrainerProfile = () => { window.location.hash = '#trainer-profile' }
+
+  return (
+    <div className="admin-dashboard">
+      <aside className={drawerOpen ? 'admin-sidebar open' : 'admin-sidebar'}>
+        <div className="admin-brand">
+          <Logo onClick={onBack} />
+          <small>ADMIN PORTAL</small>
+        </div>
+        <nav className="admin-nav">
+          {adminNavItems.map(([icon, label]) => (
+            <button
+              className={navSection === label ? 'active' : ''}
+              key={label}
+              onClick={() => {
+                setNavSection(label)
+                setDrawerOpen(false)
+              }}
+            >
+              <span>{icon}</span>{label}
+            </button>
+          ))}
+          <hr />
+          <button onClick={onBack}><span>←</span>Logout</button>
+        </nav>
+        <div className="admin-profile">
+          <div className="admin-avatar">AD</div>
+          <div>
+            <strong>Admin Workspace</strong>
+            <small>Administrator</small>
+          </div>
+        </div>
+      </aside>
+
+      <div className="admin-main">
+        <header className="admin-header">
+          <button className="admin-menu" onClick={() => setDrawerOpen(!drawerOpen)}>☰</button>
+          <div>
+            <b>{navSection === 'Dashboard' ? 'Institutional Dashboard' : navSection}</b>
+            <small>Monitor learning activity, capacity growth, and institutional performance.</small>
+          </div>
+          <div className="admin-header-actions">
+            <label className="admin-search">
+              ⌕
+              <input placeholder="Search courses, trainers, competencies..." />
+            </label>
+            <button className="admin-notification" onClick={() => setNoticeOpen(!noticeOpen)}>
+              ♧<i>5</i>
+            </button>
+            <div className="admin-avatar">AD</div>
+          </div>
+          {noticeOpen && (
+            <div className="admin-notice">
+              <b>Notifications</b>
+              <span>12 competency gaps need attention in Satellite Climatology</span>
+              <span>3 trainer accreditation requests pending review</span>
+              <span>New trainee feedback received from Pune center</span>
+            </div>
+          )}
+        </header>
+
+        <main className="admin-content">
+          {navSection === 'Dashboard' && (
+            <div>
+              <div className="admin-welcome">
+                <div>
+                  <span>ADMIN OVERVIEW</span>
+                  <h1>Good morning, Admin <em>👋</em></h1>
+                  <p>Monitor learning activity, workforce competencies and institutional capacity growth.</p>
+                </div>
+                <div className="admin-actions">
+                  <button className="btn-primary-action" onClick={() => setModal('Add Trainee')}>+ Add Trainee</button>
+                  <button className="btn-secondary-action" onClick={() => setModal('Add Trainer')}>+ Add Trainer</button>
+                  <button className="btn-secondary-action" onClick={() => setModal('Create Course')}>+ Create Course</button>
+                </div>
+              </div>
+
+              <div className="admin-kpis">
+                <AdminKpi icon="♟" label="Total Trainees" value="2,486" change="+12.4%" />
+                <AdminKpi icon="♙" label="Active Trainers" value="148" change="+8 this month" />
+                <AdminKpi icon="▱" label="Active Courses" value="64" change="12 currently running" />
+                <AdminKpi icon="▤" label="Assessments" value="186" change="24 scheduled" />
+                <AdminKpi icon="◎" label="Avg. Competency Score" value="74.8%" change="+5.2%" />
+              </div>
+
+              <div className="admin-primary-grid">
+                <section className="admin-panel activity-admin">
+                  <AdminTitle 
+                    title="Platform Learning Activity" 
+                    subtitle="Learning activity across the institution" 
+                    action={
+                      <select value={period} onChange={(event) => setPeriod(event.target.value)}>
+                        <option>7 Days</option>
+                        <option>30 Days</option>
+                        <option>6 Months</option>
+                        <option>1 Year</option>
+                      </select>
+                    } 
+                  />
+                  <div className="admin-chart">
+                    <div className="admin-chart-bars">
+                      {[52, 67, 48, 75, 61, 84, 72, 91].map((height, index) => (
+                        <i style={{ height: `${height}%` }} key={index} />
+                      ))}
+                    </div>
+                    <div className="admin-chart-labels">
+                      <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
+                    </div>
+                  </div>
+                  <div className="activity-admin-metrics">
+                    <span><b>12,840</b><small>Total Learning Hours</small></span>
+                    <span><b>78.4%</b><small>Course Completion</small></span>
+                    <span><b>81.2%</b><small>Avg. Assessment Score</small></span>
+                  </div>
+                </section>
+
+                <section className="admin-panel competency-health">
+                  <AdminTitle title="Institutional Competency Health" subtitle="Current average across active learners" />
+                  {adminCompetencies.map(([name, score]) => (
+                    <div className="admin-health-row" key={name}>
+                      <div><b>{name}</b><strong>{score}%</strong></div>
+                      <span><i style={{ width: `${score}%` }} /></span>
+                    </div>
+                  ))}
+                  <button className="text-button" onClick={() => setNavSection('Competencies')}>View Competency Analytics →</button>
+                </section>
+              </div>
+
+              <div className="admin-primary-grid">
+                <section className="admin-panel gap-alerts">
+                  <AdminTitle title="Competency Gaps Requiring Attention" subtitle="Prioritize institutional learning actions" />
+                  {[
+                    ['Machine Learning', '47%', '75%', '28%', '126'],
+                    ['Remote Sensing', '54%', '75%', '21%', '94'],
+                    ['GIS', '61%', '75%', '14%', '72']
+                  ].map(([name, current, target, gap, affected]) => (
+                    <div className="gap-alert-row" key={name}>
+                      <span className="gap-alert-icon">!</span>
+                      <div>
+                        <b>{name}</b>
+                        <small>Current {current} · Target {target} · <strong>Gap {gap}</strong></small>
+                      </div>
+                      <em>{affected} trainees</em>
+                      <button className="text-button" onClick={() => setModal(`View ${name} Gap`)}>View Gap</button>
+                    </div>
+                  ))}
+                </section>
+
+                <section className="admin-panel top-trainers">
+                  <AdminTitle title="Top Performing Trainers" action={<button className="text-button" onClick={() => setNavSection('Trainers')}>View All Trainers →</button>} />
+                  {adminTrainers.map(([name, expertise, score, trained]) => (
+                    <div className="top-trainer-row" key={name} style={{ cursor: 'pointer' }} onClick={openTrainerProfile}>
+                      <div className="admin-avatar">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div>
+                      <div>
+                        <b>{name}</b>
+                        <small>{expertise} · {trained}</small>
+                      </div>
+                      <strong>{score}<small>success</small></strong>
+                    </div>
+                  ))}
+                </section>
+              </div>
+
+              <div className="admin-primary-grid">
+                <section className="admin-panel admin-table-panel">
+                  <AdminTitle title="Course Performance" subtitle="Compare course outcomes at a glance" />
+                  <div className="admin-table">
+                    <div className="admin-table-head">
+                      <span>Course</span>
+                      <span>Enrolled</span>
+                      <span>Completion</span>
+                      <span>Avg Score</span>
+                      <span>Status</span>
+                    </div>
+                    {adminCourses.map(([course, enrolled, completion, score, status]) => (
+                      <div className="admin-table-row" key={course}>
+                        <b>{course}</b>
+                        <span>{enrolled}</span>
+                        <span>{completion}</span>
+                        <span>{score}</span>
+                        <em className={status === 'Needs Attention' ? 'warning' : 'good'}>{status}</em>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="admin-panel matching-panel">
+                  <AdminTitle title="Intelligent Trainer Matching" subtitle="AI Match Recommendation" />
+                  <div className="matching-course">
+                    <small>TARGET COURSE</small>
+                    <b>Weather Data Analysis & Forecasting</b>
+                    <span>Python · Statistics · Doppler Radar Meteorology</span>
+                  </div>
+                  <div className="matching-result" style={{ cursor: 'pointer' }} onClick={openTrainerProfile}>
+                    <div className="admin-avatar">RS</div>
+                    <div>
+                      <b>Dr. Rahul Sharma</b>
+                      <small>Weather Data Analysis · 8+ yrs exp</small>
+                    </div>
+                    <strong>92%<small>Match Score</small></strong>
+                  </div>
+                  <button className="btn-primary-action" onClick={() => setModal('Assign Trainer to Cohort')}>Assign Trainer →</button>
+                </section>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Courses' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Institutional Courses Catalog</h1>
+                  <p>Manage courses, syllabi, enrollments, and competency requirements.</p>
+                </div>
+                <button className="btn-primary-action" onClick={() => setModal('Create Course')}>+ Add New Course</button>
+              </div>
+              <div className="admin-table">
+                <div className="admin-table-head">
+                  <span>Course</span>
+                  <span>Enrolled</span>
+                  <span>Completion</span>
+                  <span>Avg Score</span>
+                  <span>Status</span>
+                </div>
+                {adminCourses.map(([course, enrolled, completion, score, status]) => (
+                  <div className="admin-table-row" key={course}>
+                    <b>{course}</b>
+                    <span>{enrolled}</span>
+                    <span>{completion}</span>
+                    <span>{score}</span>
+                    <em className={status === 'Needs Attention' ? 'warning' : 'good'}>{status}</em>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Trainers' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Faculty & Verified Trainers Directory</h1>
+                  <p>Accredited instructors and domain specialists across MoES / IMD institutions.</p>
+                </div>
+                <button className="btn-primary-action" onClick={() => setModal('Add Trainer')}>+ Invite Trainer</button>
+              </div>
+              <div className="portal-grid-cards">
+                {adminTrainers.map(([name, expertise, score, trained]) => (
+                  <div className="portal-card" key={name} style={{ cursor: 'pointer' }} onClick={openTrainerProfile}>
+                    <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 14 }}>
+                      <div className="admin-avatar large">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div>
+                      <div>
+                        <h3 style={{ color: '#fff', fontSize: 16, margin: 0 }}>{name}</h3>
+                        <small style={{ color: '#8492a6', fontSize: 12 }}>{expertise}</small>
+                      </div>
+                    </div>
+                    <p style={{ color: '#cbd5e1', fontSize: 13, margin: '0 0 12px' }}>Trained {trained} · Verification Badge Active</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span className="portal-badge good">{score} Success Rate</span>
+                      <button className="text-button">View Profile →</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Trainees' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Institutional Trainees Management</h1>
+                  <p>2,486 active learners across meteorological centers and training divisions.</p>
+                </div>
+                <button className="btn-primary-action" onClick={() => setModal('Add Trainee')}>+ Register Trainee</button>
+              </div>
+              <div className="admin-table">
+                <div className="admin-table-head">
+                  <span>Trainee Name</span>
+                  <span>Department</span>
+                  <span>Courses</span>
+                  <span>Avg Score</span>
+                  <span>Status</span>
+                </div>
+                {[
+                  ['Aditya Jaiswal', 'Meteorology Division', '6 Enrolled', '74%', 'Active'],
+                  ['Rahul Verma', 'Climatology Unit', '4 Enrolled', '68%', 'Active'],
+                  ['Pooja Sharma', 'Remote Sensing Lab', '5 Enrolled', '88%', 'Distinction'],
+                  ['Amit Kumar', 'Hydrology Division', '3 Enrolled', '58%', 'Needs Attention']
+                ].map(([name, dept, enrolled, score, status]) => (
+                  <div className="admin-table-row" key={name}>
+                    <b>{name}</b>
+                    <span>{dept}</span>
+                    <span>{enrolled}</span>
+                    <span>{score}</span>
+                    <em className={status === 'Needs Attention' ? 'warning' : 'good'}>{status}</em>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Competencies' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Institutional Competency Framework</h1>
+                  <p>Benchmark standards and developmental gap analytics for workforce planning.</p>
+                </div>
+              </div>
+              <div className="portal-two-col-grid">
+                <div>
+                  <h3 style={{ color: '#fff', fontSize: 16, marginBottom: 14 }}>Core Domain Competencies</h3>
+                  {adminCompetencies.map(([name, score]) => (
+                    <div className="portal-competency-card" key={name}>
+                      <div className="portal-comp-header">
+                        <div>
+                          <strong>{name}</strong>
+                          <span className={`portal-badge ${score >= 70 ? 'good' : score >= 55 ? 'draft' : 'urgent'}`} style={{ marginLeft: 10 }}>
+                            {score >= 70 ? 'Strong' : score >= 55 ? 'Developing' : 'Action Required'}
+                          </span>
+                        </div>
+                        <span>{score}%</span>
+                      </div>
+                      <div className="portal-progress-track">
+                        <div className="portal-progress-fill" style={{ width: `${score}%`, background: score >= 70 ? 'linear-gradient(90deg, #2583ff, #2cd0d3)' : score >= 55 ? 'linear-gradient(90deg, #eab308, #ca8a04)' : 'linear-gradient(90deg, #ef4444, #dc2626)' }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="portal-info-card">
+                  <h3>Priority Institutional Actions</h3>
+                  <p>Machine Learning and Remote Sensing competencies are below the target 75% institutional threshold. 220 trainees are currently queued for supplemental capacity workshops.</p>
+                  <button className="btn-primary-action" onClick={() => setModal('Schedule Supplemental Training')}>Schedule Workshops →</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Trainer Matching' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>AI Trainer Matching Engine</h1>
+                  <p>Intelligent algorithm matching course syllabus competencies with accredited faculty profiles.</p>
+                </div>
+              </div>
+              <div className="portal-two-col-grid">
+                <div className="portal-info-card">
+                  <h3>Active Match Recommendation</h3>
+                  <div className="matching-course" style={{ marginTop: 14 }}>
+                    <small>TARGET COURSE</small>
+                    <b>Weather Data Analysis & Forecasting</b>
+                    <span>Python · Doppler Radar · Numerical Weather Prediction</span>
+                  </div>
+                  <div className="matching-result" style={{ cursor: 'pointer' }} onClick={openTrainerProfile}>
+                    <div className="admin-avatar large">RS</div>
+                    <div>
+                      <b>Dr. Rahul Sharma</b>
+                      <small>Senior Meteorology & Data Analytics Trainer</small>
+                    </div>
+                    <strong>92%<small>Match</small></strong>
+                  </div>
+                  <button className="btn-primary-action" onClick={() => setModal('Allocate Trainer')}>Confirm Faculty Allocation →</button>
+                </div>
+                <div className="portal-info-card">
+                  <h3>Matching Algorithm Criteria</h3>
+                  <p>Match scores are computed using 4 verified dimensions:</p>
+                  <ul style={{ color: '#cbd5e1', fontSize: 13, lineHeight: 1.8, paddingLeft: 18 }}>
+                    <li>Past trainee assessment outcomes (35% weight)</li>
+                    <li>Verified competency skill matrix (30% weight)</li>
+                    <li>Domain experience & publications (20% weight)</li>
+                    <li>Trainee qualitative satisfaction ratings (15% weight)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Analytics' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Institutional Capacity & Learning Analytics</h1>
+                  <p>Executive reports on completion rates, competency gains, and training ROI.</p>
+                </div>
+              </div>
+              <div className="portal-kpi-row">
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">◷</div>
+                  <div className="kpi-label">Learning Hours</div>
+                  <div className="kpi-val">12,840</div>
+                  <div className="kpi-note">+18% vs last quarter</div>
+                </div>
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">✓</div>
+                  <div className="kpi-label">Completion Rate</div>
+                  <div className="kpi-val">78.4%</div>
+                  <div className="kpi-note">Above national avg</div>
+                </div>
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">◎</div>
+                  <div className="kpi-label">Competency Index</div>
+                  <div className="kpi-val">74.8%</div>
+                  <div className="kpi-note">+5.2% institutional growth</div>
+                </div>
+                <div className="portal-kpi-card">
+                  <div className="kpi-icon">✦</div>
+                  <div className="kpi-label">Certified Learners</div>
+                  <div className="kpi-val">1,894</div>
+                  <div className="kpi-note">Accredited cohort</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Announcements' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Institutional Broadcasts & Announcements</h1>
+                  <p>Send platform-wide notices to trainers, trainees, and department heads.</p>
+                </div>
+                <button className="btn-primary-action" onClick={() => setModal('New Broadcast')}>+ Create Broadcast</button>
+              </div>
+              <div className="course-list">
+                {[
+                  ['Q3 Capacity Building Schedule Released', 'Published to all 148 verified trainers and 2,486 trainees across MoES/IMD centers.', 'Yesterday'],
+                  ['HPC Weather Modeling Cluster Upgrade Complete', 'Trainees now have access to high-resolution WRF computational nodes.', '3 days ago']
+                ].map(([title, desc, time]) => (
+                  <div className="portal-card" key={title} style={{ marginBottom: 12 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <h3 style={{ color: '#fff', fontSize: 15, margin: 0 }}>{title}</h3>
+                      <small style={{ color: '#8492a6', fontSize: 11 }}>{time}</small>
+                    </div>
+                    <p style={{ color: '#cbd5e1', fontSize: 13, margin: '8px 0 0', lineHeight: 1.5 }}>{desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {navSection === 'Settings' && (
+            <div className="portal-view-container">
+              <div className="portal-page-header">
+                <div className="portal-title-block">
+                  <h1>Platform & Institutional Governance Settings</h1>
+                  <p>Security protocols, user roles, API integration keys, and audit controls.</p>
+                </div>
+              </div>
+              <div className="portal-settings-grid">
+                <div className="portal-settings-card">
+                  <h3>Institutional Security</h3>
+                  <div className="portal-form-group">
+                    <label>Institution Name</label>
+                    <input defaultValue="India Meteorological Department (MoES)" readOnly />
+                  </div>
+                  <div className="portal-form-group">
+                    <label>SSO / SAML Identity Provider</label>
+                    <input defaultValue="GovID Auth Service (Configured)" readOnly />
+                  </div>
+                </div>
+                <div className="portal-settings-card">
+                  <h3>System Status</h3>
+                  <p style={{ color: '#34d399', fontWeight: 600, fontSize: 13 }}>● All platform services operating normally</p>
+                  <p style={{ color: '#8492a6', fontSize: 12, marginTop: 8 }}>Database: Connected · HPC Cluster: Active · AI Match Engine: Operational</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+
+      {modal && (
+        <div className="admin-modal-backdrop" onClick={() => setModal(null)}>
+          <div className="admin-modal" onClick={(event) => event.stopPropagation()}>
+            <button className="modal-close-btn" onClick={() => setModal(null)}>×</button>
+            <span className="modal-sym">◇</span>
+            <h2>{modal}</h2>
+            <p>Action triggered successfully in platform administrative control environment.</p>
+            <button className="btn-primary-action" onClick={() => setModal(null)}>Got it</button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
-function AdminKpi({ icon, label, value, change }) { return <article className="admin-kpi"><span>{icon}</span><small>{label}</small><strong>{value}</strong><p>{change}</p><i /></article> }
-function AdminTitle({ title, subtitle, action }) { return <div className="admin-title"><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div>{typeof action === 'string' ? <button className="text-button">{action} →</button> : action}</div> }
+function AdminKpi({ icon, label, value, change }) { 
+  return (
+    <article className="admin-kpi">
+      <span>{icon}</span>
+      <small>{label}</small>
+      <strong>{value}</strong>
+      <p>{change}</p>
+      <i />
+    </article>
+  ) 
+}
 
-function TrainerStat({ icon, label, value, note }) { return <article className="trainer-stat"><span>{icon}</span><small>{label}</small><strong>{value}</strong><p>{note}</p></article> }
-function TrainerPanelTitle({ title, subtitle, action }) { return <div className="trainer-panel-title"><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div>{action && <button className="text-button">{action}</button>}</div> }
-function Attention({ name, course, progress, score, skill }) { return <div className="attention-row"><div className="trainer-avatar">{name.split(' ').map((part) => part[0]).join('')}</div><div><b>{name}</b><small>{course}</small><p>Progress <strong>{progress}</strong> · Assessment <strong>{score}</strong></p><em>{skill}</em></div><button className="text-button">View →</button></div> }
-function Stat({ icon, label, value, suffix, note }) { return <article className="stat-card"><span>{icon}</span><small>{label}</small><strong>{value} <em>{suffix}</em></strong><p>{note}</p></article> }
-function PanelTitle({ title, subtitle, action }) { return <div className="panel-title"><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div>{action && <button className="text-button">{action}</button>}</div> }
-function CourseRow({ title, category, progress, instructor }) { return <div className="course-row"><span className="course-cover">{progress === 100 ? '✓' : '◈'}</span><div><h3>{title}</h3><p>{category} · {instructor}</p><span className="course-track"><i style={{ width: `${progress}%` }} /></span></div><strong>{progress}%</strong><button className="text-button">{progress === 100 ? 'View' : 'Continue'}</button></div> }
-function Recommendation({ icon, title, level, time, match }) { return <div className="recommendation-row"><span>{icon}</span><div><b>{title}</b><small>{level} · {time}</small></div><strong>{match}<small>relevance</small></strong></div> }
+function AdminTitle({ title, subtitle, action }) { 
+  return (
+    <div className="admin-title">
+      <div>
+        <h2>{title}</h2>
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+      {typeof action === 'string' ? <button className="text-button">{action} →</button> : action}
+    </div>
+  ) 
+}
+
+function TrainerStat({ icon, label, value, note }) { 
+  return (
+    <article className="trainer-stat">
+      <span>{icon}</span>
+      <small>{label}</small>
+      <strong>{value}</strong>
+      <p>{note}</p>
+    </article>
+  ) 
+}
+
+function TrainerPanelTitle({ title, subtitle, action }) { 
+  return (
+    <div className="trainer-panel-title">
+      <div>
+        <h2>{title}</h2>
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+      {action && <button className="text-button">{action}</button>}
+    </div>
+  ) 
+}
+
+function Attention({ name, course, progress, score, skill, onView }) { 
+  return (
+    <div className="attention-row">
+      <div className="trainer-avatar">{name.split(' ').map((part) => part[0]).join('')}</div>
+      <div>
+        <b>{name}</b>
+        <small>{course}</small>
+        <p>Progress <strong>{progress}</strong> · Assessment <strong>{score}</strong></p>
+        <em>{skill}</em>
+      </div>
+      <button className="text-button" onClick={onView}>View →</button>
+    </div>
+  ) 
+}
+
+function Stat({ icon, label, value, suffix, note }) { 
+  return (
+    <article className="stat-card">
+      <span>{icon}</span>
+      <small>{label}</small>
+      <strong>{value} <em>{suffix}</em></strong>
+      <p>{note}</p>
+    </article>
+  ) 
+}
+
+function PanelTitle({ title, subtitle, action }) { 
+  return (
+    <div className="panel-title">
+      <div>
+        <h2>{title}</h2>
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+      {action && <button className="text-button">{action}</button>}
+    </div>
+  ) 
+}
+
+function CourseRow({ title, category, progress, instructor }) { 
+  return (
+    <div className="course-row">
+      <span className="course-cover">{progress === 100 ? '✓' : '◈'}</span>
+      <div>
+        <h3>{title}</h3>
+        <p>{category} · {instructor}</p>
+        <span className="course-track"><i style={{ width: `${progress}%` }} /></span>
+      </div>
+      <strong>{progress}%</strong>
+      <button className="text-button">{progress === 100 ? 'View' : 'Continue'}</button>
+    </div>
+  ) 
+}
+
+function Recommendation({ icon, title, level, time, match }) { 
+  return (
+    <div className="recommendation-row">
+      <span>{icon}</span>
+      <div>
+        <b>{title}</b>
+        <small>{level} · {time}</small>
+      </div>
+      <strong>{match}<small>relevance</small></strong>
+    </div>
+  ) 
+}
 
 export default App
