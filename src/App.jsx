@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import api from './services/api'
 import TrainerProfilePage from './components/trainer-profile/TrainerProfilePage'
+import TraineePortal from './components/trainee/TraineePortal'
 import { TrainerCoursesView } from './components/trainer-portal/TrainerCoursesView'
 import { TrainerTraineesView } from './components/trainer-portal/TrainerTraineesView'
 import { TrainerAssessmentsView } from './components/trainer-portal/TrainerAssessmentsView'
@@ -36,29 +37,29 @@ const features = [
 ]
 
 const roles = [
-  { 
-    title: 'For Trainees', 
-    icon: '●', 
+  {
+    title: 'For Trainees',
+    icon: '●',
     role: 'trainee',
     badge: 'Learner Track',
-    items: ['Discover relevant domain courses', 'Learn with structured modules & materials', 'Take assessments & diagnostic quizzes', 'Track competency score & growth'], 
-    action: 'Explore as Trainee' 
+    items: ['Discover relevant domain courses', 'Learn with structured modules & materials', 'Take assessments & diagnostic quizzes', 'Track competency score & growth'],
+    action: 'Explore as Trainee'
   },
-  { 
-    title: 'For Trainers', 
-    icon: '◉', 
+  {
+    title: 'For Trainers',
+    icon: '◉',
     role: 'trainer',
     badge: 'Faculty Suite',
-    items: ['Create & manage learning content', 'Design multi-tier assessments', 'Monitor cohort progress & at-risk learners', 'Showcase verified competencies'], 
-    action: 'Explore as Trainer' 
+    items: ['Create & manage learning content', 'Design multi-tier assessments', 'Monitor cohort progress & at-risk learners', 'Showcase verified competencies'],
+    action: 'Explore as Trainer'
   },
-  { 
-    title: 'For Administrators', 
-    icon: '⬟', 
+  {
+    title: 'For Administrators',
+    icon: '⬟',
     role: 'admin',
     badge: 'Institutional Control',
-    items: ['Manage users, roles & accreditations', 'Orchestrate courses & curriculum standards', 'Monitor institutional analytics & health', 'Oversee intelligent trainer matching'], 
-    action: 'Explore as Admin' 
+    items: ['Manage users, roles & accreditations', 'Orchestrate courses & curriculum standards', 'Monitor institutional analytics & health', 'Oversee intelligent trainer matching'],
+    action: 'Explore as Admin'
   },
 ]
 
@@ -70,16 +71,16 @@ const impacts = [
   ['⌁', 'Personalized Development', 'Empower individuals and teams with adaptive personalized learning paths'],
 ]
 
-function Logo({ onClick }) { 
+function Logo({ onClick }) {
   return (
     <a className="logo" href="#top" onClick={onClick} aria-label="CapacityConnect home">
       <span className="logo-mark">◇</span>
       <span className="logo-text">Capacity<span className="logo-accent">Connect</span></span>
     </a>
-  ) 
+  )
 }
 
-function MiniChart() { 
+function MiniChart() {
   return (
     <div className="preview-mini-chart" aria-label="Learning progress chart">
       <i style={{ height: '35%' }} />
@@ -90,7 +91,7 @@ function MiniChart() {
       <i style={{ height: '88%' }} />
       <i style={{ height: '100%' }} />
     </div>
-  ) 
+  )
 }
 
 function HeroDashboardPreview({ onNavigateRole }) {
@@ -235,18 +236,19 @@ function App() {
 
   if (currentHash === '#admin') return <AdminDashboard onBack={() => { window.location.hash = ''; setDashboardRole(null); setCurrentHash('') }} />
   if (currentHash === '#trainer-profile') return <TrainerProfilePage onBack={() => { window.location.hash = ''; setCurrentHash('') }} defaultRole={dashboardRole || 'trainer'} />
+  if (currentHash === '#trainee') return <TraineeDashboard onBack={() => { window.location.hash = ''; setDashboardRole(null); setCurrentHash('') }} />
 
   if (dashboardRole === 'trainer') return <TrainerDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'trainee') return <TraineeDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'admin') return <AdminDashboard onBack={() => setDashboardRole(null)} />
-  if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => setDashboardRole(role)} />
+  if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => { setShowLogin(false); setDashboardRole(role); }} />
 
   return (
     <div id="top" className="capacity-app">
       {/* Top Header */}
       <header className="site-header shell">
         <Logo onClick={() => { window.location.hash = ''; setShowLogin(false); setDashboardRole(null); }} />
-        
+
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
           {menuOpen ? '✕' : '☰'}
         </button>
@@ -259,7 +261,7 @@ function App() {
             <a href="#impact">Institutional Impact</a>
             <a href="#about">About</a>
           </div>
-          
+
           <div className="nav-actions">
             <button className="button-get-started" onClick={() => setShowLogin(true)}>
               <span>Launch Platform</span> <b>→</b>
@@ -277,7 +279,7 @@ function App() {
               <span className="pulse-dot" />
               <span>MoES | IMD · AI-Powered Capacity Architecture</span>
             </div>
-            
+
             <h1 className="hero-title">
               Build Skills.<br />
               Strengthen<br />
@@ -458,7 +460,7 @@ function App() {
       {/* Footer */}
       <footer id="about" className="footer shell">
         <div className="footer-brand-col">
-          <Logo onClick={() => {}} />
+          <Logo onClick={() => { }} />
           <p className="footer-tagline">CapacityConnect is an institutional digital ecosystem for capacity building, skill diagnostics, learning assessments, and intelligent faculty matching.</p>
           <span className="footer-copy">© 2026 CapacityConnect · Ministry of Earth Sciences | IMD. All rights reserved.</span>
         </div>
@@ -488,22 +490,22 @@ function App() {
   )
 }
 
-function SectionHeading({ title, accent }) { 
+function SectionHeading({ title, accent }) {
   return (
     <div className="section-heading-wrap">
       <h2 className="section-heading">{title} <em>{accent}</em></h2>
     </div>
-  ) 
+  )
 }
 
-function Step({ icon, title, text }) { 
+function Step({ icon, title, text }) {
   return (
     <div className="step">
       <div className="step-icon">{icon}</div>
       <h3>{title}</h3>
       <p>{text}</p>
     </div>
-  ) 
+  )
 }
 
 function EyeIcon({ size = 18 }) {
@@ -538,10 +540,10 @@ function LoginPage({ onBack, onDashboard }) {
   // Demo accounts helper
   const demoAccounts = {
     trainee: {
-      email: 'rahul.sharma@imd.gov.in',
+      email: 'ananya.verma@imd.gov.in',
       password: 'DemoPassword123!',
-      name: 'Rahul Sharma',
-      title: 'Junior Forecaster · NWP Track',
+      name: 'Ananya Verma',
+      title: 'Trainee Fellow · NWP Track',
     },
     trainer: {
       email: 'dr.priya.nair@imd.gov.in',
@@ -572,8 +574,8 @@ function LoginPage({ onBack, onDashboard }) {
     setErrorMessage('')
 
     try {
-      const res = await api.login({ email: demoAccounts[roleKey].email, password: demoAccounts[roleKey].password })
-      const resolvedRole = res?.user?.role || roleKey
+      const res = await api.login({ email: demoAccounts[roleKey].email, password: demoAccounts[roleKey].password, role: roleKey })
+      const resolvedRole = roleKey || res?.user?.role || 'trainee'
       setLoading(false)
       onDashboard(resolvedRole)
     } catch {
@@ -592,8 +594,8 @@ function LoginPage({ onBack, onDashboard }) {
     setLoading(true)
 
     try {
-      const res = await api.login({ email, password })
-      const resolvedRole = res?.user?.role || selectedRoleTab || 'trainee'
+      const res = await api.login({ email, password, role: selectedRoleTab })
+      const resolvedRole = selectedRoleTab || res?.user?.role || 'trainee'
       setLoading(false)
       setSubmitted(true)
       onDashboard(resolvedRole)
@@ -779,12 +781,12 @@ function LoginPage({ onBack, onDashboard }) {
                       <span>Institutional Email</span>
                       <div className="input-with-icon-wrap">
                         <span className="input-lead-icon">✉</span>
-                        <input 
-                          type="email" 
-                          value={email} 
-                          onChange={(e) => { setEmail(e.target.value); setErrorMessage(''); }} 
-                          placeholder={`${selectedRoleTab === 'trainer' ? 'dr.priya.nair' : selectedRoleTab === 'admin' ? 'admin.directorate' : 'rahul.sharma'}@imd.gov.in`} 
-                          required 
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => { setEmail(e.target.value); setErrorMessage(''); }}
+                          placeholder={`${selectedRoleTab === 'trainer' ? 'dr.priya.nair' : selectedRoleTab === 'admin' ? 'admin.directorate' : 'ananya.verma'}@imd.gov.in`}
+                          required
                         />
                       </div>
                     </label>
@@ -795,17 +797,17 @@ function LoginPage({ onBack, onDashboard }) {
                       <span>Password</span>
                       <div className="password-field-wrap">
                         <span className="input-lead-icon">🔒</span>
-                        <input 
-                          type={showPassword ? 'text' : 'password'} 
-                          value={password} 
-                          onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }} 
-                          placeholder="Enter your account password" 
-                          required 
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={password}
+                          onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }}
+                          placeholder="Enter your account password"
+                          required
                         />
-                        <button 
-                          type="button" 
-                          className="password-toggle-btn" 
-                          onClick={() => setShowPassword(!showPassword)} 
+                        <button
+                          type="button"
+                          className="password-toggle-btn"
+                          onClick={() => setShowPassword(!showPassword)}
                           aria-label={showPassword ? 'Hide password' : 'Show password'}
                           title={showPassword ? 'Hide password' : 'Show password'}
                         >
@@ -890,12 +892,12 @@ function ForgotPasswordPage({ onBack }) {
     window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700)
   }
 
-  const resend = () => { 
-    if (!seconds) { 
+  const resend = () => {
+    if (!seconds) {
       setSent(false)
       setSending(true)
-      window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700) 
-    } 
+      window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700)
+    }
   }
 
   return (
@@ -971,21 +973,21 @@ function SignupPage({ onBack, onLogin, onDashboard }) {
   const [selectedGoals, setSelectedGoals] = useState([])
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [form, setForm] = useState({ 
-    firstName: '', 
-    lastName: '', 
-    email: '', 
-    password: '', 
-    confirmPassword: '', 
-    mobile: '', 
-    organization: '', 
-    designation: '', 
-    level: 'Beginner', 
-    experience: '', 
-    qualification: '', 
-    specialization: '', 
-    bio: '', 
-    certifications: '' 
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    mobile: '',
+    organization: '',
+    designation: '',
+    level: 'Beginner',
+    experience: '',
+    qualification: '',
+    specialization: '',
+    bio: '',
+    certifications: ''
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -1051,164 +1053,164 @@ function SignupPage({ onBack, onLogin, onDashboard }) {
           </div>
 
           <div className="signup-card">
-          <div className="signup-card-top">
-            <div className="signup-symbol">◇</div>
-            <div>
-              <h2>Create your account</h2>
-              <p>Step {step} of 4 · Configure your profile</p>
-            </div>
-          </div>
-
-          <div className="signup-progress">
-            {[['01', 'Account'], ['02', 'Profile'], ['03', 'Skills'], ['04', 'Review']].map(([number, label], index) => (
-              <div className={step >= index + 1 ? 'progress-item active' : 'progress-item'} key={number}>
-                <span>{number}</span>
-                <b>{label}</b>
-                {index < 3 && <i />}
-              </div>
-            ))}
-          </div>
-
-          {step === 1 && (
-            <div className="signup-step">
-              <h3>Choose your account type</h3>
-              <p className="step-copy">Select how you'll use CapacityConnect.</p>
-              <div className="role-options">
-                <RoleOption selected={role === 'trainee'} icon="⌂" title="Trainee" text="Learn, assess your skills, track your progress, and build your competencies." onClick={() => setRole('trainee')} />
-                <RoleOption selected={role === 'trainer'} icon="▣" title="Trainer" text="Create learning content, conduct assessments, mentor trainees, and showcase your expertise." onClick={() => setRole('trainer')} />
+            <div className="signup-card-top">
+              <div className="signup-symbol">◇</div>
+              <div>
+                <h2>Create your account</h2>
+                <p>Step {step} of 4 · Configure your profile</p>
               </div>
             </div>
-          )}
 
-          {step === 2 && (
-            <div className="signup-step">
-              <h3>Tell us about yourself</h3>
-              <p className="step-copy">Enter your personal details to initialize your profile.</p>
-              <div className="field-grid">
-                <Field label="First Name" name="firstName" value={form.firstName} onChange={updateForm} placeholder="Enter your first name" />
-                <Field label="Last Name" name="lastName" value={form.lastName} onChange={updateForm} placeholder="Enter your last name" />
-                <Field label="Email Address" name="email" type="email" value={form.email} onChange={updateForm} placeholder="name@imd.gov.in" />
-                <Field label="Mobile Number" name="mobile" value={form.mobile} onChange={updateForm} placeholder="+91 98765 43210" />
-                
-                <label className="signup-field">
-                  Password
-                  <div className="password-field">
-                    <input 
-                      type={showPassword ? 'text' : 'password'} 
-                      name="password" 
-                      value={form.password} 
-                      onChange={updateForm} 
-                      placeholder="Create a strong password" 
-                      required 
-                    />
-                    <button 
-                      type="button" 
-                      className="password-toggle" 
-                      onClick={() => setShowPassword(!showPassword)} 
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    >
-                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </button>
-                  </div>
-                </label>
-
-                <label className="signup-field">
-                  Confirm Password
-                  <div className="password-field">
-                    <input 
-                      type={showConfirmPassword ? 'text' : 'password'} 
-                      name="confirmPassword" 
-                      value={form.confirmPassword} 
-                      onChange={updateForm} 
-                      placeholder="Re-enter your password" 
-                      required 
-                    />
-                    <button 
-                      type="button" 
-                      className="password-toggle" 
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)} 
-                      aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                    >
-                      {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </button>
-                  </div>
-                </label>
-              </div>
-              {form.password && (
-                <div className={`password-strength ${passwordStrong ? 'strong' : form.password.length >= 6 ? 'medium' : 'weak'}`}>
-                  <span>Password strength: {passwordStrong ? 'Strong' : form.password.length >= 6 ? 'Medium' : 'Weak'}</span>
+            <div className="signup-progress">
+              {[['01', 'Account'], ['02', 'Profile'], ['03', 'Skills'], ['04', 'Review']].map(([number, label], index) => (
+                <div className={step >= index + 1 ? 'progress-item active' : 'progress-item'} key={number}>
+                  <span>{number}</span>
+                  <b>{label}</b>
+                  {index < 3 && <i />}
                 </div>
-              )}
-              {form.confirmPassword && form.password !== form.confirmPassword && (
-                <small className="field-error-text">Passwords do not match.</small>
-              )}
+              ))}
             </div>
-          )}
 
-          {step === 3 && (
-            <div className="signup-step">
-              <h3>{role === 'trainer' ? 'Build your professional profile' : 'Build your learning profile'}</h3>
-              <p className="step-copy">Personalize your experience with a few profile details.</p>
-              <div className="field-grid">
-                <Field label="Organization / Institution" name="organization" value={form.organization} onChange={updateForm} placeholder="e.g. IMD New Delhi" />
-                <Field label={role === 'trainer' ? 'Designation' : 'Designation / Role'} name="designation" value={form.designation} onChange={updateForm} placeholder="e.g. Meteorologist" />
-                {role === 'trainer' ? (
-                  <>
-                    <Field label="Years of Experience" name="experience" value={form.experience} onChange={updateForm} placeholder="e.g. 5 years" />
-                    <Field label="Highest Qualification" name="qualification" value={form.qualification} onChange={updateForm} placeholder="e.g. Master's degree" />
-                  </>
-                ) : (
-                  <Field label="Current Skill Level" name="level" value={form.level} onChange={updateForm} options={['Beginner', 'Intermediate', 'Advanced']} />
+            {step === 1 && (
+              <div className="signup-step">
+                <h3>Choose your account type</h3>
+                <p className="step-copy">Select how you'll use CapacityConnect.</p>
+                <div className="role-options">
+                  <RoleOption selected={role === 'trainee'} icon="⌂" title="Trainee" text="Learn, assess your skills, track your progress, and build your competencies." onClick={() => setRole('trainee')} />
+                  <RoleOption selected={role === 'trainer'} icon="▣" title="Trainer" text="Create learning content, conduct assessments, mentor trainees, and showcase your expertise." onClick={() => setRole('trainer')} />
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="signup-step">
+                <h3>Tell us about yourself</h3>
+                <p className="step-copy">Enter your personal details to initialize your profile.</p>
+                <div className="field-grid">
+                  <Field label="First Name" name="firstName" value={form.firstName} onChange={updateForm} placeholder="Enter your first name" />
+                  <Field label="Last Name" name="lastName" value={form.lastName} onChange={updateForm} placeholder="Enter your last name" />
+                  <Field label="Email Address" name="email" type="email" value={form.email} onChange={updateForm} placeholder="name@imd.gov.in" />
+                  <Field label="Mobile Number" name="mobile" value={form.mobile} onChange={updateForm} placeholder="+91 98765 43210" />
+
+                  <label className="signup-field">
+                    Password
+                    <div className="password-field">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        value={form.password}
+                        onChange={updateForm}
+                        placeholder="Create a strong password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="password-toggle"
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                      </button>
+                    </div>
+                  </label>
+
+                  <label className="signup-field">
+                    Confirm Password
+                    <div className="password-field">
+                      <input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        name="confirmPassword"
+                        value={form.confirmPassword}
+                        onChange={updateForm}
+                        placeholder="Re-enter your password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="password-toggle"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
+                      </button>
+                    </div>
+                  </label>
+                </div>
+                {form.password && (
+                  <div className={`password-strength ${passwordStrong ? 'strong' : form.password.length >= 6 ? 'medium' : 'weak'}`}>
+                    <span>Password strength: {passwordStrong ? 'Strong' : form.password.length >= 6 ? 'Medium' : 'Weak'}</span>
+                  </div>
+                )}
+                {form.confirmPassword && form.password !== form.confirmPassword && (
+                  <small className="field-error-text">Passwords do not match.</small>
                 )}
               </div>
-              <h4>{role === 'trainer' ? 'Your expertise' : 'Areas you are interested in'} <span>Select 3 to 10</span></h4>
-              <div className="chip-grid">
-                {(role === 'trainer' ? trainerSkills : signupSkills).map((skill) => (
-                  <button type="button" className={selectedSkills.includes(skill) ? 'chip selected' : 'chip'} onClick={() => toggle(skill, setSelectedSkills, selectedSkills)} key={skill}>
-                    {selectedSkills.includes(skill) && '✓ '}{skill}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {step === 4 && (
-            <div className="signup-step review-step">
-              <h3>Review your account</h3>
-              <p className="step-copy">Make sure everything looks right before creating your profile.</p>
-              <Review title="ACCOUNT" value={role === 'trainer' ? 'Trainer' : 'Trainee'} onEdit={() => setStep(1)} />
-              <Review title="PERSONAL INFORMATION" value={`${form.firstName} ${form.lastName} · ${form.email}${form.mobile ? ` · ${form.mobile}` : ''}`} onEdit={() => setStep(2)} />
-              <Review title="PROFILE" value={`${form.organization || 'Organization not added'} · ${form.designation || 'Role not added'}`} onEdit={() => setStep(3)} />
-              <div className="review-block">
-                <div>
-                  <b>COMPETENCIES</b>
-                  <div className="review-chips">
-                    {selectedSkills.map((skill) => <span key={skill}>{skill}</span>)}
-                  </div>
-                </div>
-                <button onClick={() => setStep(3)}>Edit</button>
-              </div>
-            </div>
-          )}
-
-          <div className="signup-actions">
-            {step > 1 && <button className="btn-secondary-action" onClick={previous}>← Back</button>}
-            {step < 4 ? (
-              <button className="btn-primary-action" disabled={!canContinue} onClick={next}>Continue →</button>
-            ) : (
-              <button className="btn-primary-action" disabled={loading} onClick={handleCreateAccount}>
-                {loading ? 'Creating account...' : 'Create Account →'}
-              </button>
             )}
+
+            {step === 3 && (
+              <div className="signup-step">
+                <h3>{role === 'trainer' ? 'Build your professional profile' : 'Build your learning profile'}</h3>
+                <p className="step-copy">Personalize your experience with a few profile details.</p>
+                <div className="field-grid">
+                  <Field label="Organization / Institution" name="organization" value={form.organization} onChange={updateForm} placeholder="e.g. IMD New Delhi" />
+                  <Field label={role === 'trainer' ? 'Designation' : 'Designation / Role'} name="designation" value={form.designation} onChange={updateForm} placeholder="e.g. Meteorologist" />
+                  {role === 'trainer' ? (
+                    <>
+                      <Field label="Years of Experience" name="experience" value={form.experience} onChange={updateForm} placeholder="e.g. 5 years" />
+                      <Field label="Highest Qualification" name="qualification" value={form.qualification} onChange={updateForm} placeholder="e.g. Master's degree" />
+                    </>
+                  ) : (
+                    <Field label="Current Skill Level" name="level" value={form.level} onChange={updateForm} options={['Beginner', 'Intermediate', 'Advanced']} />
+                  )}
+                </div>
+                <h4>{role === 'trainer' ? 'Your expertise' : 'Areas you are interested in'} <span>Select 3 to 10</span></h4>
+                <div className="chip-grid">
+                  {(role === 'trainer' ? trainerSkills : signupSkills).map((skill) => (
+                    <button type="button" className={selectedSkills.includes(skill) ? 'chip selected' : 'chip'} onClick={() => toggle(skill, setSelectedSkills, selectedSkills)} key={skill}>
+                      {selectedSkills.includes(skill) && '✓ '}{skill}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="signup-step review-step">
+                <h3>Review your account</h3>
+                <p className="step-copy">Make sure everything looks right before creating your profile.</p>
+                <Review title="ACCOUNT" value={role === 'trainer' ? 'Trainer' : 'Trainee'} onEdit={() => setStep(1)} />
+                <Review title="PERSONAL INFORMATION" value={`${form.firstName} ${form.lastName} · ${form.email}${form.mobile ? ` · ${form.mobile}` : ''}`} onEdit={() => setStep(2)} />
+                <Review title="PROFILE" value={`${form.organization || 'Organization not added'} · ${form.designation || 'Role not added'}`} onEdit={() => setStep(3)} />
+                <div className="review-block">
+                  <div>
+                    <b>COMPETENCIES</b>
+                    <div className="review-chips">
+                      {selectedSkills.map((skill) => <span key={skill}>{skill}</span>)}
+                    </div>
+                  </div>
+                  <button onClick={() => setStep(3)}>Edit</button>
+                </div>
+              </div>
+            )}
+
+            <div className="signup-actions">
+              {step > 1 && <button className="btn-secondary-action" onClick={previous}>← Back</button>}
+              {step < 4 ? (
+                <button className="btn-primary-action" disabled={!canContinue} onClick={next}>Continue →</button>
+              ) : (
+                <button className="btn-primary-action" disabled={loading} onClick={handleCreateAccount}>
+                  {loading ? 'Creating account...' : 'Create Account →'}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-)
+  )
 }
 
-function RoleOption({ selected, icon, title, text, onClick }) { 
+function RoleOption({ selected, icon, title, text, onClick }) {
   return (
     <button type="button" className={selected ? 'role-option selected' : 'role-option'} onClick={onClick}>
       <span className="role-option-icon">{icon}</span>
@@ -1218,10 +1220,10 @@ function RoleOption({ selected, icon, title, text, onClick }) {
         <em>{selected ? '✓ Selected' : 'Select this role'}</em>
       </span>
     </button>
-  ) 
+  )
 }
 
-function Field({ label, name, type = 'text', value, onChange, placeholder, options }) { 
+function Field({ label, name, type = 'text', value, onChange, placeholder, options }) {
   return (
     <label className="signup-field">
       {label}
@@ -1233,10 +1235,10 @@ function Field({ label, name, type = 'text', value, onChange, placeholder, optio
         <input name={name} type={type} value={value} onChange={onChange} placeholder={placeholder} required={['firstName', 'lastName', 'email', 'password', 'confirmPassword'].includes(name)} />
       )}
     </label>
-  ) 
+  )
 }
 
-function Review({ title, value, onEdit }) { 
+function Review({ title, value, onEdit }) {
   return (
     <div className="review-block">
       <div>
@@ -1245,7 +1247,7 @@ function Review({ title, value, onEdit }) {
       </div>
       <button onClick={onEdit}>Edit</button>
     </div>
-  ) 
+  )
 }
 
 const dashboardCourses = [
@@ -1257,458 +1259,13 @@ const dashboardSkills = [['Python', 88, 'Strong'], ['Meteorology', 81, 'Strong']
 const dashboardTrainers = [['Dr. Rahul Sharma', 'Meteorology', 'Weather Data Analysis', 'Python', '92%'], ['Dr. R. Verma', 'Climate Science', 'GIS', 'Remote Sensing', '86%'], ['Dr. P. Mehta', 'Data Science', 'Machine Learning', 'Scientific Computing', '81%']]
 
 function TraineeDashboard({ onBack }) {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const [navSection, setNavSection] = useState('Dashboard')
-  const [courseTab, setCourseTab] = useState('All')
-  const [noticeOpen, setNoticeOpen] = useState(false)
-  const [search, setSearch] = useState('')
-  const [courses] = useState(dashboardCourses)
-
-  const openTrainerProfile = () => { window.location.hash = '#trainer-profile' }
-  const filteredCourses = courses.filter(([title]) => !search || title.toLowerCase().includes(search.toLowerCase())).filter(([, , progress]) => courseTab === 'All' || (courseTab === 'Completed' ? progress === 100 : progress < 100))
-
-  const navItems = [
-    ['▦', 'Dashboard'],
-    ['▱', 'My Learning'],
-    ['◫', 'Course Catalog'],
-    ['▤', 'Assessments'],
-    ['◎', 'Competencies'],
-    ['♟', 'Trainers'],
-    ['▣', 'Certificates'],
-    ['◌', 'Announcements']
-  ]
-  const navBottomItems = [
-    ['?', 'Help & Support'],
-    ['⚙', 'Settings']
-  ]
-
   return (
-    <div className="trainee-dashboard">
-      <aside className={drawerOpen ? 'dashboard-sidebar open' : 'dashboard-sidebar'}>
-        <div className="dashboard-brand">
-          <Logo onClick={onBack} />
-          <small>TRAINEE PORTAL</small>
-        </div>
-        <nav className="dashboard-nav">
-          {navItems.map(([icon, label]) => (
-            <button
-              className={navSection === label ? 'active' : ''}
-              key={label}
-              onClick={() => {
-                if (label === 'Trainers') {
-                  openTrainerProfile()
-                } else {
-                  setNavSection(label)
-                }
-                setDrawerOpen(false)
-              }}
-            >
-              <span>{icon}</span>{label}
-            </button>
-          ))}
-          <hr />
-          {navBottomItems.map(([icon, label]) => (
-            <button
-              className={navSection === label ? 'active' : ''}
-              key={label}
-              onClick={() => {
-                setNavSection(label)
-                setDrawerOpen(false)
-              }}
-            >
-              <span>{icon}</span>{label}
-            </button>
-          ))}
-          <button onClick={onBack}><span>←</span>Logout</button>
-        </nav>
-        <div className="sidebar-profile clickable-profile-trigger" onClick={openTrainerProfile} title="View Profile">
-          <div className="avatar">AJ</div>
-          <div>
-            <strong>Aditya Jaiswal</strong>
-            <small>Trainee · Met. Division</small>
-            <small className="profile-badge-link">View Full Profile ↗</small>
-          </div>
-          <span className="profile-mini-progress"><i style={{ width: '85%' }} /></span>
-          <small>Profile 85% complete</small>
-        </div>
-      </aside>
-
-      <div className="dashboard-main">
-        <header className="dashboard-header">
-          <button className="dashboard-menu" onClick={() => setDrawerOpen(!drawerOpen)}>☰</button>
-          <div className="dashboard-breadcrumb">
-            Home <span>/</span> Trainee Portal {navSection !== 'Dashboard' && <><span>/</span> <b>{navSection}</b></>}
-          </div>
-          <div className="dashboard-header-actions">
-            <label className="dashboard-search">
-              ⌕
-              <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search courses, skills, trainers..." />
-            </label>
-            <button className="notification-button" onClick={() => setNoticeOpen(!noticeOpen)}>
-              ♧<i>3</i>
-            </button>
-            <div className="header-user clickable-profile-trigger" onClick={openTrainerProfile} title="View Profile">
-              <div className="avatar">AJ</div>
-              <span><strong>Aditya Jaiswal</strong><small>Trainee ↗</small></span>
-            </div>
-          </div>
-          {noticeOpen && (
-            <div className="notification-pop">
-              <b>Notifications</b>
-              <span>New course available in NWP Climatology</span>
-              <span>Mid-term assessment scheduled for tomorrow</span>
-              <span>Profile is 85% complete</span>
-            </div>
-          )}
-        </header>
-
-        <main className="dashboard-content">
-          {navSection === 'Dashboard' && (
-            <div>
-              <div className="dashboard-welcome">
-                <div>
-                  <span className="dashboard-eyebrow">TRAINEE DASHBOARD</span>
-                  <h1>Good morning, Aditya <em>👋</em></h1>
-                  <p>Continue your learning journey and strengthen your competencies.</p>
-                </div>
-                <div className="completion-ring">
-                  <strong>85%</strong>
-                  <small>Profile<br />complete</small>
-                </div>
-              </div>
-
-              <div className="dashboard-stats">
-                <Stat icon="▱" label="Courses Enrolled" value="06" note="2 completed" />
-                <Stat icon="✓" label="Courses Completed" value="02" note="Keep going" />
-                <Stat icon="◷" label="Learning Hours" value="24.5" suffix="hrs" note="This month" />
-                <Stat icon="◎" label="Competency Score" value="74%" note="+8% this month" />
-              </div>
-
-              <section className="dashboard-feature">
-                <div>
-                  <span className="section-kicker">CONTINUE LEARNING</span>
-                  <h2>Numerical Weather Prediction</h2>
-                  <p className="feature-category">Meteorology · Module 4 of 8</p>
-                  <div className="feature-progress">
-                    <span style={{ width: '68%' }} />
-                  </div>
-                  <div className="feature-meta">
-                    <b>68%</b>
-                    <span>Atmospheric Models · Last accessed 2 hours ago</span>
-                  </div>
-                  <button className="btn-primary-action" onClick={() => setNavSection('My Learning')}>Continue Learning →</button>
-                </div>
-                <div className="weather-visual">
-                  <span>☁</span>
-                  <b>ATMOSPHERIC<br />MODELS</b>
-                  <i>◌</i>
-                </div>
-              </section>
-
-              <div className="dashboard-grid-two">
-                <section className="dashboard-panel courses-panel">
-                  <PanelTitle title="My Courses" subtitle="Your active learning paths" action="View All Courses →" />
-                  <div className="dashboard-tabs">
-                    {['All', 'In Progress', 'Completed'].map((tab) => (
-                      <button className={courseTab === tab ? 'active' : ''} onClick={() => setCourseTab(tab)} key={tab}>{tab}</button>
-                    ))}
-                  </div>
-                  <div className="course-list">
-                    {filteredCourses.map(([title, category, progress, instructor]) => (
-                      <CourseRow title={title} category={category} progress={progress} instructor={instructor} key={title} />
-                    ))}
-                  </div>
-                </section>
-
-                <section className="dashboard-panel competency-panel">
-                  <PanelTitle title="Your Competency Profile" subtitle="Track strengths and areas to improve" action="View Full Profile →" />
-                  <div className="competency-score">
-                    <strong>74%</strong>
-                    <span>Overall competency score</span>
-                  </div>
-                  {dashboardSkills.map(([name, progress, status]) => (
-                    <div className="skill-row" key={name}>
-                      <div>
-                        <b>{name}</b>
-                        <span className={status === 'Strong' ? 'good' : status === 'Developing' ? 'developing' : 'attention'}>{status}</span>
-                        <strong>{progress}%</strong>
-                      </div>
-                      <span className="skill-track"><i style={{ width: `${progress}%` }} /></span>
-                    </div>
-                  ))}
-                </section>
-              </div>
-
-              <div className="dashboard-grid-two">
-                <section className="dashboard-panel gap-panel">
-                  <PanelTitle title="Areas to Improve" subtitle="A focused next step for your growth" />
-                  <div className="gap-highlight">
-                    <div className="gap-icon">✦</div>
-                    <div>
-                      <h3>Machine Learning</h3>
-                      <p>Current <b>42%</b> <span>→</span> Target <b>70%</b></p>
-                      <div className="gap-track"><i style={{ width: '42%' }} /></div>
-                    </div>
-                  </div>
-                  <p className="gap-note">Improving this competency can unlock more advanced learning opportunities.</p>
-                  <button className="text-button" onClick={() => setNavSection('Competencies')}>Improve This Skill →</button>
-                </section>
-
-                <section className="dashboard-panel recommendations-panel">
-                  <PanelTitle title="Recommended for You" subtitle="Based on your interests and progress" action="Explore More Courses →" />
-                  <div className="recommendation-list">
-                    <Recommendation icon="◈" title="Weather Data Analysis" level="Intermediate" time="4.5 hrs" match="92%" />
-                    <Recommendation icon="▥" title="Climate Data Visualization" level="Intermediate" time="3.2 hrs" match="87%" />
-                    <Recommendation icon="◇" title="Python for Scientific Computing" level="Advanced" time="6.5 hrs" match="81%" />
-                  </div>
-                </section>
-              </div>
-
-              <div className="dashboard-grid-two">
-                <section className="dashboard-panel trainers-panel">
-                  <PanelTitle title="Recommended Trainers" subtitle="Connect with trainers who match your goals" action="View All Trainers →" />
-                  <div className="trainer-list">
-                    {dashboardTrainers.map(([name, one, two, three, match]) => (
-                      <div className="trainer-row" key={name} style={{ cursor: 'pointer' }} onClick={openTrainerProfile}>
-                        <div className="trainer-avatar">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div>
-                        <div>
-                          <h3>{name}</h3>
-                          <p>{one} · {two}</p>
-                          <div className="trainer-tags"><span>{three}</span><span>Competency Match</span></div>
-                        </div>
-                        <strong>{match}</strong>
-                        <button className="text-button" onClick={(e) => { e.stopPropagation(); openTrainerProfile(); }}>View Profile</button>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-
-                <section className="dashboard-panel assessments-panel">
-                  <PanelTitle title="Upcoming Assessments" subtitle="Stay on top of your learning goals" action="View All →" />
-                  {[
-                    ['Python Fundamentals', '15 Questions', 'Due Tomorrow', 'Due Soon'],
-                    ['Weather Data Analysis', '20 Questions', 'Due 15 Sep', 'Upcoming'],
-                    ['GIS Basics', '10 Questions', 'Due 18 Sep', 'Upcoming']
-                  ].map(([title, questions, due, status]) => (
-                    <div className="assessment-row" key={title}>
-                      <span className="assessment-icon">▤</span>
-                      <div>
-                        <b>{title}</b>
-                        <small>{questions} · {due}</small>
-                      </div>
-                      <em className={status === 'Due Soon' ? 'due' : ''}>{status}</em>
-                    </div>
-                  ))}
-                </section>
-              </div>
-            </div>
-          )}
-
-          {(navSection === 'My Learning' || navSection === 'Course Catalog') && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>{navSection === 'My Learning' ? 'My Enrolled Courses & Modules' : 'Course Catalog & Learning Modules'}</h1>
-                  <p>Explore capacity building courses aligned with your competency profile and departmental goals.</p>
-                </div>
-              </div>
-              <div className="dashboard-tabs">
-                {['All', 'In Progress', 'Completed'].map((tab) => (
-                  <button className={courseTab === tab ? 'active' : ''} onClick={() => setCourseTab(tab)} key={tab}>{tab}</button>
-                ))}
-              </div>
-              <div className="course-list">
-                {filteredCourses.map(([title, category, progress, instructor]) => (
-                  <CourseRow title={title} category={category} progress={progress} instructor={instructor} key={title} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {navSection === 'Assessments' && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>My Assessments & Quizzes</h1>
-                  <p>Demonstrate your understanding and unlock verified competency badges.</p>
-                </div>
-              </div>
-              <div className="course-list">
-                {[
-                  ['Python Fundamentals Mid-Term', '15 Questions · 30 mins', 'Due Tomorrow', 'Due Soon'],
-                  ['Weather Data Analysis Practical Test', '20 Questions · 45 mins', 'Due 15 Sep', 'Upcoming'],
-                  ['GIS Spatial Analytics Diagnostic', '10 Questions · 20 mins', 'Due 18 Sep', 'Upcoming'],
-                  ['Numerical Weather Prediction Diagnostic', '25 Questions · 60 mins', 'Completed · Score: 88%', 'Completed']
-                ].map(([title, detail, due, status]) => (
-                  <div className="assessment-row" key={title} style={{ padding: '16px 18px' }}>
-                    <span className="assessment-icon" style={{ fontSize: 20 }}>▤</span>
-                    <div>
-                      <b style={{ fontSize: 14 }}>{title}</b>
-                      <small style={{ fontSize: 12 }}>{detail} · {due}</small>
-                    </div>
-                    <em className={status === 'Due Soon' ? 'due' : status === 'Completed' ? 'good' : ''}>{status}</em>
-                    <button className="btn-secondary-action small">{status === 'Completed' ? 'Review Score' : 'Start Assessment →'}</button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {navSection === 'Competencies' && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>My Competency Profile & Gap Diagnosis</h1>
-                  <p>Real-time competency mapping evaluated against institutional benchmarks.</p>
-                </div>
-              </div>
-              <div className="portal-kpi-row">
-                <div className="portal-kpi-card">
-                  <div className="kpi-icon">◎</div>
-                  <div className="kpi-label">Overall Score</div>
-                  <div className="kpi-val">74%</div>
-                  <div className="kpi-note">+8% this month</div>
-                </div>
-                <div className="portal-kpi-card">
-                  <div className="kpi-icon">✓</div>
-                  <div className="kpi-label">Strong Skills</div>
-                  <div className="kpi-val">3 of 5</div>
-                  <div className="kpi-note">Exceeds benchmark</div>
-                </div>
-                <div className="portal-kpi-card">
-                  <div className="kpi-icon">✦</div>
-                  <div className="kpi-label">Top Recommendation</div>
-                  <div className="kpi-val">Machine Learning</div>
-                  <div className="kpi-note">Priority growth area</div>
-                </div>
-              </div>
-              <div className="portal-two-col-grid" style={{ marginTop: 20 }}>
-                <div>
-                  <h3 style={{ color: '#fff', fontSize: 16, marginBottom: 14 }}>Tracked Competency Levels</h3>
-                  {dashboardSkills.map(([name, progress, status]) => (
-                    <div className="portal-competency-card" key={name}>
-                      <div className="portal-comp-header">
-                        <div>
-                          <strong>{name}</strong>
-                          <span className={`portal-badge ${status === 'Strong' ? 'good' : status === 'Developing' ? 'draft' : 'urgent'}`} style={{ marginLeft: 10 }}>
-                            {status}
-                          </span>
-                        </div>
-                        <span>{progress}%</span>
-                      </div>
-                      <div className="portal-progress-track">
-                        <div className="portal-progress-fill" style={{ width: `${progress}%`, background: progress >= 75 ? 'linear-gradient(90deg, #2583ff, #2cd0d3)' : progress >= 60 ? 'linear-gradient(90deg, #eab308, #ca8a04)' : 'linear-gradient(90deg, #ef4444, #dc2626)' }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="portal-info-card">
-                  <h3>Intelligent Skill Gap Recommendation</h3>
-                  <p>Strengthening Machine Learning from 42% to 70% will qualify you for the upcoming AI Weather Nowcasting Specialist Cohort.</p>
-                  <button className="btn-primary-action" onClick={() => setNavSection('Course Catalog')}>Explore Recommended Modules →</button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {navSection === 'Certificates' && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>My Credentials & Certificates</h1>
-                  <p>Verified institutional certifications issued by CapacityConnect.</p>
-                </div>
-              </div>
-              <div className="portal-grid-cards">
-                <div className="portal-card">
-                  <div>
-                    <span className="portal-badge good">Verified Certificate</span>
-                    <h3 style={{ color: '#fff', fontSize: 16, margin: '12px 0 6px' }}>Python Fundamentals for Meteorology</h3>
-                    <p style={{ color: '#8492a6', fontSize: 13 }}>Completed with 86% Distinction · Issued Aug 2026</p>
-                  </div>
-                  <button className="btn-secondary-action small" style={{ marginTop: 16 }}>Download Certificate ↗</button>
-                </div>
-                <div className="portal-card">
-                  <div>
-                    <span className="portal-badge good">Verified Certificate</span>
-                    <h3 style={{ color: '#fff', fontSize: 16, margin: '12px 0 6px' }}>Basic GIS & Satellite Mapping</h3>
-                    <p style={{ color: '#8492a6', fontSize: 13 }}>Completed with 82% Distinction · Issued Jul 2026</p>
-                  </div>
-                  <button className="btn-secondary-action small" style={{ marginTop: 16 }}>Download Certificate ↗</button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {navSection === 'Announcements' && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>Cohort Announcements</h1>
-                  <p>Official notices and schedule updates from instructors and administrators.</p>
-                </div>
-              </div>
-              <div className="course-list">
-                {[
-                  ['Mid-Term Practical Evaluation Scheduled', 'Numerical Weather Prediction cohort will conduct live Doppler radar interpretation sessions this Friday.', '2 hours ago'],
-                  ['New Cloud HPC Compute Access Provisioned', 'All trainees have been allocated cluster hours for climate model simulation runs.', '1 day ago'],
-                  ['Guest Lecture: Advanced AI Nowcasting', 'Dr. Rahul Sharma will present end-to-end meteorological forecasting workflows.', '3 days ago']
-                ].map(([title, msg, time]) => (
-                  <div className="portal-card" key={title} style={{ marginBottom: 12 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <h3 style={{ color: '#fff', fontSize: 15, margin: 0 }}>{title}</h3>
-                      <small style={{ color: '#8492a6', fontSize: 11 }}>{time}</small>
-                    </div>
-                    <p style={{ color: '#cbd5e1', fontSize: 13, margin: '8px 0 0', lineHeight: 1.5 }}>{msg}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {navSection === 'Help & Support' && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>Help & Technical Support</h1>
-                  <p>Frequently asked questions and support contacts for learners.</p>
-                </div>
-              </div>
-              <div className="portal-info-card">
-                <h3>Learner Support Desk</h3>
-                <p>Have issues with course materials, assessments, or cloud clusters? Reach out to support@capacityconnect.gov.in</p>
-              </div>
-            </div>
-          )}
-
-          {navSection === 'Settings' && (
-            <div className="portal-view-container">
-              <div className="portal-page-header">
-                <div className="portal-title-block">
-                  <h1>Account Settings</h1>
-                  <p>Manage your learner profile and preferences.</p>
-                </div>
-              </div>
-              <div className="portal-settings-card">
-                <h3>Personal Information</h3>
-                <div className="portal-form-group">
-                  <label>Full Name</label>
-                  <input defaultValue="Aditya Jaiswal" readOnly />
-                </div>
-                <div className="portal-form-group">
-                  <label>Role / Department</label>
-                  <input defaultValue="Trainee · Meteorology Division" readOnly />
-                </div>
-                <div className="portal-form-group">
-                  <label>Email Address</label>
-                  <input defaultValue="aditya.jaiswal@gov.in" readOnly />
-                </div>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+    <TraineePortal
+      onBack={onBack}
+      onOpenTrainerProfile={() => {
+        window.location.hash = '#trainer-profile'
+      }}
+    />
   )
 }
 
@@ -1731,13 +1288,13 @@ function TrainerDashboard({ onBack }) {
 
   useEffect(() => {
     let isMounted = true
-    api.getCourses().then(data => { if (isMounted && data) setCourses(data) }).catch(() => {})
-    api.getTrainees().then(data => { if (isMounted && data) setTrainees(data) }).catch(() => {})
-    api.getAssessments().then(data => { if (isMounted && data) setAssessments(data) }).catch(() => {})
-    api.getCompetencies().then(data => { if (isMounted && data) setCompetencies(data) }).catch(() => {})
-    api.getContent().then(data => { if (isMounted && data) setContentList(data) }).catch(() => {})
-    api.getAnnouncements().then(data => { if (isMounted && data) setAnnouncements(data) }).catch(() => {})
-    api.getFeedback().then(data => { if (isMounted && data) setFeedbackList(data) }).catch(() => {})
+    api.getCourses().then(data => { if (isMounted && data) setCourses(data) }).catch(() => { })
+    api.getTrainees().then(data => { if (isMounted && data) setTrainees(data) }).catch(() => { })
+    api.getAssessments().then(data => { if (isMounted && data) setAssessments(data) }).catch(() => { })
+    api.getCompetencies().then(data => { if (isMounted && data) setCompetencies(data) }).catch(() => { })
+    api.getContent().then(data => { if (isMounted && data) setContentList(data) }).catch(() => { })
+    api.getAnnouncements().then(data => { if (isMounted && data) setAnnouncements(data) }).catch(() => { })
+    api.getFeedback().then(data => { if (isMounted && data) setFeedbackList(data) }).catch(() => { })
     return () => { isMounted = false }
   }, [])
 
@@ -1750,19 +1307,19 @@ function TrainerDashboard({ onBack }) {
 
   const handleActionSuccess = async (msg, newItem, type) => {
     if (newItem && type === 'course') {
-      try { await api.createCourse(newItem) } catch {}
+      try { await api.createCourse(newItem) } catch { }
       setCourses(prev => [newItem, ...prev])
     }
     if (newItem && type === 'assessment') {
-      try { await api.createAssessment(newItem) } catch {}
+      try { await api.createAssessment(newItem) } catch { }
       setAssessments(prev => [newItem, ...prev])
     }
     if (newItem && type === 'announcement') {
-      try { await api.createAnnouncement(newItem) } catch {}
+      try { await api.createAnnouncement(newItem) } catch { }
       setAnnouncements(prev => [newItem, ...prev])
     }
     if (newItem && type === 'content') {
-      try { await api.createContent(newItem) } catch {}
+      try { await api.createContent(newItem) } catch { }
       setContentList(prev => [newItem, ...prev])
     }
     showToast(msg)
@@ -2181,9 +1738,9 @@ function AdminDashboard({ onBack }) {
 
               <div className="admin-primary-grid">
                 <section className="admin-panel activity-admin">
-                  <AdminTitle 
-                    title="Platform Learning Activity" 
-                    subtitle="Learning activity across the institution" 
+                  <AdminTitle
+                    title="Platform Learning Activity"
+                    subtitle="Learning activity across the institution"
                     action={
                       <select value={period} onChange={(event) => setPeriod(event.target.value)}>
                         <option>7 Days</option>
@@ -2191,7 +1748,7 @@ function AdminDashboard({ onBack }) {
                         <option>6 Months</option>
                         <option>1 Year</option>
                       </select>
-                    } 
+                    }
                   />
                   <div className="admin-chart">
                     <div className="admin-chart-bars">
@@ -2582,7 +2139,7 @@ function AdminDashboard({ onBack }) {
   )
 }
 
-function AdminKpi({ icon, label, value, change }) { 
+function AdminKpi({ icon, label, value, change }) {
   return (
     <article className="admin-kpi">
       <span>{icon}</span>
@@ -2591,10 +2148,10 @@ function AdminKpi({ icon, label, value, change }) {
       <p>{change}</p>
       <i />
     </article>
-  ) 
+  )
 }
 
-function AdminTitle({ title, subtitle, action }) { 
+function AdminTitle({ title, subtitle, action }) {
   return (
     <div className="admin-title">
       <div>
@@ -2603,10 +2160,10 @@ function AdminTitle({ title, subtitle, action }) {
       </div>
       {typeof action === 'string' ? <button className="text-button">{action} →</button> : action}
     </div>
-  ) 
+  )
 }
 
-function TrainerStat({ icon, label, value, note }) { 
+function TrainerStat({ icon, label, value, note }) {
   return (
     <article className="trainer-stat">
       <span>{icon}</span>
@@ -2614,10 +2171,10 @@ function TrainerStat({ icon, label, value, note }) {
       <strong>{value}</strong>
       <p>{note}</p>
     </article>
-  ) 
+  )
 }
 
-function TrainerPanelTitle({ title, subtitle, action }) { 
+function TrainerPanelTitle({ title, subtitle, action }) {
   return (
     <div className="trainer-panel-title">
       <div>
@@ -2626,10 +2183,10 @@ function TrainerPanelTitle({ title, subtitle, action }) {
       </div>
       {action && <button className="text-button">{action}</button>}
     </div>
-  ) 
+  )
 }
 
-function Attention({ name, course, progress, score, skill, onView }) { 
+function Attention({ name, course, progress, score, skill, onView }) {
   return (
     <div className="attention-row">
       <div className="trainer-avatar">{name.split(' ').map((part) => part[0]).join('')}</div>
@@ -2641,10 +2198,10 @@ function Attention({ name, course, progress, score, skill, onView }) {
       </div>
       <button className="text-button" onClick={onView}>View →</button>
     </div>
-  ) 
+  )
 }
 
-function Stat({ icon, label, value, suffix, note }) { 
+function Stat({ icon, label, value, suffix, note }) {
   return (
     <article className="stat-card">
       <span>{icon}</span>
@@ -2652,10 +2209,10 @@ function Stat({ icon, label, value, suffix, note }) {
       <strong>{value} <em>{suffix}</em></strong>
       <p>{note}</p>
     </article>
-  ) 
+  )
 }
 
-function PanelTitle({ title, subtitle, action }) { 
+function PanelTitle({ title, subtitle, action }) {
   return (
     <div className="panel-title">
       <div>
@@ -2664,10 +2221,10 @@ function PanelTitle({ title, subtitle, action }) {
       </div>
       {action && <button className="text-button">{action}</button>}
     </div>
-  ) 
+  )
 }
 
-function CourseRow({ title, category, progress, instructor }) { 
+function CourseRow({ title, category, progress, instructor }) {
   return (
     <div className="course-row">
       <span className="course-cover">{progress === 100 ? '✓' : '◈'}</span>
@@ -2679,10 +2236,10 @@ function CourseRow({ title, category, progress, instructor }) {
       <strong>{progress}%</strong>
       <button className="text-button">{progress === 100 ? 'View' : 'Continue'}</button>
     </div>
-  ) 
+  )
 }
 
-function Recommendation({ icon, title, level, time, match }) { 
+function Recommendation({ icon, title, level, time, match }) {
   return (
     <div className="recommendation-row">
       <span>{icon}</span>
@@ -2692,7 +2249,7 @@ function Recommendation({ icon, title, level, time, match }) {
       </div>
       <strong>{match}<small>relevance</small></strong>
     </div>
-  ) 
+  )
 }
 
 export default App

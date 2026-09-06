@@ -132,21 +132,30 @@ class ApiClient {
       let resolvedRole = 'trainee'
       let resolvedName = normalizedEmail.split('@')[0] || 'User'
 
-      if (existingUser && existingUser.role) {
+      if (credentials.role) {
+        resolvedRole = credentials.role
+      } else if (existingUser && existingUser.role) {
         resolvedRole = existingUser.role
         resolvedName = `${existingUser.firstName || ''} ${existingUser.lastName || ''}`.trim() || resolvedName
       } else if (normalizedEmail.includes('admin')) {
         resolvedRole = 'admin'
         resolvedName = 'Institutional Admin'
       } else if (
+        normalizedEmail.includes('priya') ||
+        normalizedEmail.includes('nair') ||
         normalizedEmail.includes('trainer') ||
-        normalizedEmail.includes('dr.') ||
-        normalizedEmail.includes('rahul') ||
-        normalizedEmail.includes('sharma') ||
-        normalizedEmail.includes('faculty')
+        normalizedEmail.includes('faculty') ||
+        normalizedEmail.includes('dr.rahul')
       ) {
         resolvedRole = 'trainer'
-        resolvedName = 'Dr. Rahul Sharma'
+        resolvedName = 'Dr. Priya Nair'
+      } else if (
+        normalizedEmail.includes('ananya') ||
+        normalizedEmail.includes('trainee') ||
+        normalizedEmail.includes('rahul.sharma')
+      ) {
+        resolvedRole = 'trainee'
+        resolvedName = 'Ananya Verma'
       }
 
       const user = {
