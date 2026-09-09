@@ -62,7 +62,7 @@ export function TrainerContentView({ contentList, onOpenModal }) {
             {filtered.map((item) => (
               <tr key={item.id}>
                 <td>
-                  <strong style={{ color: '#f2f8ff', fontSize: 13 }}>{item.title}</strong>
+                  <strong style={{ color: '#16251B', fontSize: 13 }}>{item.title}</strong>
                 </td>
                 <td>
                   <span className="portal-badge good" style={{ fontSize: 11 }}>
@@ -70,16 +70,16 @@ export function TrainerContentView({ contentList, onOpenModal }) {
                   </span>
                 </td>
                 <td>
-                  <span style={{ color: '#97bad9', fontSize: 12 }}>{item.course}</span>
+                  <span style={{ color: '#485563', fontSize: 12 }}>{item.course}</span>
                 </td>
                 <td>
-                  <span style={{ color: '#cbdff5', fontSize: 12 }}>{item.size}</span>
+                  <span style={{ color: '#16251B', fontSize: 12 }}>{item.size}</span>
                 </td>
                 <td>
-                  <b style={{ color: '#38bdf8', fontSize: 13 }}>{item.downloads}</b>
+                  <b style={{ color: '#2F5233', fontSize: 13 }}>{item.downloads}</b>
                 </td>
                 <td>
-                  <span style={{ color: '#7e9db8', fontSize: 12 }}>{item.updated}</span>
+                  <span style={{ color: '#485563', fontSize: 12 }}>{item.updated}</span>
                 </td>
                 <td style={{ textAlign: 'right' }}>
                   <button

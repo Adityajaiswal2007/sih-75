@@ -97,10 +97,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
       <section className="trainee-metrics-grid">
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
-            <div className="trainee-metric-icon" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8' }}>
+            <div className="trainee-metric-icon" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#2F5233' }}>
               ▱
             </div>
-            <span style={{ fontSize: 11, color: '#38BDF8', fontWeight: 600 }}>Active</span>
+            <span style={{ fontSize: 11, color: '#2F5233', fontWeight: 600 }}>Active</span>
           </div>
           <div className="trainee-metric-val">{traineeUser.stats.enrolledCourses}</div>
           <div className="trainee-metric-label">Courses Enrolled</div>
@@ -108,10 +108,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
-            <div className="trainee-metric-icon" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#22C55E' }}>
+            <div className="trainee-metric-icon" style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#2F6B3C' }}>
               ✓
             </div>
-            <span style={{ fontSize: 11, color: '#22C55E', fontWeight: 600 }}>Completed</span>
+            <span style={{ fontSize: 11, color: '#2F6B3C', fontWeight: 600 }}>Completed</span>
           </div>
           <div className="trainee-metric-val">{traineeUser.stats.completedCourses}</div>
           <div className="trainee-metric-label">Courses Completed</div>
@@ -119,10 +119,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
-            <div className="trainee-metric-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#818CF8' }}>
+            <div className="trainee-metric-icon" style={{ background: 'rgba(99, 102, 241, 0.15)', color: '#527A5A' }}>
               ◷
             </div>
-            <span style={{ fontSize: 11, color: '#818CF8', fontWeight: 600 }}>Tracked</span>
+            <span style={{ fontSize: 11, color: '#527A5A', fontWeight: 600 }}>Tracked</span>
           </div>
           <div className="trainee-metric-val">{traineeUser.stats.learningHours}</div>
           <div className="trainee-metric-label">Learning Hours</div>
@@ -130,10 +130,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
-            <div className="trainee-metric-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B' }}>
+            <div className="trainee-metric-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#B58B32' }}>
               ★
             </div>
-            <span style={{ fontSize: 11, color: '#F59E0B', fontWeight: 600 }}>Top 10%</span>
+            <span style={{ fontSize: 11, color: '#B58B32', fontWeight: 600 }}>Top 10%</span>
           </div>
           <div className="trainee-metric-val">{traineeUser.stats.averageScore}%</div>
           <div className="trainee-metric-label">Average Score</div>
@@ -141,10 +141,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
-            <div className="trainee-metric-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#A78BFA' }}>
+            <div className="trainee-metric-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#6F9F70' }}>
               ◎
             </div>
-            <span style={{ fontSize: 11, color: '#A78BFA', fontWeight: 600 }}>+12% QoQ</span>
+            <span style={{ fontSize: 11, color: '#6F9F70', fontWeight: 600 }}>+12% QoQ</span>
           </div>
           <div className="trainee-metric-val">{traineeUser.stats.competencyProgress}%</div>
           <div className="trainee-metric-label">Competency Progress</div>
@@ -152,10 +152,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
-            <div className="trainee-metric-icon" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8' }}>
+            <div className="trainee-metric-icon" style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#2F5233' }}>
               ▣
             </div>
-            <span style={{ fontSize: 11, color: '#38BDF8', fontWeight: 600 }}>Verified</span>
+            <span style={{ fontSize: 11, color: '#2F5233', fontWeight: 600 }}>Verified</span>
           </div>
           <div className="trainee-metric-val">{traineeUser.stats.certificatesEarned}</div>
           <div className="trainee-metric-label">Certificates</div>
@@ -180,7 +180,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
           <div className="trainee-continue-card">
             <div className="trainee-continue-card-top">
               <span className="trainee-continue-badge">Active Module · 4 of 6</span>
-              <span style={{ fontSize: 12, color: '#94A3B8' }}>{primaryCourse.lastAccessed}</span>
+              <span style={{ fontSize: 12, color: '#485563' }}>{primaryCourse.lastAccessed}</span>
             </div>
             <h3 className="trainee-continue-title">{primaryCourse.title}</h3>
             <div className="trainee-continue-meta">
@@ -221,8 +221,8 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '12px 16px',
-                  background: 'rgba(10, 22, 38, 0.6)',
-                  border: '1px solid #1E334A',
+                  background: '#EEF6EA',
+                  border: '1px solid #D6E3D8',
                   borderRadius: 10
                 }}
               >
@@ -230,7 +230,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                   <span style={{ fontSize: 20 }}>{course.thumbnailIcon}</span>
                   <div>
                     <strong style={{ fontSize: 13, color: '#fff', display: 'block' }}>{course.title}</strong>
-                    <small style={{ fontSize: 11, color: '#94A3B8' }}>{course.category} · {course.progress}% completed</small>
+                    <small style={{ fontSize: 11, color: '#485563' }}>{course.category} · {course.progress}% completed</small>
                   </div>
                 </div>
                 <button
@@ -275,10 +275,10 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                     style={{
                       width: `${comp.level}%`,
                       background: comp.level >= 80
-                        ? 'linear-gradient(90deg, #3B82F6, #38BDF8)'
+                        ? 'linear-gradient(90deg, #2F5233, #2F5233)'
                         : comp.level >= 65
-                        ? 'linear-gradient(90deg, #6366F1, #8B5CF6)'
-                        : 'linear-gradient(90deg, #F59E0B, #EF4444)'
+                        ? 'linear-gradient(90deg, #527A5A, #6F9F70)'
+                        : 'linear-gradient(90deg, #B58B32, #B94A48)'
                     }}
                   />
                 </div>
@@ -297,8 +297,8 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
             justifyContent: 'space-between'
           }}>
             <div>
-              <strong style={{ fontSize: 13, color: '#A5B4FC', display: 'block' }}>Validate Next Competency</strong>
-              <span style={{ fontSize: 11, color: '#94A3B8' }}>Take diagnostic quiz to update your score</span>
+              <strong style={{ fontSize: 13, color: '#2F5233', display: 'block' }}>Validate Next Competency</strong>
+              <span style={{ fontSize: 11, color: '#485563' }}>Take diagnostic quiz to update your score</span>
             </div>
             <button
               className="trainee-btn-intel"
@@ -334,19 +334,19 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
             <div className="trainee-gap-numbers">
               <div className="trainee-gap-stat">
                 <small>Current</small>
-                <strong style={{ color: '#38BDF8' }}>{primaryGap.current}%</strong>
+                <strong style={{ color: '#2F5233' }}>{primaryGap.current}%</strong>
               </div>
-              <span style={{ color: '#64748B' }}>→</span>
+              <span style={{ color: '#718078' }}>→</span>
               <div className="trainee-gap-stat">
                 <small>Target</small>
-                <strong style={{ color: '#22C55E' }}>{primaryGap.target}%</strong>
+                <strong style={{ color: '#2F6B3C' }}>{primaryGap.target}%</strong>
               </div>
-              <span style={{ color: '#64748B' }}>·</span>
+              <span style={{ color: '#718078' }}>·</span>
               <div className="trainee-gap-stat">
                 <small>Gap</small>
-                <strong style={{ color: '#F59E0B' }}>{primaryGap.gap}%</strong>
+                <strong style={{ color: '#B58B32' }}>{primaryGap.gap}%</strong>
               </div>
-              <span style={{ color: '#64748B' }}>·</span>
+              <span style={{ color: '#718078' }}>·</span>
               <div className="trainee-gap-stat">
                 <small>Priority</small>
                 <strong style={{ color: primaryGap.priorityColor }}>{primaryGap.priority}</strong>
@@ -395,8 +395,8 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '14px 16px',
-                  background: trainer.isBestMatch ? 'rgba(99, 102, 241, 0.08)' : 'rgba(10, 22, 38, 0.6)',
-                  border: trainer.isBestMatch ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid #1E334A',
+                  background: trainer.isBestMatch ? '#E6F4EA' : '#FFFFFF',
+                  border: trainer.isBestMatch ? '1px solid #A7C957' : '1px solid #D6E3D8',
                   borderRadius: 12
                 }}
               >
@@ -406,19 +406,19 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                   </div>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <strong style={{ fontSize: 13.5, color: '#fff' }}>{trainer.name}</strong>
+                      <strong style={{ fontSize: 13.5, color: '#16251B' }}>{trainer.name}</strong>
                       {trainer.isBestMatch && (
-                        <span style={{ fontSize: 10, background: '#6366F1', color: '#fff', padding: '1px 6px', borderRadius: 10, fontWeight: 700 }}>
+                        <span style={{ fontSize: 10, background: '#2F5233', color: '#FFFFFF', padding: '1px 6px', borderRadius: 10, fontWeight: 700 }}>
                           Best Match
                         </span>
                       )}
                     </div>
-                    <small style={{ fontSize: 11.5, color: '#94A3B8', display: 'block' }}>{trainer.expertise}</small>
+                    <small style={{ fontSize: 11.5, color: '#485563', display: 'block' }}>{trainer.expertise}</small>
                   </div>
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: 13.5, fontWeight: 800, color: '#38BDF8', marginBottom: 4 }}>
+                  <div style={{ fontSize: 13.5, fontWeight: 800, color: '#2F5233', marginBottom: 4 }}>
                     {trainer.matchScore}% Match
                   </div>
                   <button

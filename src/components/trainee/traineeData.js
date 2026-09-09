@@ -64,7 +64,7 @@ export const skillGaps = [
     target: 90,
     gap: 14,
     priority: 'High',
-    priorityColor: '#F59E0B',
+    priorityColor: '#B58B32',
     domain: 'Meteorology',
     impact: 'Required for Severe Weather Nowcasting certification and automated alert pipeline development.',
     recommendedCourse: 'Advanced Weather Data Analysis',
@@ -83,8 +83,8 @@ export const skillGaps = [
     current: 43,
     target: 70,
     gap: 27,
-    priority: 'High',
-    priorityColor: '#EF4444',
+    priority: 'Critical',
+    priorityColor: '#B94A48',
     domain: 'AI/ML',
     impact: 'Prerequisite for automated radar precipitation estimation and convective storm classification.',
     recommendedCourse: 'Machine Learning for Meteorological Applications',
@@ -104,7 +104,7 @@ export const skillGaps = [
     target: 75,
     gap: 17,
     priority: 'Medium',
-    priorityColor: '#38BDF8',
+    priorityColor: '#2F5233',
     domain: 'Geospatial',
     impact: 'Crucial for hazard vulnerability mapping and multi-layer meteorological GIS overlay analysis.',
     recommendedCourse: 'Advanced GIS for Climate Risk Mapping',
@@ -124,7 +124,7 @@ export const skillGaps = [
     target: 85,
     gap: 14,
     priority: 'Medium',
-    priorityColor: '#38BDF8',
+    priorityColor: '#2F5233',
     domain: 'Analytics',
     impact: 'Enables long-term precipitation decadal variability studies and extreme event anomaly detection.',
     recommendedCourse: 'Statistical Climatology & Extremes Modeling',
@@ -768,7 +768,7 @@ export const mockAnnouncements = [
     id: 'anc-2',
     title: 'Assessment Deadline Updated: Python Mid-Term Diagnostic',
     category: 'Assessment',
-    categoryColor: '#F59E0B',
+    categoryColor: '#B58B32',
     date: 'Yesterday',
     author: 'Evaluation Board',
     summary: 'The submission window for the Python Fundamentals practical assessment has been extended by 48 hours to accommodate cloud cluster maintenance.',
@@ -778,7 +778,7 @@ export const mockAnnouncements = [
     id: 'anc-3',
     title: 'AI Trainer Recommendation Engine Upgrade',
     category: 'Platform',
-    categoryColor: '#6366F1',
+    categoryColor: '#527A5A',
     date: '3 days ago',
     author: 'CapacityConnect Tech Team',
     summary: 'The competency matching engine now correlates live assessment question performance directly with verified faculty research profiles for higher match precision.',
@@ -788,7 +788,7 @@ export const mockAnnouncements = [
     id: 'anc-4',
     title: 'Guest Lecture: AI Weather Nowcasting with Deep Learning',
     category: 'Training',
-    categoryColor: '#22C55E',
+    categoryColor: '#2F6B3C',
     date: '5 days ago',
     author: 'C-DAC / MoES Joint Faculty',
     summary: 'Dr. Amit Kumar will deliver a 90-minute live demonstration on training ConvLSTM models over Doppler radar sequences this Thursday at 3:00 PM IST.',
@@ -868,7 +868,7 @@ ax.set_extent([66, 98, 6, 38], crs=ccrs.PlateCarree())
 
 # Add Geographic Features
 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=1.2)
-ax.add_feature(cfeature.BORDERS, linestyle=':', edgecolor='#94A3B8')
+ax.add_feature(cfeature.BORDERS, linestyle=':', edgecolor='#485563')
 
 # Plot Pressure Isobars
 cs = ax.contour(lons, lats, slp, levels=range(990, 1025, 2),

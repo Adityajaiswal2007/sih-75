@@ -15,39 +15,39 @@ export default function TraineeCompetenciesView({ onNavigate }) {
       {/* Page Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#6366F1', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#527A5A', textTransform: 'uppercase' }}>
             INTELLIGENT SKILL MAPPING
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>My Competencies</h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 0' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Track the skills and computational capabilities you are developing through courses and diagnostic assessments.
         </p>
       </div>
 
       {/* Top Metric Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 28 }}>
-        <div className="trainee-metric-card" style={{ borderLeft: '4px solid #6366F1' }}>
+        <div className="trainee-metric-card" style={{ borderLeft: '4px solid #527A5A' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, color: '#A5B4FC', fontWeight: 600 }}>OVERALL COMPETENCY</span>
+            <span style={{ fontSize: 12, color: '#2F5233', fontWeight: 600 }}>OVERALL COMPETENCY</span>
             <span style={{ fontSize: 18 }}>◎</span>
           </div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>74%</div>
-          <span style={{ fontSize: 12, color: '#4ADE80', fontWeight: 600 }}>+12% this quarter</span>
+          <span style={{ fontSize: 12, color: '#2F6B3C', fontWeight: 600 }}>+12% this quarter</span>
         </div>
 
-        <div className="trainee-metric-card" style={{ borderLeft: '4px solid #22C55E' }}>
+        <div className="trainee-metric-card" style={{ borderLeft: '4px solid #2F6B3C' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, color: '#86EFAC', fontWeight: 600 }}>VERIFIED STRENGTHS</span>
+            <span style={{ fontSize: 12, color: '#2F6B3C', fontWeight: 600 }}>VERIFIED STRENGTHS</span>
             <span style={{ fontSize: 18 }}>✓</span>
           </div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>4 / 7</div>
-          <span style={{ fontSize: 12, color: '#94A3B8' }}>Above national institutional benchmark</span>
+          <span style={{ fontSize: 12, color: '#485563' }}>Above national institutional benchmark</span>
         </div>
 
-        <div className="trainee-metric-card" style={{ borderLeft: '4px solid #F59E0B' }}>
+        <div className="trainee-metric-card" style={{ borderLeft: '4px solid #B58B32' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, color: '#FCD34D', fontWeight: 600 }}>ACTIVE GROWTH GAPS</span>
+            <span style={{ fontSize: 12, color: '#B58B32', fontWeight: 600 }}>ACTIVE GROWTH GAPS</span>
             <span style={{ fontSize: 18 }}>✦</span>
           </div>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>3 Gaps</div>
@@ -92,15 +92,15 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                 key={comp.id}
                 style={{
                   padding: '16px',
-                  background: 'rgba(10, 22, 38, 0.6)',
-                  border: '1px solid #1E334A',
+                  background: '#EEF6EA',
+                  border: '1px solid #D6E3D8',
                   borderRadius: 12
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                   <div>
                     <strong style={{ color: '#fff', fontSize: 14 }}>{comp.name}</strong>
-                    <span style={{ fontSize: 11, color: '#94A3B8', marginLeft: 8 }}>({comp.category})</span>
+                    <span style={{ fontSize: 11, color: '#485563', marginLeft: 8 }}>({comp.category})</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <span
@@ -117,10 +117,10 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                             : 'rgba(245, 158, 11, 0.15)',
                         color:
                           comp.status === 'Strong'
-                            ? '#4ADE80'
+                            ? '#2F6B3C'
                             : comp.status === 'Developing'
-                            ? '#38BDF8'
-                            : '#FBBF24'
+                            ? '#2F5233'
+                            : '#B58B32'
                       }}
                     >
                       {comp.status}
@@ -137,16 +137,16 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                       width: `${comp.level}%`,
                       background:
                         comp.level >= 80
-                          ? 'linear-gradient(90deg, #3B82F6, #38BDF8)'
+                          ? 'linear-gradient(90deg, #2F5233, #2F5233)'
                           : comp.level >= 65
-                          ? 'linear-gradient(90deg, #6366F1, #8B5CF6)'
-                          : 'linear-gradient(90deg, #F59E0B, #EF4444)'
+                          ? 'linear-gradient(90deg, #527A5A, #6F9F70)'
+                          : 'linear-gradient(90deg, #B58B32, #B94A48)'
                     }}
                   />
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: 11, color: '#64748B' }}>
-                  <span>Recent growth: <strong style={{ color: '#22C55E' }}>{comp.change}</strong></span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, fontSize: 11, color: '#718078' }}>
+                  <span>Recent growth: <strong style={{ color: '#2F6B3C' }}>{comp.change}</strong></span>
                   {comp.target && <span>Target: {comp.target}%</span>}
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                 justifyContent: 'space-between',
                 height: 180,
                 padding: '20px 10px 0',
-                borderBottom: '1px solid #1E334A',
+                borderBottom: '1px solid #D6E3D8',
                 marginBottom: 16
               }}
             >
@@ -188,7 +188,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                     flex: 1
                   }}
                 >
-                  <span style={{ fontSize: 11, fontWeight: 700, color: '#38BDF8' }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#2F5233' }}>
                     {item.score}%
                   </span>
                   <div
@@ -197,18 +197,18 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                       height: `${(item.score / 100) * 120}px`,
                       background:
                         idx === competencyHistory.length - 1
-                          ? 'linear-gradient(180deg, #38BDF8, #2563EB)'
+                          ? 'linear-gradient(180deg, #2F5233, #2F5233)'
                           : 'rgba(56, 189, 248, 0.3)',
                       borderRadius: '4px 4px 0 0',
                       transition: 'height 0.5s ease'
                     }}
                   />
-                  <span style={{ fontSize: 11, color: '#94A3B8' }}>{item.month}</span>
+                  <span style={{ fontSize: 11, color: '#485563' }}>{item.month}</span>
                 </div>
               ))}
             </div>
 
-            <p style={{ fontSize: 12.5, color: '#CBD5E1', lineHeight: 1.5, margin: 0 }}>
+            <p style={{ fontSize: 12.5, color: '#485563', lineHeight: 1.5, margin: 0 }}>
               Your competency score has accelerated by <strong>+16%</strong> over the past 6 months due to regular module completions in Python and Radar Meteorology.
             </p>
           </section>
@@ -217,14 +217,14 @@ export default function TraineeCompetenciesView({ onNavigate }) {
           <section
             style={{
               padding: '24px',
-              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, #0D1B2A 100%)',
+              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, #FFFFFF 100%)',
               border: '1px solid rgba(99, 102, 241, 0.3)',
               borderRadius: 16
             }}
           >
             <div style={{ fontSize: 24, marginBottom: 8 }}>🎯</div>
             <h4 style={{ color: '#fff', fontSize: 16, margin: '0 0 6px' }}>Ready to bridge your skill gaps?</h4>
-            <p style={{ color: '#94A3B8', fontSize: 12.5, lineHeight: 1.5, margin: '0 0 16px' }}>
+            <p style={{ color: '#485563', fontSize: 12.5, lineHeight: 1.5, margin: '0 0 16px' }}>
               View personalized recommendations based on your current 74% competency evaluation.
             </p>
             <div style={{ display: 'flex', gap: 10 }}>

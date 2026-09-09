@@ -24,12 +24,12 @@ export default function TraineeSettingsView({ showToast }) {
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#94A3B8', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#485563', textTransform: 'uppercase' }}>
             SYSTEM CONFIGURATION
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>Portal Settings</h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 0' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Manage your notification alerts, learning preferences, and institutional privacy.
         </p>
       </div>
@@ -56,14 +56,14 @@ export default function TraineeSettingsView({ showToast }) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '14px 16px',
-                background: 'rgba(10, 22, 38, 0.6)',
-                border: '1px solid #1E334A',
+                background: '#EEF6EA',
+                border: '1px solid #D6E3D8',
                 borderRadius: 10
               }}
             >
               <div>
                 <strong style={{ color: '#fff', fontSize: 13.5, display: 'block' }}>{item.title}</strong>
-                <small style={{ color: '#94A3B8', fontSize: 12 }}>{item.desc}</small>
+                <small style={{ color: '#485563', fontSize: 12 }}>{item.desc}</small>
               </div>
 
               <button
@@ -73,7 +73,7 @@ export default function TraineeSettingsView({ showToast }) {
                   width: 44,
                   height: 24,
                   borderRadius: 20,
-                  background: prefs[item.key] ? '#38BDF8' : '#1E334A',
+                  background: prefs[item.key] ? '#2F5233' : '#D6E3D8',
                   border: 'none',
                   cursor: 'pointer',
                   position: 'relative',
@@ -106,13 +106,13 @@ export default function TraineeSettingsView({ showToast }) {
         </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div style={{ padding: '14px', background: '#0A1626', border: '1px solid #1E334A', borderRadius: 10 }}>
-            <label style={{ fontSize: 12, color: '#94A3B8', display: 'block', marginBottom: 6 }}>
+          <div style={{ padding: '14px', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 10 }}>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 6 }}>
               Default Code Notebook Environment
             </label>
             <select
               defaultValue="JupyterLab Python 3.11"
-              style={{ width: '100%', background: '#0D1B2A', border: '1px solid #1E334A', color: '#fff', padding: '8px', borderRadius: 6, fontSize: 13 }}
+              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', color: '#fff', padding: '8px', borderRadius: 6, fontSize: 13 }}
             >
               <option>JupyterLab Python 3.11 (IMD HPC Cluster)</option>
               <option>Google Colab Enterprise</option>
@@ -120,13 +120,13 @@ export default function TraineeSettingsView({ showToast }) {
             </select>
           </div>
 
-          <div style={{ padding: '14px', background: '#0A1626', border: '1px solid #1E334A', borderRadius: 10 }}>
-            <label style={{ fontSize: 12, color: '#94A3B8', display: 'block', marginBottom: 6 }}>
+          <div style={{ padding: '14px', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 10 }}>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 6 }}>
               Preferred Map Projection Framework
             </label>
             <select
               defaultValue="Cartopy Lambert Conformal"
-              style={{ width: '100%', background: '#0D1B2A', border: '1px solid #1E334A', color: '#fff', padding: '8px', borderRadius: 6, fontSize: 13 }}
+              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', color: '#fff', padding: '8px', borderRadius: 6, fontSize: 13 }}
             >
               <option>Cartopy Lambert Conformal</option>
               <option>Cartopy Plate Carree (Equirectangular)</option>

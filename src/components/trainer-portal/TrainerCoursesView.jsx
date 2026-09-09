@@ -45,7 +45,7 @@ export function TrainerCoursesView({ courses, onOpenModal, onSelectCourse }) {
         <div className="portal-kpi-card">
           <div className="kpi-icon">✧</div>
           <div className="kpi-label">Average Course Rating</div>
-          <div className="kpi-val">4.8 <small style={{ fontSize: 13, color: '#8daac4' }}>/ 5.0</small></div>
+          <div className="kpi-val">4.8 <small style={{ fontSize: 13, color: '#485563' }}>/ 5.0</small></div>
           <div className="kpi-note">Based on 142 verified reviews</div>
         </div>
       </div>
@@ -80,7 +80,7 @@ export function TrainerCoursesView({ courses, onOpenModal, onSelectCourse }) {
                 <span className={`portal-badge ${course.status === 'Published' ? 'published' : 'draft'}`}>
                   {course.status}
                 </span>
-                <span style={{ fontSize: 11, color: '#8aa6c1' }}>{course.level}</span>
+                <span style={{ fontSize: 11, color: '#485563' }}>{course.level}</span>
               </div>
               <h3>{course.title}</h3>
               <p className="card-desc">{course.description}</p>
@@ -93,7 +93,7 @@ export function TrainerCoursesView({ courses, onOpenModal, onSelectCourse }) {
             </div>
 
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#8ba7c2', marginTop: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#485563', marginTop: 14 }}>
                 <span>{course.traineesCount} Trainees Enrolled</span>
                 <b>{course.completionRate}% Avg Completion</b>
               </div>

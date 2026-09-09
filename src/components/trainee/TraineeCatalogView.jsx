@@ -42,12 +42,12 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
       {/* Top Banner */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#38BDF8', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#2F5233', textTransform: 'uppercase' }}>
             ACADEMIC CURRICULUM
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>Course Catalog</h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 20px' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 20px' }}>
           Find accredited courses that match your developmental goals and bridge diagnosed competency gaps.
         </p>
 
@@ -65,13 +65,13 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, color: '#94A3B8' }}>Difficulty:</span>
+            <span style={{ fontSize: 12, color: '#485563' }}>Difficulty:</span>
             <select
               value={selectedDifficulty}
               onChange={e => setSelectedDifficulty(e.target.value)}
               style={{
-                background: '#0D1B2A',
-                border: '1px solid #1E334A',
+                background: '#FFFFFF',
+                border: '1px solid #D6E3D8',
                 color: '#fff',
                 padding: '8px 12px',
                 borderRadius: 8,
@@ -109,14 +109,14 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
           style={{
             padding: '60px 20px',
             textAlign: 'center',
-            background: '#0D1B2A',
-            border: '1px solid #1E334A',
+            background: '#FFFFFF',
+            border: '1px solid #D6E3D8',
             borderRadius: 16
           }}
         >
           <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
           <h3 style={{ color: '#fff', fontSize: 18, margin: '0 0 6px' }}>No courses match your filter criteria</h3>
-          <p style={{ color: '#94A3B8', fontSize: 13 }}>Try adjusting your search query or selecting a different category filter.</p>
+          <p style={{ color: '#485563', fontSize: 13 }}>Try adjusting your search query or selecting a different category filter.</p>
           <button
             className="trainee-btn-secondary"
             style={{ marginTop: 16 }}
@@ -143,8 +143,8 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
                       padding: '3px 6px',
                       borderRadius: 4,
                       background: 'rgba(30, 51, 74, 0.7)',
-                      color: '#94A3B8',
-                      border: '1px solid #1E334A'
+                      color: '#485563',
+                      border: '1px solid #D6E3D8'
                     }}
                   >
                     {course.difficulty}
@@ -159,7 +159,7 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
               {course.enrolled && (
                 <div style={{ marginBottom: 14 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, marginBottom: 4 }}>
-                    <span style={{ color: '#38BDF8', fontWeight: 600 }}>Enrolled</span>
+                    <span style={{ color: '#2F5233', fontWeight: 600 }}>Enrolled</span>
                     <span style={{ color: '#fff', fontWeight: 700 }}>{course.progress}%</span>
                   </div>
                   <div className="trainee-progress-bar-wrap" style={{ height: 5 }}>
@@ -177,8 +177,8 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
                 <span>★ {course.rating} ({course.enrolledCount})</span>
               </div>
 
-              <div style={{ fontSize: 11.5, color: '#94A3B8', marginBottom: 16 }}>
-                Instructor: <strong style={{ color: '#CBD5E1' }}>{course.instructor}</strong>
+              <div style={{ fontSize: 11.5, color: '#485563', marginBottom: 16 }}>
+                Instructor: <strong style={{ color: '#485563' }}>{course.instructor}</strong>
               </div>
 
               {/* Card Footer Actions */}

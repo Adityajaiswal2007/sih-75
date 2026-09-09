@@ -39,7 +39,7 @@ export function TrainerCompetenciesView({ competencies }) {
 
       <div className="portal-two-col-grid">
         <div>
-          <h2 style={{ fontSize: 18, color: '#f2f8ff', margin: '0 0 16px' }}>Domain Competency Progress</h2>
+          <h2 style={{ fontSize: 18, color: '#16251B', margin: '0 0 16px' }}>Domain Competency Progress</h2>
           {competencies.map((comp) => (
             <div className="portal-competency-card" key={comp.name}>
               <div className="portal-comp-header">
@@ -57,13 +57,13 @@ export function TrainerCompetenciesView({ competencies }) {
                   className="portal-progress-fill"
                   style={{
                     width: `${comp.score}%`,
-                    background: comp.score >= 75 ? 'linear-gradient(90deg, #2583ff, #2cd0d3)' : comp.score >= 60 ? 'linear-gradient(90deg, #eab308, #ca8a04)' : 'linear-gradient(90deg, #ef4444, #dc2626)'
+                    background: comp.score >= 75 ? 'linear-gradient(90deg, #2F5233, #A7C957)' : comp.score >= 60 ? 'linear-gradient(90deg, #B58B32, #D4A338)' : 'linear-gradient(90deg, #B94A48, #D96563)'
                   }}
                 />
               </div>
               <div className="portal-benchmark-note">
                 <span>Institutional Benchmark: {comp.benchmark}%</span>
-                <b style={{ color: comp.score >= comp.benchmark ? '#34d399' : '#f87171' }}>
+                <b style={{ color: comp.score >= comp.benchmark ? '#2F6B3C' : '#B94A48' }}>
                   {comp.score >= comp.benchmark ? `+${comp.score - comp.benchmark}% Above Benchmark` : `${comp.score - comp.benchmark}% Gap`}
                 </b>
               </div>
@@ -79,12 +79,12 @@ export function TrainerCompetenciesView({ competencies }) {
             </p>
             <div className="portal-sub-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 12, color: '#d8e8f8' }}>Weather Data Analysis Match</span>
-                <strong style={{ fontSize: 18, color: '#38bdf8' }}>92%</strong>
+                <span style={{ fontSize: 12, color: '#16251B' }}>Weather Data Analysis Match</span>
+                <strong style={{ fontSize: 18, color: '#2F5233' }}>92%</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
-                <span style={{ fontSize: 12, color: '#d8e8f8' }}>Atmospheric Modeling Match</span>
-                <strong style={{ fontSize: 18, color: '#34d399' }}>88%</strong>
+                <span style={{ fontSize: 12, color: '#16251B' }}>Atmospheric Modeling Match</span>
+                <strong style={{ fontSize: 18, color: '#2F6B3C' }}>88%</strong>
               </div>
             </div>
           </div>
@@ -92,10 +92,10 @@ export function TrainerCompetenciesView({ competencies }) {
           <div className="portal-info-card">
             <h3>Target Growth Recommendation</h3>
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-              <div style={{ width: 34, height: 34, minWidth: 34, minHeight: 34, borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', color: '#f87171', display: 'grid', placeItems: 'center', fontWeight: 'bold', flexShrink: 0 }}>!</div>
+              <div style={{ width: 34, height: 34, minWidth: 34, minHeight: 34, borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', color: '#B94A48', display: 'grid', placeItems: 'center', fontWeight: 'bold', flexShrink: 0 }}>!</div>
               <div>
-                <strong style={{ color: '#f1f7ff', fontSize: 13, display: 'block' }}>Machine Learning in Climatology (48%)</strong>
-                <p style={{ color: '#8aa6c0', fontSize: 12, margin: '4px 0 10px', lineHeight: 1.5 }}>
+                <strong style={{ color: '#16251B', fontSize: 13, display: 'block' }}>Machine Learning in Climatology (48%)</strong>
+                <p style={{ color: '#485563', fontSize: 12, margin: '4px 0 10px', lineHeight: 1.5 }}>
                   Completing the advanced CNN Nowcasting certification will elevate your profile match for next month's AI meteorology cohort.
                 </p>
                 <button className="button outline small" style={{ fontSize: 11, padding: '6px 12px' }}>View Recommended Material →</button>

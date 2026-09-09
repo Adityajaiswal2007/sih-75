@@ -6,7 +6,7 @@ export function TrainerPortalModals({ activeModal, modalData, onClose, onActionS
   return (
     <div className="trainer-modal-backdrop" onClick={onClose}>
       <div className="trainer-modal" style={{ maxWidth: '540px', textAlign: 'left' }} onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose} style={{ position: 'absolute', top: 16, right: 18, background: 'none', border: 'none', color: '#9dbad8', fontSize: '22px', cursor: 'pointer' }}>✕</button>
+        <button className="modal-close-btn" onClick={onClose} style={{ position: 'absolute', top: 16, right: 18, background: 'none', border: 'none', color: '#485563', fontSize: '22px', cursor: 'pointer' }}>✕</button>
 
         {activeModal === 'create-course' && (
           <CreateCourseModal onClose={onClose} onActionSuccess={onActionSuccess} />
@@ -61,10 +61,10 @@ function CreateCourseModal({ onClose, onActionSuccess }) {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#134773', display: 'grid', placeItems: 'center', color: '#38bdf8', fontSize: 20 }}>◈</div>
+        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#EEF6EA', display: 'grid', placeItems: 'center', color: '#2F5233', fontSize: 20 }}>◈</div>
         <div>
-          <h2 style={{ fontSize: 20, color: '#f3f8ff', margin: 0 }}>Create New Course</h2>
-          <p style={{ fontSize: 12, color: '#8daac4', margin: 0 }}>Publish an institutional training module</p>
+          <h2 style={{ fontSize: 20, color: '#16251B', margin: 0 }}>Create New Course</h2>
+          <p style={{ fontSize: 12, color: '#485563', margin: 0 }}>Publish an institutional training module</p>
         </div>
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 14 }}>
@@ -150,10 +150,10 @@ function CreateAssessmentModal({ onClose, onActionSuccess }) {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#134773', display: 'grid', placeItems: 'center', color: '#38bdf8', fontSize: 20 }}>▤</div>
+        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#EEF6EA', display: 'grid', placeItems: 'center', color: '#2F5233', fontSize: 20 }}>▤</div>
         <div>
-          <h2 style={{ fontSize: 20, color: '#f3f8ff', margin: 0 }}>Create Diagnostic Assessment</h2>
-          <p style={{ fontSize: 12, color: '#8daac4', margin: 0 }}>Evaluate trainee competency progress</p>
+          <h2 style={{ fontSize: 20, color: '#16251B', margin: 0 }}>Create Diagnostic Assessment</h2>
+          <p style={{ fontSize: 12, color: '#485563', margin: 0 }}>Evaluate trainee competency progress</p>
         </div>
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 14 }}>
@@ -216,10 +216,10 @@ function PostAnnouncementModal({ onClose, onActionSuccess }) {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#134773', display: 'grid', placeItems: 'center', color: '#38bdf8', fontSize: 20 }}>◌</div>
+        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#EEF6EA', display: 'grid', placeItems: 'center', color: '#2F5233', fontSize: 20 }}>◌</div>
         <div>
-          <h2 style={{ fontSize: 20, color: '#f3f8ff', margin: 0 }}>Broadcast Announcement</h2>
-          <p style={{ fontSize: 12, color: '#8daac4', margin: 0 }}>Notify cohorts of assessments, schedule updates or notes</p>
+          <h2 style={{ fontSize: 20, color: '#16251B', margin: 0 }}>Broadcast Announcement</h2>
+          <p style={{ fontSize: 12, color: '#485563', margin: 0 }}>Notify cohorts of assessments, schedule updates or notes</p>
         </div>
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 14 }}>
@@ -278,10 +278,10 @@ function UploadContentModal({ onClose, onActionSuccess }) {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
-        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#134773', display: 'grid', placeItems: 'center', color: '#38bdf8', fontSize: 20 }}>▣</div>
+        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#EEF6EA', display: 'grid', placeItems: 'center', color: '#2F5233', fontSize: 20 }}>▣</div>
         <div>
-          <h2 style={{ fontSize: 20, color: '#f3f8ff', margin: 0 }}>Upload Learning Resource</h2>
-          <p style={{ fontSize: 12, color: '#8daac4', margin: 0 }}>Share notebooks, slides, lab guides, or datasets</p>
+          <h2 style={{ fontSize: 20, color: '#16251B', margin: 0 }}>Upload Learning Resource</h2>
+          <p style={{ fontSize: 12, color: '#485563', margin: 0 }}>Share notebooks, slides, lab guides, or datasets</p>
         </div>
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 14 }}>
@@ -309,9 +309,9 @@ function UploadContentModal({ onClose, onActionSuccess }) {
             </select>
           </div>
         </div>
-        <div style={{ border: '2px dashed #26547e', borderRadius: 8, padding: 22, textAlign: 'center', background: '#07182c' }}>
-          <span style={{ fontSize: 26, color: '#38bdf8' }}>☁</span>
-          <p style={{ margin: '8px 0 0', color: '#97b8d8', fontSize: 12 }}>Drag & drop file or click to browse (Demo mock upload)</p>
+        <div style={{ border: '2px dashed #D6E3D8', borderRadius: 8, padding: 22, textAlign: 'center', background: '#EEF6EA' }}>
+          <span style={{ fontSize: 26, color: '#2F5233' }}>☁</span>
+          <p style={{ margin: '8px 0 0', color: '#485563', fontSize: 12 }}>Drag & drop file or click to browse (Demo mock upload)</p>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 10 }}>
           <button type="button" className="button outline small" onClick={onClose}>Cancel</button>
@@ -327,27 +327,27 @@ function TraineeDetailsModal({ trainee, onClose, onActionSuccess }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18, borderBottom: '1px solid #1c4263', paddingBottom: 14 }}>
-        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'linear-gradient(135deg, #1b62b3, #153966)', display: 'grid', placeItems: 'center', color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18, borderBottom: '1px solid #D6E3D8', paddingBottom: 14 }}>
+        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'linear-gradient(135deg, #2F5233, #EEF6EA)', display: 'grid', placeItems: 'center', color: '#fff', fontSize: 18, fontWeight: 'bold' }}>
           {trainee.initials}
         </div>
         <div>
-          <h2 style={{ fontSize: 20, color: '#f3f8ff', margin: 0 }}>{trainee.name}</h2>
-          <p style={{ fontSize: 12, color: '#8daac4', margin: 0 }}>{trainee.role} · {trainee.organization}</p>
+          <h2 style={{ fontSize: 20, color: '#16251B', margin: 0 }}>{trainee.name}</h2>
+          <p style={{ fontSize: 12, color: '#485563', margin: 0 }}>{trainee.role} · {trainee.organization}</p>
         </div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 16 }}>
-        <div style={{ padding: 12, background: '#071b30', borderRadius: 8, border: '1px solid #1c4263' }}>
-          <small style={{ color: '#7b9bb8', fontSize: 11 }}>Active Enrolled Course</small>
-          <strong style={{ display: 'block', color: '#f0f7ff', fontSize: 13, marginTop: 4 }}>{trainee.course}</strong>
+        <div style={{ padding: 12, background: '#EEF6EA', borderRadius: 8, border: '1px solid #D6E3D8' }}>
+          <small style={{ color: '#485563', fontSize: 11 }}>Active Enrolled Course</small>
+          <strong style={{ display: 'block', color: '#16251B', fontSize: 13, marginTop: 4 }}>{trainee.course}</strong>
         </div>
-        <div style={{ padding: 12, background: '#071b30', borderRadius: 8, border: '1px solid #1c4263' }}>
-          <small style={{ color: '#7b9bb8', fontSize: 11 }}>Assessment Score</small>
-          <strong style={{ display: 'block', color: '#34d399', fontSize: 18, marginTop: 4 }}>{trainee.assessmentScore}%</strong>
+        <div style={{ padding: 12, background: '#EEF6EA', borderRadius: 8, border: '1px solid #D6E3D8' }}>
+          <small style={{ color: '#485563', fontSize: 11 }}>Assessment Score</small>
+          <strong style={{ display: 'block', color: '#2F6B3C', fontSize: 18, marginTop: 4 }}>{trainee.assessmentScore}%</strong>
         </div>
       </div>
       <div style={{ marginBottom: 16 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#8daac4', marginBottom: 6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#485563', marginBottom: 6 }}>
           <span>Course Completion</span>
           <b>{trainee.progress}% ({trainee.completedModules}/{trainee.totalModules} modules)</b>
         </div>
@@ -356,13 +356,13 @@ function TraineeDetailsModal({ trainee, onClose, onActionSuccess }) {
         </div>
       </div>
       <div style={{ marginBottom: 20 }}>
-        <h4 style={{ fontSize: 12, color: '#8bb0d4', margin: '0 0 8px', textTransform: 'uppercase' }}>Focus Diagnostic Areas</h4>
+        <h4 style={{ fontSize: 12, color: '#485563', margin: '0 0 8px', textTransform: 'uppercase' }}>Focus Diagnostic Areas</h4>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {trainee.strengths?.map((s) => (
-            <span key={s} style={{ padding: '4px 8px', borderRadius: 4, background: 'rgba(52, 211, 153, 0.15)', color: '#34d399', fontSize: 11, border: '1px solid rgba(52, 211, 153, 0.3)' }}>✓ {s}</span>
+            <span key={s} style={{ padding: '4px 8px', borderRadius: 4, background: 'rgba(52, 211, 153, 0.15)', color: '#2F6B3C', fontSize: 11, border: '1px solid rgba(52, 211, 153, 0.3)' }}>✓ {s}</span>
           ))}
           {trainee.needsHelp?.map((h) => (
-            <span key={h} style={{ padding: '4px 8px', borderRadius: 4, background: 'rgba(239, 68, 68, 0.15)', color: '#f87171', fontSize: 11, border: '1px solid rgba(248, 113, 113, 0.3)' }}>! Needs: {h}</span>
+            <span key={h} style={{ padding: '4px 8px', borderRadius: 4, background: 'rgba(239, 68, 68, 0.15)', color: '#B94A48', fontSize: 11, border: '1px solid rgba(248, 113, 113, 0.3)' }}>! Needs: {h}</span>
           ))}
         </div>
       </div>

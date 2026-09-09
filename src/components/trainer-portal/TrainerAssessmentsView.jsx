@@ -89,27 +89,27 @@ export function TrainerAssessmentsView({ assessments, onOpenModal }) {
             {filtered.map((asm) => (
               <tr key={asm.id}>
                 <td>
-                  <strong style={{ color: '#f2f8ff', fontSize: 13 }}>{asm.title}</strong>
-                  <small style={{ display: 'block', color: '#7ba0c1', fontSize: 11 }}>Due Date: {asm.dueDate}</small>
+                  <strong style={{ color: '#16251B', fontSize: 13 }}>{asm.title}</strong>
+                  <small style={{ display: 'block', color: '#485563', fontSize: 11 }}>Due Date: {asm.dueDate}</small>
                 </td>
                 <td>
-                  <span style={{ color: '#97b8d8', fontSize: 12 }}>{asm.course}</span>
+                  <span style={{ color: '#485563', fontSize: 12 }}>{asm.course}</span>
                 </td>
                 <td>
-                  <span style={{ color: '#cbdff5', fontSize: 12 }}>{asm.questionsCount} Questions</span>
-                  <small style={{ display: 'block', color: '#7ba0c1', fontSize: 11 }}>Duration: {asm.duration}</small>
+                  <span style={{ color: '#16251B', fontSize: 12 }}>{asm.questionsCount} Questions</span>
+                  <small style={{ display: 'block', color: '#485563', fontSize: 11 }}>Duration: {asm.duration}</small>
                 </td>
                 <td>
-                  <b style={{ color: '#38bdf8', fontSize: 13 }}>{asm.attemptsCount}</b>
+                  <b style={{ color: '#2F5233', fontSize: 13 }}>{asm.attemptsCount}</b>
                 </td>
                 <td>
                   {asm.attemptsCount > 0 ? (
                     <div>
-                      <strong style={{ color: '#34d399', fontSize: 13 }}>{asm.avgScore}% avg</strong>
-                      <small style={{ display: 'block', color: '#7ba0c1', fontSize: 11 }}>{asm.passRate}% pass rate</small>
+                      <strong style={{ color: '#2F6B3C', fontSize: 13 }}>{asm.avgScore}% avg</strong>
+                      <small style={{ display: 'block', color: '#485563', fontSize: 11 }}>{asm.passRate}% pass rate</small>
                     </div>
                   ) : (
-                    <span style={{ color: '#7a96b0', fontSize: 12 }}>No attempts yet</span>
+                    <span style={{ color: '#485563', fontSize: 12 }}>No attempts yet</span>
                   )}
                 </td>
                 <td>

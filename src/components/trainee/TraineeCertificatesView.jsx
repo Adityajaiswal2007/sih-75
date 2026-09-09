@@ -19,12 +19,12 @@ export default function TraineeCertificatesView({ onViewCertificate, showToast }
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#22C55E', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#2F6B3C', textTransform: 'uppercase' }}>
             VERIFIED CREDENTIALS
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>My Certificates</h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 0' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Official institutional certifications issued by the Ministry of Earth Sciences and partner research centers.
         </p>
       </div>
@@ -51,7 +51,7 @@ export default function TraineeCertificatesView({ onViewCertificate, showToast }
                 style={{
                   fontSize: 10.5,
                   fontWeight: 700,
-                  color: '#4ADE80',
+                  color: '#2F6B3C',
                   background: 'rgba(34, 197, 94, 0.15)',
                   padding: '3px 8px',
                   borderRadius: 12,
@@ -60,7 +60,7 @@ export default function TraineeCertificatesView({ onViewCertificate, showToast }
               >
                 ✓ Cryptographically Verified
               </span>
-              <span style={{ fontSize: 11, color: '#64748B', fontFamily: 'monospace' }}>
+              <span style={{ fontSize: 11, color: '#718078', fontFamily: 'monospace' }}>
                 {cert.code}
               </span>
             </div>
@@ -71,11 +71,11 @@ export default function TraineeCertificatesView({ onViewCertificate, showToast }
               {cert.title}
             </h3>
 
-            <p style={{ fontSize: 12, color: '#94A3B8', margin: '0 0 16px', lineHeight: 1.4 }}>
-              Awarded to <strong style={{ color: '#CBD5E1' }}>{cert.recipient}</strong> with {cert.grade} ({cert.score}% Score).
+            <p style={{ fontSize: 12, color: '#485563', margin: '0 0 16px', lineHeight: 1.4 }}>
+              Awarded to <strong style={{ color: '#485563' }}>{cert.recipient}</strong> with {cert.grade} ({cert.score}% Score).
             </p>
 
-            <div style={{ fontSize: 11.5, color: '#64748B', marginBottom: 16 }}>
+            <div style={{ fontSize: 11.5, color: '#718078', marginBottom: 16 }}>
               Issued: <strong>{cert.issueDate}</strong> · {cert.authority}
             </div>
 
@@ -89,7 +89,7 @@ export default function TraineeCertificatesView({ onViewCertificate, showToast }
                     padding: '2px 6px',
                     borderRadius: 4,
                     background: 'rgba(30, 51, 74, 0.6)',
-                    color: '#A5B4FC'
+                    color: '#2F5233'
                   }}
                 >
                   {comp}
@@ -98,7 +98,7 @@ export default function TraineeCertificatesView({ onViewCertificate, showToast }
             </div>
 
             {/* Buttons */}
-            <div style={{ display: 'flex', gap: 10, paddingTop: 14, borderTop: '1px solid #1E334A' }}>
+            <div style={{ display: 'flex', gap: 10, paddingTop: 14, borderTop: '1px solid #D6E3D8' }}>
               <button
                 className="trainee-btn-primary"
                 style={{ flex: 1, fontSize: 12, padding: '8px' }}

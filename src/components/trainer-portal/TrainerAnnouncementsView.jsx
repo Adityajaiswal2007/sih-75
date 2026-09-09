@@ -28,7 +28,7 @@ export function TrainerAnnouncementsView({ announcements, onOpenModal }) {
             <p>{ann.content}</p>
             <div className="portal-ann-footer">
               <span>Audience: <b>{ann.audience}</b></span>
-              <span style={{ color: '#38bdf8', cursor: 'pointer' }} onClick={() => alert('Announcement link copied')}>
+              <span style={{ color: '#2F5233', cursor: 'pointer' }} onClick={() => alert('Announcement link copied')}>
                 Copy Broadcast Link ↗
               </span>
             </div>

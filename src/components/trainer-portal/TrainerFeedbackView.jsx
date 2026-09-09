@@ -21,7 +21,7 @@ export function TrainerFeedbackView({ feedbackList, onHelpful }) {
         <div className="portal-kpi-card">
           <div className="kpi-icon">★</div>
           <div className="kpi-label">Average Trainer Rating</div>
-          <div className="kpi-val">4.8 <small style={{ fontSize: 13, color: '#8daac4' }}>/ 5.0</small></div>
+          <div className="kpi-val">4.8 <small style={{ fontSize: 13, color: '#485563' }}>/ 5.0</small></div>
           <div className="kpi-note">98% positive sentiment</div>
         </div>
         <div className="portal-kpi-card">
@@ -57,11 +57,11 @@ export function TrainerFeedbackView({ feedbackList, onHelpful }) {
               <div className="portal-feedback-author">
                 <div className="portal-user-avatar">{fdb.avatar}</div>
                 <div>
-                  <strong style={{ color: '#f2f8ff', fontSize: 13, display: 'block' }}>{fdb.author}</strong>
-                  <small style={{ color: '#7ba0c1', fontSize: 11 }}>{fdb.role}</small>
+                  <strong style={{ color: '#16251B', fontSize: 13, display: 'block' }}>{fdb.author}</strong>
+                  <small style={{ color: '#485563', fontSize: 11 }}>{fdb.role}</small>
                 </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, fontSize: 11, color: '#688ba8' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12, fontSize: 11, color: '#485563' }}>
                 <span>{fdb.course}</span>
                 <button
                   className="portal-btn-sm"

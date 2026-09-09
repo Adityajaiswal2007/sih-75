@@ -73,7 +73,7 @@ export function TrainerSettingsView({ onSave }) {
           <div>
             <h3>Notification & Delivery Preferences</h3>
             <div style={{ display: 'grid', gap: 14, marginBottom: 20 }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', color: '#cfe2f5', fontSize: 13 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', color: '#16251B', fontSize: 13 }}>
                 <input
                   type="checkbox"
                   checked={profileForm.notifyEmail}
@@ -81,7 +81,7 @@ export function TrainerSettingsView({ onSave }) {
                 />
                 Email alerts when trainees submit assessments
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', color: '#cfe2f5', fontSize: 13 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', color: '#16251B', fontSize: 13 }}>
                 <input
                   type="checkbox"
                   checked={profileForm.notifyAnnouncements}
@@ -89,7 +89,7 @@ export function TrainerSettingsView({ onSave }) {
                 />
                 Push notifications for cohort announcements
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', color: '#cfe2f5', fontSize: 13 }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', color: '#16251B', fontSize: 13 }}>
                 <input
                   type="checkbox"
                   checked={profileForm.weeklyReport}
@@ -100,11 +100,11 @@ export function TrainerSettingsView({ onSave }) {
             </div>
 
             <h3>Institutional Verification</h3>
-            <div style={{ padding: 14, background: '#07182c', border: '1px solid #1a446c', borderRadius: 8 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#34d399', fontSize: 13, fontWeight: 'bold' }}>
+            <div style={{ padding: 14, background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#2F6B3C', fontSize: 13, fontWeight: 'bold' }}>
                 <span>✓</span> Verified Institutional Trainer
               </div>
-              <small style={{ display: 'block', color: '#7ba2c6', fontSize: 11, marginTop: 4 }}>
+              <small style={{ display: 'block', color: '#485563', fontSize: 11, marginTop: 4 }}>
                 MoES Faculty ID: IMD-FAC-8842 · IIT Delhi Alumnus
               </small>
             </div>

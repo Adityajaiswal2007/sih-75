@@ -18,7 +18,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
       {/* Header Banner */}
       <div
         style={{
-          background: 'linear-gradient(135deg, #0A1B30 0%, #0D233F 50%, #101F31 100%)',
+          background: 'linear-gradient(135deg, #EEF6EA 0%, #E6F4EA 50%, #EEF6EA 100%)',
           border: '1px solid rgba(56, 189, 248, 0.25)',
           borderRadius: 16,
           padding: '32px',
@@ -28,31 +28,31 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
           <span className="trainee-course-category-badge">{course.category}</span>
-          <span style={{ fontSize: 11, color: '#94A3B8' }}>•</span>
-          <span style={{ fontSize: 12, color: '#CBD5E1', fontWeight: 600 }}>{course.difficulty} Level</span>
+          <span style={{ fontSize: 11, color: '#485563' }}>•</span>
+          <span style={{ fontSize: 12, color: '#485563', fontWeight: 600 }}>{course.difficulty} Level</span>
         </div>
 
         <h1 style={{ fontSize: 30, fontWeight: 800, color: '#fff', margin: '0 0 12px' }}>
           {course.title}
         </h1>
-        <p style={{ fontSize: 15, color: '#94A3B8', lineHeight: 1.6, maxWidth: 740, margin: '0 0 24px' }}>
+        <p style={{ fontSize: 15, color: '#485563', lineHeight: 1.6, maxWidth: 740, margin: '0 0 24px' }}>
           {course.overview}
         </p>
 
         {/* Stats Row */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', marginBottom: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ color: '#F59E0B', fontSize: 16 }}>★</span>
+            <span style={{ color: '#B58B32', fontSize: 16 }}>★</span>
             <strong style={{ color: '#fff' }}>{course.rating}</strong>
-            <span style={{ color: '#94A3B8', fontSize: 12 }}>({course.reviewsCount} reviews)</span>
+            <span style={{ color: '#485563', fontSize: 12 }}>({course.reviewsCount} reviews)</span>
           </div>
-          <div style={{ color: '#94A3B8', fontSize: 13 }}>
+          <div style={{ color: '#485563', fontSize: 13 }}>
             👥 <strong>{course.enrolledCount}</strong> trainees enrolled
           </div>
-          <div style={{ color: '#94A3B8', fontSize: 13 }}>
+          <div style={{ color: '#485563', fontSize: 13 }}>
             ⏱ <strong>{course.duration}</strong> estimated completion
           </div>
-          <div style={{ color: '#94A3B8', fontSize: 13 }}>
+          <div style={{ color: '#485563', fontSize: 13 }}>
             ▤ <strong>{course.modulesCount}</strong> structured modules
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
             <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 16px' }}>
               🎯 Learning Objectives
             </h3>
-            <ul style={{ margin: 0, paddingLeft: 20, color: '#CBD5E1', fontSize: 13.5, lineHeight: 1.8 }}>
+            <ul style={{ margin: 0, paddingLeft: 20, color: '#485563', fontSize: 13.5, lineHeight: 1.8 }}>
               {course.objectives.map((obj, idx) => (
                 <li key={idx} style={{ marginBottom: 6 }}>
                   {obj}
@@ -108,7 +108,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
             <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>
               ◎ Competencies Developed
             </h3>
-            <p style={{ fontSize: 12.5, color: '#94A3B8', margin: '0 0 16px' }}>
+            <p style={{ fontSize: 12.5, color: '#485563', margin: '0 0 16px' }}>
               Completing this course and passing the diagnostic assessment advances the following tracked competencies:
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -117,7 +117,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                   key={idx}
                   style={{
                     background: 'rgba(99, 102, 241, 0.15)',
-                    color: '#A5B4FC',
+                    color: '#2F5233',
                     border: '1px solid rgba(99, 102, 241, 0.3)',
                     padding: '6px 12px',
                     borderRadius: 20,
@@ -128,7 +128,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                     gap: 6
                   }}
                 >
-                  <span style={{ color: '#6366F1' }}>✓</span> {comp}
+                  <span style={{ color: '#527A5A' }}>✓</span> {comp}
                 </span>
               ))}
             </div>
@@ -139,7 +139,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
             <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>
               📋 Prerequisites
             </h3>
-            <ul style={{ margin: 0, paddingLeft: 20, color: '#94A3B8', fontSize: 13, lineHeight: 1.6 }}>
+            <ul style={{ margin: 0, paddingLeft: 20, color: '#485563', fontSize: 13, lineHeight: 1.6 }}>
               {course.prerequisites.map((prereq, idx) => (
                 <li key={idx} style={{ marginBottom: 4 }}>
                   {prereq}
@@ -161,7 +161,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                 <strong style={{ color: '#fff', fontSize: 15, display: 'block' }}>
                   {course.instructor}
                 </strong>
-                <small style={{ color: '#94A3B8', fontSize: 12 }}>{course.instructorRole}</small>
+                <small style={{ color: '#485563', fontSize: 12 }}>{course.instructorRole}</small>
               </div>
               <button
                 className="trainee-panel-link"
@@ -202,7 +202,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                   border:
                     mod.status === 'In Progress'
                       ? '1px solid rgba(56, 189, 248, 0.3)'
-                      : '1px solid #1E334A',
+                      : '1px solid #D6E3D8',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between'
@@ -222,10 +222,10 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                           : 'rgba(30, 51, 74, 0.6)',
                       color:
                         mod.status === 'Completed'
-                          ? '#22C55E'
+                          ? '#2F6B3C'
                           : mod.status === 'In Progress'
-                          ? '#38BDF8'
-                          : '#64748B',
+                          ? '#2F5233'
+                          : '#718078',
                       fontSize: 12,
                       fontWeight: 700,
                       display: 'flex',
@@ -239,7 +239,7 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                     <strong style={{ color: '#fff', fontSize: 13, display: 'block' }}>
                       {mod.title}
                     </strong>
-                    <small style={{ color: '#94A3B8', fontSize: 11 }}>
+                    <small style={{ color: '#485563', fontSize: 11 }}>
                       {mod.type} · {mod.duration}
                     </small>
                   </div>
@@ -251,10 +251,10 @@ export default function TraineeCourseDetailView({ courseId, onNavigate, onEnroll
                     fontWeight: 600,
                     color:
                       mod.status === 'Completed'
-                        ? '#4ADE80'
+                        ? '#2F6B3C'
                         : mod.status === 'In Progress'
-                        ? '#38BDF8'
-                        : '#64748B'
+                        ? '#2F5233'
+                        : '#718078'
                   }}
                 >
                   {mod.status}

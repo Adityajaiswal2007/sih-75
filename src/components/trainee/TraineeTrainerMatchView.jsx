@@ -22,14 +22,14 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
       {/* Page Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#6366F1', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#527A5A', textTransform: 'uppercase' }}>
             INTELLIGENT FACULTY MATCHING
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>
           Trainer Recommendations
         </h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 0' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Connect with verified faculty whose research and pedagogical specializations match your diagnosed competency gaps.
         </p>
       </div>
@@ -37,13 +37,13 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
       {/* Featured "Best Match" Detailed Card */}
       <div
         style={{
-          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(13, 27, 42, 0.98) 100%)',
-          border: '1px solid rgba(99, 102, 241, 0.4)',
+          background: '#FFFFFF',
+          border: '1px solid #D6E3D8',
           borderRadius: 16,
           padding: '32px',
           marginBottom: 36,
           position: 'relative',
-          boxShadow: '0 16px 36px rgba(0, 0, 0, 0.4)'
+          boxShadow: '0 4px 16px rgba(22, 37, 27, 0.05)'
         }}
       >
         <div className="trainee-best-match-pill">★ #1 RECOMMENDED FACULTY MATCH</div>
@@ -57,26 +57,26 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
           </div>
 
           <div style={{ flexGrow: 1, maxWidth: 640 }}>
-            <h2 style={{ fontSize: 24, fontWeight: 800, color: '#fff', margin: '0 0 4px' }}>
+            <h2 style={{ fontSize: 24, fontWeight: 800, color: '#16251B', margin: '0 0 4px' }}>
               {bestMatch.name}
             </h2>
-            <div style={{ color: '#38BDF8', fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
+            <div style={{ color: '#2F5233', fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
               {bestMatch.role} · {bestMatch.organization}
             </div>
-            <p style={{ color: '#CBD5E1', fontSize: 13, margin: '0 0 16px', lineHeight: 1.5 }}>
+            <p style={{ color: '#485563', fontSize: 13, margin: '0 0 16px', lineHeight: 1.5 }}>
               {bestMatch.tagline}
             </p>
 
             <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ color: '#F59E0B' }}>★</span>
-                <strong style={{ color: '#fff' }}>{bestMatch.rating}</strong>
-                <small style={{ color: '#94A3B8' }}>({bestMatch.reviewsCount} reviews)</small>
+                <span style={{ color: '#B58B32' }}>★</span>
+                <strong style={{ color: '#16251B' }}>{bestMatch.rating}</strong>
+                <small style={{ color: '#485563' }}>({bestMatch.reviewsCount} reviews)</small>
               </div>
-              <div style={{ color: '#94A3B8', fontSize: 12.5 }}>
+              <div style={{ color: '#485563', fontSize: 12.5 }}>
                 👨‍🎓 <strong>{bestMatch.traineesTrained}+</strong> trainees mentored
               </div>
-              <div style={{ color: '#94A3B8', fontSize: 12.5 }}>
+              <div style={{ color: '#485563', fontSize: 12.5 }}>
                 ⏳ <strong>{bestMatch.experience}</strong> research seniority
               </div>
             </div>
@@ -86,16 +86,16 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
           <div
             style={{
               padding: '16px 24px',
-              background: 'rgba(10, 22, 38, 0.9)',
-              border: '1px solid rgba(56, 189, 248, 0.3)',
+              background: '#EEF6EA',
+              border: '1px solid #D6E3D8',
               borderRadius: 14,
               textAlign: 'center'
             }}
           >
-            <div style={{ fontSize: 36, fontWeight: 900, color: '#38BDF8', lineHeight: 1 }}>
+            <div style={{ fontSize: 36, fontWeight: 900, color: '#2F5233', lineHeight: 1 }}>
               {bestMatch.matchScore}%
             </div>
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#A5B4FC', textTransform: 'uppercase', display: 'block', marginTop: 4 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: '#2F5233', textTransform: 'uppercase', display: 'block', marginTop: 4 }}>
               Competency Match
             </span>
           </div>
@@ -104,20 +104,20 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
         {/* Why this trainer? Section */}
         <div
           style={{
-            background: 'rgba(10, 22, 38, 0.7)',
-            border: '1px solid #1E334A',
+            background: '#EEF6EA',
+            border: '1px solid #D6E3D8',
             borderRadius: 12,
             padding: '20px',
             marginBottom: 24
           }}
         >
-          <h4 style={{ fontSize: 14, fontWeight: 700, color: '#A5B4FC', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          <h4 style={{ fontSize: 14, fontWeight: 700, color: '#2F5233', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
             🧠 Why is this trainer recommended for you?
           </h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             {bestMatch.matchReasons.map((reason, idx) => (
-              <div key={idx} style={{ display: 'flex', gap: 8, fontSize: 12.5, color: '#CBD5E1' }}>
-                <span style={{ color: '#22C55E', fontWeight: 700 }}>✓</span>
+              <div key={idx} style={{ display: 'flex', gap: 8, fontSize: 12.5, color: '#485563' }}>
+                <span style={{ color: '#2F6B3C', fontWeight: 700 }}>✓</span>
                 <span>{reason}</span>
               </div>
             ))}
@@ -126,7 +126,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
 
         {/* Competency Comparison Table */}
         <div style={{ marginBottom: 24 }}>
-          <h4 style={{ fontSize: 14, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>
+          <h4 style={{ fontSize: 14, fontWeight: 700, color: '#16251B', margin: '0 0 12px' }}>
             Direct Competency Alignment
           </h4>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
@@ -135,16 +135,16 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
                 key={idx}
                 style={{
                   padding: '12px 14px',
-                  background: 'rgba(13, 27, 42, 0.6)',
-                  border: '1px solid #1E334A',
+                  background: '#EEF6EA',
+                  border: '1px solid #D6E3D8',
                   borderRadius: 10
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <span style={{ color: '#22C55E', fontWeight: 700, fontSize: 12 }}>✓ Matched</span>
-                  <span style={{ color: '#38BDF8', fontWeight: 700, fontSize: 12 }}>{comp.level}%</span>
+                  <span style={{ color: '#2F6B3C', fontWeight: 700, fontSize: 12 }}>✓ Matched</span>
+                  <span style={{ color: '#2F5233', fontWeight: 700, fontSize: 12 }}>{comp.level}%</span>
                 </div>
-                <strong style={{ color: '#fff', fontSize: 12.5, display: 'block' }}>{comp.name}</strong>
+                <strong style={{ color: '#16251B', fontSize: 12.5, display: 'block' }}>{comp.name}</strong>
               </div>
             ))}
           </div>
@@ -201,7 +201,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
                   right: 12,
                   fontSize: 10,
                   fontWeight: 700,
-                  background: '#6366F1',
+                  background: '#527A5A',
                   color: '#fff',
                   padding: '2px 8px',
                   borderRadius: 10
@@ -224,7 +224,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
               <small>Competency Match for your learning path</small>
             </div>
 
-            <p style={{ fontSize: 12, color: '#94A3B8', margin: '0 0 14px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: 12, color: '#485563', margin: '0 0 14px', lineHeight: 1.5 }}>
               {trainer.tagline}
             </p>
 
@@ -236,7 +236,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
               ))}
             </div>
 
-            <div style={{ paddingTop: 14, borderTop: '1px solid #1E334A', display: 'flex', gap: 10 }}>
+            <div style={{ paddingTop: 14, borderTop: '1px solid #D6E3D8', display: 'flex', gap: 10 }}>
               <button
                 className="trainee-btn-primary"
                 style={{ width: '100%', fontSize: 12, padding: '8px' }}

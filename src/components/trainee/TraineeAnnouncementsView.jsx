@@ -15,12 +15,12 @@ export default function TraineeAnnouncementsView({ onNavigate }) {
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#38BDF8', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#2F5233', textTransform: 'uppercase' }}>
             DIRECTORATE DISPATCH
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>Announcements</h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 0' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Official notices, cohort updates, and assessment schedules from the academic board.
         </p>
       </div>
@@ -44,8 +44,8 @@ export default function TraineeAnnouncementsView({ onNavigate }) {
           <div
             key={ann.id}
             style={{
-              background: '#0D1B2A',
-              border: ann.important ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid #1E334A',
+              background: '#FFFFFF',
+              border: ann.important ? '1px solid rgba(56, 189, 248, 0.35)' : '1px solid #D6E3D8',
               borderRadius: 14,
               padding: '22px',
               position: 'relative'
@@ -67,24 +67,24 @@ export default function TraineeAnnouncementsView({ onNavigate }) {
                   {ann.category}
                 </span>
                 {ann.important && (
-                  <span style={{ fontSize: 10, background: '#EF4444', color: '#fff', padding: '2px 6px', borderRadius: 4, fontWeight: 700 }}>
+                  <span style={{ fontSize: 10, background: '#B94A48', color: '#fff', padding: '2px 6px', borderRadius: 4, fontWeight: 700 }}>
                     Urgent Notice
                   </span>
                 )}
               </div>
-              <span style={{ fontSize: 12, color: '#64748B' }}>{ann.date}</span>
+              <span style={{ fontSize: 12, color: '#718078' }}>{ann.date}</span>
             </div>
 
             <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>
               {ann.title}
             </h3>
 
-            <p style={{ fontSize: 13, color: '#CBD5E1', lineHeight: 1.6, margin: '0 0 14px' }}>
+            <p style={{ fontSize: 13, color: '#485563', lineHeight: 1.6, margin: '0 0 14px' }}>
               {ann.summary}
             </p>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11.5, color: '#94A3B8' }}>
-              <span>Issued by: <strong style={{ color: '#E2E8F0' }}>{ann.author}</strong></span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11.5, color: '#485563' }}>
+              <span>Issued by: <strong style={{ color: '#485563' }}>{ann.author}</strong></span>
               {ann.category === 'Course' && (
                 <button
                   className="trainee-panel-link"

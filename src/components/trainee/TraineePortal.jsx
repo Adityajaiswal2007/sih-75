@@ -94,7 +94,7 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
       {/* Toast Notification */}
       {toast && (
         <div className="trainee-toast">
-          <span style={{ fontSize: 18, color: '#22C55E' }}>✓</span>
+          <span style={{ fontSize: 18, color: '#2F6B3C' }}>✓</span>
           <span style={{ fontSize: 13, color: '#fff', fontWeight: 600 }}>{toast}</span>
         </div>
       )}

@@ -80,7 +80,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
                     <div style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', fontWeight: isActive ? 700 : 500 }}>
                       {mod.title}
                     </div>
-                    <small style={{ fontSize: 10.5, color: '#64748B' }}>{mod.duration}</small>
+                    <small style={{ fontSize: 10.5, color: '#718078' }}>{mod.duration}</small>
                   </div>
                 </div>
               );
@@ -89,13 +89,13 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
             {/* Assessment item in nav */}
             <div
               className="trainee-module-nav-item"
-              style={{ marginTop: 12, borderTop: '1px solid #1E334A', paddingTop: 10, color: '#A5B4FC' }}
+              style={{ marginTop: 12, borderTop: '1px solid #D6E3D8', paddingTop: 10, color: '#2F5233' }}
               onClick={() => onNavigate('assessment', { courseId: course.id })}
             >
               <span>▤</span>
               <div>
                 <strong>Final Assessment Test</strong>
-                <small style={{ display: 'block', fontSize: 10.5, color: '#818CF8' }}>10 Questions · Certified</small>
+                <small style={{ display: 'block', fontSize: 10.5, color: '#527A5A' }}>10 Questions · Certified</small>
               </div>
             </div>
           </div>
@@ -104,10 +104,10 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
         {/* Center Column: Main Learning Content */}
         <main className="trainee-player-center">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-            <span style={{ fontSize: 12, color: '#38BDF8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            <span style={{ fontSize: 12, color: '#2F5233', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
               Active Module · Lesson {activeModuleIndex + 1} of {modules.length}
             </span>
-            <span style={{ fontSize: 12, color: '#94A3B8' }}>⏱ {currentModule.duration}</span>
+            <span style={{ fontSize: 12, color: '#485563' }}>⏱ {currentModule.duration}</span>
           </div>
 
           <h2 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 16px' }}>
@@ -120,7 +120,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
               <div style={{ textAlign: 'center', padding: 20 }}>
                 <div style={{ fontSize: 28, marginBottom: 8 }}>📊</div>
                 <strong style={{ color: '#fff', fontSize: 15 }}>Interactive Meteorological Video Stream Active</strong>
-                <p style={{ color: '#94A3B8', fontSize: 12, margin: '6px 0 12px' }}>
+                <p style={{ color: '#485563', fontSize: 12, margin: '6px 0 12px' }}>
                   Simulating Doppler Radar polarimetry data rendering with Cartopy...
                 </p>
                 <button
@@ -139,7 +139,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
                 <strong style={{ color: '#fff', fontSize: 14 }}>
                   Watch Video Lecture: Geospatial Radar Plotting in Cartopy
                 </strong>
-                <span style={{ color: '#94A3B8', fontSize: 12 }}>
+                <span style={{ color: '#485563', fontSize: 12 }}>
                   Duration: {currentModule.duration} · High Definition 1080p
                 </span>
               </>
@@ -156,10 +156,10 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
               marginBottom: 20
             }}
           >
-            <strong style={{ color: '#38BDF8', fontSize: 13, display: 'block', marginBottom: 4 }}>
+            <strong style={{ color: '#2F5233', fontSize: 13, display: 'block', marginBottom: 4 }}>
               📌 Module Learning Objective
             </strong>
-            <p style={{ color: '#E2E8F0', fontSize: 13, margin: 0, lineHeight: 1.5 }}>
+            <p style={{ color: '#485563', fontSize: 13, margin: 0, lineHeight: 1.5 }}>
               {mockLearningModuleContent.learningObjective}
             </p>
           </div>
@@ -169,7 +169,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
             <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '0 0 10px' }}>
               📖 Technical Reading & Synoptic Theory
             </h3>
-            <p style={{ color: '#CBD5E1', fontSize: 13.5, lineHeight: 1.7, margin: 0 }}>
+            <p style={{ color: '#485563', fontSize: 13.5, lineHeight: 1.7, margin: 0 }}>
               {mockLearningModuleContent.readingMaterial}
             </p>
           </div>
@@ -185,15 +185,15 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
                   key={idx}
                   style={{
                     padding: '12px 14px',
-                    background: 'rgba(10, 22, 38, 0.6)',
-                    border: '1px solid #1E334A',
+                    background: '#EEF6EA',
+                    border: '1px solid #D6E3D8',
                     borderRadius: 8
                   }}
                 >
-                  <strong style={{ color: '#38BDF8', fontSize: 12.5, display: 'block', marginBottom: 3 }}>
+                  <strong style={{ color: '#2F5233', fontSize: 12.5, display: 'block', marginBottom: 3 }}>
                     {kc.title}
                   </strong>
-                  <span style={{ color: '#94A3B8', fontSize: 11.5, lineHeight: 1.4, display: 'block' }}>
+                  <span style={{ color: '#485563', fontSize: 11.5, lineHeight: 1.4, display: 'block' }}>
                     {kc.desc}
                   </span>
                 </div>
@@ -207,7 +207,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
               <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: 0 }}>
                 💻 Practical Implementation (Python & Cartopy)
               </h3>
-              <span style={{ fontSize: 11, color: '#94A3B8' }}>Interactive Python 3.11</span>
+              <span style={{ fontSize: 11, color: '#485563' }}>Interactive Python 3.11</span>
             </div>
             <pre className="trainee-player-code-block">{mockLearningModuleContent.codeSnippet}</pre>
           </div>
@@ -227,14 +227,14 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
                     justifyContent: 'space-between',
                     padding: '10px 14px',
                     background: 'rgba(13, 27, 42, 0.6)',
-                    border: '1px solid #1E334A',
+                    border: '1px solid #D6E3D8',
                     borderRadius: 8
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span>📁</span>
-                    <span style={{ fontSize: 12.5, color: '#E2E8F0' }}>{res.name}</span>
-                    <small style={{ color: '#64748B', fontSize: 11 }}>({res.size})</small>
+                    <span style={{ fontSize: 12.5, color: '#485563' }}>{res.name}</span>
+                    <small style={{ color: '#718078', fontSize: 11 }}>({res.size})</small>
                   </div>
                   <button
                     className="trainee-panel-link"
@@ -255,7 +255,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
               alignItems: 'center',
               justifyContent: 'space-between',
               paddingTop: 20,
-              borderTop: '1px solid #1E334A'
+              borderTop: '1px solid #D6E3D8'
             }}
           >
             <button
@@ -293,11 +293,11 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
             Course Progress
           </h4>
 
-          <div style={{ textAlign: 'center', padding: '16px 0', borderBottom: '1px solid #1E334A', marginBottom: 18 }}>
-            <div style={{ fontSize: 32, fontWeight: 900, color: '#38BDF8', lineHeight: 1, marginBottom: 4 }}>
+          <div style={{ textAlign: 'center', padding: '16px 0', borderBottom: '1px solid #D6E3D8', marginBottom: 18 }}>
+            <div style={{ fontSize: 32, fontWeight: 900, color: '#2F5233', lineHeight: 1, marginBottom: 4 }}>
               {progressPercent}%
             </div>
-            <small style={{ fontSize: 12, color: '#94A3B8' }}>
+            <small style={{ fontSize: 12, color: '#485563' }}>
               {completedModules.length} of {modules.length} modules completed
             </small>
             <div className="trainee-progress-bar-wrap" style={{ marginTop: 12, height: 6 }}>
@@ -307,21 +307,21 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
 
           {/* Tracked Competencies in this Course */}
           <div style={{ marginBottom: 20 }}>
-            <h5 style={{ fontSize: 12.5, fontWeight: 600, color: '#A5B4FC', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            <h5 style={{ fontSize: 12.5, fontWeight: 600, color: '#2F5233', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: 0.5 }}>
               ◎ Tracked Competencies
             </h5>
             {course.competencies.map((comp, idx) => (
               <div key={idx} style={{ marginBottom: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 4 }}>
-                  <span style={{ color: '#CBD5E1' }}>{comp}</span>
-                  <span style={{ color: '#38BDF8', fontWeight: 700 }}>Active</span>
+                  <span style={{ color: '#485563' }}>{comp}</span>
+                  <span style={{ color: '#2F5233', fontWeight: 700 }}>Active</span>
                 </div>
                 <div className="trainee-progress-bar-wrap" style={{ height: 4 }}>
                   <div
                     className="trainee-progress-bar-fill"
                     style={{
                       width: `${75 + idx * 6}%`,
-                      background: 'linear-gradient(90deg, #6366F1, #38BDF8)'
+                      background: 'linear-gradient(90deg, #527A5A, #2F5233)'
                     }}
                   />
                 </div>
@@ -343,7 +343,7 @@ export default function TraineeLearningView({ courseId, onNavigate, showToast })
             <strong style={{ fontSize: 12.5, color: '#fff', display: 'block' }}>
               Ready to test your skills?
             </strong>
-            <p style={{ fontSize: 11, color: '#94A3B8', margin: '4px 0 12px' }}>
+            <p style={{ fontSize: 11, color: '#485563', margin: '4px 0 12px' }}>
               Pass the 10-question evaluation to unlock your verified credential and update competency scores.
             </p>
             <button

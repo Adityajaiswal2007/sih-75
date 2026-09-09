@@ -18,12 +18,12 @@ export default function TraineeMyLearningView({ onNavigate }) {
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#38BDF8', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#2F5233', textTransform: 'uppercase' }}>
             ACADEMIC PROGRESS
           </span>
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>My Learning</h1>
-        <p style={{ color: '#94A3B8', fontSize: 13.5, margin: '4px 0 0' }}>
+        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Track active courses, module completion milestones, and earned competencies.
         </p>
       </div>
@@ -57,7 +57,7 @@ export default function TraineeMyLearningView({ onNavigate }) {
                     course.progress === 100
                       ? 'rgba(34, 197, 94, 0.15)'
                       : 'rgba(56, 189, 248, 0.15)',
-                  color: course.progress === 100 ? '#4ADE80' : '#38BDF8',
+                  color: course.progress === 100 ? '#2F6B3C' : '#2F5233',
                   border:
                     course.progress === 100
                       ? '1px solid rgba(34, 197, 94, 0.3)'
@@ -78,18 +78,18 @@ export default function TraineeMyLearningView({ onNavigate }) {
                   className="trainee-progress-bar-fill"
                   style={{
                     width: `${course.progress}%`,
-                    background: course.progress === 100 ? '#22C55E' : 'linear-gradient(90deg, #3B82F6, #38BDF8)'
+                    background: course.progress === 100 ? '#2F6B3C' : 'linear-gradient(90deg, #2F5233, #2F5233)'
                   }}
                 />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, color: '#94A3B8', marginTop: 4 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, color: '#485563', marginTop: 4 }}>
                 <span>Last accessed: {course.lastAccessed || 'Recently'}</span>
                 <span>{course.duration}</span>
               </div>
             </div>
 
-            <div style={{ fontSize: 12, color: '#94A3B8', marginBottom: 16 }}>
-              Faculty: <strong style={{ color: '#E2E8F0' }}>{course.instructor}</strong>
+            <div style={{ fontSize: 12, color: '#485563', marginBottom: 16 }}>
+              Faculty: <strong style={{ color: '#485563' }}>{course.instructor}</strong>
             </div>
 
             {/* Actions */}

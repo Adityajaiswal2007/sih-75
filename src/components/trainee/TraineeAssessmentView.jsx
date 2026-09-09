@@ -55,7 +55,7 @@ export default function TraineeAssessmentView({ onNavigate, onCompleteAssessment
           <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', margin: 0 }}>
             Python for Weather Analytics Assessment
           </h2>
-          <small style={{ color: '#94A3B8', fontSize: 12 }}>
+          <small style={{ color: '#485563', fontSize: 12 }}>
             Standard Competency Verification · 10 Multiple Choice Questions
           </small>
         </div>
@@ -68,12 +68,12 @@ export default function TraineeAssessmentView({ onNavigate, onCompleteAssessment
 
       {/* Progress Strip */}
       <div style={{ marginBottom: 20 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94A3B8', marginBottom: 6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#485563', marginBottom: 6 }}>
           <span>
             Question <strong style={{ color: '#fff' }}>{currentQuestionIndex + 1}</strong> of {totalQuestions}
           </span>
           <span>
-            Answered: <strong style={{ color: '#38BDF8' }}>{answeredCount}</strong> / {totalQuestions}
+            Answered: <strong style={{ color: '#2F5233' }}>{answeredCount}</strong> / {totalQuestions}
           </span>
         </div>
         <div className="trainee-progress-bar-wrap" style={{ height: 6 }}>
@@ -101,7 +101,7 @@ export default function TraineeAssessmentView({ onNavigate, onCompleteAssessment
                 onClick={() => handleSelectOption(optIdx)}
               >
                 <div className="trainee-option-circle">{letter}</div>
-                <span style={{ fontSize: 14, color: isSelected ? '#fff' : '#CBD5E1', fontWeight: isSelected ? 600 : 400 }}>
+                <span style={{ fontSize: 14, color: isSelected ? '#fff' : '#485563', fontWeight: isSelected ? 600 : 400 }}>
                   {optionText}
                 </span>
               </div>
@@ -132,7 +132,7 @@ export default function TraineeAssessmentView({ onNavigate, onCompleteAssessment
               <button
                 className="trainee-btn-primary"
                 style={{
-                  background: 'linear-gradient(135deg, #22C55E, #16A34A)',
+                  background: 'linear-gradient(135deg, #2F6B3C, #2F6B3C)',
                   color: '#fff',
                   boxShadow: '0 4px 16px rgba(34, 197, 94, 0.4)'
                 }}
@@ -153,8 +153,8 @@ export default function TraineeAssessmentView({ onNavigate, onCompleteAssessment
           gap: 8,
           flexWrap: 'wrap',
           padding: '16px',
-          background: '#0D1B2A',
-          border: '1px solid #1E334A',
+          background: '#FFFFFF',
+          border: '1px solid #D6E3D8',
           borderRadius: 12
         }}
       >
@@ -171,16 +171,16 @@ export default function TraineeAssessmentView({ onNavigate, onCompleteAssessment
                 height: 34,
                 borderRadius: 8,
                 border: isCurrent
-                  ? '2px solid #38BDF8'
+                  ? '2px solid #2F5233'
                   : isAnswered
-                  ? '1px solid #22C55E'
-                  : '1px solid #1E334A',
+                  ? '1px solid #2F6B3C'
+                  : '1px solid #D6E3D8',
                 background: isCurrent
                   ? 'rgba(56, 189, 248, 0.2)'
                   : isAnswered
                   ? 'rgba(34, 197, 94, 0.15)'
-                  : '#101F31',
-                color: isCurrent ? '#38BDF8' : isAnswered ? '#4ADE80' : '#94A3B8',
+                  : '#EEF6EA',
+                color: isCurrent ? '#2F5233' : isAnswered ? '#2F6B3C' : '#485563',
                 fontSize: 12,
                 fontWeight: 700,
                 cursor: 'pointer'

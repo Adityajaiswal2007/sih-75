@@ -7,7 +7,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
       {/* Header Profile Hero */}
       <div
         style={{
-          background: 'linear-gradient(135deg, #0A1B30 0%, #0D233F 50%, #101F31 100%)',
+          background: 'linear-gradient(135deg, #EEF6EA 0%, #E6F4EA 50%, #EEF6EA 100%)',
           border: '1px solid rgba(56, 189, 248, 0.25)',
           borderRadius: 16,
           padding: '32px',
@@ -25,7 +25,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
               width: 76,
               height: 76,
               borderRadius: '50%',
-              background: 'linear-gradient(135deg, #0284c7, #6366f1)',
+              background: 'linear-gradient(135deg, #2F5233, #527A5A)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -45,10 +45,10 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
               </h1>
               <span className="trainee-role-badge">Trainee Fellow</span>
             </div>
-            <p style={{ color: '#38BDF8', fontSize: 13.5, margin: '0 0 4px', fontWeight: 600 }}>
+            <p style={{ color: '#2F5233', fontSize: 13.5, margin: '0 0 4px', fontWeight: 600 }}>
               {traineeUser.designation} · {traineeUser.organization}
             </p>
-            <span style={{ color: '#94A3B8', fontSize: 12 }}>
+            <span style={{ color: '#485563', fontSize: 12 }}>
               📍 {traineeUser.location} · ✉ {traineeUser.email} · 📱 {traineeUser.mobile}
             </span>
           </div>
@@ -59,16 +59,16 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
           <div
             style={{
               padding: '12px 18px',
-              background: 'rgba(10, 22, 38, 0.8)',
-              border: '1px solid #1E334A',
+              background: '#EEF6EA',
+              border: '1px solid #D6E3D8',
               borderRadius: 12,
               textAlign: 'center'
             }}
           >
-            <strong style={{ fontSize: 24, fontWeight: 800, color: '#22C55E', display: 'block' }}>
+            <strong style={{ fontSize: 24, fontWeight: 800, color: '#2F6B3C', display: 'block' }}>
               {traineeUser.profileCompletion}%
             </strong>
-            <small style={{ fontSize: 11, color: '#94A3B8' }}>Profile Complete</small>
+            <small style={{ fontSize: 11, color: '#485563' }}>Profile Complete</small>
           </div>
 
           <button
@@ -97,7 +97,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
                     padding: '6px 12px',
                     borderRadius: 20,
                     background: 'rgba(56, 189, 248, 0.12)',
-                    color: '#38BDF8',
+                    color: '#2F5233',
                     border: '1px solid rgba(56, 189, 248, 0.25)',
                     fontSize: 12,
                     fontWeight: 600
@@ -114,7 +114,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
             <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '0 0 14px' }}>
               🎯 Learning & Career Goals
             </h3>
-            <ul style={{ margin: 0, paddingLeft: 20, color: '#CBD5E1', fontSize: 13, lineHeight: 1.8 }}>
+            <ul style={{ margin: 0, paddingLeft: 20, color: '#485563', fontSize: 13, lineHeight: 1.8 }}>
               {traineeUser.goals.map((goal, idx) => (
                 <li key={idx}>{goal}</li>
               ))}
@@ -139,14 +139,14 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
               <div key={comp.id}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, marginBottom: 4 }}>
                   <span style={{ color: '#fff', fontWeight: 600 }}>{comp.name}</span>
-                  <strong style={{ color: '#38BDF8' }}>{comp.level}%</strong>
+                  <strong style={{ color: '#2F5233' }}>{comp.level}%</strong>
                 </div>
                 <div className="trainee-comp-track" style={{ height: 6 }}>
                   <div
                     className="trainee-comp-fill"
                     style={{
                       width: `${comp.level}%`,
-                      background: comp.level >= 80 ? '#38BDF8' : '#6366F1'
+                      background: comp.level >= 80 ? '#2F5233' : '#527A5A'
                     }}
                   />
                 </div>
@@ -154,7 +154,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
             ))}
           </div>
 
-          <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid #1E334A' }}>
+          <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid #D6E3D8' }}>
             <button
               className="trainee-btn-secondary"
               style={{ width: '100%', fontSize: 12.5 }}

@@ -617,81 +617,133 @@ function LoginPage({ onBack, onDashboard }) {
             <span className="back-arrow">←</span> Back to Home
           </button>
           <div className="auth-security-pill">
-            <span className="secure-lock-icon">🔒</span>
-            <span>256-Bit SSL Encrypted · MoES Sovereign Cloud</span>
+            <span>Skill Today &nbsp;•&nbsp; Better Tomorrow</span>
           </div>
         </div>
 
         <div className="login-layout">
-          {/* Left Column: High-Impact Institutional Showcase */}
+          {/* Left Column: Learn. Assess. Grow. Showcase */}
           <div className="login-intro-showcase">
-            <div className="auth-brand-row">
-              <Logo onClick={onBack} />
-              <span className="gov-seal-pill">🏛️ MoES | IMD Portal</span>
+            <div className="auth-brand-block">
+              <div className="auth-brand-logo-wrap" onClick={onBack} style={{ cursor: 'pointer' }}>
+                <span className="auth-logo-cap">🎓</span>
+                <span className="auth-logo-text">Capacity<span className="auth-logo-green">Connect</span></span>
+              </div>
+              <p className="auth-brand-subtext">Digital Capacity Building & Learning Portal</p>
             </div>
 
             <h1 className="login-showcase-title">
-              National Meteorological<br />
-              <span className="gradient-highlight">Capacity & AI Matching</span><br />
-              Command Center
+              Learn. Assess. Grow.<br />
+              Build Your Future.
             </h1>
 
             <p className="login-showcase-desc">
-              Log in to access your customized meteorological learning pathways, real-time competency matrix, and AI-powered faculty matching workspace.
+              Access personalized learning pathways, assess your skills, track your competency and develop the skills you need for a better tomorrow.
             </p>
 
-            {/* Feature Cards Grid */}
+            {/* Feature Cards List */}
             <div className="login-feature-strip">
               <div className="login-feature-pill">
-                <div className="feature-pill-icon cyan">⚡</div>
+                <div className="feature-pill-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                </div>
                 <div>
-                  <strong>Precision AI Faculty Matching</strong>
-                  <small>Multi-factor neural algorithm with 94.8% accuracy</small>
+                  <strong>Skill Gap Analysis</strong>
+                  <small>Identify your strengths and areas for improvement</small>
                 </div>
               </div>
 
               <div className="login-feature-pill">
-                <div className="feature-pill-icon blue">📊</div>
+                <div className="feature-pill-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
                 <div>
-                  <strong>Dynamic Skill Gap Diagnostics</strong>
-                  <small>Real-time competency radar & personalized modules</small>
+                  <strong>Personalized Learning Path</strong>
+                  <small>Get recommended courses based on your goals</small>
                 </div>
               </div>
 
               <div className="login-feature-pill">
-                <div className="feature-pill-icon purple">📜</div>
+                <div className="feature-pill-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                    <polyline points="16 7 22 7 22 13"></polyline>
+                  </svg>
+                </div>
                 <div>
-                  <strong>Sovereign Credentials & Governance</strong>
-                  <small>MoES accredited certifications with audit logging</small>
+                  <strong>Competency Tracking</strong>
+                  <small>Track your progress and achieve your learning goals</small>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Live Metrics Tag */}
-            <div className="login-trust-footer">
-              <div className="trust-metric-item">
-                <strong>2,486+</strong>
-                <small>Certified Learners</small>
+            {/* Bottom Illustration & Quote Area */}
+            <div className="login-illustration-section">
+              <div className="login-illustration-box">
+                <svg viewBox="0 0 340 180" className="login-learner-svg" aria-label="Student learning illustration">
+                  {/* Upward Growth Arrow Background */}
+                  <path d="M 80 150 L 160 110 L 220 125 L 300 45" fill="none" stroke="#D6E3D8" strokeWidth="3" strokeDasharray="5,5" />
+                  <path d="M 90 145 L 165 105 L 225 120 L 305 40" fill="none" stroke="#A7C957" strokeWidth="3" />
+                  <polygon points="305,35 315,40 307,48" fill="#A7C957" />
+                  
+                  {/* Subtle decorative circles */}
+                  <circle cx="280" cy="90" r="28" fill="#E6F4EA" opacity="0.6" />
+                  <circle cx="90" cy="110" r="18" fill="#EEF6EA" opacity="0.7" />
+
+                  {/* Potted Plant */}
+                  <rect x="42" y="140" width="22" height="22" rx="3" fill="#2F5233" />
+                  <path d="M 40 140 C 32 120, 25 125, 30 115 C 38 122, 45 130, 48 140 Z" fill="#2F5233" />
+                  <path d="M 50 140 C 45 110, 58 105, 54 95 C 60 108, 56 128, 54 140 Z" fill="#A7C957" />
+                  <path d="M 58 140 C 65 125, 78 120, 72 110 C 68 122, 60 130, 58 140 Z" fill="#527A5A" />
+
+                  {/* Stack of Books */}
+                  <rect x="75" y="152" width="95" height="15" rx="3" fill="#2F5233" />
+                  <rect x="78" y="140" width="90" height="13" rx="3" fill="#FFFFFF" stroke="#D6E3D8" strokeWidth="1" />
+                  <rect x="82" y="128" width="82" height="13" rx="3" fill="#A7C957" />
+                  <rect x="80" y="117" width="85" height="12" rx="3" fill="#2F5233" />
+
+                  {/* Learner Figure */}
+                  <ellipse cx="120" cy="72" rx="9" ry="10" fill="#E5C298" /> {/* Head */}
+                  <path d="M 113 67 C 113 60, 127 60, 127 67 C 127 70, 124 72, 120 72 Z" fill="#16251B" /> {/* Hair */}
+                  <path d="M 111 82 L 129 82 L 127 112 L 113 112 Z" fill="#527A5A" /> {/* Torso / Green Shirt */}
+                  <path d="M 113 112 L 132 112 L 155 135 L 146 138 L 125 120 L 115 135 L 105 133 Z" fill="#16251B" /> {/* Legs */}
+                  <ellipse cx="152" cy="140" rx="6" ry="3" fill="#2F5233" /> {/* Shoe */}
+                  <ellipse cx="106" cy="135" rx="6" ry="3" fill="#2F5233" /> {/* Shoe */}
+
+                  {/* Laptop on lap */}
+                  <polygon points="128,102 148,102 144,115 125,115" fill="#FFFFFF" stroke="#D6E3D8" strokeWidth="1" />
+                  <polygon points="135,88 149,88 148,102 134,102" fill="#485563" />
+                  <path d="M 125 90 L 133 104" stroke="#E5C298" strokeWidth="3" strokeLinecap="round" /> {/* Arm */}
+                </svg>
               </div>
-              <div className="trust-divider" />
-              <div className="trust-metric-item">
-                <strong>150+</strong>
-                <small>Master Faculty</small>
-              </div>
-              <div className="trust-divider" />
-              <div className="trust-metric-item">
-                <strong>99.98%</strong>
-                <small>System Uptime</small>
+
+              <div className="login-quote-box">
+                <p className="login-quote-text">
+                  <span className="quote-dot">•</span> "Continuous learning leads to brighter opportunities."
+                </p>
+                <div className="quote-accent-bar" />
               </div>
             </div>
           </div>
 
-          {/* Right Column: Ultra-Sleek Glassmorphism Login Card */}
+          {/* Right Column: Clean Workspace Sign In Card */}
           <div className="login-card-container">
             <form className="login-card" onSubmit={handleSubmit}>
               <div className="login-card-heading">
                 <div className="login-card-header-icon">
-                  <span>◇</span>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                  </svg>
                 </div>
                 <div>
                   <h2>Workspace Sign In</h2>
@@ -714,7 +766,7 @@ function LoginPage({ onBack, onDashboard }) {
                   className={`auth-role-tab ${selectedRoleTab === 'trainer' ? 'active' : ''}`}
                   onClick={() => handleRoleTabSelect('trainer')}
                 >
-                  <span className="role-tab-icon">👨‍🏫</span>
+                  <span className="role-tab-icon">👥</span>
                   <span className="role-tab-text">Trainer</span>
                 </button>
                 <button
@@ -725,40 +777,6 @@ function LoginPage({ onBack, onDashboard }) {
                   <span className="role-tab-icon">🛡️</span>
                   <span className="role-tab-text">Admin</span>
                 </button>
-              </div>
-
-              {/* 1-Click Fast Demo Launcher */}
-              <div className="quick-demo-box">
-                <div className="quick-demo-header">
-                  <span className="demo-badge-pill">⚡ 1-Click Instant Demo:</span>
-                  <small>No password typing needed</small>
-                </div>
-                <div className="quick-demo-buttons">
-                  <button
-                    type="button"
-                    className={`demo-btn ${selectedRoleTab === 'trainee' ? 'selected' : ''}`}
-                    onClick={() => handleQuickDemoLaunch('trainee')}
-                  >
-                    <span>🎓 Learner Demo</span>
-                    <small>Rahul Sharma</small>
-                  </button>
-                  <button
-                    type="button"
-                    className={`demo-btn ${selectedRoleTab === 'trainer' ? 'selected' : ''}`}
-                    onClick={() => handleQuickDemoLaunch('trainer')}
-                  >
-                    <span>👨‍🏫 Faculty Demo</span>
-                    <small>Dr. Priya Nair</small>
-                  </button>
-                  <button
-                    type="button"
-                    className={`demo-btn ${selectedRoleTab === 'admin' ? 'selected' : ''}`}
-                    onClick={() => handleQuickDemoLaunch('admin')}
-                  >
-                    <span>🛡️ Admin Demo</span>
-                    <small>Directorate</small>
-                  </button>
-                </div>
               </div>
 
               {errorMessage && (
@@ -780,12 +798,17 @@ function LoginPage({ onBack, onDashboard }) {
                     <label>
                       <span>Institutional Email</span>
                       <div className="input-with-icon-wrap">
-                        <span className="input-lead-icon">✉</span>
+                        <span className="input-lead-icon">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#718078" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                          </svg>
+                        </span>
                         <input
                           type="email"
                           value={email}
                           onChange={(e) => { setEmail(e.target.value); setErrorMessage(''); }}
-                          placeholder={`${selectedRoleTab === 'trainer' ? 'dr.priya.nair' : selectedRoleTab === 'admin' ? 'admin.directorate' : 'ananya.verma'}@imd.gov.in`}
+                          placeholder="you@college.edu.in"
                           required
                         />
                       </div>
@@ -796,12 +819,17 @@ function LoginPage({ onBack, onDashboard }) {
                     <label>
                       <span>Password</span>
                       <div className="password-field-wrap">
-                        <span className="input-lead-icon">🔒</span>
+                        <span className="input-lead-icon">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#718078" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                          </svg>
+                        </span>
                         <input
                           type={showPassword ? 'text' : 'password'}
                           value={password}
                           onChange={(e) => { setPassword(e.target.value); setErrorMessage(''); }}
-                          placeholder="Enter your account password"
+                          placeholder="Enter your password"
                           required
                         />
                         <button
@@ -820,7 +848,7 @@ function LoginPage({ onBack, onDashboard }) {
                   <div className="auth-form-row">
                     <label className="auth-check-label">
                       <input type="checkbox" defaultChecked />
-                      <span>Remember on this device</span>
+                      <span>Remember me on this device</span>
                     </label>
                     <button type="button" className="auth-forgot-btn" onClick={() => setShowForgot(true)}>
                       Forgot password?
@@ -841,17 +869,21 @@ function LoginPage({ onBack, onDashboard }) {
                   </button>
 
                   <div className="auth-divider">
-                    <span>OR SIGN IN VIA GOV SSO</span>
+                    <span>OR</span>
                   </div>
 
                   <button
                     type="button"
-                    className="btn-sso-gov"
+                    className="btn-social-google"
                     onClick={() => handleQuickDemoLaunch(selectedRoleTab)}
                   >
-                    <span className="sso-emblem">🇮🇳</span>
-                    <span>Jan Parichay / MeriPehchaan SSO</span>
-                    <span className="sso-arrow">↗</span>
+                    <svg className="google-icon-svg" viewBox="0 0 24 24" width="18" height="18">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    <span>Continue with Google</span>
                   </button>
 
                   <p className="auth-signup-text">
@@ -1903,11 +1935,11 @@ function AdminDashboard({ onBack }) {
                     <div style={{ display: 'flex', gap: 14, alignItems: 'center', marginBottom: 14 }}>
                       <div className="admin-avatar large">{name.split(' ').slice(-2).map((part) => part[0]).join('')}</div>
                       <div>
-                        <h3 style={{ color: '#fff', fontSize: 16, margin: 0 }}>{name}</h3>
-                        <small style={{ color: '#8492a6', fontSize: 12 }}>{expertise}</small>
+                        <h3 style={{ color: '#16251B', fontSize: 16, margin: 0 }}>{name}</h3>
+                        <small style={{ color: '#485563', fontSize: 12 }}>{expertise}</small>
                       </div>
                     </div>
-                    <p style={{ color: '#cbd5e1', fontSize: 13, margin: '0 0 12px' }}>Trained {trained} · Verification Badge Active</p>
+                    <p style={{ color: '#485563', fontSize: 13, margin: '0 0 12px' }}>Trained {trained} · Verification Badge Active</p>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span className="portal-badge good">{score} Success Rate</span>
                       <button className="text-button">View Profile →</button>
@@ -1963,7 +1995,7 @@ function AdminDashboard({ onBack }) {
               </div>
               <div className="portal-two-col-grid">
                 <div>
-                  <h3 style={{ color: '#fff', fontSize: 16, marginBottom: 14 }}>Core Domain Competencies</h3>
+                  <h3 style={{ color: '#16251B', fontSize: 16, marginBottom: 14 }}>Core Domain Competencies</h3>
                   {adminCompetencies.map(([name, score]) => (
                     <div className="portal-competency-card" key={name}>
                       <div className="portal-comp-header">
@@ -1976,7 +2008,7 @@ function AdminDashboard({ onBack }) {
                         <span>{score}%</span>
                       </div>
                       <div className="portal-progress-track">
-                        <div className="portal-progress-fill" style={{ width: `${score}%`, background: score >= 70 ? 'linear-gradient(90deg, #2583ff, #2cd0d3)' : score >= 55 ? 'linear-gradient(90deg, #eab308, #ca8a04)' : 'linear-gradient(90deg, #ef4444, #dc2626)' }} />
+                        <div className="portal-progress-fill" style={{ width: `${score}%`, background: score >= 70 ? 'linear-gradient(90deg, #2F5233, #A7C957)' : score >= 55 ? 'linear-gradient(90deg, #B58B32, #D4A338)' : 'linear-gradient(90deg, #B94A48, #D96563)' }} />
                       </div>
                     </div>
                   ))}
@@ -2019,7 +2051,7 @@ function AdminDashboard({ onBack }) {
                 <div className="portal-info-card">
                   <h3>Matching Algorithm Criteria</h3>
                   <p>Match scores are computed using 4 verified dimensions:</p>
-                  <ul style={{ color: '#cbd5e1', fontSize: 13, lineHeight: 1.8, paddingLeft: 18 }}>
+                  <ul style={{ color: '#485563', fontSize: 13, lineHeight: 1.8, paddingLeft: 18 }}>
                     <li>Past trainee assessment outcomes (35% weight)</li>
                     <li>Verified competency skill matrix (30% weight)</li>
                     <li>Domain experience & publications (20% weight)</li>
@@ -2083,10 +2115,10 @@ function AdminDashboard({ onBack }) {
                 ].map(([title, desc, time]) => (
                   <div className="portal-card" key={title} style={{ marginBottom: 12 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <h3 style={{ color: '#fff', fontSize: 15, margin: 0 }}>{title}</h3>
-                      <small style={{ color: '#8492a6', fontSize: 11 }}>{time}</small>
+                      <h3 style={{ color: '#16251B', fontSize: 15, margin: 0 }}>{title}</h3>
+                      <small style={{ color: '#485563', fontSize: 11 }}>{time}</small>
                     </div>
-                    <p style={{ color: '#cbd5e1', fontSize: 13, margin: '8px 0 0', lineHeight: 1.5 }}>{desc}</p>
+                    <p style={{ color: '#485563', fontSize: 13, margin: '8px 0 0', lineHeight: 1.5 }}>{desc}</p>
                   </div>
                 ))}
               </div>
@@ -2115,8 +2147,8 @@ function AdminDashboard({ onBack }) {
                 </div>
                 <div className="portal-settings-card">
                   <h3>System Status</h3>
-                  <p style={{ color: '#34d399', fontWeight: 600, fontSize: 13 }}>● All platform services operating normally</p>
-                  <p style={{ color: '#8492a6', fontSize: 12, marginTop: 8 }}>Database: Connected · HPC Cluster: Active · AI Match Engine: Operational</p>
+                  <p style={{ color: '#2F6B3C', fontWeight: 600, fontSize: 13 }}>● All platform services operating normally</p>
+                  <p style={{ color: '#485563', fontSize: 12, marginTop: 8 }}>Database: Connected · HPC Cluster: Active · AI Match Engine: Operational</p>
                 </div>
               </div>
             </div>

@@ -37,10 +37,10 @@ export function TrainerTraineesView({ trainees, onOpenModal, onSelectTrainee }) 
           <div className="kpi-note">83% positive progression</div>
         </div>
         <div className="portal-kpi-card">
-          <div className="kpi-icon" style={{ color: '#f87171' }}>!</div>
+          <div className="kpi-icon" style={{ color: '#B94A48' }}>!</div>
           <div className="kpi-label">Needs Diagnostic Attention</div>
-          <div className="kpi-val" style={{ color: '#f87171' }}>{trainees.filter((t) => t.status === 'Falling Behind').length}</div>
-          <div className="kpi-note" style={{ color: '#f87171' }}>Action recommended</div>
+          <div className="kpi-val" style={{ color: '#B94A48' }}>{trainees.filter((t) => t.status === 'Falling Behind').length}</div>
+          <div className="kpi-note" style={{ color: '#B94A48' }}>Action recommended</div>
         </div>
         <div className="portal-kpi-card">
           <div className="kpi-icon">◎</div>
@@ -97,20 +97,20 @@ export function TrainerTraineesView({ trainees, onOpenModal, onSelectTrainee }) 
                   </div>
                 </td>
                 <td>
-                  <span style={{ fontSize: 13, color: '#e2edf9' }}>{t.course}</span>
-                  <small style={{ display: 'block', color: '#7b9bb6', fontSize: 11 }}>Joined: {t.joinedDate}</small>
+                  <span style={{ fontSize: 13, color: '#16251B' }}>{t.course}</span>
+                  <small style={{ display: 'block', color: '#485563', fontSize: 11 }}>Joined: {t.joinedDate}</small>
                 </td>
                 <td style={{ minWidth: 140 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
-                    <span style={{ color: '#7ba2c6' }}>{t.completedModules}/{t.totalModules} modules</span>
-                    <b style={{ color: '#38bdf8' }}>{t.progress}%</b>
+                    <span style={{ color: '#485563' }}>{t.completedModules}/{t.totalModules} modules</span>
+                    <b style={{ color: '#2F5233' }}>{t.progress}%</b>
                   </div>
                   <div className="portal-progress-track" style={{ margin: 0, height: 5 }}>
                     <div className="portal-progress-fill" style={{ width: `${t.progress}%` }} />
                   </div>
                 </td>
                 <td>
-                  <strong style={{ fontSize: 14, color: t.assessmentScore >= 75 ? '#34d399' : '#f87171' }}>
+                  <strong style={{ fontSize: 14, color: t.assessmentScore >= 75 ? '#2F6B3C' : '#B94A48' }}>
                     {t.assessmentScore}%
                   </strong>
                 </td>
