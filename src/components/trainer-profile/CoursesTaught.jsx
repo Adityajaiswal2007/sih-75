@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import {
   BookOpen,
   Users,
-  CheckCircle2,
   Clock,
   Star,
   ArrowRight,
-  Sparkles,
-  BarChart,
-  Layers,
   Code2,
   CloudRain,
   Compass,

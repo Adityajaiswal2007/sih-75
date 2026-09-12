@@ -4,10 +4,7 @@ import {
   Star,
   CheckCircle2,
   ThumbsUp,
-  Quote,
-  Sparkles,
-  ExternalLink,
-  Filter
+  ExternalLink
 } from 'lucide-react';
 
 export default function TraineeFeedback({ reviews, onOpenAllFeedbackModal }) {

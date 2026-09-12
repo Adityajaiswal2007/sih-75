@@ -6,9 +6,7 @@ import {
   Globe2,
   Building,
   GraduationCap,
-  ClipboardCheck,
-  Clock,
-  Send
+  ClipboardCheck
 } from 'lucide-react';
 
 export default function AvailabilitySection({ onRequestTrainingModal }) {

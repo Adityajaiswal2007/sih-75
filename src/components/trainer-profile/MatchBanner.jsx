@@ -3,10 +3,7 @@ import {
   Sparkles,
   CheckCircle2,
   ArrowRight,
-  TrendingUp,
-  Cpu,
-  Layers,
-  ChevronRight
+  Cpu
 } from 'lucide-react';
 
 export default function MatchBanner({ matchData, onViewMatchDetails }) {

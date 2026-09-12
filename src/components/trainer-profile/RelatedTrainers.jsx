@@ -4,8 +4,7 @@ import {
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  Building,
-  CheckCircle2
+  Building
 } from 'lucide-react';
 
 export default function RelatedTrainers({ similarTrainers, onSelectTrainer }) {

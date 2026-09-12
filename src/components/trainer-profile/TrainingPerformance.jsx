@@ -5,8 +5,6 @@ import {
   CheckCircle2,
   Star,
   BarChart3,
-  Calendar,
-  Sparkles,
   ArrowUpRight,
   Info
 } from 'lucide-react';
@@ -115,7 +113,7 @@ export default function TrainingPerformance({ performanceData }) {
           </div>
 
           <div className="chart-bars-wrap">
-            {trendData.map((d, index) => {
+            {trendData.map((d) => {
               const isHovered = hoveredMonth === d.month;
               return (
                 <div

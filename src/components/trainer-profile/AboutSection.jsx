@@ -4,10 +4,7 @@ import {
   Sparkles,
   GraduationCap,
   Globe2,
-  FileCheck,
-  Target,
-  BookMarked,
-  Layers
+  Target
 } from 'lucide-react';
 
 export default function AboutSection({ aboutData }) {

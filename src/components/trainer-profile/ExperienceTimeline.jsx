@@ -3,9 +3,7 @@ import {
   Briefcase,
   Calendar,
   Building,
-  CheckCircle2,
-  Award,
-  ChevronRight
+  CheckCircle2
 } from 'lucide-react';
 
 export default function ExperienceTimeline({ experiences }) {

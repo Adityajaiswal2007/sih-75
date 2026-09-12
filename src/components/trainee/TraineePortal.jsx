@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './TraineePortal.css';
-import { traineeUser, mockNotifications, allCourses } from './traineeData';
+import { traineeUser, mockNotifications } from './traineeData';
 import TraineeDashboardView from './TraineeDashboardView';
 import TraineeCatalogView from './TraineeCatalogView';
 import TraineeCourseDetailView from './TraineeCourseDetailView';

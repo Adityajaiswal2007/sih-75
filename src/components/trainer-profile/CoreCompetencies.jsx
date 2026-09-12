@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
   Layers,
-  Award,
-  ChevronRight,
-  Sparkles,
   BarChart2,
   SlidersHorizontal,
   CheckCircle,

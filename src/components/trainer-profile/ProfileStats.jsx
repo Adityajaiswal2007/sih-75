@@ -4,10 +4,7 @@ import {
   Users,
   Calendar,
   TrendingUp,
-  Star,
-  Award,
-  CheckCircle,
-  GraduationCap
+  Star
 } from 'lucide-react';
 
 export default function ProfileStats({ stats }) {

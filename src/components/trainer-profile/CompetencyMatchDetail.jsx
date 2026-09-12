@@ -3,14 +3,7 @@ import {
   Sparkles,
   CheckCircle2,
   Cpu,
-  ArrowRight,
-  TrendingUp,
-  Target,
-  FileCheck2,
-  ShieldCheck,
-  Award,
-  Zap,
-  HelpCircle
+  ArrowRight
 } from 'lucide-react';
 
 export default function CompetencyMatchDetail({ matchData, onOpenMatchModal }) {

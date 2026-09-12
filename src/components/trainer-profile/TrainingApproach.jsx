@@ -3,9 +3,7 @@ import {
   Compass,
   Cpu,
   CheckSquare,
-  TrendingUp,
-  Sparkles,
-  ArrowRight
+  TrendingUp
 } from 'lucide-react';
 
 export default function TrainingApproach() {

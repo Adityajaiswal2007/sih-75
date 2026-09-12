@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './TrainerProfile.css';
 
 // Subcomponents
@@ -37,28 +37,21 @@ import {
   ArrowLeft,
   ChevronRight,
   Shield,
-  User,
-  Sparkles,
-  Layers,
-  BookOpen,
-  Calendar,
-  Share2,
-  CheckCircle,
-  HelpCircle
+  User
 } from 'lucide-react';
 
 export default function TrainerProfilePage({ onBack, defaultRole = 'trainee' }) {
   // Main State
   const [isAdminView, setIsAdminView] = useState(defaultRole === 'admin');
   const [trainer, setTrainer] = useState(initialTrainerData);
-  const [stats, setStats] = useState(trainerStats);
-  const [matchData, setMatchData] = useState(competencyMatchData);
-  const [competencies, setCompetencies] = useState(competenciesList);
-  const [experiences, setExperiences] = useState(experienceList);
-  const [courses, setCourses] = useState(coursesList);
-  const [performance, setPerformance] = useState(performanceMetrics);
-  const [reviews, setReviews] = useState(traineeReviews);
-  const [similarTrainers, setSimilarTrainers] = useState(similarTrainersList);
+  const stats = trainerStats;
+  const matchData = competencyMatchData;
+  const competencies = competenciesList;
+  const experiences = experienceList;
+  const courses = coursesList;
+  const performance = performanceMetrics;
+  const reviews = traineeReviews;
+  const similarTrainers = similarTrainersList;
 
   // Modal & Toast State
   const [activeModal, setActiveModal] = useState(null); // 'contact', 'request', 'match-details', 'assign-course', 'edit-profile', 'all-competencies', 'course-details', 'all-feedback'

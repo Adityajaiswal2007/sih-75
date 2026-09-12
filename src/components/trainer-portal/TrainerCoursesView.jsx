@@ -74,7 +74,7 @@ export function TrainerCoursesView({ courses, onOpenModal, onSelectCourse }) {
 
       <div className="portal-grid-cards">
         {filtered.map((course) => (
-          <div className="portal-card" key={course.id}>
+          <div className="portal-card" key={course.id} onClick={() => onSelectCourse?.(course)}>
             <div>
               <div className="portal-card-top">
                 <span className={`portal-badge ${course.status === 'Published' ? 'published' : 'draft'}`}>

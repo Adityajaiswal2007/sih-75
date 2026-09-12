@@ -40,13 +40,10 @@ import statTrendingIcon from '../../assets/landing/ci-trending-up2.svg'
 import statTargetIcon from '../../assets/landing/fluent-target-arrow-16-filled0.svg'
 
 import herbDecor1 from '../../assets/landing/noto-v-1-herb0.svg'
-import herbDecor2 from '../../assets/landing/streamline-emojis-herb0.svg'
-import herbDecor3 from '../../assets/landing/emojione-herb0.svg'
 import leafDecor1 from '../../assets/landing/vector6.svg'
 import leafDecor2 from '../../assets/landing/vector7.svg'
 import leafDecor3 from '../../assets/landing/vector8.svg'
 import leafDecor4 from '../../assets/landing/vector9.svg'
-import leafDecor5 from '../../assets/landing/vector10.svg'
 import leafDecor6 from '../../assets/landing/group5.svg'
 
 export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {

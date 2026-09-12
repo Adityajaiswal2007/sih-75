@@ -6,19 +6,15 @@ import {
   Building2,
   Mail,
   BookOpen,
-  Calendar,
   Share2,
   Bookmark,
   BookmarkCheck,
   Sparkles,
   Edit3,
-  UserCheck,
   BarChart3,
   UserX,
   Award,
-  Zap,
-  Clock,
-  Send
+  Zap
 } from 'lucide-react';
 
 export default function TrainerHero({

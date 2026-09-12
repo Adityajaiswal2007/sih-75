@@ -8,16 +8,10 @@ import {
   BookOpen,
   Edit3,
   CheckCircle2,
-  AlertCircle,
   Star,
   Users,
-  Calendar,
   Layers,
-  Sparkles,
   ShieldCheck,
-  Building2,
-  MapPin,
-  Clock,
   Search
 } from 'lucide-react';
 
@@ -698,7 +692,7 @@ function CourseDetailsModal({ course, trainer, onClose, onToast }) {
           </div>
           <div>
             <h3 className="modal-title">{course.title}</h3>
-            <p className="modal-subtitle">{course.level} Level • {course.duration}</p>
+            <p className="modal-subtitle">{course.level} Level • {course.duration}{trainer?.name ? ` • Instructor: ${trainer.name}` : ''}</p>
           </div>
         </div>
         <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">

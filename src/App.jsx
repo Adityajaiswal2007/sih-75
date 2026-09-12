@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import api from './services/api'
-import ForgotPasswordPage from './components/forgot-password/ForgotPasswordPage'
-import SignupPage from './components/signup/SignupPage'
 import LoginPage from './components/login/LoginPage'
 import LandingPage from './components/landing/LandingPage'
 import TrainerProfilePage from './components/trainer-profile/TrainerProfilePage'
@@ -31,50 +29,6 @@ import {
   initialFaqs
 } from './components/trainer-portal/trainerPortalData'
 
-const features = [
-  ['01', 'Personalized Learning', 'Personalized learning paths and course recommendations based on your skills, role, and interests.', '◆'],
-  ['02', 'Competency Mapping', 'Identify skills, diagnose competency gaps and track development with an intelligent mapping engine.', '◎'],
-  ['03', 'Intelligent Trainer Matching', 'AI-driven matching to connect you with the right verified trainer for each competency requirement.', '✦'],
-  ['04', 'Assessments & Progress', 'Take assessments, evaluate performance and monitor your competency improvement continuously.', '▤'],
-  ['05', 'Learning Resources', 'Access curated learning materials, meteorological datasets, documents and practical resources in one place.', '▣'],
-  ['06', 'Analytics & Insights', 'Data-driven insights for trainees, trainers and administrators to make informed decisions.', '▥'],
-]
-
-const roles = [
-  {
-    title: 'For Trainees',
-    icon: '●',
-    role: 'trainee',
-    badge: 'Learner Track',
-    items: ['Discover relevant domain courses', 'Learn with structured modules & materials', 'Take assessments & diagnostic quizzes', 'Track competency score & growth'],
-    action: 'Explore as Trainee'
-  },
-  {
-    title: 'For Trainers',
-    icon: '◉',
-    role: 'trainer',
-    badge: 'Faculty Suite',
-    items: ['Create & manage learning content', 'Design multi-tier assessments', 'Monitor cohort progress & at-risk learners', 'Showcase verified competencies'],
-    action: 'Explore as Trainer'
-  },
-  {
-    title: 'For Administrators',
-    icon: '⬟',
-    role: 'admin',
-    badge: 'Institutional Control',
-    items: ['Manage users, roles & accreditations', 'Orchestrate courses & curriculum standards', 'Monitor institutional analytics & health', 'Oversee intelligent trainer matching'],
-    action: 'Explore as Admin'
-  },
-]
-
-const impacts = [
-  ['▰', 'Centralized Learning', 'All learning resources and curriculums in one secure institutional platform'],
-  ['◎', 'Better Competency Visibility', 'Clear visibility into skills, mastery curves, and developmental gaps'],
-  ['▥', 'Data-Driven Training', 'Make informed institutional decisions with real-time analytics & reports'],
-  ['♟', 'Efficient Trainer Selection', 'Match the right expert trainer with specific required competencies'],
-  ['⌁', 'Personalized Development', 'Empower individuals and teams with adaptive personalized learning paths'],
-]
-
 function Logo({ onClick }) {
   return (
     <a className="logo" href="#top" onClick={onClick} aria-label="CapacityConnect home">
@@ -84,143 +38,7 @@ function Logo({ onClick }) {
   )
 }
 
-function MiniChart() {
-  return (
-    <div className="preview-mini-chart" aria-label="Learning progress chart">
-      <i style={{ height: '35%' }} />
-      <i style={{ height: '48%' }} />
-      <i style={{ height: '62%' }} />
-      <i style={{ height: '55%' }} />
-      <i style={{ height: '78%' }} />
-      <i style={{ height: '88%' }} />
-      <i style={{ height: '100%' }} />
-    </div>
-  )
-}
-
-function HeroDashboardPreview({ onNavigateRole }) {
-  const [activeTab, setActiveTab] = useState('Dashboard')
-
-  return (
-    <div className="capacity-hero-window">
-      {/* Top OS Window Bar */}
-      <div className="window-top-bar">
-        <div className="window-dots">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="window-title">capacityconnect.gov.in / learning-workspace</div>
-        <div className="window-status-pill">
-          <span className="pulse-dot" /> Live Portal
-        </div>
-      </div>
-
-      {/* Main Preview Container */}
-      <div className="preview-inner">
-        {/* Top Welcome Bar */}
-        <div className="preview-top-greeting">
-          <div className="greeting-left">
-            <span className="greeting-logo-mark">◇</span>
-            <div>
-              <strong>Welcome back, Rahul! 👋</strong>
-              <small>Let's continue your learning journey.</small>
-            </div>
-          </div>
-          <div className="greeting-right">
-            <button className="preview-role-pill" onClick={() => onNavigateRole('trainee')}>
-              Open Trainee Portal ↗
-            </button>
-          </div>
-        </div>
-
-        {/* Body Layout with Sidebar + Dashboard Grid */}
-        <div className="preview-body-layout">
-          {/* Left Mini Sidebar */}
-          <aside className="preview-sidebar">
-            <button className={`preview-nav-item ${activeTab === 'Dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('Dashboard')}>
-              <span>▣</span> Dashboard
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'My Learning' ? 'active' : ''}`} onClick={() => setActiveTab('My Learning')}>
-              <span>▱</span> My Learning
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'Courses' ? 'active' : ''}`} onClick={() => setActiveTab('Courses')}>
-              <span>◫</span> Courses
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'Assessments' ? 'active' : ''}`} onClick={() => setActiveTab('Assessments')}>
-              <span>▤</span> Assessments
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'Profile' ? 'active' : ''}`} onClick={() => setActiveTab('Profile')}>
-              <span>♙</span> Profile
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'Analytics' ? 'active' : ''}`} onClick={() => setActiveTab('Analytics')}>
-              <span>⌁</span> Analytics
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'Messages' ? 'active' : ''}`} onClick={() => setActiveTab('Messages')}>
-              <span>▰</span> Messages
-            </button>
-            <button className={`preview-nav-item ${activeTab === 'Settings' ? 'active' : ''}`} onClick={() => setActiveTab('Settings')}>
-              <span>⚙</span> Settings
-            </button>
-          </aside>
-
-          {/* Right Dashboard Area */}
-          <div className="preview-main-content">
-            {/* Upper Two KPI Cards */}
-            <div className="preview-kpi-row">
-              <div className="preview-card progress-card" onClick={() => onNavigateRole('trainee')}>
-                <span className="card-label">Learning Progress</span>
-                <div className="progress-content-wrap">
-                  <div className="progress-ring-box">
-                    <strong>72%</strong>
-                  </div>
-                  <div className="progress-stats-text">
-                    <p><b>12</b> Courses Enrolled</p>
-                    <p><b>8</b> Courses Completed</p>
-                    <p><b>24</b> Assessments Taken</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="preview-card score-card" onClick={() => onNavigateRole('trainee')}>
-                <span className="card-label">Competency Score</span>
-                <div className="score-content-wrap">
-                  <div className="score-display">
-                    <strong>85<span>/100</span></strong>
-                    <em>Advanced</em>
-                  </div>
-                  <MiniChart />
-                </div>
-              </div>
-            </div>
-
-            {/* Lower Recommendations Row */}
-            <div className="preview-recommendations-panel">
-              <span className="card-label">Recommended for You</span>
-              <div className="rec-cards-grid">
-                <div className="rec-mini-card" onClick={() => onNavigateRole('trainee')}>
-                  <strong>Advanced Meteorology</strong>
-                  <span className="match-tag cyan">98% Match</span>
-                </div>
-                <div className="rec-mini-card" onClick={() => onNavigateRole('trainee')}>
-                  <strong>Python for Data Analysis</strong>
-                  <span className="match-tag blue">90% Match</span>
-                </div>
-                <div className="rec-mini-card" onClick={() => onNavigateRole('trainee')}>
-                  <strong>Climate Data Visualization</strong>
-                  <span className="match-tag purple">78% Match</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
   const [loginRole, setLoginRole] = useState('trainee')
   const [dashboardRole, setDashboardRole] = useState(null)
@@ -266,52 +84,6 @@ function App() {
     />
   )
 }
-
-function SectionHeading({ title, accent }) {
-  return (
-    <div className="section-heading-wrap">
-      <h2 className="section-heading">{title} <em>{accent}</em></h2>
-    </div>
-  )
-}
-
-function Step({ icon, title, text }) {
-  return (
-    <div className="step">
-      <div className="step-icon">{icon}</div>
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </div>
-  )
-}
-
-function EyeIcon({ size = 18 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  )
-}
-
-function EyeOffIcon({ size = 18 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
-      <line x1="1" y1="1" x2="23" y2="23" />
-    </svg>
-  )
-}
-
-
-
-const dashboardCourses = [
-  ['Numerical Weather Prediction', 'Meteorology', 68, 'Dr. Rahul Sharma'],
-  ['Python for Data Analysis', 'Data Science', 52, 'Dr. P. Mehta'],
-  ['Climate Science Fundamentals', 'Climate Science', 100, 'Dr. R. Verma'],
-]
-const dashboardSkills = [['Python', 88, 'Strong'], ['Meteorology', 81, 'Strong'], ['Data Analysis', 72, 'Strong'], ['GIS', 54, 'Developing'], ['Machine Learning', 42, 'Needs Attention']]
-const dashboardTrainers = [['Dr. Rahul Sharma', 'Meteorology', 'Weather Data Analysis', 'Python', '92%'], ['Dr. R. Verma', 'Climate Science', 'GIS', 'Remote Sensing', '86%'], ['Dr. P. Mehta', 'Data Science', 'Machine Learning', 'Scientific Computing', '81%']]
 
 function TraineeDashboard({ onBack }) {
   return (
@@ -1252,57 +1024,6 @@ function Attention({ name, course, progress, score, skill, onView }) {
         <em>{skill}</em>
       </div>
       <button className="text-button" onClick={onView}>View →</button>
-    </div>
-  )
-}
-
-function Stat({ icon, label, value, suffix, note }) {
-  return (
-    <article className="stat-card">
-      <span>{icon}</span>
-      <small>{label}</small>
-      <strong>{value} <em>{suffix}</em></strong>
-      <p>{note}</p>
-    </article>
-  )
-}
-
-function PanelTitle({ title, subtitle, action }) {
-  return (
-    <div className="panel-title">
-      <div>
-        <h2>{title}</h2>
-        {subtitle && <p>{subtitle}</p>}
-      </div>
-      {action && <button className="text-button">{action}</button>}
-    </div>
-  )
-}
-
-function CourseRow({ title, category, progress, instructor }) {
-  return (
-    <div className="course-row">
-      <span className="course-cover">{progress === 100 ? '✓' : '◈'}</span>
-      <div>
-        <h3>{title}</h3>
-        <p>{category} · {instructor}</p>
-        <span className="course-track"><i style={{ width: `${progress}%` }} /></span>
-      </div>
-      <strong>{progress}%</strong>
-      <button className="text-button">{progress === 100 ? 'View' : 'Continue'}</button>
-    </div>
-  )
-}
-
-function Recommendation({ icon, title, level, time, match }) {
-  return (
-    <div className="recommendation-row">
-      <span>{icon}</span>
-      <div>
-        <b>{title}</b>
-        <small>{level} · {time}</small>
-      </div>
-      <strong>{match}<small>relevance</small></strong>
     </div>
   )
 }
