@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CapacityConnect - Signup Page Styles (Matching Reference Design)
+   CapacityConnect - Signup Page Styles (Spacious & Stretched Full Screen Layout)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,600&display=swap');
@@ -12,21 +12,89 @@
     radial-gradient(circle at 10% 20%, rgba(47, 82, 51, 0.04) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, rgba(82, 122, 90, 0.05) 0%, transparent 40%);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px 24px;
+  justify-content: flex-start;
+  padding: 24px 48px;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   color: #1a2a20;
   box-sizing: border-box;
 }
 
+.signup-page-container {
+  max-width: 1600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Top Header Navigation Bar (Shifted Up Across Full Width)
+   ========================================================================== */
+
+.signup-top-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  width: 100%;
+}
+
+.btn-back-home-pill {
+  background: #ffffff;
+  border: 1.5px solid #d4e3d7;
+  border-radius: 30px;
+  padding: 8px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #274230;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: 0 2px 8px rgba(47, 82, 51, 0.04);
+  transition: all 0.2s ease;
+}
+
+.btn-back-home-pill:hover {
+  background: #f0f7f2;
+  border-color: #2f5233;
+  color: #1b4332;
+  transform: translateX(-2px);
+}
+
+.signup-nav-signin {
+  font-size: 14.5px;
+  color: #4b6654;
+  font-weight: 500;
+}
+
+.inline-signin-link {
+  background: none;
+  border: none;
+  color: #1b4332;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0 4px;
+  font-family: inherit;
+  font-size: 14.5px;
+}
+
+.inline-signin-link:hover {
+  color: #2d6a4f;
+}
+
+/* ==========================================================================
+   Main 2-Column Layout (Fills Full Page Width & Heights)
+   ========================================================================== */
+
 .signup-main-grid {
   display: grid;
-  grid-template-columns: 1.05fr 1.25fr;
-  max-width: 1280px;
-  width: 100%;
+  grid-template-columns: 1.15fr 1.08fr;
   gap: 48px;
-  align-items: start;
+  align-items: stretch;
+  width: 100%;
 }
 
 /* ==========================================================================
@@ -36,95 +104,50 @@
 .signup-showcase-column {
   display: flex;
   flex-direction: column;
-  padding-right: 12px;
-}
-
-.signup-top-nav-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 32px;
-}
-
-.signup-nav-back {
-  background: none;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  color: #385540;
-  cursor: pointer;
-  padding: 6px 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-}
-
-.signup-nav-back:hover {
-  color: #1b4332;
-  transform: translateX(-3px);
-}
-
-.signup-nav-signin {
-  font-size: 14px;
-  color: #556b5c;
-}
-
-.inline-signin-link {
-  background: none;
-  border: none;
-  color: #1b4332;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: underline;
-  padding: 0 4px;
-  font-family: inherit;
-}
-
-.inline-signin-link:hover {
-  color: #2d6a4f;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .signup-brand-header {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .signup-brand-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   font-family: 'Outfit', sans-serif;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 22px;
   color: #1b4332;
 }
 
 .signup-clover-icon {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .signup-section-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 700;
   color: #2f5233;
   background: #e5efe7;
-  padding: 4px 10px;
+  padding: 4px 14px;
   border-radius: 20px;
 }
 
 .signup-main-heading {
   font-family: 'Outfit', sans-serif;
-  font-size: 42px;
+  font-size: clamp(32px, 2.6vw, 42px);
   line-height: 1.15;
   font-weight: 800;
   color: #12281b;
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   letter-spacing: -0.02em;
 }
 
@@ -138,80 +161,99 @@
 .signup-main-desc {
   font-size: 15px;
   line-height: 1.6;
-  color: #4b6353;
-  margin: 0 0 28px 0;
-  max-width: 520px;
+  color: #466050;
+  margin: 0 0 20px 0;
+  max-width: 620px;
 }
 
 .signup-benefits-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 32px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .signup-benefit-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  font-size: 14.5px;
-  font-weight: 500;
-  color: #243b2c;
+  gap: 16px;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 1.5px solid #dce8df;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(47, 82, 51, 0.04);
+  transition: all 0.2s ease;
+}
+
+.signup-benefit-item:hover {
+  border-color: #2f5233;
+  transform: translateX(3px);
+  box-shadow: 0 4px 14px rgba(47, 82, 51, 0.08);
 }
 
 .benefit-circle-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   background: #e2ede5;
+  color: #1b4332;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(47, 82, 51, 0.08);
+  box-shadow: 0 1px 4px rgba(47, 82, 51, 0.08);
 }
 
-.signup-illustration-wrapper {
-  margin-top: 10px;
-  background: #e8f1e9;
-  border-radius: 24px;
-  padding: 20px;
-  border: 1px solid #d4e4d7;
+.benefit-circle-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.benefit-text-group {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  box-shadow: 0 12px 30px -10px rgba(47, 82, 51, 0.1);
 }
 
-.signup-illustration-img {
-  width: 100%;
-  max-width: 440px;
-  height: auto;
-  border-radius: 16px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.signup-illustration-wrapper:hover .signup-illustration-img {
-  transform: translateY(-4px) scale(1.01);
-}
-
-.illustration-caption {
-  margin-top: 14px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #385b42;
-  letter-spacing: 0.05em;
-}
-
-.illustration-caption span {
-  color: #1b4332;
+.benefit-text-group strong {
+  font-size: 14.5px;
   font-weight: 700;
+  color: #162a1c;
+  margin-bottom: 2px;
+}
+
+.benefit-text-group span {
+  font-size: 12.5px;
+  color: #557060;
+  line-height: 1.35;
+}
+
+.signup-trust-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.trust-pill-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2f5233;
+  background: #e6f0e8;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #d2e4d6;
+}
+
+.trust-icon {
+  font-weight: 800;
+  color: #1b4332;
 }
 
 /* ==========================================================================
-   Right Column: Form Card Surface
+   Right Column: Form Card Surface (Stretched, Prominent & Centered)
    ========================================================================== */
 
 .signup-form-column {
@@ -221,31 +263,32 @@
 .signup-card-surface {
   background: #ffffff;
   border-radius: 28px;
-  padding: 40px 44px;
+  padding: 32px 38px 26px 38px;
   box-shadow: 
-    0 24px 60px -12px rgba(27, 67, 50, 0.09),
+    0 24px 60px -12px rgba(27, 67, 50, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.03);
-  border: 1px solid #e1ebe3;
+  border: 1.5px solid #dce8e0;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .card-top-identity {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 9px;
+  margin-bottom: 12px;
 }
 
 .card-diamond-icon {
-  font-size: 20px;
+  font-size: 18px;
   color: #2f5233;
   font-weight: bold;
 }
 
 .card-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 25px;
+  font-weight: 800;
   color: #12281b;
   margin: 0;
   letter-spacing: -0.01em;
@@ -253,7 +296,7 @@
 
 /* Stepper Progress Bar */
 .stepper-bar-container {
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 }
 
 .stepper-progress-track {
@@ -262,7 +305,7 @@
   background: #e5ece6;
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .stepper-progress-fill {
@@ -293,7 +336,7 @@
 
 .step-label-item.current .step-text {
   color: #1b4332;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .step-label-item .step-num {
@@ -304,15 +347,15 @@
 
 .step-label-item .step-text {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: #385540;
 }
 
 .step-instruction {
-  font-size: 14.5px;
-  color: #556b5c;
-  margin: 0 0 24px 0;
-  line-height: 1.5;
+  font-size: 13.5px;
+  color: #4f6b58;
+  margin: 0 0 14px 0;
+  line-height: 1.45;
 }
 
 /* ==========================================================================
@@ -323,27 +366,27 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 5px;
+  margin-bottom: 12px;
 }
 
 .input-group label {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #243b2c;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e3626;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .input-group label span {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 400;
   color: #6c8273;
 }
@@ -357,14 +400,19 @@
   width: 100%;
   box-sizing: border-box;
   background: #fbfdfb;
-  border: 1.5px solid #d5e3d8;
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-size: 14.5px;
+  border: 1.5px solid #d2e3d6;
+  border-radius: 11px;
+  padding: 11px 15px;
+  font-size: 14px;
   font-family: inherit;
   color: #162a1c;
   transition: all 0.2s ease;
   outline: none;
+}
+
+.input-group textarea {
+  min-height: 65px;
+  resize: vertical;
 }
 
 .input-group input:focus,
@@ -372,7 +420,52 @@
 .input-group textarea:focus {
   border-color: #2f5233;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(47, 82, 51, 0.1);
+  box-shadow: 0 0 0 3px rgba(47, 82, 51, 0.12);
+}
+
+.input-group input.input-error {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+.input-group input.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
+}
+
+.input-group input.input-warning {
+  border-color: #d97706 !important;
+  background: #fffbeb !important;
+}
+
+.input-group input.input-success {
+  border-color: #16a34a !important;
+  background: #f0fdf4 !important;
+}
+
+.input-feedback-error {
+  font-size: 11.5px;
+  color: #dc2626;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.input-feedback-warning {
+  font-size: 11.5px;
+  color: #b45309;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.input-feedback-success {
+  font-size: 11.5px;
+  color: #15803d;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.req-star {
+  color: #dc2626;
+  font-weight: 700;
 }
 
 .password-input-wrap {
@@ -382,7 +475,7 @@
 }
 
 .password-input-wrap input {
-  padding-right: 44px;
+  padding-right: 40px;
 }
 
 .btn-eye-toggle {
@@ -393,17 +486,17 @@
   font-size: 16px;
   cursor: pointer;
   color: #647b6d;
-  padding: 4px;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .password-hint-text {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #667d6e;
-  margin-top: -8px;
-  margin-bottom: 20px;
+  margin-top: -4px;
+  margin-bottom: 10px;
 }
 
 .pwd-error-inline {
@@ -416,39 +509,39 @@
    ========================================================================== */
 
 .role-selection-section {
-  margin-top: 24px;
-  padding-top: 20px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid #e5ede7;
 }
 
 .role-section-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #162a1c;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
 }
 
 .role-section-subtitle {
-  font-size: 13px;
+  font-size: 11.5px;
   color: #5d7565;
-  margin: 0 0 16px 0;
+  margin: 0 0 10px 0;
 }
 
 .role-cards-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
 }
 
 .role-option-card {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 16px 18px;
+  gap: 12px;
+  padding: 13px 15px;
   background: #fbfdfb;
   border: 1.5px solid #d8e5dc;
-  border-radius: 16px;
+  border-radius: 13px;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
@@ -463,17 +556,22 @@
 .role-option-card.selected {
   border-color: #2f5233;
   background: #f0f7f2;
-  box-shadow: 0 4px 14px rgba(47, 82, 51, 0.08);
+  box-shadow: 0 3px 10px rgba(47, 82, 51, 0.08);
 }
 
 .role-card-icon-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.role-card-icon-box svg {
+  width: 19px;
+  height: 19px;
 }
 
 .role-card-icon-box.trainer-color {
@@ -492,22 +590,22 @@
 
 .role-card-content strong {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: #162a1c;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .role-card-content p {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #556d5e;
-  line-height: 1.4;
+  line-height: 1.35;
   margin: 0;
 }
 
 .custom-radio-circle {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   border: 1.5px solid #a8c2b0;
   display: inline-block;
@@ -524,10 +622,10 @@
 .custom-radio-circle.checked::after {
   content: '';
   position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 7px;
-  height: 7px;
+  top: 3.5px;
+  left: 3.5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #ffffff;
 }
@@ -539,17 +637,17 @@
 .photo-upload-row {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 16px;
+  gap: 12px;
+  padding: 8px 12px;
   background: #f8faf8;
   border: 1.5px dashed #c8dcd0;
-  border-radius: 16px;
-  margin-bottom: 20px;
+  border-radius: 10px;
+  margin-bottom: 8px;
 }
 
 .avatar-preview-box {
-  width: 68px;
-  height: 68px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #e2ede5;
   display: flex;
@@ -571,7 +669,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 10px;
+  font-size: 9px;
   color: #385540;
   text-align: center;
 }
@@ -581,26 +679,26 @@
 }
 
 .photo-upload-meta strong {
-  font-size: 14px;
+  font-size: 12px;
   color: #1b4332;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 }
 
 .photo-upload-meta p {
-  font-size: 12px;
+  font-size: 10.5px;
   color: #5e7767;
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
 }
 
 .btn-upload-trigger {
   background: #ffffff;
   border: 1.5px solid #2f5233;
   color: #2f5233;
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 3px 10px;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -614,15 +712,15 @@
 .mode-toggle-group {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 5px;
 }
 
 .mode-toggle-btn {
   background: #fbfdfb;
   border: 1.5px solid #d5e3d8;
-  border-radius: 10px;
-  padding: 10px 8px;
-  font-size: 13px;
+  border-radius: 7px;
+  padding: 6px 4px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #334e3b;
   cursor: pointer;
@@ -639,16 +737,19 @@
 .tags-chip-cloud {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 6px;
+  gap: 5px;
+  margin-top: 3px;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 2px;
 }
 
 .tag-pill-btn {
   background: #f4f8f5;
   border: 1px solid #cce0d2;
-  border-radius: 20px;
-  padding: 7px 14px;
-  font-size: 13px;
+  border-radius: 14px;
+  padding: 4px 9px;
+  font-size: 11px;
   font-weight: 500;
   color: #2b4533;
   cursor: pointer;
@@ -673,44 +774,44 @@
 
 .trainer-doc-upload-section {
   background: #f8faf8;
-  border-radius: 18px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 10px 12px;
   border: 1.5px solid #dbe7df;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .doc-section-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .doc-section-heading strong {
-  font-size: 14.5px;
+  font-size: 12.5px;
   color: #1b4332;
 }
 
 .badge-required {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: #92400e;
   background: #fef3c7;
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
 }
 
 .doc-instruction-text {
-  font-size: 12.5px;
+  font-size: 11px;
   color: #5e7767;
-  margin: 0 0 14px 0;
+  margin: 0 0 6px 0;
 }
 
 .dropzone-box {
   background: #ffffff;
   border: 2px dashed #386641;
-  border-radius: 14px;
-  padding: 24px;
+  border-radius: 8px;
+  padding: 10px;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -725,43 +826,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .dropzone-icon {
-  font-size: 28px;
-  margin-bottom: 4px;
+  font-size: 18px;
+  margin-bottom: 1px;
 }
 
 .dropzone-inner strong {
-  font-size: 14px;
+  font-size: 11.5px;
   color: #1b4332;
 }
 
 .dropzone-inner small {
-  font-size: 12px;
+  font-size: 10.5px;
   color: #667d6e;
 }
 
 .uploaded-docs-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 14px;
+  gap: 5px;
+  margin-top: 8px;
 }
 
 .doc-file-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   background: #ffffff;
   border: 1px solid #d5e4d9;
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 6px;
+  padding: 5px 10px;
 }
 
 .doc-icon-mini {
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .doc-details {
@@ -770,22 +871,22 @@
 
 .doc-name {
   display: block;
-  font-size: 13px;
+  font-size: 11.5px;
   color: #162a1c;
 }
 
 .doc-size {
-  font-size: 11px;
+  font-size: 10px;
   color: #728c7b;
 }
 
 .doc-status-badge {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: #15803d;
   background: #dcfce7;
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
 .btn-remove-doc {
@@ -794,16 +895,16 @@
   color: #991b1b;
   font-weight: bold;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 2px 5px;
 }
 
 .sample-doc-hint {
-  font-size: 12px;
+  font-size: 11px;
   color: #556d5e;
-  margin-top: 10px;
-  padding: 8px 12px;
+  margin-top: 6px;
+  padding: 4px 8px;
   background: #eef5f0;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* ==========================================================================
@@ -813,44 +914,44 @@
 .profile-summary-recap {
   background: #f4f9f5;
   border: 1px solid #cde0d3;
-  border-radius: 14px;
-  padding: 16px 20px;
-  margin-top: 16px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
 }
 
 .recap-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
   border-bottom: 1px solid #dbe8df;
 }
 
 .recap-header strong {
-  font-size: 14px;
+  font-size: 12px;
   color: #1b4332;
 }
 
 .recap-role-pill {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   color: #ffffff;
   background: #2f5233;
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 2px 6px;
+  border-radius: 6px;
 }
 
 .recap-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 11.5px;
 }
 
 .recap-grid div span {
   color: #61796a;
-  margin-right: 6px;
+  margin-right: 4px;
 }
 
 .recap-grid div strong {
@@ -865,17 +966,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 32px;
-  padding-top: 20px;
+  margin-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid #e5ede7;
 }
 
 .btn-card-back {
   background: none;
   border: 1.5px solid #ccdcd0;
-  border-radius: 12px;
-  padding: 12px 22px;
-  font-size: 14.5px;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #385540;
   cursor: pointer;
@@ -892,23 +993,23 @@
   background: #1b4332;
   color: #ffffff;
   border: none;
-  border-radius: 12px;
-  padding: 13px 28px;
-  font-size: 14.5px;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 12.5px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(27, 67, 50, 0.25);
+  gap: 6px;
+  box-shadow: 0 3px 8px rgba(27, 67, 50, 0.2);
   transition: all 0.2s ease;
 }
 
 .btn-primary-signup:hover:not(:disabled) {
   background: #2d6a4f;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(27, 67, 50, 0.32);
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.25);
 }
 
 .btn-primary-signup:disabled {
@@ -926,36 +1027,36 @@
    ========================================================================== */
 
 .signup-success-container {
-  max-width: 680px;
+  max-width: 620px;
   width: 100%;
 }
 
 .signup-success-card {
   background: #ffffff;
-  border-radius: 28px;
-  padding: 48px;
+  border-radius: 22px;
+  padding: 32px;
   text-align: center;
-  box-shadow: 0 24px 60px -12px rgba(27, 67, 50, 0.12);
+  box-shadow: 0 20px 48px -10px rgba(27, 67, 50, 0.12);
   border: 1px solid #dce8e0;
 }
 
 .pending-badge-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #fef3c7;
   color: #92400e;
   border: 1px solid #fde68a;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 16px;
+  font-size: 12px;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .pending-pulse-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #f59e0b;
   animation: pulse-glow 1.5s infinite ease-in-out;
@@ -968,14 +1069,14 @@
 }
 
 .success-icon-wrap {
-  width: 76px;
-  height: 76px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   background: #e2efe5;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 14px auto;
 }
 
 .pending-icon-glow {
@@ -983,76 +1084,76 @@
 }
 
 .success-emoji {
-  font-size: 34px;
+  font-size: 28px;
 }
 
 .success-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 800;
   color: #12281b;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
 }
 
 .success-subtitle {
-  font-size: 15px;
+  font-size: 13.5px;
   color: #4b6353;
-  margin: 0 0 28px 0;
-  line-height: 1.6;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
 }
 
 .verification-status-box {
   background: #f8faf8;
   border: 1.5px solid #d5e4d9;
-  border-radius: 18px;
-  padding: 24px;
+  border-radius: 14px;
+  padding: 16px;
   text-align: left;
-  margin-bottom: 32px;
+  margin-bottom: 22px;
 }
 
 .status-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #e1ebe3;
 }
 
 .status-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.05em;
   color: #2f5233;
 }
 
 .status-tag.pending {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #b45309;
   background: #fef3c7;
-  padding: 3px 10px;
-  border-radius: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
 .status-desc {
-  font-size: 13.5px;
-  line-height: 1.6;
+  font-size: 12px;
+  line-height: 1.45;
   color: #435b4b;
-  margin: 0 0 20px 0;
+  margin: 0 0 14px 0;
 }
 
 .verification-steps-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .v-step {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 13.5px;
+  gap: 10px;
+  font-size: 12px;
   color: #637b6c;
 }
 
@@ -1067,15 +1168,15 @@
 }
 
 .v-step-num {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #e2ece5;
   color: #4b6353;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -1093,41 +1194,41 @@
 .trainee-welcome-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: 10px;
+  margin-bottom: 22px;
 }
 
 .summary-stat-pill {
   background: #f4f8f5;
   border: 1px solid #cde0d3;
-  border-radius: 14px;
-  padding: 14px;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .summary-stat-pill span {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: #61796a;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .summary-stat-pill strong {
-  font-size: 14px;
+  font-size: 12.5px;
   color: #1b4332;
 }
 
 .success-action-row {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   justify-content: center;
 }
 
 .btn-secondary-signup {
   background: #ffffff;
   border: 1.5px solid #ccdcd0;
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-size: 14.5px;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
   font-weight: 600;
   color: #385540;
   cursor: pointer;
@@ -1140,21 +1241,21 @@
 
 /* ==========================================================================
    Animations & Responsive Breakpoints
-   ========================================================================= */
+   ========================================================================== */
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 1024px) {
   .signup-main-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 28px;
   }
   
   .signup-showcase-column {
@@ -1162,19 +1263,19 @@
   }
   
   .signup-illustration-wrapper {
-    max-width: 500px;
+    max-width: 420px;
     margin: 0 auto;
   }
 }
 
 @media (max-width: 640px) {
   .signup-page-wrap {
-    padding: 20px 12px;
+    padding: 16px 12px;
   }
   
   .signup-card-surface {
-    padding: 24px 18px;
-    border-radius: 20px;
+    padding: 16px 14px;
+    border-radius: 16px;
   }
   
   .form-two-col,
@@ -1185,12 +1286,12 @@
   }
   
   .signup-main-heading {
-    font-size: 32px;
+    font-size: 24px;
   }
   
   .card-actions-row {
     flex-direction: column-reverse;
-    gap: 12px;
+    gap: 10px;
   }
   
   .btn-card-back,
@@ -1199,3 +1300,4 @@
     justify-content: center;
   }
 }
+

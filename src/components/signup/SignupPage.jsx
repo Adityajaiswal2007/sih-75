@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import './SignupPage.css'
-import signupIllustration from '../../assets/signup-illustration.jpg'
 import cloverIcon from '../../assets/landing/arcticons-clover0.svg'
 import { api } from '../../services/api'
 
@@ -128,8 +127,32 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
   const [selectedInterests, setSelectedInterests] = useState(['Weather Forecasting & Synoptics', 'Radar Systems & Precipitation'])
   const [selectedGoals, setSelectedGoals] = useState(['Build Operational Forecasting Skills', 'Gain Practical Hands-On Tool Proficiency'])
 
+  // Validation rules & format helpers
+  const isEmailValid = (em) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(em.trim())
+  const isMobileValid = (mb) => /^\d{10}$/.test(mb.trim())
+  const isFirstNameValid = form.firstName.trim().length >= 2
+  const isLastNameValid = form.lastName.trim().length >= 1
+  const isPasswordValid = form.password.length >= 8 && /\d/.test(form.password)
+  const passwordsMatch = form.password === form.confirmPassword && form.password.length > 0
+
+  const [touched, setTouched] = useState({})
+  const markTouched = (field) => setTouched((prev) => ({ ...prev, [field]: true }))
+
   const updateForm = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    // Strictly numeric only for mobile number (max 10 digits)
+    if (name === 'mobile') {
+      const numericOnly = value.replace(/[^\d]/g, '').slice(0, 10)
+      setForm({ ...form, mobile: numericOnly })
+      return
+    }
+    // Only letters and spaces for names
+    if (name === 'firstName' || name === 'lastName') {
+      const lettersOnly = value.replace(/[^a-zA-Z\s]/g, '')
+      setForm({ ...form, [name]: lettersOnly })
+      return
+    }
+    setForm({ ...form, [name]: value })
   }
 
   const toggleArrayItem = (item, list, setList) => {
@@ -170,16 +193,16 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
     setUploadedDocuments((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const isPasswordValid = form.password.length >= 8 && /\d/.test(form.password)
-  const passwordsMatch = form.password === form.confirmPassword && form.password.length > 0
-
   // Validation per step
-  const canProceedStep1 = form.firstName.trim() && form.lastName.trim() && form.email.trim() && isPasswordValid && passwordsMatch
-  const canProceedStep2 = form.organization.trim()
+  const canProceedStep1 = isFirstNameValid && isLastNameValid && isEmailValid(form.email) && isMobileValid(form.mobile) && isPasswordValid && passwordsMatch
+  const canProceedStep2 = form.organization.trim().length >= 2
   const canProceedStep3 = role === 'trainer' ? selectedExpertise.length > 0 : selectedInterests.length > 0
 
   const handleNext = () => {
-    if (step === 1 && !canProceedStep1) return
+    if (step === 1) {
+      setTouched({ firstName: true, lastName: true, email: true, mobile: true, password: true, confirmPassword: true })
+      if (!canProceedStep1) return
+    }
     if (step === 2 && !canProceedStep2) return
     if (step === 3 && !canProceedStep3) return
     setStep((prev) => Math.min(4, prev + 1))
@@ -327,99 +350,112 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
 
   return (
     <div className="signup-page-wrap">
-      <div className="signup-main-grid">
-        {/* LEFT COLUMN: Hero, Brand, Features & Stylized Graphic */}
-        <div className="signup-showcase-column">
-          {/* Top Back & Sign In Navigation */}
-          <div className="signup-top-nav-bar">
-            <button type="button" className="signup-nav-back" onClick={onBack}>
-              ← Back to home
+      <div className="signup-page-container">
+        {/* Top Back & Sign In Navigation spanning full width */}
+        <div className="signup-top-nav-bar">
+          <button type="button" className="btn-back-home-pill" onClick={onBack}>
+            ← Back to home
+          </button>
+          <div className="signup-nav-signin">
+            Already have an account?{' '}
+            <button type="button" className="inline-signin-link" onClick={onLogin}>
+              Sign in
             </button>
-            <div className="signup-nav-signin">
-              Already have an account?{' '}
-              <button type="button" className="inline-signin-link" onClick={onLogin}>
-                Sign in
-              </button>
-            </div>
-          </div>
-
-          {/* Brand & Subheader */}
-          <div className="signup-brand-header">
-            <div className="signup-brand-logo">
-              <img src={cloverIcon} alt="Logo" className="signup-clover-icon" />
-              <span>Capacity Connect</span>
-            </div>
-            <div className="signup-section-badge">+ Create your account</div>
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="signup-main-heading">
-            Start your <em>learning journey</em> with CapacityConnect
-          </h1>
-
-          <p className="signup-main-desc">
-            Create your profile, discover relevant learning opportunities, track your competencies, and connect with verified trainers.
-          </p>
-
-          {/* Feature Bullets with green icons */}
-          <div className="signup-benefits-list">
-            <div className="signup-benefit-item">
-              <div className="benefit-circle-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-              </div>
-              <span>Personalized learning recommendations</span>
-            </div>
-
-            <div className="signup-benefit-item">
-              <div className="benefit-circle-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="20" x2="18" y2="10"></line>
-                  <line x1="12" y1="20" x2="12" y2="4"></line>
-                  <line x1="6" y1="20" x2="6" y2="14"></line>
-                </svg>
-              </div>
-              <span>Competency-based development &amp; mapping</span>
-            </div>
-
-            <div className="signup-benefit-item">
-              <div className="benefit-circle-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <span>Intelligent, verified trainer matching</span>
-            </div>
-
-            <div className="signup-benefit-item">
-              <div className="benefit-circle-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <circle cx="12" cy="12" r="6"></circle>
-                  <circle cx="12" cy="2" r="2"></circle>
-                </svg>
-              </div>
-              <span>Real-time progress and assessment tracking</span>
-            </div>
-          </div>
-
-          {/* Centerpiece 3D Illustration matching design */}
-          <div className="signup-illustration-wrapper">
-            <img
-              src={signupIllustration}
-              alt="CapacityConnect Learning Ecosystem"
-              className="signup-illustration-img"
-            />
-            <div className="illustration-caption">
-              <span>People</span> × <span>Learning</span> × <span>Progress</span>
-            </div>
           </div>
         </div>
+
+        <div className="signup-main-grid">
+          {/* LEFT COLUMN: Hero, Brand & Features Showcase */}
+          <div className="signup-showcase-column">
+            {/* Brand & Subheader */}
+            <div className="signup-brand-header">
+              <div className="signup-brand-logo">
+                <img src={cloverIcon} alt="Logo" className="signup-clover-icon" />
+                <span>Capacity Connect</span>
+              </div>
+              <div className="signup-section-badge">+ Create your account</div>
+            </div>
+
+            {/* Main Headline */}
+            <h1 className="signup-main-heading">
+              Start your <em>learning journey</em> with CapacityConnect
+            </h1>
+
+            <p className="signup-main-desc">
+              Create your profile, discover relevant learning opportunities, track your competencies, and connect with verified trainers and peer cohorts.
+            </p>
+
+            {/* Feature Cards with green icons */}
+            <div className="signup-benefits-list">
+              <div className="signup-benefit-item">
+                <div className="benefit-circle-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
+                <div className="benefit-text-group">
+                  <strong>Personalized Recommendations</strong>
+                  <span>AI-driven module matching tailored to your specific domain</span>
+                </div>
+              </div>
+
+              <div className="signup-benefit-item">
+                <div className="benefit-circle-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                </div>
+                <div className="benefit-text-group">
+                  <strong>Competency Mapping</strong>
+                  <span>Standardized skill framework mapped to IMD requirements</span>
+                </div>
+              </div>
+
+              <div className="signup-benefit-item">
+                <div className="benefit-circle-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div className="benefit-text-group">
+                  <strong>Verified Trainer Matching</strong>
+                  <span>Direct connection with certified scientists and institutional faculty</span>
+                </div>
+              </div>
+
+              <div className="signup-benefit-item">
+                <div className="benefit-circle-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F5233" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="6"></circle>
+                    <circle cx="12" cy="2" r="2"></circle>
+                  </svg>
+                </div>
+                <div className="benefit-text-group">
+                  <strong>Real-Time Analytics</strong>
+                  <span>Track certifications, assessments, and continuous training progress</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Trust Badge */}
+            <div className="signup-trust-bar">
+              <div className="trust-pill-item">
+                <span className="trust-icon">✓</span>
+                <span>Institutional Credentials Verified</span>
+              </div>
+              <div className="trust-pill-item">
+                <span className="trust-icon">✓</span>
+                <span>Compliant with National Capacity Standards</span>
+              </div>
+            </div>
+          </div>
 
         {/* RIGHT COLUMN: Multi-Step Registration Card */}
         <div className="signup-form-column">
@@ -467,63 +503,121 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
 
                 <div className="form-two-col">
                   <div className="input-group">
-                    <label>First name</label>
+                    <label>
+                      First name <span className="req-star">*</span>
+                    </label>
                     <input
                       type="text"
                       name="firstName"
                       value={form.firstName}
                       onChange={updateForm}
-                      placeholder="Enter your first name"
+                      onBlur={() => markTouched('firstName')}
+                      placeholder="e.g. Ramesh"
+                      className={touched.firstName && !isFirstNameValid ? 'input-error' : ''}
                       required
                     />
+                    {touched.firstName && !isFirstNameValid && (
+                      <small className="input-feedback-error">⚠️ First name is required (min 2 letters)</small>
+                    )}
                   </div>
                   <div className="input-group">
-                    <label>Last name</label>
+                    <label>
+                      Last name <span className="req-star">*</span>
+                    </label>
                     <input
                       type="text"
                       name="lastName"
                       value={form.lastName}
                       onChange={updateForm}
-                      placeholder="Enter your last name"
+                      onBlur={() => markTouched('lastName')}
+                      placeholder="e.g. Sharma"
+                      className={touched.lastName && !isLastNameValid ? 'input-error' : ''}
                       required
                     />
+                    {touched.lastName && !isLastNameValid && (
+                      <small className="input-feedback-error">⚠️ Last name is required</small>
+                    )}
                   </div>
                 </div>
 
                 <div className="form-two-col">
                   <div className="input-group">
-                    <label>Email address</label>
+                    <label>
+                      Email address <span className="req-star">*</span>
+                    </label>
                     <input
                       type="email"
                       name="email"
                       value={form.email}
                       onChange={updateForm}
+                      onBlur={() => markTouched('email')}
                       placeholder="name@imd.gov.in"
+                      className={
+                        form.email.length > 0
+                          ? isEmailValid(form.email)
+                            ? 'input-success'
+                            : 'input-error'
+                          : touched.email
+                          ? 'input-error'
+                          : ''
+                      }
                       required
                     />
+                    {form.email.length > 0 && !isEmailValid(form.email) && (
+                      <small className="input-feedback-error">⚠️ Enter valid email (e.g. name@domain.gov.in)</small>
+                    )}
+                    {form.email.length > 0 && isEmailValid(form.email) && (
+                      <small className="input-feedback-success">✓ Valid email format</small>
+                    )}
                   </div>
                   <div className="input-group">
-                    <label>Mobile number</label>
+                    <label>
+                      Mobile number (10 digits) <span className="req-star">*</span>
+                    </label>
                     <input
                       type="tel"
                       name="mobile"
                       value={form.mobile}
                       onChange={updateForm}
-                      placeholder="+91 98765 43210"
+                      onBlur={() => markTouched('mobile')}
+                      placeholder="9876543210"
+                      maxLength={10}
+                      className={
+                        form.mobile.length > 0
+                          ? isMobileValid(form.mobile)
+                            ? 'input-success'
+                            : 'input-warning'
+                          : touched.mobile
+                          ? 'input-error'
+                          : ''
+                      }
+                      required
                     />
+                    {form.mobile.length > 0 && form.mobile.length < 10 && (
+                      <small className="input-feedback-warning">
+                        ℹ️ Digits only — {10 - form.mobile.length} more digit{10 - form.mobile.length > 1 ? 's' : ''} needed
+                      </small>
+                    )}
+                    {form.mobile.length === 10 && (
+                      <small className="input-feedback-success">✓ Valid 10-digit mobile number</small>
+                    )}
                   </div>
                 </div>
 
                 <div className="form-two-col">
                   <div className="input-group">
-                    <label>Password</label>
+                    <label>
+                      Password <span className="req-star">*</span>
+                    </label>
                     <div className="password-input-wrap">
                       <input
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={form.password}
                         onChange={updateForm}
+                        onBlur={() => markTouched('password')}
                         placeholder="Create a strong password"
+                        className={touched.password && !isPasswordValid ? 'input-error' : ''}
                         required
                       />
                       <button
@@ -535,17 +629,35 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                         {showPassword ? '👁️' : '👁️‍🗨️'}
                       </button>
                     </div>
+                    {form.password.length > 0 && !isPasswordValid && (
+                      <small className="input-feedback-error">⚠️ At least 8 characters, with a number</small>
+                    )}
+                    {form.password.length > 0 && isPasswordValid && (
+                      <small className="input-feedback-success">✓ Strong password</small>
+                    )}
                   </div>
 
                   <div className="input-group">
-                    <label>Confirm password</label>
+                    <label>
+                      Confirm password <span className="req-star">*</span>
+                    </label>
                     <div className="password-input-wrap">
                       <input
                         type={showConfirmPassword ? 'text' : 'password'}
                         name="confirmPassword"
                         value={form.confirmPassword}
                         onChange={updateForm}
+                        onBlur={() => markTouched('confirmPassword')}
                         placeholder="Re-enter your password"
+                        className={
+                          form.confirmPassword.length > 0
+                            ? passwordsMatch
+                              ? 'input-success'
+                              : 'input-error'
+                            : touched.confirmPassword
+                            ? 'input-error'
+                            : ''
+                        }
                         required
                       />
                       <button
@@ -557,6 +669,12 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                         {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                       </button>
                     </div>
+                    {form.confirmPassword.length > 0 && !passwordsMatch && (
+                      <small className="input-feedback-error">⚠️ Passwords do not match</small>
+                    )}
+                    {form.confirmPassword.length > 0 && passwordsMatch && (
+                      <small className="input-feedback-success">✓ Passwords match</small>
+                    )}
                   </div>
                 </div>
                 <div className="password-hint-text">
@@ -1215,5 +1333,6 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
         </div>
       </div>
     </div>
+  </div>
   )
 }

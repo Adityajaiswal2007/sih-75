@@ -19,12 +19,14 @@ export default function ForgotPasswordPage({ onBack }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!email.trim()) {
-      setError('Please enter your email address.')
+    const emailTrimmed = email.trim()
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailTrimmed) {
+      setError('Please enter your institutional email address.')
       return
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError('Please enter a valid email address.')
+    if (!emailRegex.test(emailTrimmed)) {
+      setError('Please enter a valid email format containing "@" and domain (e.g., name@imd.gov.in).')
       return
     }
     setError('')

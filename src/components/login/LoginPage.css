@@ -1,0 +1,697 @@
+/* ==========================================================================
+   CapacityConnect - Sign In Page Styles (Compact & Viewport Optimized)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+.signin-page-wrap {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f4f8f4;
+  background-image: 
+    radial-gradient(circle at 5% 15%, rgba(47, 82, 51, 0.05) 0%, transparent 35%),
+    radial-gradient(circle at 95% 85%, rgba(82, 122, 90, 0.06) 0%, transparent 35%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 40px 18px 40px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a2a20;
+  box-sizing: border-box;
+}
+
+.signin-page-container {
+  max-width: 1480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Top Header Navigation Bar
+   ========================================================================== */
+
+.signin-top-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.btn-back-home-pill {
+  background: #ffffff;
+  border: 1px solid #d4e3d7;
+  border-radius: 30px;
+  padding: 7px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #274230;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(47, 82, 51, 0.04);
+  transition: all 0.2s ease;
+}
+
+.btn-back-home-pill:hover {
+  background: #f0f7f2;
+  border-color: #2f5233;
+  color: #1b4332;
+  transform: translateX(-2px);
+}
+
+.signin-slogan-pill {
+  background: #e4efe6;
+  border: 1px solid #d2e4d6;
+  border-radius: 30px;
+  padding: 7px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e5037;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Main 2-Column Layout (Aligned to Top & Full Coverage)
+   ========================================================================== */
+
+.signin-main-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 48px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Left Column: Showcase & Brand
+   ========================================================================== */
+
+.signin-left-showcase {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.signin-brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.signin-logo-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.signin-logo-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-logo-brand {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.brand-capacity {
+  color: #12281b;
+}
+
+.brand-connect {
+  color: #2f5233;
+}
+
+.signin-logo-sub {
+  font-size: 12.5px;
+  color: #556f5d;
+  margin: 1px 0 0 0;
+  font-weight: 500;
+}
+
+.signin-showcase-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 800;
+  color: #12281b;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.02em;
+}
+
+.heading-green-accent {
+  color: #2f5233;
+}
+
+.signin-showcase-desc {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #486150;
+  margin: 0 0 18px 0;
+  max-width: 600px;
+}
+
+/* Bottom Grid: Features on left, Artwork on right */
+.signin-bottom-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Feature Stack */
+.signin-features-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.signin-feature-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #eaf3ec;
+  border: 1px solid #d8e8dc;
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.signin-feature-card:hover {
+  background: #e2efe5;
+  border-color: #2f5233;
+  transform: translateX(3px);
+}
+
+.feature-icon-square {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #d5e8da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-text-block strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #183020;
+  margin-bottom: 1px;
+}
+
+.feature-text-block small {
+  font-size: 11.5px;
+  color: #526c59;
+  line-height: 1.3;
+}
+
+/* Bottom Quote Box */
+.signin-quote-card {
+  background: #eaf3ed;
+  border: 1px solid #d4e5d8;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.quote-mark-symbol {
+  font-family: Georgia, serif;
+  font-size: 28px;
+  line-height: 0.7;
+  color: #2f5233;
+  opacity: 0.85;
+}
+
+.quote-content-wrap {
+  flex: 1;
+}
+
+.quote-body-text {
+  font-size: 12px;
+  font-style: italic;
+  color: #2c4634;
+  margin: 0 0 4px 0;
+  line-height: 1.35;
+}
+
+.quote-author-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2f5233;
+}
+
+.quote-dash {
+  color: #527a5a;
+}
+
+/* Illustration Container */
+.signin-illustration-container {
+  background: #e5efe7;
+  border: 1px solid #d2e4d6;
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 22px -6px rgba(47, 82, 51, 0.08);
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.signin-artwork-img {
+  width: 100%;
+  height: 100%;
+  max-height: 290px;
+  object-fit: contain;
+  border-radius: 14px;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.signin-illustration-container:hover .signin-artwork-img {
+  transform: scale(1.02);
+}
+
+/* ==========================================================================
+   Right Column: Sign In Card (Positioned Up & Proportional)
+   ========================================================================== */
+
+.signin-right-card-column {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.signin-card-surface {
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 36px 40px;
+  box-shadow: 
+    0 22px 52px -10px rgba(27, 67, 50, 0.09),
+    0 4px 16px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e1ebe3;
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+}
+
+/* Card Header */
+.signin-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.signin-user-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #e5efe7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2f5233;
+  flex-shrink: 0;
+}
+
+.signin-card-title-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-card-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #12281b;
+  margin: 0 0 2px 0;
+  letter-spacing: -0.01em;
+}
+
+.signin-card-subheading {
+  font-size: 13px;
+  color: #5a7463;
+  margin: 0;
+}
+
+/* Alert Box */
+.signin-alert-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Field Groups */
+.signin-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.signin-field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #243b2c;
+}
+
+.signin-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-prefix-icon {
+  position: absolute;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.signin-input-wrapper input {
+  width: 100%;
+  box-sizing: border-box;
+  background: #fbfdfb;
+  border: 1.5px solid #d5e3d8;
+  border-radius: 10px;
+  padding: 11px 14px 11px 38px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #162a1c;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.signin-input-wrapper input:focus {
+  border-color: #2f5233;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(47, 82, 51, 0.1);
+}
+
+.password-eye-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-eye-btn:hover svg {
+  stroke: #2f5233;
+}
+
+/* Remember Me & Forgot Row */
+.signin-options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  font-size: 12.5px;
+}
+
+.signin-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  color: #3e5847;
+  font-weight: 500;
+  user-select: none;
+}
+
+.signin-checkbox-label input {
+  display: none;
+}
+
+.checkbox-custom-box {
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid #a4bfac;
+  border-radius: 4px;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.signin-checkbox-label input:checked + .checkbox-custom-box {
+  background: #2f5233;
+  border-color: #2f5233;
+}
+
+.signin-checkbox-label input:checked + .checkbox-custom-box::after {
+  content: '✓';
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.btn-forgot-password-link {
+  background: none;
+  border: none;
+  color: #2f5233;
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.btn-forgot-password-link:hover {
+  color: #1b4332;
+}
+
+/* Primary Button */
+.btn-signin-primary {
+  width: 100%;
+  background: #1b4332;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 14.5px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-signin-primary:hover:not(:disabled) {
+  background: #2d6a4f;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(27, 67, 50, 0.28);
+}
+
+.btn-signin-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-arrow-icon {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.signin-loading-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.loading-spinner-circle {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* OR Divider */
+.signin-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e2ede5;
+}
+
+.divider-text {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #799482;
+  letter-spacing: 0.05em;
+}
+
+/* Google Sign In Button */
+.btn-google-signin {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #d4e3d7;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: inherit;
+  color: #2b4533;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-google-signin:hover:not(:disabled) {
+  background: #f8faf8;
+  border-color: #a8c4b1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.google-g-icon {
+  flex-shrink: 0;
+}
+
+/* Create Account Footer Row */
+.signin-footer-signup-row {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #55705e;
+}
+
+.btn-create-account-link {
+  background: none;
+  border: none;
+  color: #1b4332;
+  font-weight: 700;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0 2px;
+}
+
+.btn-create-account-link:hover {
+  color: #2d6a4f;
+}
+
+/* ==========================================================================
+   Bottom Tagline
+   ========================================================================== */
+
+.signin-bottom-tagline {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 12px;
+  color: #55705e;
+  font-weight: 500;
+}
+
+.tagline-leaf-icon {
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+
+@media (max-width: 1080px) {
+  .signin-main-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .signin-right-card-column {
+    justify-content: center;
+  }
+
+  .signin-card-surface {
+    max-width: 500px;
+  }
+
+  .signin-bottom-tagline {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .signin-page-wrap {
+    padding: 16px 12px;
+  }
+
+  .signin-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signin-card-surface {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+
+  .signin-showcase-heading {
+    font-size: 28px;
+  }
+
+  .signin-top-nav-bar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}
