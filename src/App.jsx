@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import api from './services/api'
+import ForgotPasswordPage from './components/forgot-password/ForgotPasswordPage'
+import SignupPage from './components/signup/SignupPage'
+import LandingPage from './components/landing/LandingPage'
 import TrainerProfilePage from './components/trainer-profile/TrainerProfilePage'
 import TraineePortal from './components/trainee/TraineePortal'
 import { TrainerCoursesView } from './components/trainer-portal/TrainerCoursesView'
@@ -218,6 +221,7 @@ function HeroDashboardPreview({ onNavigateRole }) {
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
+  const [loginRole, setLoginRole] = useState('trainee')
   const [dashboardRole, setDashboardRole] = useState(null)
   const [currentHash, setCurrentHash] = useState(window.location.hash)
 
@@ -226,6 +230,7 @@ function App() {
       setCurrentHash(window.location.hash)
       if (window.location.hash === '#get-started') {
         window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
+        setLoginRole('trainee')
         setShowLogin(true)
       }
     }
@@ -241,252 +246,23 @@ function App() {
   if (dashboardRole === 'trainer') return <TrainerDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'trainee') return <TraineeDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'admin') return <AdminDashboard onBack={() => setDashboardRole(null)} />
-  if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => { setShowLogin(false); setDashboardRole(role); }} />
+  if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => { setShowLogin(false); setDashboardRole(role); }} initialRole={loginRole} />
 
   return (
-    <div id="top" className="capacity-app">
-      {/* Top Header */}
-      <header className="site-header shell">
-        <Logo onClick={() => { window.location.hash = ''; setShowLogin(false); setDashboardRole(null); }} />
-
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
-          {menuOpen ? '✕' : '☰'}
-        </button>
-
-        <nav className={menuOpen ? 'nav open' : 'nav'}>
-          <div className="nav-links">
-            <a className="active" href="#top">Home</a>
-            <a href="#features">Platform Ecosystem</a>
-            <a href="#how">AI Matching Engine</a>
-            <a href="#impact">Institutional Impact</a>
-            <a href="#about">About</a>
-          </div>
-
-          <div className="nav-actions">
-            <button className="button-get-started" onClick={() => setShowLogin(true)}>
-              <span>Launch Platform</span> <b>→</b>
-            </button>
-          </div>
-        </nav>
-      </header>
-
-      {/* Main Page Body */}
-      <main>
-        {/* Hero Section */}
-        <section className="hero-capacity shell">
-          <div className="hero-copy-wrap">
-            <div className="eyebrow-badge">
-              <span className="pulse-dot" />
-              <span>MoES | IMD · AI-Powered Capacity Architecture</span>
-            </div>
-
-            <h1 className="hero-title">
-              Build Skills.<br />
-              Strengthen<br />
-              Competencies.<br />
-              <em className="gradient-highlight">Empower People.</em>
-            </h1>
-
-            <p className="hero-subtitle">
-              CapacityConnect is an intelligent, unified digital platform for meteorological capacity building, competency diagnostics, adaptive learning, and precision AI trainer matching.
-            </p>
-
-            <div className="hero-actions">
-              <button className="btn-primary-action" onClick={() => setShowLogin(true)}>
-                Launch Platform Now <b>→</b>
-              </button>
-              <button className="btn-secondary-action" onClick={() => { window.location.hash = '#trainer-profile'; }}>
-                Explore Verified Faculty ↗
-              </button>
-            </div>
-
-            {/* 4 Trust Feature Badges */}
-            <div className="trust-row-grid">
-              <div className="trust-badge">
-                <span className="trust-icon">◈</span>
-                <div>
-                  <b>Institutional Security</b>
-                  <small>Role-based RBAC & GovID</small>
-                </div>
-              </div>
-              <div className="trust-badge">
-                <span className="trust-icon">✦</span>
-                <div>
-                  <b>AI Matching Engine</b>
-                  <small>Precision faculty pairing</small>
-                </div>
-              </div>
-              <div className="trust-badge">
-                <span className="trust-icon">◎</span>
-                <div>
-                  <b>Competency Mapping</b>
-                  <small>IMD / MoES Framework</small>
-                </div>
-              </div>
-              <div className="trust-badge">
-                <span className="trust-icon">▥</span>
-                <div>
-                  <b>Real-Time Analytics</b>
-                  <small>Skill growth & gap diagnostics</small>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Hero Workspace Window */}
-          <HeroDashboardPreview onNavigateRole={(role) => setDashboardRole(role)} />
-        </section>
-
-        {/* Live Institutional Metrics Counter Strip */}
-        <section className="metrics-strip-section shell">
-          <div className="metrics-strip-grid">
-            <div className="metric-strip-card">
-              <div className="metric-strip-icon">♙</div>
-              <div className="metric-strip-content">
-                <strong>150+</strong>
-                <span>Verified Master Trainers</span>
-              </div>
-            </div>
-            <div className="metric-strip-card">
-              <div className="metric-strip-icon">♟</div>
-              <div className="metric-strip-content">
-                <strong>2,486+</strong>
-                <span>Active Cohort Trainees</span>
-              </div>
-            </div>
-            <div className="metric-strip-card">
-              <div className="metric-strip-icon">✦</div>
-              <div className="metric-strip-content">
-                <strong>94.8%</strong>
-                <span>AI Match Precision</span>
-              </div>
-            </div>
-            <div className="metric-strip-card">
-              <div className="metric-strip-icon">◷</div>
-              <div className="metric-strip-content">
-                <strong>12,840+</strong>
-                <span>Certified Learning Hours</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Institutional Trust Strip */}
-        <div className="institution-strip shell">
-          <span className="strip-title">Government & Institutional Trust Standards</span>
-          <div className="strip-badges">
-            <span>◈ Ministry of Earth Sciences (MoES)</span>
-            <span>♟ India Meteorological Department (IMD)</span>
-            <span>▣ End-to-End Encrypted Data Architecture</span>
-            <span>◉ SIH 2026 Innovation Architecture</span>
-            <span className="india-badge">◒ Digital India Standard</span>
-          </div>
-        </div>
-
-        {/* Features Grid */}
-        <section id="features" className="section shell">
-          <SectionHeading title="Everything You Need for" accent="Smarter Capacity Building" />
-          <p className="section-subtitle">A comprehensive modular ecosystem designed to assess, train, benchmark, and scale institutional workforce capability</p>
-          <div className="feature-grid">
-            {features.map(([number, title, body, icon]) => (
-              <article className="feature-card" key={number}>
-                <div className="feature-card-top">
-                  <div className="feature-icon">{icon}</div>
-                  <span className="feature-num">{number}</span>
-                </div>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* Process Flow */}
-        <section id="how" className="section process-section">
-          <div className="shell">
-            <SectionHeading title="From Competency Gaps to the" accent="Right Expert Trainer" />
-            <p className="section-subtitle">Our multi-dimensional AI engine evaluates syllabus requirements against verified faculty credentials to achieve optimal cohort outcomes</p>
-            <div className="process">
-              <Step icon="▤" title="1. Course Requirements" text="Course defines the exact skills, compute tools, and specialized meteorology domains required." />
-              <Step icon="◈" title="2. Competency Mapping" text="Extract and map syllabus requirements to national competency standards & benchmarks." />
-              <Step icon="✣" title="3. Verified Faculty DB" text="Search accredited trainer profiles with verified publications, research, and past cohort ratings." />
-              <Step icon="◇" title="4. Multi-Factor AI Engine" text="Neural matching computes skill overlap, domain depth, delivery ratings, and availability." />
-              <Step icon="♟" title="5. Precision Allocation" text="Institutional administrators receive top-ranked matches with transparent score breakdowns." />
-            </div>
-          </div>
-        </section>
-
-        {/* Impact Highlights */}
-        <section id="impact" className="impact-section shell">
-          <SectionHeading title="Driving Impact Through" accent="Data-Driven Capacity Building" />
-          <p className="section-subtitle">Measurable improvements in institutional capability, operational forecast readiness, and workforce skill agility</p>
-          <div className="impact-grid">
-            {impacts.map(([icon, title, text]) => (
-              <article className="impact-card" key={title}>
-                <div className="impact-icon">{icon}</div>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section id="get-started" className="cta shell">
-          <div className="cta-left">
-            <h2>Ready to Elevate Your <em>Institutional Capacity?</em></h2>
-            <p>Connect learners, verified faculty, and administrators in a single AI-empowered capacity building platform.</p>
-            <div className="actions">
-              <button className="btn-primary-action" onClick={() => setShowLogin(true)}>
-                Get Started with CapacityConnect →
-              </button>
-              <button className="btn-secondary-action" onClick={() => { window.location.hash = '#trainer-profile'; }}>
-                View Dr. Rahul Sharma's Profile ↗
-              </button>
-            </div>
-          </div>
-          <div className="journey">
-            <b>Integrated Enterprise Governance</b>
-            <span>✓ Precision AI Faculty Matchmaking</span>
-            <span>✓ Dynamic Skill Gap Diagnostics</span>
-            <span>✓ Verified Institutional Credentials</span>
-            <span>✓ High-Resolution Training Analytics</span>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer id="about" className="footer shell">
-        <div className="footer-brand-col">
-          <Logo onClick={() => { }} />
-          <p className="footer-tagline">CapacityConnect is an institutional digital ecosystem for capacity building, skill diagnostics, learning assessments, and intelligent faculty matching.</p>
-          <span className="footer-copy">© 2026 CapacityConnect · Ministry of Earth Sciences | IMD. All rights reserved.</span>
-        </div>
-        <div>
-          <b>Platform Modules</b>
-          <a href="#features">Curriculum Engine</a>
-          <a href="#features">Assessment Suite</a>
-          <a href="#how">AI Matching Pipeline</a>
-          <a href="#impact">Institutional Impact</a>
-        </div>
-        <div>
-          <b>Quick Portals</b>
-          <button onClick={() => setDashboardRole('trainee')}>Trainee Portal</button>
-          <button onClick={() => setDashboardRole('trainer')}>Trainer Suite</button>
-          <button onClick={() => setDashboardRole('admin')}>Admin Console</button>
-          <button onClick={() => { window.location.hash = '#trainer-profile'; }}>Verified Trainer Profile</button>
-        </div>
-        <div>
-          <b>Governance & Resources</b>
-          <a href="#about">MoES / IMD Standards</a>
-          <a href="#about">Curriculum Taxonomy</a>
-          <a href="#about">Security Protocols</a>
-          <a href="#about">Digital India Compliance</a>
-        </div>
-      </footer>
-    </div>
+    <LandingPage
+      onLogin={(role = 'trainee') => {
+        setLoginRole(role)
+        setShowLogin(true)
+      }}
+      onGetStarted={(role = 'trainee') => {
+        setLoginRole(role)
+        setShowLogin(true)
+      }}
+      onNavigateRole={(role = 'trainee') => {
+        setLoginRole(role)
+        setShowLogin(true)
+      }}
+    />
   )
 }
 
@@ -526,13 +302,19 @@ function EyeOffIcon({ size = 18 }) {
   )
 }
 
-function LoginPage({ onBack, onDashboard }) {
-  const [selectedRoleTab, setSelectedRoleTab] = useState('trainee')
+function LoginPage({ onBack, onDashboard, initialRole = 'trainee' }) {
+  const [selectedRoleTab, setSelectedRoleTab] = useState(initialRole)
   const [submitted, setSubmitted] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showForgot, setShowForgot] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    if (initialRole) {
+      setSelectedRoleTab(initialRole)
+    }
+  }, [initialRole])
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [showSignup, setShowSignup] = useState(false)
@@ -605,7 +387,7 @@ function LoginPage({ onBack, onDashboard }) {
     }
   }
 
-  if (showSignup) return <SignupPage onBack={() => setShowSignup(false)} onLogin={() => setShowSignup(false)} onDashboard={onDashboard} />
+  if (showSignup) return <SignupPage onBack={() => setShowSignup(false)} onLogin={() => setShowSignup(false)} onDashboard={onDashboard} initialRole={selectedRoleTab} />
   if (showForgot) return <ForgotPasswordPage onBack={() => setShowForgot(false)} />
 
   return (
@@ -898,386 +680,6 @@ function LoginPage({ onBack, onDashboard }) {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-function ForgotPasswordPage({ onBack }) {
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
-  const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(false)
-  const [seconds, setSeconds] = useState(30)
-
-  useEffect(() => {
-    if (!sent || seconds === 0) return undefined
-    const timer = window.setInterval(() => setSeconds((value) => Math.max(0, value - 1)), 1000)
-    return () => window.clearInterval(timer)
-  }, [sent, seconds])
-
-  const sendResetLink = (event) => {
-    event.preventDefault()
-    if (!email.trim()) return setError('Please enter your email address.')
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setError('Please enter a valid email address.')
-    setError('')
-    setSending(true)
-    window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700)
-  }
-
-  const resend = () => {
-    if (!seconds) {
-      setSent(false)
-      setSending(true)
-      window.setTimeout(() => { setSending(false); setSent(true); setSeconds(30) }, 700)
-    }
-  }
-
-  return (
-    <div className="forgot-page">
-      <header className="forgot-header">
-        <Logo />
-        <button onClick={onBack}>← Back to Sign In</button>
-      </header>
-      <div className="forgot-layout">
-        <section className="forgot-intro">
-          <span className="forgot-kicker">ACCOUNT RECOVERY</span>
-          <h1>Build Skills.<br />Strengthen <em>Competencies.</em><br />Empower People.</h1>
-          <p>Your learning journey is always within reach.</p>
-          <div className="recovery-visual">
-            <span>◇</span>
-            <i>✓</i>
-            <b>Secure recovery<br />for your learning journey</b>
-          </div>
-        </section>
-
-        <section className="forgot-card">
-          {sent ? (
-            <div className="forgot-success">
-              <div className="forgot-success-icon">✓</div>
-              <h2>Check your inbox</h2>
-              <p>We've prepared a password reset link for your account.</p>
-              <div className="sent-email">
-                <small>Reset link sent to</small>
-                <strong>{email}</strong>
-              </div>
-              <div className="resend-row">
-                <span>Didn't receive the email?</span>
-                <button disabled={seconds > 0} onClick={resend}>{seconds ? `Resend in ${seconds}s` : 'Resend Link'}</button>
-              </div>
-              <button className="forgot-secondary" onClick={onBack}>← Back to Sign In</button>
-            </div>
-          ) : (
-            <>
-              <div className="forgot-card-heading">
-                <div className="forgot-icon">⌑</div>
-                <div>
-                  <h2>Forgot your password?</h2>
-                  <p>Enter your registered email address and we'll help you reset your password.</p>
-                </div>
-              </div>
-              <form onSubmit={sendResetLink}>
-                <label className="forgot-label">
-                  Email Address
-                  <input type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError('') }} placeholder="Enter your email address" aria-invalid={Boolean(error)} />
-                  {error && <small className="forgot-error">{error}</small>}
-                </label>
-                <button className="btn-primary-action forgot-submit" disabled={sending}>
-                  {sending ? 'Sending Link...' : 'Send Reset Link →'}
-                </button>
-              </form>
-              <p className="forgot-back-text">Remember your password? <button onClick={onBack}>Back to Sign In</button></p>
-            </>
-          )}
-        </section>
-      </div>
-    </div>
-  )
-}
-
-const signupSkills = ['Meteorology', 'Climate Science', 'Weather Data Analysis', 'Python', 'Data Analysis', 'Remote Sensing', 'GIS', 'Machine Learning', 'Scientific Computing', 'Visualization']
-const trainerSkills = ['Meteorology', 'Climatology', 'Weather Forecasting', 'Data Analysis', 'Python', 'Machine Learning', 'Remote Sensing', 'GIS', 'Numerical Weather Prediction', 'Climate Modeling']
-const learningGoals = ['Improve technical skills', 'Prepare for assessments', 'Develop professional competencies', 'Learn new tools', 'Advance domain knowledge']
-
-function SignupPage({ onBack, onLogin, onDashboard }) {
-  const [step, setStep] = useState(1)
-  const [role, setRole] = useState('trainer')
-  const [selectedSkills, setSelectedSkills] = useState([])
-  const [selectedGoals, setSelectedGoals] = useState([])
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    mobile: '',
-    organization: '',
-    designation: '',
-    level: 'Beginner',
-    experience: '',
-    qualification: '',
-    specialization: '',
-    bio: '',
-    certifications: ''
-  })
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  const updateForm = (event) => setForm({ ...form, [event.target.name]: event.target.value })
-  const toggle = (value, setter, values) => setter(values.includes(value) ? values.filter((item) => item !== value) : values.length < 10 ? [...values, value] : values)
-  const passwordStrong = form.password.length >= 8 && /[A-Z]/.test(form.password) && /\d/.test(form.password)
-  const canContinue = step === 1 ? role : step === 2 ? form.firstName && form.lastName && form.email && form.password && form.password === form.confirmPassword : step === 3 ? selectedSkills.length >= 3 : true
-
-  const next = () => { if (canContinue) setStep(Math.min(4, step + 1)) }
-  const previous = () => setStep(Math.max(1, step - 1))
-
-  const handleCreateAccount = async () => {
-    setLoading(true)
-    try {
-      await api.register({ ...form, role, skills: selectedSkills, goals: selectedGoals })
-    } catch {
-      // Fallback inside API
-    }
-    setLoading(false)
-    setSubmitted(true)
-  }
-
-  if (submitted) {
-    return (
-      <div className="signup-page">
-        <div className="signup-success">
-          <div className="success-mark">✓</div>
-          <h1>Account created successfully</h1>
-          <p>Your CapacityConnect profile has been initialized. You can now access your customized workspace.</p>
-          <button className="btn-primary-action" onClick={() => onDashboard(role)}>
-            Go to {role === 'trainer' ? 'Trainer' : 'Trainee'} Dashboard →
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className="signup-page">
-      <div className="signup-shell">
-        <div className="signup-top-nav">
-          <button className="back-home" onClick={onBack}>
-            <span className="back-arrow">←</span> Back to Home
-          </button>
-          <div className="signup-header-signin">
-            Already have an account? <button type="button" className="inline-signup-btn" onClick={onLogin}>Sign In</button>
-          </div>
-        </div>
-
-        <div className="signup-layout">
-          <div className="signup-intro">
-            <Logo />
-            <div className="eyebrow">✦ Create Your Account</div>
-            <h1>Start Your <em>Learning Journey</em> with CapacityConnect.</h1>
-            <p>Create your profile, discover relevant learning opportunities, track your competencies, and connect with verified trainers.</p>
-            <div className="signup-benefits">
-              <span><i className="benefit-check">✓</i> Personalized learning recommendations</span>
-              <span><i className="benefit-check">✓</i> Competency-based development & mapping</span>
-              <span><i className="benefit-check">✓</i> Intelligent verified trainer matching</span>
-              <span><i className="benefit-check">✓</i> Real-time progress and assessment tracking</span>
-            </div>
-          </div>
-
-          <div className="signup-card">
-            <div className="signup-card-top">
-              <div className="signup-symbol">◇</div>
-              <div>
-                <h2>Create your account</h2>
-                <p>Step {step} of 4 · Configure your profile</p>
-              </div>
-            </div>
-
-            <div className="signup-progress">
-              {[['01', 'Account'], ['02', 'Profile'], ['03', 'Skills'], ['04', 'Review']].map(([number, label], index) => (
-                <div className={step >= index + 1 ? 'progress-item active' : 'progress-item'} key={number}>
-                  <span>{number}</span>
-                  <b>{label}</b>
-                  {index < 3 && <i />}
-                </div>
-              ))}
-            </div>
-
-            {step === 1 && (
-              <div className="signup-step">
-                <h3>Choose your account type</h3>
-                <p className="step-copy">Select how you'll use CapacityConnect.</p>
-                <div className="role-options">
-                  <RoleOption selected={role === 'trainee'} icon="⌂" title="Trainee" text="Learn, assess your skills, track your progress, and build your competencies." onClick={() => setRole('trainee')} />
-                  <RoleOption selected={role === 'trainer'} icon="▣" title="Trainer" text="Create learning content, conduct assessments, mentor trainees, and showcase your expertise." onClick={() => setRole('trainer')} />
-                </div>
-              </div>
-            )}
-
-            {step === 2 && (
-              <div className="signup-step">
-                <h3>Tell us about yourself</h3>
-                <p className="step-copy">Enter your personal details to initialize your profile.</p>
-                <div className="field-grid">
-                  <Field label="First Name" name="firstName" value={form.firstName} onChange={updateForm} placeholder="Enter your first name" />
-                  <Field label="Last Name" name="lastName" value={form.lastName} onChange={updateForm} placeholder="Enter your last name" />
-                  <Field label="Email Address" name="email" type="email" value={form.email} onChange={updateForm} placeholder="name@imd.gov.in" />
-                  <Field label="Mobile Number" name="mobile" value={form.mobile} onChange={updateForm} placeholder="+91 98765 43210" />
-
-                  <label className="signup-field">
-                    Password
-                    <div className="password-field">
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        value={form.password}
-                        onChange={updateForm}
-                        placeholder="Create a strong password"
-                        required
-                      />
-                      <button
-                        type="button"
-                        className="password-toggle"
-                        onClick={() => setShowPassword(!showPassword)}
-                        aria-label={showPassword ? 'Hide password' : 'Show password'}
-                      >
-                        {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                      </button>
-                    </div>
-                  </label>
-
-                  <label className="signup-field">
-                    Confirm Password
-                    <div className="password-field">
-                      <input
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        name="confirmPassword"
-                        value={form.confirmPassword}
-                        onChange={updateForm}
-                        placeholder="Re-enter your password"
-                        required
-                      />
-                      <button
-                        type="button"
-                        className="password-toggle"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
-                      >
-                        {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
-                      </button>
-                    </div>
-                  </label>
-                </div>
-                {form.password && (
-                  <div className={`password-strength ${passwordStrong ? 'strong' : form.password.length >= 6 ? 'medium' : 'weak'}`}>
-                    <span>Password strength: {passwordStrong ? 'Strong' : form.password.length >= 6 ? 'Medium' : 'Weak'}</span>
-                  </div>
-                )}
-                {form.confirmPassword && form.password !== form.confirmPassword && (
-                  <small className="field-error-text">Passwords do not match.</small>
-                )}
-              </div>
-            )}
-
-            {step === 3 && (
-              <div className="signup-step">
-                <h3>{role === 'trainer' ? 'Build your professional profile' : 'Build your learning profile'}</h3>
-                <p className="step-copy">Personalize your experience with a few profile details.</p>
-                <div className="field-grid">
-                  <Field label="Organization / Institution" name="organization" value={form.organization} onChange={updateForm} placeholder="e.g. IMD New Delhi" />
-                  <Field label={role === 'trainer' ? 'Designation' : 'Designation / Role'} name="designation" value={form.designation} onChange={updateForm} placeholder="e.g. Meteorologist" />
-                  {role === 'trainer' ? (
-                    <>
-                      <Field label="Years of Experience" name="experience" value={form.experience} onChange={updateForm} placeholder="e.g. 5 years" />
-                      <Field label="Highest Qualification" name="qualification" value={form.qualification} onChange={updateForm} placeholder="e.g. Master's degree" />
-                    </>
-                  ) : (
-                    <Field label="Current Skill Level" name="level" value={form.level} onChange={updateForm} options={['Beginner', 'Intermediate', 'Advanced']} />
-                  )}
-                </div>
-                <h4>{role === 'trainer' ? 'Your expertise' : 'Areas you are interested in'} <span>Select 3 to 10</span></h4>
-                <div className="chip-grid">
-                  {(role === 'trainer' ? trainerSkills : signupSkills).map((skill) => (
-                    <button type="button" className={selectedSkills.includes(skill) ? 'chip selected' : 'chip'} onClick={() => toggle(skill, setSelectedSkills, selectedSkills)} key={skill}>
-                      {selectedSkills.includes(skill) && '✓ '}{skill}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {step === 4 && (
-              <div className="signup-step review-step">
-                <h3>Review your account</h3>
-                <p className="step-copy">Make sure everything looks right before creating your profile.</p>
-                <Review title="ACCOUNT" value={role === 'trainer' ? 'Trainer' : 'Trainee'} onEdit={() => setStep(1)} />
-                <Review title="PERSONAL INFORMATION" value={`${form.firstName} ${form.lastName} · ${form.email}${form.mobile ? ` · ${form.mobile}` : ''}`} onEdit={() => setStep(2)} />
-                <Review title="PROFILE" value={`${form.organization || 'Organization not added'} · ${form.designation || 'Role not added'}`} onEdit={() => setStep(3)} />
-                <div className="review-block">
-                  <div>
-                    <b>COMPETENCIES</b>
-                    <div className="review-chips">
-                      {selectedSkills.map((skill) => <span key={skill}>{skill}</span>)}
-                    </div>
-                  </div>
-                  <button onClick={() => setStep(3)}>Edit</button>
-                </div>
-              </div>
-            )}
-
-            <div className="signup-actions">
-              {step > 1 && <button className="btn-secondary-action" onClick={previous}>← Back</button>}
-              {step < 4 ? (
-                <button className="btn-primary-action" disabled={!canContinue} onClick={next}>Continue →</button>
-              ) : (
-                <button className="btn-primary-action" disabled={loading} onClick={handleCreateAccount}>
-                  {loading ? 'Creating account...' : 'Create Account →'}
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function RoleOption({ selected, icon, title, text, onClick }) {
-  return (
-    <button type="button" className={selected ? 'role-option selected' : 'role-option'} onClick={onClick}>
-      <span className="role-option-icon">{icon}</span>
-      <span>
-        <strong>{title}</strong>
-        <small>{text}</small>
-        <em>{selected ? '✓ Selected' : 'Select this role'}</em>
-      </span>
-    </button>
-  )
-}
-
-function Field({ label, name, type = 'text', value, onChange, placeholder, options }) {
-  return (
-    <label className="signup-field">
-      {label}
-      {options ? (
-        <select name={name} value={value} onChange={onChange}>
-          {options.map((option) => <option key={option}>{option}</option>)}
-        </select>
-      ) : (
-        <input name={name} type={type} value={value} onChange={onChange} placeholder={placeholder} required={['firstName', 'lastName', 'email', 'password', 'confirmPassword'].includes(name)} />
-      )}
-    </label>
-  )
-}
-
-function Review({ title, value, onEdit }) {
-  return (
-    <div className="review-block">
-      <div>
-        <b>{title}</b>
-        <p>{value}</p>
-      </div>
-      <button onClick={onEdit}>Edit</button>
     </div>
   )
 }

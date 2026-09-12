@@ -1,0 +1,2120 @@
+.capacity-connect-landing,
+.capacity-connect-landing * {
+  box-sizing: border-box;
+}
+.capacity-connect-landing {
+  background: #f7fbfc;
+  height: 2432px;
+  position: relative;
+  overflow: hidden;
+}
+.navbar {
+  border-radius: 20px;
+  border-style: solid;
+  border-color: #ac9f9f;
+  border-width: 1px;
+  padding: 10px 80px 10px 80px;
+  width: 1400px;
+  height: 72px;
+  position: absolute;
+  left: 20px;
+  top: 0px;
+  overflow: hidden;
+}
+.arcticons-clover {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  position: absolute;
+  left: 81px;
+  top: 22.19px;
+  overflow: visible;
+}
+.capacity-connect {
+  color: #013e37;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 101px;
+  top: 27px;
+  width: 179px;
+  height: 14px;
+}
+.home {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 332px;
+  top: 28px;
+}
+.features {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 396px;
+  top: 28px;
+}
+.courses {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 488px;
+  top: 28px;
+  width: 69px;
+  height: 14px;
+}
+.assessments {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 575px;
+  top: 28px;
+}
+.trainers {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 705px;
+  top: 28px;
+}
+.about {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 793px;
+  top: 28px;
+}
+.search {
+  border-radius: 18px;
+  border-style: solid;
+  border-color: #013e37;
+  border-width: 1px;
+  width: 168px;
+  height: 36px;
+  position: absolute;
+  left: 920px;
+  top: 18px;
+  overflow: hidden;
+}
+.search2 {
+  color: #013e37;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 46px;
+  top: 12px;
+}
+.vector {
+  width: 10%;
+  height: 44.44%;
+  position: absolute;
+  right: 83.12%;
+  left: 6.88%;
+  bottom: 27.78%;
+  top: 27.78%;
+  overflow: visible;
+}
+.search3 {
+  border-radius: 18px;
+  width: 128px;
+  height: 36px;
+  position: absolute;
+  left: 1124px;
+  top: 18px;
+  overflow: hidden;
+}
+.notification {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 37px;
+  top: 11px;
+}
+.basil-notification-on-outline {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 11px;
+  top: 10px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.search4 {
+  border-radius: 18px;
+  width: 144px;
+  height: 36px;
+  position: absolute;
+  left: 1260px;
+  top: 18px;
+  overflow: hidden;
+}
+.profile {
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  left: 41px;
+  top: 11px;
+}
+.profile-span {
+  color: #000000;
+}
+.profile-span2 {
+  color: #064e3b;
+}
+.vector2 {
+  width: 11.11%;
+  height: 44.44%;
+  position: absolute;
+  right: 75%;
+  left: 13.89%;
+  bottom: 25%;
+  top: 30.56%;
+  overflow: visible;
+}
+.ci-search-magnifying-glass {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 296px;
+  top: 244px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.streamline-emojis-herb {
+  width: 195px;
+  height: 335px;
+  position: absolute;
+  left: 1412px;
+  top: 882px;
+  transform: translate(-195px, -335px);
+  overflow: visible;
+}
+.akar-icons-circle-fill {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  left: -25px;
+  top: 1989px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.frame-8 {
+  padding: 60px 80px 60px 80px;
+  width: 1378px;
+  height: 401px;
+  position: absolute;
+  left: 34px;
+  top: 547px;
+  overflow: hidden;
+}
+.everything-you-need-in-one-place {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  position: absolute;
+  left: 80px;
+  top: 98px;
+  width: 521px;
+  height: 38px;
+}
+.powerful-features-to-build-skills-track-progress-and-connect-learners-with-the-right-opportunities {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  position: absolute;
+  left: 80px;
+  top: 146px;
+  width: 521px;
+  height: 46px;
+}
+.frame-11 {
+  background: #f6f8f2;
+  border-radius: 16px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  padding: 20px;
+  width: 190px;
+  height: 150px;
+  position: absolute;
+  left: 68px;
+  top: 208px;
+  box-shadow: 0px 4px 20px 0px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+}
+.bi-person-circle {
+  background: #e5ede7;
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 21px;
+  top: 21px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.group {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  right: 0%;
+  left: 0%;
+  bottom: 0%;
+  top: 0%;
+  overflow: visible;
+}
+.user-management {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 21px;
+  top: 75px;
+  width: 125px;
+  height: 17px;
+}
+.manage-trainers-trainees-and-roles {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 21px;
+  top: 103px;
+}
+.frame-12 {
+  background: #f6f8f2;
+  border-radius: 16px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  padding: 20px;
+  width: 190px;
+  height: 150px;
+  position: absolute;
+  left: 298px;
+  top: 208px;
+  box-shadow: 0px 4px 20px 0px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+}
+.akar-icons-book-open {
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 21px;
+  top: 21px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.course-content-management {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 20px;
+  top: 61px;
+  width: 125px;
+  height: 15px;
+}
+.organize-and-deliver-quality-learning-content {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 20px;
+  top: 103px;
+}
+.frame-13 {
+  background: #f6f8f2;
+  border-radius: 16px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  padding: 20px;
+  width: 190px;
+  height: 150px;
+  position: absolute;
+  left: 516px;
+  top: 208px;
+  box-shadow: 0px 4px 20px 0px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+}
+.group2 {
+  position: absolute;
+  inset: 0;
+}
+.vector3 {
+  border-radius: 0px;
+  width: 9.02%;
+  height: 6.67%;
+  position: absolute;
+  right: 73.91%;
+  left: 17.07%;
+  bottom: 79.33%;
+  top: 14%;
+  overflow: visible;
+}
+.vector4 {
+  border-radius: 0px;
+  width: 21.05%;
+  height: 24.17%;
+  position: absolute;
+  right: 67.89%;
+  left: 11.05%;
+  bottom: 59.33%;
+  top: 16.5%;
+  overflow: visible;
+}
+.assessment-evaluation {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 21px;
+  top: 68px;
+  width: 125px;
+  height: 34px;
+}
+.conduct-tests-and-track-performance {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 21px;
+  top: 106px;
+}
+.frame-14 {
+  background: #f6f8f2;
+  border-radius: 16px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  padding: 20px;
+  width: 190px;
+  height: 150px;
+  position: absolute;
+  left: 734px;
+  top: 208px;
+  box-shadow: 0px 4px 20px 0px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+}
+.ci-chart-line {
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 21px;
+  top: 21px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.skill-gap-analysis {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 21px;
+  top: 75px;
+  width: 125px;
+  height: 17px;
+}
+.identify-gaps-and-plan-learning-paths {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 21px;
+  top: 98px;
+}
+.frame-15 {
+  background: #f6f8f2;
+  border-radius: 16px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  padding: 20px;
+  width: 190px;
+  height: 150px;
+  position: absolute;
+  left: 952px;
+  top: 204px;
+  box-shadow: 0px 4px 20px 0px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+}
+.ix-user-check-filled {
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 21px;
+  top: 21px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.trainer-matching {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 21px;
+  top: 75px;
+  width: 125px;
+  height: 17px;
+}
+.connect-trainers-with-trainees {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 21px;
+  top: 99px;
+}
+.frame-16 {
+  background: #f6f8f2;
+  border-radius: 16px;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  padding: 20px;
+  width: 190px;
+  height: 150px;
+  position: absolute;
+  left: 1170px;
+  top: 204px;
+  box-shadow: 0px 4px 20px 0px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+}
+.ci-trending-up {
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 21px;
+  top: 21px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.progress-tracking-gamification {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  position: absolute;
+  left: 21px;
+  top: 70px;
+  width: 160px;
+  height: 34px;
+}
+.monitor-growth-and-keep-learners-motivated {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 21px;
+  top: 104px;
+}
+.frame-18 {
+  background: #dcebdd;
+  border-radius: 14px;
+  width: 105px;
+  height: 28px;
+  position: absolute;
+  left: 80px;
+  top: 454px;
+  overflow: hidden;
+}
+.how-it-works {
+  color: #2f6b52;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 10px;
+  top: 7px;
+}
+.frame-1 {
+  background: #e6f1e7;
+  border-radius: 16px;
+  width: 101px;
+  height: 32px;
+  position: absolute;
+  left: 79px;
+  top: 42px;
+  overflow: hidden;
+}
+.key-features {
+  color: #013e37;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  width: 147px;
+  height: 15px;
+}
+.noto-v-1-herb {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: -9px;
+  top: 0px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.frame-17 {
+  background: #f6f8f2;
+  padding: 60px 80px 10px 80px;
+  width: 1368px;
+  height: 419px;
+  position: absolute;
+  left: 34px;
+  top: 929px;
+  overflow: hidden;
+}
+.simple-steps-to-a-better-tomorrow {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  position: absolute;
+  left: 76px;
+  top: 94px;
+}
+.a-simple-journey-from-learning-to-growth {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 79px;
+  top: 128px;
+}
+.group-1 {
+  position: absolute;
+  inset: 0;
+}
+.group-6 {
+  width: 200px;
+  height: 160px;
+  position: static;
+}
+.frame-19 {
+  border-radius: 10px;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 1px;
+  width: 200px;
+  height: 160px;
+  position: absolute;
+  left: 83px;
+  top: 201px;
+  overflow: hidden;
+}
+.basil-user-plus-solid {
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 80px;
+  top: 43px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.sign-up {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 77px;
+  top: 92px;
+}
+.create-your-account-and-get-started {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  position: absolute;
+  left: 18px;
+  top: 117px;
+  width: 175px;
+  height: 11px;
+}
+.ellipse-1 {
+  background: #013e37;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 12px;
+  top: 8px;
+}
+._1 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  position: absolute;
+  left: 24px;
+  top: 17px;
+  width: 6px;
+}
+.group-5 {
+  width: 200px;
+  height: 160px;
+  position: static;
+}
+.frame-192 {
+  width: 200px;
+  height: 160px;
+  position: absolute;
+  left: 1084px;
+  top: 201px;
+  overflow: hidden;
+}
+.basil-user-plus-solid2 {
+  background: rgba(47, 107, 82, 0.66);
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 80px;
+  top: 43px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.ci-trending-up2 {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.grow {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 83px;
+  top: 92px;
+}
+.track-progress-and-achieve-your-goals {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  position: absolute;
+  left: 52px;
+  top: 117px;
+  width: 96px;
+}
+._5 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  position: absolute;
+  left: 24px;
+  top: 17px;
+  width: 6px;
+  height: 11px;
+}
+.group-3 {
+  width: 200px;
+  height: 160px;
+  position: static;
+}
+.frame-193 {
+  width: 200px;
+  height: 160px;
+  position: absolute;
+  left: 586px;
+  top: 201px;
+  overflow: hidden;
+}
+.basil-user-plus-solid3 {
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 80px;
+  top: 43px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.learn-practice {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 47px;
+  top: 92px;
+}
+.build-skills-through-learning-and-assessment {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  position: absolute;
+  left: 47px;
+  top: 117px;
+  width: 121px;
+}
+._3 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  position: absolute;
+  left: 24px;
+  top: 17px;
+  width: 6px;
+}
+.group-4 {
+  width: 200px;
+  height: 160px;
+  position: static;
+}
+.frame-194 {
+  width: 200px;
+  height: 160px;
+  position: absolute;
+  left: 833px;
+  top: 201px;
+  overflow: hidden;
+}
+.basil-user-plus-solid4 {
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 80px;
+  top: 43px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.get-matched {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 57px;
+  top: 92px;
+}
+.connect-with-the-right-trainer {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  position: absolute;
+  left: 57px;
+  top: 117px;
+  width: 95px;
+  height: 23px;
+}
+._4 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  position: absolute;
+  left: 24px;
+  top: 17px;
+  width: 6px;
+}
+.group-2 {
+  width: 200px;
+  height: 160px;
+  position: static;
+}
+.frame-195 {
+  width: 200px;
+  height: 160px;
+  position: absolute;
+  left: 340px;
+  top: 201px;
+  overflow: hidden;
+}
+.akar-icons-book-open2 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.explore {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  position: absolute;
+  left: 77px;
+  top: 92px;
+}
+.discover-courses-and-learning-opportunities {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  position: absolute;
+  left: 38px;
+  top: 117px;
+  width: 127px;
+  height: 25px;
+}
+.ellipse-12 {
+  background: #013e37;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  aspect-ratio: 1;
+}
+._2 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  position: absolute;
+  left: 23px;
+  top: 17px;
+  width: 7px;
+}
+.basil-arrow-right-outline {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 311px;
+  top: 244px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.basil-arrow-right-outline2 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 1043px;
+  top: 245px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.basil-arrow-right-outline3 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 797px;
+  top: 245px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.basil-arrow-right-outline4 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 553px;
+  top: 245px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.emojione-herb {
+  width: 172px;
+  height: 279px;
+  position: absolute;
+  left: 1249px;
+  top: 161px;
+  overflow: visible;
+}
+.frame-9 {
+  background: #dcebdd;
+  border-radius: 14px;
+  width: 100px;
+  height: 28px;
+  position: absolute;
+  left: 76px;
+  top: 43px;
+  overflow: hidden;
+}
+.how-it-works2 {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 13px;
+  top: 7px;
+}
+.fluent-emoji-flat-herb {
+  width: 70px;
+  height: 95px;
+  position: absolute;
+  left: 1319px;
+  top: 97px;
+  transform-origin: 0 0;
+  transform: rotate(-180deg) scale(1, 1);
+  overflow: hidden;
+}
+.group3 {
+  width: 71.62%;
+  height: 87.47%;
+  position: absolute;
+  right: 12.76%;
+  left: 15.62%;
+  bottom: 6.28%;
+  top: 6.25%;
+  overflow: visible;
+}
+.fluent-emoji-high-contrast-leaf-fluttering-in-wind {
+  opacity: 0.3;
+  width: 65px;
+  height: 80px;
+  position: absolute;
+  left: 0px;
+  top: 8px;
+  overflow: hidden;
+}
+.group4 {
+  width: 87.5%;
+  height: 90.69%;
+  position: absolute;
+  right: 6.25%;
+  left: 6.25%;
+  bottom: 3.06%;
+  top: 6.25%;
+  overflow: visible;
+}
+.fluent-emoji-flat-herb2 {
+  width: 75px;
+  height: 90px;
+  position: absolute;
+  left: 0px;
+  top: 318px;
+  overflow: hidden;
+}
+.group5 {
+  width: 71.62%;
+  height: 87.47%;
+  position: absolute;
+  right: 12.76%;
+  left: 15.62%;
+  bottom: 6.28%;
+  top: 6.25%;
+  overflow: visible;
+}
+.frame-20 {
+  background: #f2f8f2;
+  border-radius: 16px;
+  width: 640px;
+  height: 200px;
+  position: absolute;
+  left: 46px;
+  top: 1391px;
+  overflow: hidden;
+}
+.frame-22 {
+  background: #dcebdd;
+  border-radius: 14px;
+  width: 84px;
+  height: 22px;
+  position: absolute;
+  left: 18px;
+  top: 10px;
+  overflow: hidden;
+}
+.for-trainers {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 10px;
+  top: 4px;
+}
+.frame-23 {
+  width: 323px;
+  height: 48px;
+  position: absolute;
+  left: 18px;
+  top: 41px;
+  overflow: hidden;
+}
+.share-your-expertise-make-an-impact {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 239px;
+}
+.create-courses-conduct-assessments-connect-with-learners-and-track-progress-all-in-one-place {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 18px;
+  top: 91px;
+  width: 219px;
+  height: 39px;
+}
+.rectangle-3 {
+  background: #07543e;
+  border-radius: 18px;
+  width: 128px;
+  height: 36px;
+  position: absolute;
+  left: 22px;
+  top: 151px;
+}
+.explore-as-trainer {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 31px;
+  top: 162px;
+}
+.frame-27 {
+  width: 370px;
+  height: 255px;
+  position: absolute;
+  left: 257px;
+  top: 0px;
+  overflow: hidden;
+  object-fit: cover;
+}
+.frame-21 {
+  background: #f2f8f2;
+  border-radius: 16px;
+  width: 640px;
+  height: 200px;
+  position: absolute;
+  left: 727px;
+  top: 1391px;
+  overflow: hidden;
+}
+.for-trainees {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 9px;
+  top: 4px;
+}
+.build-your-skills-achieve-your-goals {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 239px;
+}
+.access-quality-learning-take-assessments-get-matched-with-trainers-and-track-your-progress {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 18px;
+  top: 91px;
+  width: 219px;
+  height: 39px;
+}
+.explore-as-trainee {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 31px;
+  top: 162px;
+}
+.frame-28 {
+  width: 312px;
+  height: 190px;
+  position: absolute;
+  left: 318px;
+  top: 10px;
+  overflow: hidden;
+  object-fit: cover;
+}
+.frame-24 {
+  background: #f6f8f2;
+  width: 1440px;
+  height: 291px;
+  position: absolute;
+  left: 0px;
+  top: 1634px;
+  overflow: hidden;
+}
+.frame-222 {
+  background: #dcebdd;
+  border-radius: 14px;
+  width: 128px;
+  height: 22px;
+  position: absolute;
+  left: 66px;
+  top: 11px;
+  overflow: hidden;
+}
+.impact-benefits {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 10px;
+  top: 4px;
+}
+.frame-232 {
+  width: 323px;
+  height: 48px;
+  position: absolute;
+  left: 68px;
+  top: 42px;
+  overflow: hidden;
+}
+.creating-a-skilled-and-empowered-future {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 239px;
+}
+.better-learning-better-connections-a-stronger-workforce {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 68px;
+  top: 92px;
+  width: 219px;
+  height: 29px;
+}
+.group-7 {
+  position: absolute;
+  inset: 0;
+}
+.active-learners {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 90px;
+  top: 209px;
+}
+._10-k {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 90px;
+  top: 192px;
+}
+.rectangle-4 {
+  background: rgba(217, 217, 217, 0.21);
+  border-radius: 16px;
+  width: 240px;
+  height: 110px;
+  position: absolute;
+  left: 66px;
+  top: 141px;
+}
+.ellipse-2 {
+  background: #dcebdd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  left: 85px;
+  top: 146px;
+}
+.ci-users {
+  border-radius: 20px;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 94px;
+  top: 155px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.group-8 {
+  position: absolute;
+  inset: 0;
+}
+.trainers2 {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 360px;
+  top: 209px;
+}
+.rectangle-42 {
+  background: rgba(217, 217, 217, 0.21);
+  border-radius: 16px;
+  width: 240px;
+  height: 110px;
+  position: absolute;
+  left: 336px;
+  top: 141px;
+}
+._500 {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 360px;
+  top: 192px;
+}
+.ellipse-22 {
+  background: #dcebdd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  left: 355px;
+  top: 146px;
+}
+.fa-solid-graduation-cap {
+  width: 20px;
+  height: 16px;
+  position: absolute;
+  left: 364px;
+  top: 156px;
+  overflow: visible;
+  aspect-ratio: 5/4;
+}
+.group-9 {
+  position: absolute;
+  inset: 0;
+}
+.courses2 {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 630px;
+  top: 209px;
+}
+.rectangle-43 {
+  background: rgba(217, 217, 217, 0.21);
+  border-radius: 16px;
+  width: 240px;
+  height: 110px;
+  position: absolute;
+  left: 606px;
+  top: 141px;
+}
+.ellipse-23 {
+  background: #dcebdd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  left: 625px;
+  top: 146px;
+}
+._200 {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 630px;
+  top: 192px;
+}
+.akar-icons-book-open3 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 631px;
+  top: 152px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.group-10 {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-44 {
+  background: rgba(217, 217, 217, 0.21);
+  border-radius: 16px;
+  width: 240px;
+  height: 110px;
+  position: absolute;
+  left: 876px;
+  top: 141px;
+}
+.success-rate {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 900px;
+  top: 209px;
+}
+._95 {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 900px;
+  top: 192px;
+}
+.ellipse-24 {
+  background: #dcebdd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  left: 895px;
+  top: 146px;
+}
+.ci-users2 {
+  border-radius: 20px;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 904px;
+  top: 155px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.ci-trending-up3 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 900px;
+  top: 152px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.group-11 {
+  position: absolute;
+  inset: 0;
+}
+.rectangle-45 {
+  background: rgba(217, 217, 217, 0.21);
+  border-radius: 16px;
+  width: 240px;
+  height: 110px;
+  position: absolute;
+  left: 1146px;
+  top: 141px;
+}
+.growth-focused {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 1170px;
+  top: 209px;
+}
+._100 {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 1170px;
+  top: 192px;
+}
+.ellipse-25 {
+  background: #dcebdd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  left: 1165px;
+  top: 146px;
+}
+.ci-users3 {
+  border-radius: 20px;
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  left: 1174px;
+  top: 155px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.fluent-target-arrow-16-filled {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.vector5 {
+  width: 12.79%;
+  height: 8.29%;
+  position: absolute;
+  right: 91.79%;
+  left: -4.58%;
+  bottom: 2.89%;
+  top: 88.82%;
+  overflow: visible;
+}
+.vector6 {
+  width: 16.68%;
+  height: 17.24%;
+  position: absolute;
+  right: 85.54%;
+  left: -2.22%;
+  bottom: -19.33%;
+  top: 102.09%;
+  transform: translate(31.92px, -240.14px);
+  overflow: visible;
+}
+.boxicons-blob-filled {
+  width: 434px;
+  height: 434px;
+  position: absolute;
+  left: 1068px;
+  top: 2594px;
+  transform: translate(0px, -434px);
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.frame-25 {
+  background: #064e3b;
+  border-radius: 16px;
+  padding: 10px 80px 10px 80px;
+  width: 1290px;
+  height: 110px;
+  position: absolute;
+  left: 64px;
+  top: 1925px;
+  overflow: hidden;
+}
+.ready-to-build-a-stronger-tomorrow {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  position: absolute;
+  left: 135px;
+  top: 33px;
+  width: 350px;
+  height: 18px;
+}
+.join-capacity-connect-and-take-the-first-step-towards-your-growth {
+  color: #dcebdd;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 135px;
+  top: 60px;
+  width: 354px;
+  height: 15px;
+}
+.frame-26 {
+  background: #ffffff;
+  border-radius: 19px;
+  width: 105px;
+  height: 38px;
+  position: absolute;
+  left: 1136px;
+  top: 36px;
+  overflow: hidden;
+}
+.get-started {
+  color: #064e3b;
+  text-align: left;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  position: absolute;
+  left: 15px;
+  top: 12px;
+}
+.emojione-v-1-leaf-fluttering-in-wind {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  left: 37px;
+  top: 25px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.vector7 {
+  width: 78.99%;
+  height: 50.61%;
+  position: absolute;
+  right: 2.46%;
+  left: 18.55%;
+  bottom: 36.49%;
+  top: 12.9%;
+  overflow: visible;
+}
+.vector8 {
+  width: 79%;
+  height: 41.19%;
+  position: absolute;
+  right: 2.45%;
+  left: 18.55%;
+  bottom: 36.57%;
+  top: 22.24%;
+  overflow: visible;
+}
+.vector9 {
+  width: 95.29%;
+  height: 28.9%;
+  position: absolute;
+  right: 2.44%;
+  left: 2.27%;
+  bottom: 57.44%;
+  top: 13.66%;
+  overflow: visible;
+}
+.vector10 {
+  width: 52.13%;
+  height: 32.48%;
+  position: absolute;
+  right: 42.98%;
+  left: 4.89%;
+  bottom: 0.22%;
+  top: 67.3%;
+  overflow: visible;
+}
+.group6 {
+  width: 65.23%;
+  height: 32.47%;
+  position: absolute;
+  right: 29.86%;
+  left: 4.92%;
+  bottom: 0.17%;
+  top: 67.36%;
+  overflow: visible;
+}
+.vector11 {
+  width: 93.54%;
+  height: 70.11%;
+  position: absolute;
+  right: 6.46%;
+  left: 0%;
+  bottom: 29.89%;
+  top: 0%;
+  overflow: visible;
+}
+.boxicons-blob-filled2 {
+  width: 134px;
+  height: 134px;
+  position: absolute;
+  left: -40px;
+  top: 2003px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.frame-29 {
+  width: 1368px;
+  height: 426px;
+  position: absolute;
+  left: 44px;
+  top: 84px;
+  overflow: hidden;
+}
+.hero-section {
+  background: #f7fbf7;
+  width: 1440px;
+  height: 460px;
+  position: absolute;
+  left: 0px;
+  top: 87px;
+  overflow: hidden;
+}
+.frame-110 {
+  background: #e6f1e7;
+  border-radius: 16px;
+  width: 172px;
+  height: 32px;
+  position: absolute;
+  left: 77px;
+  top: 15px;
+  overflow: hidden;
+}
+.smart-education-platform {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  width: 147px;
+  height: 15px;
+}
+.a-unified-platform-to-learn-assess-match-and-grow-competencies {
+  color: #557066;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  position: absolute;
+  left: 79px;
+  top: 191px;
+  width: 509px;
+  height: 33px;
+}
+.frame-2 {
+  width: 323px;
+  height: 88px;
+  position: absolute;
+  left: 76px;
+  top: 224px;
+  overflow: hidden;
+}
+.rectangle-1 {
+  background: #07543e;
+  border-radius: 23px;
+  width: 160px;
+  height: 46px;
+  position: absolute;
+  left: 0px;
+  top: 20px;
+}
+.rectangle-2 {
+  background: #07543e;
+  border-radius: 23px;
+  width: 120px;
+  height: 46px;
+  position: absolute;
+  left: 173px;
+  top: 19px;
+}
+.explore-platform {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  position: absolute;
+  left: 25px;
+  top: 36px;
+  width: 119px;
+  height: 12px;
+}
+.get-started2 {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  position: absolute;
+  left: 195px;
+  top: 36px;
+  width: 76px;
+  height: 12px;
+}
+.learn-improve-match-grow {
+  text-align: left;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 56px;
+  font-weight: 500;
+  position: absolute;
+  left: 79px;
+  top: 51px;
+}
+.learn-improve-match-grow-span {
+  color: #064e3b;
+}
+.learn-improve-match-grow-span2 {
+  color: #2f6b52;
+}
+.frame-3 {
+  border-radius: 20px;
+  width: 613px;
+  height: 422px;
+  position: absolute;
+  left: 743px;
+  top: 38px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  object-fit: cover;
+}
+.frame-4 {
+  background: rgba(220, 235, 221, 0.62);
+  border-radius: 18px;
+  width: 143px;
+  height: 40px;
+  position: absolute;
+  left: 78px;
+  top: 304px;
+  overflow: hidden;
+}
+.better-learning-outcomes {
+  color: #013e37;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 43px;
+  top: 8px;
+}
+.akar-icons-book-open4 {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.frame-6 {
+  background: rgba(220, 235, 221, 0.62);
+  border-radius: 18px;
+  width: 130px;
+  height: 40px;
+  position: absolute;
+  left: 239px;
+  top: 304px;
+  overflow: hidden;
+}
+.stronger-communities {
+  color: #013e37;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 50px;
+  top: 7px;
+}
+.bi-people {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.frame-7 {
+  background: rgba(220, 235, 221, 0.62);
+  border-radius: 18px;
+  width: 128px;
+  height: 40px;
+  position: absolute;
+  left: 387px;
+  top: 303px;
+  overflow: hidden;
+}
+.skilled-workforce {
+  color: #013e37;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  position: absolute;
+  left: 42px;
+  top: 7px;
+  width: 61px;
+  height: 26px;
+}
+.arcticons-security {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 11px;
+  top: 8px;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+.frame-30 {
+  background: #f7fbfc;
+  border-radius: 12px;
+  padding: 10px 80px 10px 80px;
+  width: 1290px;
+  height: 275.62px;
+  position: absolute;
+  left: 64px;
+  top: 2101px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.arcticons-clover2 {
+  padding: 3px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 254px;
+  height: 21.62px;
+  position: absolute;
+  left: 664px;
+  top: 10px;
+  overflow: hidden;
+}
+.frame-32 {
+  width: 254px;
+  height: 223px;
+  position: absolute;
+  left: 680px;
+  top: 43px;
+  overflow: hidden;
+}
+.quick-portals {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  position: absolute;
+  left: 60px;
+  top: 15px;
+}
+.trainee-portal-trainer-portal-admin-console-courses-assessments {
+  color: #2f6b52;
+  text-align: center;
+  font-family: "Inter-Light", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  position: absolute;
+  left: 49px;
+  top: 55px;
+  width: 155px;
+  height: 158px;
+}
+.frame-33 {
+  width: 254px;
+  height: 223px;
+  position: absolute;
+  left: 956px;
+  top: 42.62px;
+  overflow: hidden;
+}
+.resources {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  position: absolute;
+  left: 38px;
+  top: 15.38px;
+  width: 178px;
+  height: 18px;
+}
+.about-us-contact-us-help-support-privacy-policy-terms-conditions {
+  color: #2f6b52;
+  text-align: center;
+  font-family: "Inter-Light", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  position: absolute;
+  left: 49px;
+  top: 54.38px;
+  width: 155px;
+  height: 158px;
+}
+.frame-31 {
+  width: 254px;
+  height: 223px;
+  position: absolute;
+  left: 404px;
+  top: 42px;
+  overflow: hidden;
+}
+.platform-modules {
+  color: #064e3b;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  position: absolute;
+  left: 38px;
+  top: 18px;
+}
+.user-management-course-content-assessment-evaluation-skill-gap-analysis-trainer-matching-progress-tracking {
+  color: #2f6b52;
+  text-align: center;
+  font-family: "Inter-Light", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  position: absolute;
+  left: 49px;
+  top: 55px;
+  width: 155px;
+  height: 158px;
+}
+.capacity-connect2 {
+  color: #000000;
+  text-align: center;
+  font-family: "Inter-SemiBold", sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: absolute;
+  left: 73px;
+  top: 60px;
+  width: 254px;
+}
+.capacity-connect-is-a-unified-digital-platform-for-learning-skill-development-assessments-trainer-matching-and-progress-tracking {
+  color: #2f6b52;
+  text-align: center;
+  font-family: "Inter-Medium", sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  position: absolute;
+  left: 73px;
+  top: 106px;
+  width: 263px;
+  height: 105px;
+}
+.vector12 {
+  width: 21.59px;
+  height: 21.62px;
+  position: absolute;
+  left: 82px;
+  top: 60px;
+  overflow: visible;
+}
