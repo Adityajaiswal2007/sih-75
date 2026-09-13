@@ -1510,44 +1510,88 @@
 
 @media (max-width: 768px) {
   .landing-navbar-wrapper {
-    top: 8px;
+    top: 6px;
     padding: 0 10px;
   }
   .landing-navbar {
-    height: 58px;
-    padding: 0 12px;
+    height: 54px;
+    padding: 0 10px;
     border-radius: 16px;
+    gap: 8px;
+  }
+  .landing-logo-group {
+    gap: 8px;
+    min-width: 0;
+    flex-shrink: 1;
   }
   .landing-logo-icon-wrapper {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    flex-shrink: 0;
   }
   .landing-logo-clover {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
   }
   .landing-brand-text {
     font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .landing-brand-subtag {
     display: none;
   }
   .landing-nav-actions {
     gap: 6px;
+    flex-shrink: 0;
   }
-  .landing-nav-pill-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    border-radius: 18px;
-  }
+
+  /* Compact icon-only Alerts button on mobile */
   .landing-nav-pill-btn.alerts-trigger {
-    padding: 6px 10px;
+    padding: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #D0E4D7;
+  }
+  .alerts-btn-label,
+  .alerts-caret {
+    display: none !important;
+  }
+  .alerts-pulse-badge {
+    top: -4px;
+    right: -4px;
+    min-width: 15px;
+    height: 15px;
+    font-size: 9px;
+  }
+
+  /* Sign in button on mobile */
+  .landing-nav-pill-btn.profile-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    height: 34px;
+    border-radius: 17px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .landing-mobile-menu-toggle {
+    width: 34px;
+    height: 34px;
+    padding: 7px;
+    border-radius: 9px;
   }
   
   /* Hero section mobile */
   .landing-hero-section {
-    padding: 24px 14px 44px;
+    padding: 20px 14px 40px;
   }
   .landing-hero-pill-tag {
     font-size: 12px;
@@ -1559,9 +1603,9 @@
     letter-spacing: -0.5px;
   }
   .landing-hero-subtitle {
-    font-size: 14.5px;
+    font-size: 14px;
     line-height: 1.55;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
   .landing-hero-buttons {
     width: 100%;
@@ -1576,54 +1620,96 @@
     font-size: 14.5px;
   }
   
-  /* Hero Illustration & floating badges */
-  .landing-hero-illustration-wrapper {
-    margin-top: 24px;
+  /* Hero Illustration & floating badges - kept strictly inside container */
+  .landing-hero-visual-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 22px;
     border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .landing-hero-main-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 18px;
+    display: block;
   }
   .landing-float-badge {
-    position: static;
-    display: inline-flex;
-    margin: 4px 0;
-    padding: 6px 12px;
-    font-size: 12px;
-    box-shadow: 0 2px 8px rgba(6, 78, 59, 0.08);
+    position: absolute;
+    padding: 5px 9px;
+    gap: 6px;
+    border-radius: 10px;
+    max-width: calc(50% - 14px);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 4px 12px rgba(6, 78, 59, 0.12);
+    box-sizing: border-box;
   }
-  .landing-float-badge-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 14px;
-    width: 100%;
+  .float-badge-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .float-badge-icon img {
+    width: 13px;
+    height: 13px;
+  }
+  .float-badge-text {
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+  .float-badge-1 {
+    top: 10px;
+    left: 10px;
+    right: auto;
+    bottom: auto;
+  }
+  .float-badge-2 {
+    bottom: 10px;
+    left: 10px;
+    right: auto;
+    top: auto;
+  }
+  .float-badge-3 {
+    top: 10px;
+    right: 10px;
+    left: auto;
+    bottom: auto;
   }
 
   /* Key Features */
   .landing-features-section {
-    padding: 44px 14px;
+    padding: 40px 14px;
   }
   .landing-section-kicker {
     font-size: 11.5px;
   }
   .landing-section-title {
-    font-size: 26px;
+    font-size: 25px;
     line-height: 1.2;
   }
   .landing-section-desc {
-    font-size: 14px;
+    font-size: 13.5px;
   }
   .landing-features-grid {
     grid-template-columns: 1fr;
     gap: 14px;
   }
   .landing-feature-card {
-    padding: 22px 18px;
+    padding: 20px 16px;
     border-radius: 16px;
   }
 
   /* How It Works Steps */
   .landing-how-it-works-section {
-    padding: 44px 14px;
+    padding: 40px 14px;
   }
   .landing-steps-container {
     display: grid;
@@ -1634,20 +1720,20 @@
   .landing-step-card {
     width: 100%;
     min-width: 0;
-    padding: 22px 18px;
+    padding: 20px 16px;
     border-radius: 16px;
   }
 
   /* Tracks */
   .landing-tracks-section {
-    padding: 44px 14px;
+    padding: 40px 14px;
   }
   .landing-track-card {
-    padding: 22px 18px;
+    padding: 20px 16px;
     border-radius: 18px;
   }
   .landing-track-title {
-    font-size: 22px;
+    font-size: 21px;
   }
   .landing-track-actions {
     flex-direction: column;
@@ -1662,37 +1748,37 @@
 
   /* Stats */
   .landing-impact-section {
-    padding: 44px 14px;
+    padding: 40px 14px;
   }
   .landing-stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
   .landing-stat-card {
-    padding: 18px 12px;
+    padding: 16px 10px;
     border-radius: 14px;
   }
   .landing-stat-number {
-    font-size: 26px;
+    font-size: 24px;
   }
   .landing-stat-label {
-    font-size: 12px;
+    font-size: 11.5px;
   }
 
   /* CTA Card */
   .landing-cta-section {
-    padding: 24px 14px 44px;
+    padding: 20px 14px 40px;
   }
   .landing-cta-card {
-    padding: 32px 18px;
-    border-radius: 20px;
+    padding: 28px 16px;
+    border-radius: 18px;
   }
   .landing-cta-title {
-    font-size: 24px;
+    font-size: 22px;
     line-height: 1.25;
   }
   .landing-cta-subtitle {
-    font-size: 14px;
+    font-size: 13.5px;
   }
   .landing-cta-buttons {
     flex-direction: column;
@@ -1711,17 +1797,17 @@
   /* Alerts Dropdown on Mobile */
   .landing-alerts-dropdown {
     position: fixed;
-    top: 72px;
-    left: 10px;
-    right: 10px;
+    top: 66px;
+    left: 8px;
+    right: 8px;
     width: auto;
-    max-width: calc(100vw - 20px);
-    max-height: calc(100vh - 86px);
-    border-radius: 18px;
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 80px);
+    border-radius: 16px;
     box-shadow: 0 16px 45px rgba(0, 0, 0, 0.25);
   }
   .alerts-items-scroll {
-    max-height: 260px;
+    max-height: 250px;
   }
   .alerts-tabs-row {
     overflow-x: auto;
@@ -1735,17 +1821,17 @@
   .alerts-filter-tab {
     flex-shrink: 0;
     white-space: nowrap;
-    padding: 5px 11px;
-    font-size: 11.5px;
+    padding: 5px 10px;
+    font-size: 11px;
   }
 
   /* Footer */
   .landing-footer-section {
-    padding: 36px 14px 20px;
+    padding: 32px 14px 18px;
   }
   .landing-footer-grid {
     grid-template-columns: 1fr;
-    gap: 26px;
+    gap: 24px;
   }
   .landing-footer-bottom {
     flex-direction: column;
@@ -1757,23 +1843,20 @@
 
 @media (max-width: 480px) {
   .landing-navbar {
-    padding: 0 10px;
+    padding: 0 8px;
   }
-  .landing-nav-pill-btn {
-    padding: 6px 10px;
-    font-size: 11.5px;
+  .landing-brand-text {
+    font-size: 15px;
   }
-  .landing-nav-pill-btn.alerts-trigger {
-    padding: 6px 8px;
-  }
-  .alerts-btn-label {
+  /* On narrow mobile screens, hide profile button from top bar; access via Hamburger drawer & hero CTAs */
+  .landing-nav-pill-btn.profile-btn {
     display: none;
   }
   .mobile-nav-links-grid {
     grid-template-columns: 1fr;
   }
   .landing-hero-title {
-    font-size: 28px;
+    font-size: 27px;
   }
   .landing-stats-grid {
     grid-template-columns: 1fr;

@@ -418,6 +418,16 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <div className="mobile-nav-quick-actions">
               <button
                 type="button"
+                className="mobile-quick-btn login-drawer-btn"
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  onLogin()
+                }}
+              >
+                Sign In 👤
+              </button>
+              <button
+                type="button"
                 className="mobile-quick-btn register"
                 onClick={() => {
                   setMobileMenuOpen(false)
