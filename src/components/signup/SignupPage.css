@@ -1252,14 +1252,35 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@media (max-width: 1200px) {
+  .signup-page-wrap {
+    padding: 20px 24px;
+  }
+  .signup-main-grid {
+    gap: 32px;
+  }
+}
+
 @media (max-width: 1024px) {
   .signup-main-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  /* Place form on top for immediate access on mobile/tablet */
+  .signup-form-column {
+    order: 1;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
   }
   
   .signup-showcase-column {
+    order: 2;
     padding-right: 0;
+    max-width: 640px;
+    margin: 0 auto;
   }
   
   .signup-illustration-wrapper {
@@ -1268,14 +1289,30 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .signup-page-wrap {
-    padding: 16px 12px;
+    padding: 16px 12px 24px;
+  }
+
+  .signup-top-nav-bar {
+    margin-bottom: 16px;
   }
   
   .signup-card-surface {
-    padding: 16px 14px;
-    border-radius: 16px;
+    padding: 24px 18px 20px;
+    border-radius: 20px;
+  }
+
+  .card-title {
+    font-size: 22px;
+  }
+
+  .stepper-labels-row {
+    gap: 4px;
+  }
+
+  .step-label-item .step-text {
+    font-size: 11.5px;
   }
   
   .form-two-col,
@@ -1286,7 +1323,8 @@
   }
   
   .signup-main-heading {
-    font-size: 24px;
+    font-size: 26px;
+    line-height: 1.2;
   }
   
   .card-actions-row {
@@ -1298,6 +1336,121 @@
   .btn-primary-signup {
     width: 100%;
     justify-content: center;
+    padding: 13px 20px;
+    font-size: 14.5px;
+  }
+
+  .skill-tags-group,
+  .topic-tags-grid {
+    gap: 6px;
+  }
+
+  .skill-pill-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-page-wrap {
+    padding: 12px 10px 20px;
+  }
+
+  .btn-back-home-pill {
+    padding: 6px 14px;
+    font-size: 12.5px;
+  }
+
+  .signup-nav-signin {
+    font-size: 13px;
+  }
+
+  .signup-card-surface {
+    padding: 18px 14px 18px;
+    border-radius: 16px;
+  }
+
+  .card-top-identity {
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 19px;
+  }
+
+  .stepper-labels-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .step-label-item {
+    align-items: center;
+    text-align: center;
+  }
+
+  .step-label-item .step-text {
+    display: none; /* Keep compact step numbers on mobile */
+  }
+
+  .step-label-item .step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #e2ede5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .step-label-item.active .step-num {
+    background: #2f5233;
+    color: #ffffff;
+    font-weight: 800;
+  }
+
+  .step-instruction {
+    font-size: 12.5px;
+    margin-bottom: 12px;
+  }
+
+  .input-group {
+    margin-bottom: 10px;
+  }
+
+  .input-group label {
+    font-size: 12.5px;
+  }
+
+  .input-group input[type="text"],
+  .input-group input[type="email"],
+  .input-group input[type="tel"],
+  .input-group input[type="password"],
+  .input-group select,
+  .input-group textarea {
+    font-size: 16px; /* Prevents auto-zoom on iOS */
+    padding: 11px 12px;
+  }
+
+  .role-card-item {
+    padding: 14px 12px;
+  }
+
+  .signup-benefit-item {
+    padding: 12px 14px;
+  }
+
+  .benefit-circle-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .signup-main-heading {
+    font-size: 22px;
+  }
+
+  .signup-main-desc {
+    font-size: 13.5px;
   }
 }
 

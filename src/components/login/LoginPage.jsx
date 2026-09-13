@@ -24,15 +24,15 @@ const DEMO_ACCOUNTS = {
   }
 }
 
-export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee' }) {
+export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee', initialView = 'login' }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [showForgot, setShowForgot] = useState(false)
-  const [showSignup, setShowSignup] = useState(false)
+  const [showForgot, setShowForgot] = useState(initialView === 'forgot')
+  const [showSignup, setShowSignup] = useState(initialView === 'signup')
   const [targetRole, setTargetRole] = useState(initialRole || 'trainee')
 
   // Pre-populate or configure based on initial role if applicable

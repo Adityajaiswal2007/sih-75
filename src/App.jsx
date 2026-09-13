@@ -44,12 +44,25 @@ function App() {
   const [dashboardRole, setDashboardRole] = useState(null)
   const [currentHash, setCurrentHash] = useState(window.location.hash)
 
+  const [loginView, setLoginView] = useState('login')
+
   useEffect(() => {
     const handleHashChange = () => {
-      setCurrentHash(window.location.hash)
-      if (window.location.hash === '#get-started') {
+      const hash = window.location.hash
+      setCurrentHash(hash)
+      if (hash === '#get-started' || hash === '#login') {
         window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
         setLoginRole('trainee')
+        setLoginView('login')
+        setShowLogin(true)
+      } else if (hash === '#signup') {
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
+        setLoginRole('trainee')
+        setLoginView('signup')
+        setShowLogin(true)
+      } else if (hash === '#forgot-password') {
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
+        setLoginView('forgot')
         setShowLogin(true)
       }
     }
@@ -65,7 +78,7 @@ function App() {
   if (dashboardRole === 'trainer') return <TrainerDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'trainee') return <TraineeDashboard onBack={() => setDashboardRole(null)} />
   if (dashboardRole === 'admin') return <AdminDashboard onBack={() => setDashboardRole(null)} />
-  if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => { setShowLogin(false); setDashboardRole(role); }} initialRole={loginRole} />
+  if (showLogin) return <LoginPage onBack={() => { window.location.hash = ''; setShowLogin(false); setCurrentHash('') }} onDashboard={(role = 'trainee') => { setShowLogin(false); setDashboardRole(role); }} initialRole={loginRole} initialView={loginView} />
 
   return (
     <LandingPage

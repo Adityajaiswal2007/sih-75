@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './LandingPage.css'
 
 // Image and icon imports
 import cloverIcon from '../../assets/landing/arcticons-clover0.svg'
-import searchIcon from '../../assets/landing/vector0.svg'
 import notificationIcon from '../../assets/landing/basil-notification-on-outline0.svg'
 import profileIcon from '../../assets/landing/vector1.svg'
 import heroImg from '../../assets/landing/frame-30.png'
@@ -46,64 +45,390 @@ import leafDecor3 from '../../assets/landing/vector8.svg'
 import leafDecor4 from '../../assets/landing/vector9.svg'
 import leafDecor6 from '../../assets/landing/group5.svg'
 
+const initialAlerts = [
+  {
+    id: 1,
+    categoryIcon: '📚',
+    categoryName: 'New Courses',
+    kicker: 'New Course Available',
+    title: 'Advanced Geospatial & Remote Sensing',
+    desc: 'A new competency-focused course is now available.',
+    type: 'courses',
+    time: '15m ago',
+    unread: true,
+    action: 'Explore Course'
+  },
+  {
+    id: 2,
+    categoryIcon: '⚠️',
+    categoryName: 'Important Update',
+    kicker: 'Platform Update',
+    title: 'Competency assessment guidelines have been updated.',
+    desc: 'Review the latest changes before your next assessment.',
+    type: 'important',
+    time: '2h ago',
+    unread: true,
+    action: 'View Update'
+  },
+  {
+    id: 3,
+    categoryIcon: '📢',
+    categoryName: 'Announcement',
+    kicker: 'Training Program Announcement',
+    title: 'New trainer-led learning sessions are now open for registration.',
+    desc: 'Join live expert sessions and expand your meteorological capabilities.',
+    type: 'announcements',
+    time: '1d ago',
+    unread: true,
+    action: 'View Announcement'
+  }
+]
+
 export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [isSearchActive, setIsSearchActive] = useState(false)
+  const [alertsOpen, setAlertsOpen] = useState(false)
+  const [alertFilter, setAlertFilter] = useState('all')
+  const [alerts, setAlerts] = useState(initialAlerts)
+  const [activeNav, setActiveNav] = useState('hero')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const alertsRef = useRef(null)
+
+  const unreadCount = alerts.filter(a => a.unread).length
+
+  // Close alerts dropdown on click outside or escape key
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (alertsRef.current && !alertsRef.current.contains(event.target)) {
+        setAlertsOpen(false)
+      }
+    }
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setAlertsOpen(false)
+        setMobileMenuOpen(false)
+      }
+    }
+    if (alertsOpen || mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('keydown', handleKeyDown)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [alertsOpen, mobileMenuOpen])
 
   const scrollToSection = (id) => {
+    setActiveNav(id)
+    setMobileMenuOpen(false)
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
+  const markAllRead = () => {
+    setAlerts(prev => prev.map(a => ({ ...a, unread: false })))
+  }
+
+  const toggleAlertRead = (id) => {
+    setAlerts(prev => prev.map(a => a.id === id ? { ...a, unread: !a.unread } : a))
+  }
+
+  const filteredAlerts = alerts.filter(alert => {
+    if (alertFilter === 'all') return true
+    if (alertFilter === 'courses') return alert.type === 'courses'
+    if (alertFilter === 'important') return alert.type === 'important'
+    if (alertFilter === 'announcements') return alert.type === 'announcements'
+    return true
+  })
+
   return (
     <div className="landing-root">
-      {/* Top Floating / Centered Navbar */}
+      {/* Top Floating / Centered Redesigned Navbar */}
       <header className="landing-navbar-wrapper">
         <nav className="landing-navbar">
-          {/* Logo & Brand */}
+          {/* Left: Logo & Brand Identity */}
           <div className="landing-logo-group" onClick={() => scrollToSection('hero')}>
-            <img className="landing-logo-clover" src={cloverIcon} alt="CapacityConnect Logo" />
-            <span className="landing-brand-text">CapacityConnect</span>
+            <div className="landing-logo-icon-wrapper">
+              <img className="landing-logo-clover" src={cloverIcon} alt="CapacityConnect Logo" />
+            </div>
+            <div className="landing-logo-text-group">
+              <span className="landing-brand-text">CapacityConnect</span>
+              <span className="landing-brand-subtag">Smart Capacity Platform</span>
+            </div>
           </div>
 
-          {/* Navigation Links */}
-          <div className="landing-nav-links">
-            <button type="button" className="landing-nav-link" onClick={() => scrollToSection('hero')}>Home</button>
-            <button type="button" className="landing-nav-link" onClick={() => scrollToSection('features')}>Features</button>
-            <button type="button" className="landing-nav-link" onClick={() => scrollToSection('how-it-works')}>How it works</button>
-            <button type="button" className="landing-nav-link" onClick={() => scrollToSection('roles')}>Tracks</button>
-            <button type="button" className="landing-nav-link" onClick={() => scrollToSection('impact')}>Impact</button>
-            <button type="button" className="landing-nav-link" onClick={() => scrollToSection('footer')}>About</button>
+          {/* Center: Desktop Navigation Links */}
+          <div className="landing-nav-links desktop-only">
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'hero' ? 'active' : ''}`}
+              onClick={() => scrollToSection('hero')}
+            >
+              Home
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'features' ? 'active' : ''}`}
+              onClick={() => scrollToSection('features')}
+            >
+              Features
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'how-it-works' ? 'active' : ''}`}
+              onClick={() => scrollToSection('how-it-works')}
+            >
+              How it works
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'roles' ? 'active' : ''}`}
+              onClick={() => scrollToSection('roles')}
+            >
+              Tracks
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'impact' ? 'active' : ''}`}
+              onClick={() => scrollToSection('impact')}
+            >
+              Impact
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'footer' ? 'active' : ''}`}
+              onClick={() => scrollToSection('footer')}
+            >
+              About
+            </button>
           </div>
 
-          {/* Action Tools */}
+          {/* Right: Action Group (Alerts Dropdown & Sign In / Hamburger) */}
           <div className="landing-nav-actions">
-            <div className={`landing-search-pill ${isSearchActive ? 'active' : ''}`}>
-              <img className="landing-icon-search" src={searchIcon} alt="Search" />
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchQuery}
-                onFocus={() => setIsSearchActive(true)}
-                onBlur={() => setIsSearchActive(false)}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="landing-search-input"
-              />
+            {/* Alerts Dropdown Trigger Container */}
+            <div className="landing-alerts-container" ref={alertsRef}>
+              <button
+                type="button"
+                className={`landing-nav-pill-btn alerts-trigger ${alertsOpen ? 'active' : ''}`}
+                onClick={() => setAlertsOpen(prev => !prev)}
+                title="Notifications & Announcements"
+                aria-expanded={alertsOpen}
+              >
+                <div className="alerts-icon-box">
+                  <img className="landing-icon-btn" src={notificationIcon} alt="Alerts" />
+                  {unreadCount > 0 && <span className="alerts-pulse-badge">{unreadCount}</span>}
+                </div>
+                <span className="alerts-btn-label">Alerts</span>
+                <span className="alerts-caret">{alertsOpen ? '▲' : '▼'}</span>
+              </button>
+
+              {/* Interactive Floating Alerts Dropdown */}
+              {alertsOpen && (
+                <div className="landing-alerts-dropdown">
+                  <div className="alerts-dropdown-header">
+                    <div className="alerts-header-title-row">
+                      <div className="alerts-header-title">
+                        <span className="alerts-header-icon">🔔</span>
+                        <strong>Notifications & Alerts</strong>
+                      </div>
+                      {unreadCount > 0 ? (
+                        <span className="alerts-count-chip">{unreadCount} New</span>
+                      ) : (
+                        <span className="alerts-count-chip all-read">All caught up</span>
+                      )}
+                    </div>
+                    <div className="alerts-header-actions">
+                      <p className="alerts-subheading">Updates on courses, deadlines & trainer masterclasses.</p>
+                      {unreadCount > 0 && (
+                        <button type="button" className="alerts-mark-read-btn" onClick={markAllRead}>
+                          Mark all as read
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Filter Tabs */}
+                    <div className="alerts-filter-tabs">
+                      <button
+                        type="button"
+                        className={`alerts-tab-btn ${alertFilter === 'all' ? 'active' : ''}`}
+                        onClick={() => setAlertFilter('all')}
+                      >
+                        All ({alerts.length})
+                      </button>
+                      <button
+                        type="button"
+                        className={`alerts-tab-btn ${alertFilter === 'courses' ? 'active' : ''}`}
+                        onClick={() => setAlertFilter('courses')}
+                      >
+                        New Courses
+                      </button>
+                      <button
+                        type="button"
+                        className={`alerts-tab-btn ${alertFilter === 'important' ? 'active' : ''}`}
+                        onClick={() => setAlertFilter('important')}
+                      >
+                        Important
+                      </button>
+                      <button
+                        type="button"
+                        className={`alerts-tab-btn ${alertFilter === 'announcements' ? 'active' : ''}`}
+                        onClick={() => setAlertFilter('announcements')}
+                      >
+                        Announcements
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Alerts List */}
+                  <div className="alerts-items-scroll">
+                    {filteredAlerts.length === 0 ? (
+                      <div className="alerts-empty-state">
+                        <span>✨</span>
+                        <p>No notifications in this filter.</p>
+                      </div>
+                    ) : (
+                      filteredAlerts.map(item => (
+                        <div
+                          key={item.id}
+                          className={`alert-card-item ${item.unread ? 'unread' : 'read'}`}
+                          onClick={() => toggleAlertRead(item.id)}
+                        >
+                          <div className="alert-card-top">
+                            <span className={`alert-badge-tag ${item.type}`}>
+                              <span className="alert-cat-icon">{item.categoryIcon}</span> {item.categoryName}
+                            </span>
+                            <div className="alert-meta-right">
+                              <span className="alert-time">{item.time}</span>
+                              {item.unread && <span className="alert-unread-dot" title="Unread" />}
+                            </div>
+                          </div>
+                          <span className="alert-item-kicker">{item.kicker}</span>
+                          <h4 className="alert-item-title">{item.title}</h4>
+                          <p className="alert-item-desc">{item.desc}</p>
+                          <div className="alert-card-footer">
+                            <button
+                              type="button"
+                              className="alert-action-link"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setAlertsOpen(false)
+                                onGetStarted ? onGetStarted() : onLogin()
+                              }}
+                            >
+                              {item.action} →
+                            </button>
+                            <span className="alert-read-hint">{item.unread ? 'Click to mark read' : 'Read'}</span>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Dropdown Bottom Banner */}
+                  <div className="alerts-dropdown-bottom">
+                    <button
+                      type="button"
+                      className="alerts-view-all-btn"
+                      onClick={() => {
+                        setAlertsOpen(false)
+                        onLogin()
+                      }}
+                    >
+                      Open Full Notification Center ↗
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <button type="button" className="landing-nav-pill-btn" onClick={onLogin} title="Notifications">
-              <img className="landing-icon-btn" src={notificationIcon} alt="Notification" />
-              <span>Alerts</span>
-            </button>
-
-            <button type="button" className="landing-nav-pill-btn profile-btn" onClick={onLogin} title="Sign In / Profile">
+            {/* Sign In Button */}
+            <button
+              type="button"
+              className="landing-nav-pill-btn profile-btn"
+              onClick={onLogin}
+              title="Sign In to CapacityConnect"
+            >
               <img className="landing-icon-btn" src={profileIcon} alt="Profile" />
               <span>Sign In</span>
             </button>
+
+            {/* Mobile Hamburger Toggle Button */}
+            <button
+              type="button"
+              className={`landing-mobile-menu-toggle ${mobileMenuOpen ? 'open' : ''}`}
+              onClick={() => setMobileMenuOpen(prev => !prev)}
+              aria-label="Toggle Navigation Menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <span className="hamburger-line line-1" />
+              <span className="hamburger-line line-2" />
+              <span className="hamburger-line line-3" />
+            </button>
           </div>
         </nav>
+
+        {/* Mobile Dropdown Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="landing-mobile-nav-drawer">
+            <div className="mobile-nav-links-grid">
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'hero' ? 'active' : ''}`}
+                onClick={() => scrollToSection('hero')}
+              >
+                <span>🏠</span> Home
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'features' ? 'active' : ''}`}
+                onClick={() => scrollToSection('features')}
+              >
+                <span>✦</span> Features
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'how-it-works' ? 'active' : ''}`}
+                onClick={() => scrollToSection('how-it-works')}
+              >
+                <span>⚡</span> How it works
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'roles' ? 'active' : ''}`}
+                onClick={() => scrollToSection('roles')}
+              >
+                <span>👥</span> Tracks
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'impact' ? 'active' : ''}`}
+                onClick={() => scrollToSection('impact')}
+              >
+                <span>📈</span> Impact
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'footer' ? 'active' : ''}`}
+                onClick={() => scrollToSection('footer')}
+              >
+                <span>ℹ️</span> About
+              </button>
+            </div>
+            <div className="mobile-nav-quick-actions">
+              <button
+                type="button"
+                className="mobile-quick-btn register"
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  onGetStarted ? onGetStarted() : onLogin()
+                }}
+              >
+                Get Started Free →
+              </button>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -470,7 +795,6 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <ul className="landing-footer-links">
               <li><button type="button" onClick={() => onNavigateRole ? onNavigateRole('trainee') : onLogin()}>Trainee Portal</button></li>
               <li><button type="button" onClick={() => onNavigateRole ? onNavigateRole('trainer') : onLogin()}>Trainer Portal</button></li>
-              <li><button type="button" onClick={() => onNavigateRole ? onNavigateRole('admin') : onLogin()}>Admin Console</button></li>
               <li><button type="button" onClick={() => scrollToSection('features')}>Courses Catalog</button></li>
               <li><button type="button" onClick={() => scrollToSection('features')}>Assessments Suite</button></li>
             </ul>

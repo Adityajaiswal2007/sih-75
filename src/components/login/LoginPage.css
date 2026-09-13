@@ -654,16 +654,24 @@
 
 @media (max-width: 1080px) {
   .signin-main-layout {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
   }
 
+  /* Position login form first for quick mobile access */
   .signin-right-card-column {
+    order: 1;
     justify-content: center;
   }
 
+  .signin-left-showcase {
+    order: 2;
+  }
+
   .signin-card-surface {
-    max-width: 500px;
+    max-width: 540px;
+    margin: 0 auto;
   }
 
   .signin-bottom-tagline {
@@ -671,27 +679,142 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .signin-page-wrap {
-    padding: 16px 12px;
+    padding: 16px 14px 24px;
+    align-items: flex-start;
+  }
+
+  .signin-top-nav-bar {
+    margin-bottom: 18px;
   }
 
   .signin-bottom-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .signin-illustration-container {
+    max-height: 240px;
+    padding: 10px;
+  }
+
+  .signin-artwork-img {
+    max-height: 220px;
   }
 
   .signin-card-surface {
-    padding: 24px 18px;
-    border-radius: 18px;
+    padding: 26px 20px;
+    border-radius: 20px;
+    max-width: 100%;
+  }
+
+  .signin-card-heading {
+    font-size: 22px;
   }
 
   .signin-showcase-heading {
     font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .signin-showcase-desc {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signin-page-wrap {
+    padding: 12px 10px 20px;
   }
 
   .signin-top-nav-bar {
-    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .btn-back-home-pill {
+    padding: 6px 14px;
+    font-size: 12.5px;
+  }
+
+  .signin-slogan-pill {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .signin-card-surface {
+    padding: 20px 14px;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px -8px rgba(27, 67, 50, 0.1);
+  }
+
+  .signin-card-header {
     gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .signin-user-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+
+  .signin-card-heading {
+    font-size: 20px;
+  }
+
+  .signin-card-subheading {
+    font-size: 12px;
+  }
+
+  .signin-input-wrapper input {
+    font-size: 16px; /* Prevents auto-zoom on iOS */
+    padding: 12px 12px 12px 38px;
+  }
+
+  .signin-options-row {
+    flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
+  }
+
+  .btn-signin-primary {
+    padding: 13px 18px;
+    font-size: 14.5px;
+  }
+
+  .btn-google-signin {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+  .signin-brand-block {
+    gap: 8px;
+  }
+
+  .signin-logo-icon {
+    font-size: 24px;
+  }
+
+  .signin-logo-brand {
+    font-size: 20px;
+  }
+
+  .signin-showcase-heading {
+    font-size: 24px;
+  }
+
+  .signin-feature-card {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .signin-slogan-pill {
+    display: none;
   }
 }
