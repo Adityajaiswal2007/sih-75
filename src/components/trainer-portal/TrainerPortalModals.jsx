@@ -5,8 +5,8 @@ export function TrainerPortalModals({ activeModal, modalData, onClose, onActionS
 
   return (
     <div className="trainer-modal-backdrop" onClick={onClose}>
-      <div className="trainer-modal" style={{ maxWidth: '540px', textAlign: 'left' }} onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose} style={{ position: 'absolute', top: 16, right: 18, background: 'none', border: 'none', color: '#485563', fontSize: '22px', cursor: 'pointer' }}>✕</button>
+      <div className="trainer-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close-btn" onClick={onClose} aria-label="Close modal">✕</button>
 
         {activeModal === 'create-course' && (
           <CreateCourseModal onClose={onClose} onActionSuccess={onActionSuccess} />
@@ -77,7 +77,7 @@ function CreateCourseModal({ onClose, onActionSuccess }) {
             required
           />
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="portal-modal-grid-2">
           <div className="portal-form-group">
             <label>Domain Category</label>
             <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}>
@@ -176,7 +176,7 @@ function CreateAssessmentModal({ onClose, onActionSuccess }) {
             <option>GIS & Satellite Remote Sensing for Hydrology</option>
           </select>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+        <div className="portal-modal-grid-3">
           <div className="portal-form-group">
             <label>Questions</label>
             <input type="number" min="5" max="100" value={asmData.questionsCount} onChange={(e) => setAsmData({ ...asmData, questionsCount: e.target.value })} />
@@ -227,7 +227,7 @@ function PostAnnouncementModal({ onClose, onActionSuccess }) {
           <label>Subject / Title</label>
           <input placeholder="e.g. Schedule Update for Atmospheric Lab" value={ann.title} onChange={(e) => setAnn({ ...ann, title: e.target.value })} required />
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="portal-modal-grid-2">
           <div className="portal-form-group">
             <label>Target Audience</label>
             <select value={ann.audience} onChange={(e) => setAnn({ ...ann, audience: e.target.value })}>
@@ -289,7 +289,7 @@ function UploadContentModal({ onClose, onActionSuccess }) {
           <label>Resource Title</label>
           <input placeholder="e.g. NetCDF Time Series Extraction Guide" value={cnt.title} onChange={(e) => setCnt({ ...cnt, title: e.target.value })} required />
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="portal-modal-grid-2">
           <div className="portal-form-group">
             <label>Resource Type</label>
             <select value={cnt.type} onChange={(e) => setCnt({ ...cnt, type: e.target.value })}>
@@ -336,7 +336,7 @@ function TraineeDetailsModal({ trainee, onClose, onActionSuccess }) {
           <p style={{ fontSize: 12, color: '#485563', margin: 0 }}>{trainee.role} · {trainee.organization}</p>
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 16 }}>
+      <div className="portal-modal-grid-2" style={{ marginBottom: 16 }}>
         <div style={{ padding: 12, background: '#EEF6EA', borderRadius: 8, border: '1px solid #D6E3D8' }}>
           <small style={{ color: '#485563', fontSize: 11 }}>Active Enrolled Course</small>
           <strong style={{ display: 'block', color: '#16251B', fontSize: 13, marginTop: 4 }}>{trainee.course}</strong>

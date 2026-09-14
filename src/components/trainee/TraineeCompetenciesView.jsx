@@ -19,20 +19,20 @@ export default function TraineeCompetenciesView({ onNavigate }) {
             INTELLIGENT SKILL MAPPING
           </span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>My Competencies</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>My Competencies</h1>
         <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Track the skills and computational capabilities you are developing through courses and diagnostic assessments.
         </p>
       </div>
 
       {/* Top Metric Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, marginBottom: 28 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 28 }}>
         <div className="trainee-metric-card" style={{ borderLeft: '4px solid #527A5A' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: 12, color: '#2F5233', fontWeight: 600 }}>OVERALL COMPETENCY</span>
             <span style={{ fontSize: 18 }}>◎</span>
           </div>
-          <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>74%</div>
+          <div style={{ fontSize: 32, fontWeight: 900, color: '#16251B', marginBottom: 4 }}>74%</div>
           <span style={{ fontSize: 12, color: '#2F6B3C', fontWeight: 600 }}>+12% this quarter</span>
         </div>
 
@@ -41,7 +41,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
             <span style={{ fontSize: 12, color: '#2F6B3C', fontWeight: 600 }}>VERIFIED STRENGTHS</span>
             <span style={{ fontSize: 18 }}>✓</span>
           </div>
-          <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>4 / 7</div>
+          <div style={{ fontSize: 32, fontWeight: 900, color: '#16251B', marginBottom: 4 }}>4 / 7</div>
           <span style={{ fontSize: 12, color: '#485563' }}>Above national institutional benchmark</span>
         </div>
 
@@ -50,7 +50,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
             <span style={{ fontSize: 12, color: '#B58B32', fontWeight: 600 }}>ACTIVE GROWTH GAPS</span>
             <span style={{ fontSize: 18 }}>✦</span>
           </div>
-          <div style={{ fontSize: 32, fontWeight: 900, color: '#fff', marginBottom: 4 }}>3 Gaps</div>
+          <div style={{ fontSize: 32, fontWeight: 900, color: '#16251B', marginBottom: 4 }}>3 Gaps</div>
           <button
             className="trainee-panel-link"
             style={{ fontSize: 12, marginTop: 4 }}
@@ -99,7 +99,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                   <div>
-                    <strong style={{ color: '#fff', fontSize: 14 }}>{comp.name}</strong>
+                    <strong style={{ color: '#16251B', fontSize: 14 }}>{comp.name}</strong>
                     <span style={{ fontSize: 11, color: '#485563', marginLeft: 8 }}>({comp.category})</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -125,7 +125,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
                     >
                       {comp.status}
                     </span>
-                    <strong style={{ color: '#fff', fontSize: 15 }}>{comp.level}%</strong>
+                    <strong style={{ color: '#2F5233', fontSize: 15 }}>{comp.level}%</strong>
                   </div>
                 </div>
 
@@ -223,7 +223,7 @@ export default function TraineeCompetenciesView({ onNavigate }) {
             }}
           >
             <div style={{ fontSize: 24, marginBottom: 8 }}>🎯</div>
-            <h4 style={{ color: '#fff', fontSize: 16, margin: '0 0 6px' }}>Ready to bridge your skill gaps?</h4>
+            <h4 style={{ color: '#16251B', fontSize: 16, margin: '0 0 6px', fontWeight: 700 }}>Ready to bridge your skill gaps?</h4>
             <p style={{ color: '#485563', fontSize: 12.5, lineHeight: 1.5, margin: '0 0 16px' }}>
               View personalized recommendations based on your current 74% competency evaluation.
             </p>

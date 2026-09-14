@@ -422,15 +422,15 @@ body, #root, #top, .capacity-app {
   border: 1px solid #D6E3D8 !important;
 }
 
-/* 11. Modal Backdrop and Admin Modal */
-.admin-modal-backdrop, .modal-backdrop {
-  background: rgba(22, 37, 27, 0.6) !important;
+/* 11. Modal Backdrop and Admin/Trainer Modals */
+.admin-modal-backdrop, .modal-backdrop, .trainer-modal-backdrop {
+  background: rgba(10, 30, 18, 0.72) !important;
 }
 
-.admin-modal, .modal-content {
+.admin-modal, .modal-content, .trainer-modal {
   background: #FFFFFF !important;
   border: 1px solid #D6E3D8 !important;
-  box-shadow: 0 24px 60px rgba(22, 37, 27, 0.12) !important;
+  box-shadow: 0 24px 60px rgba(22, 37, 27, 0.18) !important;
   color: #16251B !important;
 }
 

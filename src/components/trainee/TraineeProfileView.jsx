@@ -40,7 +40,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-              <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>
+              <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>
                 {traineeUser.name}
               </h1>
               <span className="trainee-role-badge">Trainee Fellow</span>
@@ -86,7 +86,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
         <div>
           {/* Areas of Interest */}
           <section className="trainee-panel" style={{ marginBottom: 24 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '0 0 12px' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#16251B', margin: '0 0 12px' }}>
               🔍 Areas of Interest
             </h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -96,9 +96,9 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
                   style={{
                     padding: '6px 12px',
                     borderRadius: 20,
-                    background: 'rgba(56, 189, 248, 0.12)',
+                    background: '#EEF6EA',
                     color: '#2F5233',
-                    border: '1px solid rgba(56, 189, 248, 0.25)',
+                    border: '1px solid #D6E3D8',
                     fontSize: 12,
                     fontWeight: 600
                   }}
@@ -111,7 +111,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
 
           {/* Learning Goals */}
           <section className="trainee-panel">
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '0 0 14px' }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: '#16251B', margin: '0 0 14px' }}>
               🎯 Learning & Career Goals
             </h3>
             <ul style={{ margin: 0, paddingLeft: 20, color: '#485563', fontSize: 13, lineHeight: 1.8 }}>
@@ -126,7 +126,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
         <section className="trainee-panel">
           <div className="trainee-panel-header">
             <div className="trainee-panel-title-group">
-              <h3>◎ Competency Summary</h3>
+              <h3 style={{ color: '#16251B' }}>◎ Competency Summary</h3>
               <p>Top verified skills recorded on platform</p>
             </div>
             <button className="trainee-panel-link" onClick={() => onNavigate('competencies')}>
@@ -138,7 +138,7 @@ export default function TraineeProfileView({ onEditProfile, onNavigate }) {
             {traineeCompetencies.slice(0, 5).map(comp => (
               <div key={comp.id}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12.5, marginBottom: 4 }}>
-                  <span style={{ color: '#fff', fontWeight: 600 }}>{comp.name}</span>
+                  <span style={{ color: '#16251B', fontWeight: 600 }}>{comp.name}</span>
                   <strong style={{ color: '#2F5233' }}>{comp.level}%</strong>
                 </div>
                 <div className="trainee-comp-track" style={{ height: 6 }}>

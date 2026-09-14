@@ -25,17 +25,17 @@ export default function TraineeHelpView({ showToast }) {
             LEARNER ASSISTANCE
           </span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>Help & Support</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>Help & Support</h1>
         <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Explore learning guidance, understand assessment criteria, or contact the academic support desk.
         </p>
       </div>
 
       {/* 3 Quick Help Guides */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 32 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16, marginBottom: 32 }}>
         <div style={{ padding: '18px', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 12 }}>
           <div style={{ fontSize: 24, marginBottom: 8 }}>📖</div>
-          <strong style={{ color: '#fff', fontSize: 14, display: 'block', marginBottom: 4 }}>
+          <strong style={{ color: '#16251B', fontSize: 14, display: 'block', marginBottom: 4, fontWeight: 700 }}>
             Learner Quickstart Guide
           </strong>
           <p style={{ color: '#485563', fontSize: 12, margin: 0, lineHeight: 1.5 }}>
@@ -45,7 +45,7 @@ export default function TraineeHelpView({ showToast }) {
 
         <div style={{ padding: '18px', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 12 }}>
           <div style={{ fontSize: 24, marginBottom: 8 }}>🎯</div>
-          <strong style={{ color: '#fff', fontSize: 14, display: 'block', marginBottom: 4 }}>
+          <strong style={{ color: '#16251B', fontSize: 14, display: 'block', marginBottom: 4, fontWeight: 700 }}>
             Assessment Protocol
           </strong>
           <p style={{ color: '#485563', fontSize: 12, margin: 0, lineHeight: 1.5 }}>
@@ -55,7 +55,7 @@ export default function TraineeHelpView({ showToast }) {
 
         <div style={{ padding: '18px', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 12 }}>
           <div style={{ fontSize: 24, marginBottom: 8 }}>🤝</div>
-          <strong style={{ color: '#fff', fontSize: 14, display: 'block', marginBottom: 4 }}>
+          <strong style={{ color: '#16251B', fontSize: 14, display: 'block', marginBottom: 4, fontWeight: 700 }}>
             Faculty Mentorship
           </strong>
           <p style={{ color: '#485563', fontSize: 12, margin: 0, lineHeight: 1.5 }}>
@@ -66,7 +66,7 @@ export default function TraineeHelpView({ showToast }) {
 
       {/* FAQ Accordion */}
       <section className="trainee-panel" style={{ marginBottom: 32 }}>
-        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 16px' }}>
+        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#16251B', margin: '0 0 16px' }}>
           ❓ Frequently Asked Questions
         </h3>
 
@@ -80,7 +80,7 @@ export default function TraineeHelpView({ showToast }) {
                 style={{
                   border: '1px solid #D6E3D8',
                   borderRadius: 10,
-                  background: isOpen ? 'rgba(56, 189, 248, 0.05)' : '#EEF6EA',
+                  background: isOpen ? '#E6F4EA' : '#FFFFFF',
                   overflow: 'hidden'
                 }}
               >
@@ -95,7 +95,7 @@ export default function TraineeHelpView({ showToast }) {
                     justifyContent: 'space-between',
                     background: 'transparent',
                     border: 'none',
-                    color: '#fff',
+                    color: '#16251B',
                     fontSize: 14,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -103,7 +103,7 @@ export default function TraineeHelpView({ showToast }) {
                   }}
                 >
                   <span>{faq.q}</span>
-                  <span style={{ fontSize: 16, color: '#2F5233', marginLeft: 12 }}>
+                  <span style={{ fontSize: 16, color: '#2F5233', marginLeft: 12, fontWeight: 700 }}>
                     {isOpen ? '−' : '+'}
                   </span>
                 </button>
@@ -121,7 +121,7 @@ export default function TraineeHelpView({ showToast }) {
 
       {/* Contact Support Form */}
       <section className="trainee-panel">
-        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 8px' }}>
+        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#16251B', margin: '0 0 8px' }}>
           ✉ Contact Academic Support Desk
         </h3>
         <p style={{ color: '#485563', fontSize: 13, margin: '0 0 16px' }}>
@@ -130,7 +130,7 @@ export default function TraineeHelpView({ showToast }) {
 
         <form onSubmit={handleSendTicket} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div>
-            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>
               Subject or Topic
             </label>
             <input
@@ -141,11 +141,11 @@ export default function TraineeHelpView({ showToast }) {
               required
               style={{
                 width: '100%',
-                background: '#EEF6EA',
+                background: '#FFFFFF',
                 border: '1px solid #D6E3D8',
                 borderRadius: 8,
                 padding: '10px 14px',
-                color: '#fff',
+                color: '#16251B',
                 fontSize: 13,
                 outline: 'none'
               }}
@@ -153,7 +153,7 @@ export default function TraineeHelpView({ showToast }) {
           </div>
 
           <div>
-            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>
               Detailed Description
             </label>
             <textarea
@@ -164,11 +164,11 @@ export default function TraineeHelpView({ showToast }) {
               required
               style={{
                 width: '100%',
-                background: '#EEF6EA',
+                background: '#FFFFFF',
                 border: '1px solid #D6E3D8',
                 borderRadius: 8,
                 padding: '10px 14px',
-                color: '#fff',
+                color: '#16251B',
                 fontSize: 13,
                 outline: 'none',
                 resize: 'vertical'
@@ -177,7 +177,7 @@ export default function TraineeHelpView({ showToast }) {
           </div>
 
           <div>
-            <button type="submit" className="trainee-btn-primary">
+            <button type="submit" className="trainee-btn-primary" style={{ padding: '10px 20px', fontSize: 13 }}>
               Send Support Ticket →
             </button>
           </div>

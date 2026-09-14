@@ -22,7 +22,7 @@ export default function TraineeMyLearningView({ onNavigate }) {
             ACADEMIC PROGRESS
           </span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>My Learning</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>My Learning</h1>
         <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Track active courses, module completion milestones, and earned competencies.
         </p>

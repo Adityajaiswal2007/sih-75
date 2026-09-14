@@ -11,7 +11,7 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
             DIAGNOSTIC INTELLIGENCE
           </span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>Skill Gap Analysis</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>Skill Gap Analysis</h1>
         <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Identify priority competency areas where targeted coursework and expert faculty mentoring will maximize your career growth.
         </p>
@@ -28,7 +28,7 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
           boxShadow: '0 4px 16px rgba(22, 37, 27, 0.05)'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
           <span
             style={{
               fontSize: 11,
@@ -60,7 +60,8 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
             background: '#EEF6EA',
             border: '1px solid #D6E3D8',
             borderRadius: 12,
-            marginBottom: 18
+            marginBottom: 18,
+            flexWrap: 'wrap'
           }}
         >
           <div>
@@ -89,7 +90,7 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
         </p>
 
         {/* Action Pair: Recommended Course + Recommended Trainer */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           <div
             style={{
               padding: '16px',
@@ -135,7 +136,7 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
               style={{ fontSize: 12, padding: '8px 16px' }}
               onClick={() => {
                 if (onOpenTrainerProfile) {
-                  onOpenTrainerProfile();
+                  onOpenTrainerProfile(skillGaps[0].recommendedTrainer);
                 } else {
                   onNavigate('trainers');
                 }
@@ -152,7 +153,7 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
         Other Diagnosed Competency Gaps
       </h3>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
         {skillGaps.slice(1).map(gap => (
           <div
             key={gap.id}
@@ -209,7 +210,7 @@ export default function TraineeSkillGapView({ onNavigate, onOpenTrainerProfile }
               <small style={{ fontSize: 11, color: '#718078', display: 'block', marginBottom: 4 }}>
                 Recommended Course:
               </small>
-              <strong style={{ fontSize: 12.5, color: '#485563', display: 'block', marginBottom: 12 }}>
+              <strong style={{ fontSize: 12.5, color: '#16251B', display: 'block', marginBottom: 12, fontWeight: 700 }}>
                 {gap.recommendedCourse}
               </strong>
               <button

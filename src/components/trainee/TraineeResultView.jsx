@@ -23,7 +23,7 @@ export default function TraineeResultView({ onNavigate }) {
             <strong>{result.score}%</strong>
             <small>{result.status}</small>
           </div>
-          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#16251B', margin: '0 0 6px' }}>
             Assessment Complete 🎉
           </h2>
           <p style={{ color: '#485563', fontSize: 13.5, margin: '0 0 20px' }}>
@@ -34,7 +34,7 @@ export default function TraineeResultView({ onNavigate }) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
               gap: 12,
               background: '#EEF6EA',
               border: '1px solid #D6E3D8',
@@ -133,10 +133,10 @@ export default function TraineeResultView({ onNavigate }) {
 
         {/* Performance Breakdown */}
         <div style={{ marginBottom: 28 }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: '#fff', margin: '0 0 14px' }}>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: '#16251B', margin: '0 0 14px' }}>
             📊 Performance Breakdown by Domain
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
             {result.performanceBreakdown.map((pb, idx) => (
               <div
                 key={idx}

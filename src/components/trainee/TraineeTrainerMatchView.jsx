@@ -5,9 +5,9 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
   const [filterExpertise, setFilterExpertise] = useState('All');
   const bestMatch = recommendedTrainers.find(t => t.isBestMatch) || recommendedTrainers[0];
 
-  const handleViewProfile = (trainerId) => {
+  const handleViewProfile = (trainer) => {
     if (onOpenTrainerProfile) {
-      onOpenTrainerProfile(trainerId);
+      onOpenTrainerProfile(trainer);
     } else {
       window.location.hash = '#trainer-profile';
     }
@@ -26,7 +26,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
             INTELLIGENT FACULTY MATCHING
           </span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>
           Trainer Recommendations
         </h1>
         <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
@@ -155,7 +155,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
           <button
             className="trainee-btn-intel"
             style={{ fontSize: 13.5, padding: '12px 24px' }}
-            onClick={() => handleViewProfile(bestMatch.id)}
+            onClick={() => handleViewProfile(bestMatch)}
           >
             View Full Trainer Profile ↗
           </button>
@@ -169,8 +169,8 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
       </div>
 
       {/* All Verified Faculty Discovery Grid */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', margin: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 12 }}>
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: '#16251B', margin: 0 }}>
           All Recommended Faculty Matches
         </h3>
         <div style={{ display: 'flex', gap: 8 }}>
@@ -240,7 +240,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
               <button
                 className="trainee-btn-primary"
                 style={{ width: '100%', fontSize: 12, padding: '8px' }}
-                onClick={() => handleViewProfile(trainer.id)}
+                onClick={() => handleViewProfile(trainer)}
               >
                 View Profile ↗
               </button>

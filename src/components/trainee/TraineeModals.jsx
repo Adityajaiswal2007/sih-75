@@ -14,7 +14,7 @@ export function EnrollmentModal({ course, onClose, onConfirm }) {
           <span className="trainee-course-category-badge">{course.category}</span>
         </div>
 
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#fff', margin: '0 0 8px' }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: '#16251B', margin: '0 0 8px' }}>
           Confirm Course Enrollment
         </h2>
         <p style={{ color: '#485563', fontSize: 13, margin: '0 0 20px', lineHeight: 1.5 }}>
@@ -34,11 +34,11 @@ export function EnrollmentModal({ course, onClose, onConfirm }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
             <div>
               <small style={{ fontSize: 11, color: '#485563', textTransform: 'uppercase' }}>Duration</small>
-              <strong style={{ color: '#fff', display: 'block', fontSize: 14 }}>{course.duration}</strong>
+              <strong style={{ color: '#16251B', display: 'block', fontSize: 14 }}>{course.duration}</strong>
             </div>
             <div>
               <small style={{ fontSize: 11, color: '#485563', textTransform: 'uppercase' }}>Modules</small>
-              <strong style={{ color: '#fff', display: 'block', fontSize: 14 }}>{course.modulesCount} Lessons</strong>
+              <strong style={{ color: '#16251B', display: 'block', fontSize: 14 }}>{course.modulesCount} Lessons</strong>
             </div>
             <div>
               <small style={{ fontSize: 11, color: '#485563', textTransform: 'uppercase' }}>Skill Level</small>
@@ -147,7 +147,7 @@ export function CertificateModal({ certificate, onClose, onDownload }) {
             This is to officially certify that
           </p>
 
-          <h2 style={{ fontSize: 26, fontWeight: 900, color: '#fff', margin: '0 0 6px', letterSpacing: 0.5 }}>
+          <h2 style={{ fontSize: 26, fontWeight: 900, color: '#16251B', margin: '0 0 6px', letterSpacing: 0.5 }}>
             {certificate.recipient}
           </h2>
 
@@ -166,11 +166,12 @@ export function CertificateModal({ certificate, onClose, onDownload }) {
                 key={idx}
                 style={{
                   fontSize: 11,
-                  background: 'rgba(56, 189, 248, 0.1)',
-                  color: '#485563',
-                  border: '1px solid rgba(56, 189, 248, 0.25)',
+                  background: '#EEF6EA',
+                  color: '#2F5233',
+                  border: '1px solid #D6E3D8',
                   padding: '3px 10px',
-                  borderRadius: 12
+                  borderRadius: 12,
+                  fontWeight: 600
                 }}
               >
                 ✓ {comp}
@@ -181,7 +182,7 @@ export function CertificateModal({ certificate, onClose, onDownload }) {
           {/* Signatures & Seal */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', paddingTop: 18, borderTop: '1px solid #D6E3D8' }}>
             <div style={{ textAlign: 'left' }}>
-              <strong style={{ fontSize: 12, color: '#fff', display: 'block' }}>{certificate.signatory}</strong>
+              <strong style={{ fontSize: 12, color: '#16251B', display: 'block' }}>{certificate.signatory}</strong>
               <small style={{ fontSize: 11, color: '#485563' }}>Directorate General</small>
             </div>
 
@@ -205,7 +206,7 @@ export function CertificateModal({ certificate, onClose, onDownload }) {
             </div>
 
             <div style={{ textAlign: 'right' }}>
-              <strong style={{ fontSize: 12, color: '#fff', display: 'block', fontFamily: 'monospace' }}>
+              <strong style={{ fontSize: 12, color: '#16251B', display: 'block', fontFamily: 'monospace' }}>
                 {certificate.code}
               </strong>
               <small style={{ fontSize: 11, color: '#2F6B3C' }}>Verified: {certificate.issueDate}</small>
@@ -255,7 +256,7 @@ export function EditProfileModal({ onClose, onSave }) {
       <div className="trainee-modal-container" onClick={e => e.stopPropagation()}>
         <button className="trainee-modal-close-btn" onClick={onClose}>✕</button>
 
-        <h2 style={{ fontSize: 20, fontWeight: 800, color: '#fff', margin: '0 0 6px' }}>
+        <h2 style={{ fontSize: 20, fontWeight: 800, color: '#16251B', margin: '0 0 6px' }}>
           Edit Trainee Profile
         </h2>
         <p style={{ color: '#485563', fontSize: 13, margin: '0 0 20px' }}>
@@ -263,59 +264,59 @@ export function EditProfileModal({ onClose, onSave }) {
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             <div>
-              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>Full Name</label>
+              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>Full Name</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={e => handleChange('name', e.target.value)}
-                style={{ width: '100%', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 8, padding: '9px 12px', color: '#16251B', fontSize: 13, outline: 'none' }}
                 required
               />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>Institutional Email</label>
+              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>Institutional Email</label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={e => handleChange('email', e.target.value)}
-                style={{ width: '100%', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 8, padding: '9px 12px', color: '#16251B', fontSize: 13, outline: 'none' }}
                 required
               />
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
             <div>
-              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>Organization / Division</label>
+              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>Organization / Division</label>
               <input
                 type="text"
                 value={formData.organization}
                 onChange={e => handleChange('organization', e.target.value)}
-                style={{ width: '100%', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 8, padding: '9px 12px', color: '#16251B', fontSize: 13, outline: 'none' }}
                 required
               />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>Designation</label>
+              <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>Designation</label>
               <input
                 type="text"
                 value={formData.designation}
                 onChange={e => handleChange('designation', e.target.value)}
-                style={{ width: '100%', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+                style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 8, padding: '9px 12px', color: '#16251B', fontSize: 13, outline: 'none' }}
                 required
               />
             </div>
           </div>
 
           <div>
-            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4 }}>Areas of Interest (comma-separated)</label>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 4, fontWeight: 600 }}>Areas of Interest (comma-separated)</label>
             <input
               type="text"
               value={formData.interests}
               onChange={e => handleChange('interests', e.target.value)}
-              style={{ width: '100%', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 8, padding: '8px 12px', color: '#fff', fontSize: 13 }}
+              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', borderRadius: 8, padding: '9px 12px', color: '#16251B', fontSize: 13, outline: 'none' }}
             />
           </div>
 

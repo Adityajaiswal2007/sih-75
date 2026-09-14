@@ -40,12 +40,35 @@ import {
   User
 } from 'lucide-react';
 
-export default function TrainerProfilePage({ onBack, defaultRole = 'trainee' }) {
+export default function TrainerProfilePage({ onBack, defaultRole = 'trainee', trainerData }) {
   // Main State
   const [isAdminView, setIsAdminView] = useState(defaultRole === 'admin');
-  const [trainer, setTrainer] = useState(initialTrainerData);
+  const [trainer, setTrainer] = useState(() => {
+    if (trainerData) {
+      return {
+        ...initialTrainerData,
+        id: trainerData.id || initialTrainerData.id,
+        name: trainerData.name || initialTrainerData.name,
+        title: trainerData.role || initialTrainerData.title,
+        department: trainerData.organization || initialTrainerData.department,
+        organization: trainerData.organization || initialTrainerData.organization,
+        avatar: trainerData.avatar || initialTrainerData.avatar,
+        tagline: trainerData.tagline || initialTrainerData.tagline,
+        rating: trainerData.rating || initialTrainerData.rating,
+        reviewsCount: trainerData.reviewsCount || initialTrainerData.reviewsCount,
+        experience: trainerData.experience || initialTrainerData.experience,
+        traineesTrained: trainerData.traineesTrained || initialTrainerData.traineesTrained,
+        matchScore: trainerData.matchScore || initialTrainerData.matchScore || 94,
+        expertise: trainerData.expertise || initialTrainerData.expertise || ['Meteorology', 'Weather Analytics']
+      };
+    }
+    return initialTrainerData;
+  });
   const stats = trainerStats;
-  const matchData = competencyMatchData;
+  const matchData = {
+    ...competencyMatchData,
+    overallScore: trainer.matchScore || competencyMatchData.overallScore
+  };
   const competencies = competenciesList;
   const experiences = experienceList;
   const courses = coursesList;
@@ -116,46 +139,25 @@ export default function TrainerProfilePage({ onBack, defaultRole = 'trainee' }) 
             <button
               className="back-link-btn"
               onClick={onBack || (() => { window.location.hash = ''; window.location.reload(); })}
-              aria-label="Back to Trainers Directory"
+              aria-label={defaultRole === 'trainer' ? 'Back to Trainer Dashboard' : defaultRole === 'admin' ? 'Back to Admin Console' : 'Back to Trainers Directory'}
             >
               <ArrowLeft size={16} />
-              <span>Back to Trainers</span>
+              <span>{defaultRole === 'trainer' ? 'Back to Dashboard' : defaultRole === 'admin' ? 'Back to Admin Console' : 'Back to Trainers'}</span>
             </button>
 
             <nav className="breadcrumb-trail" aria-label="Breadcrumb">
-              <a href="#top" onClick={(e) => { e.preventDefault(); if (onBack) onBack(); }}>Home</a>
+              <a href="#top" onClick={(e) => { e.preventDefault(); if (onBack) onBack(); }}>
+                {defaultRole === 'trainer' ? 'Trainer Workspace' : defaultRole === 'admin' ? 'Admin Console' : 'Home'}
+              </a>
               <ChevronRight size={14} />
-              <a href="#trainers" onClick={(e) => { e.preventDefault(); if (onBack) onBack(); }}>Trainers Directory</a>
-              <ChevronRight size={14} />
-              <span className="current-crumb">Trainer Profile ({trainer.name})</span>
+              {defaultRole === 'trainee' && (
+                <>
+                  <a href="#trainers" onClick={(e) => { e.preventDefault(); if (onBack) onBack(); }}>Trainers Directory</a>
+                  <ChevronRight size={14} />
+                </>
+              )}
+              <span className="current-crumb">Faculty Profile ({trainer.name})</span>
             </nav>
-          </div>
-
-          {/* Interactive Role Switcher for Evaluation */}
-          <div className="role-perspective-switch">
-            <button
-              className={`role-switch-btn ${!isAdminView ? 'active' : ''}`}
-              onClick={() => {
-                setIsAdminView(false);
-                triggerToast('Switched to Trainee Perspective View');
-              }}
-              title="View as a trainee / general learner"
-            >
-              <User size={13} />
-              <span>Trainee View</span>
-            </button>
-
-            <button
-              className={`role-switch-btn ${isAdminView ? 'active' : ''}`}
-              onClick={() => {
-                setIsAdminView(true);
-                triggerToast('Switched to Administrator Control View');
-              }}
-              title="View with institutional administrator controls"
-            >
-              <Shield size={13} />
-              <span>Admin View</span>
-            </button>
           </div>
         </div>
       </header>

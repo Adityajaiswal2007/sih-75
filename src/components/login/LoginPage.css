@@ -8,7 +8,7 @@
   min-height: 100vh;
   width: 100%;
   background-color: #f4f8f4;
-  background-image: 
+  background-image:
     radial-gradient(circle at 5% 15%, rgba(47, 82, 51, 0.05) 0%, transparent 35%),
     radial-gradient(circle at 95% 85%, rgba(82, 122, 90, 0.06) 0%, transparent 35%);
   display: flex;
@@ -306,7 +306,7 @@
   background: #ffffff;
   border-radius: 26px;
   padding: 36px 40px;
-  box-shadow: 
+  box-shadow:
     0 22px 52px -10px rgba(27, 67, 50, 0.09),
     0 4px 16px rgba(0, 0, 0, 0.03);
   border: 1px solid #e1ebe3;
@@ -470,12 +470,12 @@
   transition: all 0.2s ease;
 }
 
-.signin-checkbox-label input:checked + .checkbox-custom-box {
+.signin-checkbox-label input:checked+.checkbox-custom-box {
   background: #2f5233;
   border-color: #2f5233;
 }
 
-.signin-checkbox-label input:checked + .checkbox-custom-box::after {
+.signin-checkbox-label input:checked+.checkbox-custom-box::after {
   content: '✓';
   color: #ffffff;
   font-size: 10px;
@@ -551,7 +551,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* OR Divider */
@@ -772,7 +774,8 @@
   }
 
   .signin-input-wrapper input {
-    font-size: 16px; /* Prevents auto-zoom on iOS */
+    font-size: 16px;
+    /* Prevents auto-zoom on iOS */
     padding: 12px 12px 12px 38px;
   }
 

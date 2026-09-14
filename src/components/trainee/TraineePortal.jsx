@@ -94,8 +94,8 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
       {/* Toast Notification */}
       {toast && (
         <div className="trainee-toast">
-          <span style={{ fontSize: 18, color: '#2F6B3C' }}>✓</span>
-          <span style={{ fontSize: 13, color: '#fff', fontWeight: 600 }}>{toast}</span>
+          <span className="trainee-toast-icon">✓</span>
+          <span className="trainee-toast-text">{toast}</span>
         </div>
       )}
 
@@ -167,6 +167,15 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
         </div>
       </aside>
 
+      {/* Mobile Drawer Backdrop */}
+      {sidebarOpen && (
+        <div
+          className="trainee-sidebar-backdrop-mobile"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close mobile sidebar"
+        />
+      )}
+
       {/* Main Content Area */}
       <div className="trainee-content-area">
         {/* Global Header */}
@@ -177,44 +186,91 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
               onClick={() => setSidebarOpen(!sidebarOpen)}
               aria-label="Toggle navigation"
             >
-              ☰
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
             </button>
-            <div className="trainee-greeting-title">
-              <h2>Good morning, {traineeUser.name.split(' ')[0]} 👋</h2>
-              <p>Continue building your competencies and advancing weather analytics.</p>
+            <div className="trainee-nav-heading-wrap">
+              <h1 className="trainee-nav-heading-title">
+                {activeSection === 'dashboard' && 'Trainee Workspace'}
+                {activeSection === 'my-learning' && 'My Learning Workspace'}
+                {activeSection === 'learning' && 'Active Classroom'}
+                {activeSection === 'catalog' && 'Course Catalog'}
+                {activeSection === 'course-detail' && 'Course Overview'}
+                {activeSection === 'assessment' && 'Assessments & Tests'}
+                {activeSection === 'result' && 'Diagnostic Results'}
+                {activeSection === 'competencies' && 'Competency Matrix'}
+                {activeSection === 'skill-gap' && 'Skill Gap Analysis'}
+                {activeSection === 'trainers' && 'Trainer Directory'}
+                {activeSection === 'certificates' && 'My Certificates'}
+                {activeSection === 'announcements' && 'Official Announcements'}
+                {activeSection === 'help' && 'Help & Support'}
+                {activeSection === 'settings' && 'Account Settings'}
+                {activeSection === 'profile' && 'Learner Profile'}
+              </h1>
+              <div className="trainee-nav-heading-meta">
+                <span className="trainee-live-dot" />
+                <span className="trainee-meta-text">MoES · IMD Platform</span>
+                <span className="trainee-meta-divider">•</span>
+                <span className="trainee-meta-cohort">Cohort 2026</span>
+              </div>
             </div>
           </div>
 
           <div className="trainee-header-right">
-            {/* Search */}
-            <div className="trainee-search-input-wrap">
-              <span className="trainee-search-icon">⌕</span>
+            {/* Global Search Bar with SVG */}
+            <div className="trainee-search-wrapper">
+              <span className="trainee-search-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
               <input
                 type="text"
-                placeholder="Search catalog or competencies..."
+                className="trainee-search-input"
+                placeholder="Search courses, skills, faculty..."
                 onFocus={() => {
                   if (activeSection !== 'catalog') handleNavigate('catalog');
                 }}
               />
             </div>
 
-            {/* Notifications Bell */}
-            <div style={{ position: 'relative' }}>
+            {/* Direct Action Button */}
+            <button
+              type="button"
+              className="trainee-header-action-btn"
+              onClick={() => handleNavigate(activeSection === 'catalog' ? 'my-learning' : 'catalog')}
+            >
+              <span>{activeSection === 'catalog' ? 'My Courses →' : '+ Explore Courses'}</span>
+            </button>
+
+            {/* Notification Bell with SVG */}
+            <div className="trainee-bell-container">
               <button
-                className="trainee-icon-btn"
+                type="button"
+                className={`trainee-bell-btn ${notifOpen ? 'active' : ''}`}
                 onClick={() => setNotifOpen(!notifOpen)}
                 aria-label="Notifications"
+                title="View Notifications"
               >
-                <span>🔔</span>
-                {unreadNotifCount > 0 && <span className="trainee-notif-dot" />}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                {unreadNotifCount > 0 && <span className="trainee-bell-badge">{unreadNotifCount}</span>}
               </button>
 
               {notifOpen && (
-                <div className="trainee-notif-popover">
-                  <div className="trainee-notif-header">
-                    <h4>Notifications</h4>
+                <div className="trainee-notification-popover">
+                  <div className="trainee-notif-head">
+                    <strong>Notifications & Alerts</strong>
                     {unreadNotifCount > 0 && (
-                      <small onClick={markAllNotifsRead}>Mark all read</small>
+                      <button type="button" className="trainee-notif-mark-btn" onClick={markAllNotifsRead}>
+                        Mark all read
+                      </button>
                     )}
                   </div>
                   <div className="trainee-notif-list">
@@ -227,11 +283,11 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
                           handleNavigate(n.actionRoute);
                         }}
                       >
-                        <div className="trainee-notif-text">
-                          <strong>{n.title}</strong>
-                          <p>{n.description}</p>
-                          <span>{n.time}</span>
+                        <div className="trainee-notif-title-row">
+                          <span className="trainee-notif-item-title">{n.title}</span>
+                          <span className="trainee-notif-time">{n.time}</span>
                         </div>
+                        <p className="trainee-notif-desc">{n.description}</p>
                       </div>
                     ))}
                   </div>
@@ -239,23 +295,33 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
               )}
             </div>
 
-            {/* Help Button */}
+            {/* Help Quick Button with SVG */}
             <button
-              className="trainee-icon-btn"
+              type="button"
+              className="trainee-header-icon-btn"
               onClick={() => handleNavigate('help')}
-              title="Help & Support"
+              title="Help & Support Desk"
             >
-              <span>?</span>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
             </button>
 
-            {/* User Avatar */}
+            {/* User Profile Card */}
             <div
-              className="trainee-avatar-box"
-              style={{ width: 34, height: 34, fontSize: 12, cursor: 'pointer' }}
+              className="trainee-header-user-card"
               onClick={() => handleNavigate('profile')}
-              title="View Profile"
+              title="View Profile & Settings"
             >
-              {traineeUser.avatar}
+              <div className="trainee-user-avatar-circle">
+                {traineeUser.avatar}
+              </div>
+              <div className="trainee-header-user-text">
+                <span className="trainee-header-user-name">{traineeUser.name}</span>
+                <span className="trainee-header-user-sub">Trainee · IMD</span>
+              </div>
             </div>
           </div>
         </header>

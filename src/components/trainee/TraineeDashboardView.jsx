@@ -14,45 +14,6 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
   return (
     <div className="trainee-dashboard-view">
-      {/* Trainee Core Journey Interactive Strip */}
-      <div className="trainee-journey-strip" title="CapacityConnect Continuous Learning & Competency Loop">
-        <span className="trainee-journey-step done" onClick={() => onNavigate('profile')}>
-          ✓ 1. Profile Built
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step active" onClick={() => onNavigate('catalog')}>
-          ● 2. Discover Courses
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('learning', { courseId: primaryCourse.id })}>
-          3. Learn Modules
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('assessment')}>
-          4. Take Assessment
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('result')}>
-          5. View Diagnostic Result
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('competencies')}>
-          6. Update Competencies
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('skill-gap')}>
-          7. Identify Skill Gaps
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('trainers')}>
-          8. Trainer Matching
-        </span>
-        <span className="trainee-journey-divider">→</span>
-        <span className="trainee-journey-step" onClick={() => onNavigate('certificates')}>
-          9. Earn Certificate
-        </span>
-      </div>
-
       {/* Hero Welcome Banner */}
       <section className="trainee-hero-banner">
         <div className="trainee-hero-left">

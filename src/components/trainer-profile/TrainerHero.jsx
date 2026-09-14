@@ -44,7 +44,9 @@ export default function TrainerHero({
         <div className="hero-identity-section">
           <div className="avatar-wrapper">
             <div className="trainer-avatar-large">
-              <span className="avatar-text">{trainer.avatarInitials}</span>
+              <span className="avatar-text">
+                {trainer.avatarInitials || (trainer.avatar && trainer.avatar.length <= 4 ? trainer.avatar : trainer.name.split(' ').map(n => n[0]).join('').slice(0, 2))}
+              </span>
               <div className="avatar-pulse-ring" />
             </div>
             <div className="active-badge-pill" title="Currently active on CapacityConnect">

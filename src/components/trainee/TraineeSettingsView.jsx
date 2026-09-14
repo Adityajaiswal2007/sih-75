@@ -24,11 +24,11 @@ export default function TraineeSettingsView({ showToast }) {
       {/* Header */}
       <div style={{ marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#485563', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#2F5233', textTransform: 'uppercase' }}>
             SYSTEM CONFIGURATION
           </span>
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#fff', margin: 0 }}>Portal Settings</h1>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>Portal Settings</h1>
         <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 0' }}>
           Manage your notification alerts, learning preferences, and institutional privacy.
         </p>
@@ -36,7 +36,7 @@ export default function TraineeSettingsView({ showToast }) {
 
       {/* Notification Preferences Card */}
       <section className="trainee-panel" style={{ marginBottom: 24 }}>
-        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 18px' }}>
+        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#16251B', margin: '0 0 18px' }}>
           🔔 Notification Preferences
         </h3>
 
@@ -62,7 +62,7 @@ export default function TraineeSettingsView({ showToast }) {
               }}
             >
               <div>
-                <strong style={{ color: '#fff', fontSize: 13.5, display: 'block' }}>{item.title}</strong>
+                <strong style={{ color: '#16251B', fontSize: 13.5, display: 'block', fontWeight: 600 }}>{item.title}</strong>
                 <small style={{ color: '#485563', fontSize: 12 }}>{item.desc}</small>
               </div>
 
@@ -77,7 +77,8 @@ export default function TraineeSettingsView({ showToast }) {
                   border: 'none',
                   cursor: 'pointer',
                   position: 'relative',
-                  transition: 'background 0.2s'
+                  transition: 'background 0.2s',
+                  flexShrink: 0
                 }}
               >
                 <span
@@ -88,9 +89,9 @@ export default function TraineeSettingsView({ showToast }) {
                     width: 20,
                     height: 20,
                     borderRadius: '50%',
-                    background: '#fff',
+                    background: '#FFFFFF',
                     transition: 'left 0.2s',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
                   }}
                 />
               </button>
@@ -101,18 +102,18 @@ export default function TraineeSettingsView({ showToast }) {
 
       {/* Learning Preferences Card */}
       <section className="trainee-panel" style={{ marginBottom: 24 }}>
-        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#fff', margin: '0 0 16px' }}>
+        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#16251B', margin: '0 0 16px' }}>
           ⚙ Learning & Display Preferences
         </h3>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <div style={{ padding: '14px', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 10 }}>
-            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 6 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+          <div style={{ padding: '16px', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 10 }}>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 6, fontWeight: 600 }}>
               Default Code Notebook Environment
             </label>
             <select
               defaultValue="JupyterLab Python 3.11"
-              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', color: '#fff', padding: '8px', borderRadius: 6, fontSize: 13 }}
+              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', color: '#16251B', padding: '10px 12px', borderRadius: 8, fontSize: 13, outline: 'none' }}
             >
               <option>JupyterLab Python 3.11 (IMD HPC Cluster)</option>
               <option>Google Colab Enterprise</option>
@@ -120,13 +121,13 @@ export default function TraineeSettingsView({ showToast }) {
             </select>
           </div>
 
-          <div style={{ padding: '14px', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 10 }}>
-            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 6 }}>
+          <div style={{ padding: '16px', background: '#EEF6EA', border: '1px solid #D6E3D8', borderRadius: 10 }}>
+            <label style={{ fontSize: 12, color: '#485563', display: 'block', marginBottom: 6, fontWeight: 600 }}>
               Preferred Map Projection Framework
             </label>
             <select
               defaultValue="Cartopy Lambert Conformal"
-              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', color: '#fff', padding: '8px', borderRadius: 6, fontSize: 13 }}
+              style={{ width: '100%', background: '#FFFFFF', border: '1px solid #D6E3D8', color: '#16251B', padding: '10px 12px', borderRadius: 8, fontSize: 13, outline: 'none' }}
             >
               <option>Cartopy Lambert Conformal</option>
               <option>Cartopy Plate Carree (Equirectangular)</option>

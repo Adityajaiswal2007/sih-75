@@ -2,13 +2,13 @@
 
 export const traineeUser = {
   id: 'tr-001',
-  name: 'Ananya Verma',
-  avatar: 'AV',
+  name: 'Yash Verma',
+  avatar: 'yv',
   role: 'Trainee',
   organization: 'National Weather Training Center',
   designation: 'Meteorological Research Fellow',
   location: 'New Delhi, India',
-  email: 'ananya.verma@imd.gov.in',
+  email: 'yash.verma@imd.gov.in',
   mobile: '+91 98765 43210',
   level: 'Intermediate',
   profileCompletion: 92,
