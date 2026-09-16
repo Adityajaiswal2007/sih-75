@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   traineeUser,
   traineeCompetencies,
@@ -7,10 +7,54 @@ import {
   allCourses
 } from './traineeData';
 
+const FORMULA_FLASHCARDS = [
+  {
+    id: 1,
+    topic: 'Radar Meteorology',
+    question: 'What is the Radar Range Equation for distributed precipitation targets?',
+    formula: 'Pr = (Pt · G² · λ² · θ · φ · h · π³ · |K|² · Z) / (1024 · ln(2) · π² · r²)',
+    note: 'Pr is received power, Z is radar reflectivity factor, r is target range.'
+  },
+  {
+    id: 2,
+    topic: 'Atmospheric Dynamics',
+    question: 'What is the Geostrophic Wind equation in pressure coordinates?',
+    formula: 'ug = - (g / f) · (∂Z / ∂y),   vg = + (g / f) · (∂Z / ∂x)',
+    note: 'Represents exact balance between Coriolis force and pressure gradient force.'
+  },
+  {
+    id: 3,
+    topic: 'Numerical Weather Prediction',
+    question: 'What is the Courant-Friedrichs-Lewy (CFL) computational stability condition?',
+    formula: 'C = (u · Δt) / Δx ≤ Cmax (typically ≤ 1.0)',
+    note: 'Ensures numerical wave propagation does not outpace spatial grid resolution.'
+  },
+  {
+    id: 4,
+    topic: 'Satellite Remote Sensing',
+    question: 'What is Planck\'s Radiance Law for satellite thermal infrared detection?',
+    formula: 'B_λ(T) = (2·h·c²) / [ λ⁵ · (exp(h·c / (λ·k·T)) - 1) ]',
+    note: 'Relates brightness temperature to emitted spectral radiance at wavelength λ.'
+  }
+];
+
 export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile }) {
   const primaryCourse = allCourses.find(c => c.id === 'crs-001') || allCourses[0];
   const otherEnrolled = allCourses.filter(c => c.enrolled && c.id !== primaryCourse.id).slice(0, 2);
   const primaryGap = skillGaps[0];
+
+  const [flashcardOpen, setFlashcardOpen] = useState(false);
+  const [currentCardIdx, setCurrentCardIdx] = useState(0);
+  const [cardFlipped, setCardFlipped] = useState(false);
+
+  // Curriculum Roadmap Milestones
+  const ROADMAP_STATIONS = [
+    { num: 1, title: 'Atmospheric Physics', status: 'Completed', score: '94%', active: false },
+    { num: 2, title: 'Doppler Radar Principles', status: 'Completed', score: '88%', active: false },
+    { num: 3, title: 'Velocity Dealiasing Lab', status: 'In Progress', score: '68%', active: true },
+    { num: 4, title: 'Severe Echo Interpretation', status: 'Upcoming', score: '--', active: false },
+    { num: 5, title: 'MoES Practical Exam', status: 'Locked', score: '--', active: false }
+  ];
 
   return (
     <div className="trainee-dashboard-view">
@@ -24,7 +68,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
             Good morning, <span>{traineeUser.name}</span> 👋
           </h1>
           <p>
-            Continue your personalized learning journey and strengthen your verified professional competencies in meteorological analytics and computational climate modeling.
+            Continue your curriculum pathway and track your verified competencies in meteorological analytics, satellite remote sensing, and computational models.
           </p>
           <div className="trainee-hero-ctas">
             <button
@@ -35,9 +79,9 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
             </button>
             <button
               className="trainee-btn-secondary"
-              onClick={() => onNavigate('catalog')}
+              onClick={() => setFlashcardOpen(true)}
             >
-              Explore Courses →
+              ⚡ Practice Flashcards
             </button>
           </div>
         </div>
@@ -103,12 +147,12 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
         <div className="trainee-metric-card">
           <div className="trainee-metric-card-top">
             <div className="trainee-metric-icon" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#6F9F70' }}>
-              ◎
+              🔥
             </div>
-            <span style={{ fontSize: 11, color: '#6F9F70', fontWeight: 600 }}>+12% QoQ</span>
+            <span style={{ fontSize: 11, color: '#6F9F70', fontWeight: 600 }}>7 Days Streak</span>
           </div>
-          <div className="trainee-metric-val">{traineeUser.stats.competencyProgress}%</div>
-          <div className="trainee-metric-label">Competency Progress</div>
+          <div className="trainee-metric-val">14 Days</div>
+          <div className="trainee-metric-label">Study Streak</div>
         </div>
 
         <div className="trainee-metric-card">
@@ -123,7 +167,65 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
         </div>
       </section>
 
-      {/* 2-Column: Continue Learning & Competency Snapshot */}
+      {/* INTERACTIVE CURRICULUM ROADMAP (METRO MAP STYLE) */}
+      <section className="trainee-panel" style={{ marginBottom: 20 }}>
+        <div className="trainee-panel-header">
+          <div className="trainee-panel-title-group">
+            <h3><span>🗺️</span> Active Curriculum Roadmap: Doppler Radar &amp; Climate Modeling</h3>
+            <p>Milestone pipeline from atmospheric fundamentals to certified operational competency.</p>
+          </div>
+          <span style={{ fontSize: 12, fontWeight: 700, color: '#1B4332', background: '#EAF4EE', padding: '4px 10px', borderRadius: 8 }}>
+            Stage 3 of 5 In Progress
+          </span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginTop: 14 }}>
+          {ROADMAP_STATIONS.map((stn) => (
+            <div
+              key={stn.num}
+              style={{
+                padding: '14px',
+                borderRadius: '12px',
+                background: stn.active ? '#EAF4EE' : '#FFFFFF',
+                border: stn.active ? '2px solid #1B4332' : '1px solid #DCE6DF',
+                boxShadow: stn.active ? '0 4px 14px rgba(27, 67, 50, 0.1)' : 'none',
+                position: 'relative'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                <span style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: '50%',
+                  background: stn.status === 'Completed' ? '#1B4332' : stn.active ? '#A7C957' : '#E3ECE5',
+                  color: stn.status === 'Completed' ? '#FFFFFF' : stn.active ? '#1B4332' : '#718078',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 11,
+                  fontWeight: 800
+                }}>
+                  {stn.status === 'Completed' ? '✓' : stn.num}
+                </span>
+                <span style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: stn.status === 'Completed' ? '#047857' : stn.active ? '#1B4332' : '#8CA394',
+                  textTransform: 'uppercase'
+                }}>
+                  {stn.status}
+                </span>
+              </div>
+              <strong style={{ display: 'block', fontSize: 13, color: '#12281B', marginBottom: 4 }}>{stn.title}</strong>
+              <small style={{ color: '#526E5D', fontSize: 11 }}>
+                {stn.score !== '--' ? `Evaluation Score: ${stn.score}` : 'Prerequisite locked'}
+              </small>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 2-Column: Continue Learning & Competency Radar Profile */}
       <div className="trainee-grid-two-col">
         {/* Left Column: Continue Learning */}
         <section className="trainee-panel">
@@ -182,7 +284,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '12px 16px',
-                  background: '#EEF6EA',
+                  background: '#F4F8F5',
                   border: '1px solid #D6E3D8',
                   borderRadius: 10
                 }}
@@ -190,7 +292,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ fontSize: 20 }}>{course.thumbnailIcon}</span>
                   <div>
-                    <strong style={{ fontSize: 13, color: '#fff', display: 'block' }}>{course.title}</strong>
+                    <strong style={{ fontSize: 13, color: '#12281B', display: 'block' }}>{course.title}</strong>
                     <small style={{ fontSize: 11, color: '#485563' }}>{course.category} · {course.progress}% completed</small>
                   </div>
                 </div>
@@ -206,68 +308,82 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
           </div>
         </section>
 
-        {/* Right Column: Competency Snapshot */}
+        {/* Right Column: Personal Competency Spider Radar */}
         <section className="trainee-panel">
           <div className="trainee-panel-header">
             <div className="trainee-panel-title-group">
-              <h3><span>◎</span> Your Competency Profile</h3>
-              <p>Evaluated against institutional benchmarks</p>
+              <h3><span>◎</span> Your Competency Radar</h3>
+              <p>Current score vs. 75% national benchmark</p>
             </div>
             <button className="trainee-panel-link" onClick={() => onNavigate('competencies')}>
-              View Competencies →
+              Full Framework →
             </button>
           </div>
 
-          <div style={{ marginBottom: 18 }}>
-            {traineeCompetencies.slice(0, 5).map(comp => (
-              <div className="trainee-comp-row" key={comp.id}>
-                <div className="trainee-comp-row-header">
-                  <div className="trainee-comp-name">
-                    <span>{comp.name}</span>
-                    <span className={`trainee-comp-tag ${comp.status === 'Strong' ? 'strong' : comp.status === 'Developing' ? 'developing' : 'attention'}`}>
-                      {comp.status}
-                    </span>
-                  </div>
-                  <span className="trainee-comp-percent">{comp.level}%</span>
-                </div>
-                <div className="trainee-comp-track">
-                  <div
-                    className="trainee-comp-fill"
-                    style={{
-                      width: `${comp.level}%`,
-                      background: comp.level >= 80
-                        ? 'linear-gradient(90deg, #2F5233, #2F5233)'
-                        : comp.level >= 65
-                        ? 'linear-gradient(90deg, #527A5A, #6F9F70)'
-                        : 'linear-gradient(90deg, #B58B32, #B94A48)'
-                    }}
-                  />
-                </div>
+          {/* Mini Radar Chart */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 14 }}>
+            <svg viewBox="0 0 300 240" style={{ width: '100%', maxWidth: 280, height: 210 }}>
+              {/* Concentric Polygons */}
+              {[0.35, 0.7, 1.0].map((scale, i) => {
+                const r = 80 * scale;
+                const pts = [0, 1, 2, 3, 4].map(idx => {
+                  const angle = (idx * 2 * Math.PI) / 5 - Math.PI / 2;
+                  return `${150 + r * Math.cos(angle)},${120 + r * Math.sin(angle)}`;
+                }).join(' ');
+                return <polygon key={i} points={pts} fill="none" stroke="#DCE6DF" strokeWidth="1" strokeDasharray={scale === 0.7 ? '3 3' : 'none'} />;
+              })}
+
+              {/* Benchmark Target Polygon (75%) */}
+              {(() => {
+                const targetR = 80 * 0.75;
+                const pts = [0, 1, 2, 3, 4].map(idx => {
+                  const angle = (idx * 2 * Math.PI) / 5 - Math.PI / 2;
+                  return `${150 + targetR * Math.cos(angle)},${120 + targetR * Math.sin(angle)}`;
+                }).join(' ');
+                return <polygon points={pts} fill="rgba(217, 119, 6, 0.08)" stroke="#D97706" strokeWidth="1.5" strokeDasharray="3 3" />;
+              })()}
+
+              {/* Actual Trainee Scores */}
+              {(() => {
+                const scores = [84, 76, 68, 88, 58];
+                const pts = scores.map((sc, idx) => {
+                  const angle = (idx * 2 * Math.PI) / 5 - Math.PI / 2;
+                  const r = 80 * (sc / 100);
+                  return `${150 + r * Math.cos(angle)},${120 + r * Math.sin(angle)}`;
+                }).join(' ');
+                return <polygon points={pts} fill="rgba(45, 106, 79, 0.25)" stroke="#1B4332" strokeWidth="2" />;
+              })()}
+
+              {/* Labels */}
+              {['Python', 'NWP', 'Radar', 'GIS', 'Satellite'].map((lbl, idx) => {
+                const angle = (idx * 2 * Math.PI) / 5 - Math.PI / 2;
+                const lx = 150 + 98 * Math.cos(angle);
+                const ly = 120 + 98 * Math.sin(angle);
+                return (
+                  <text
+                    key={lbl}
+                    x={lx}
+                    y={ly}
+                    textAnchor={lx > 150 ? 'start' : lx < 150 ? 'end' : 'middle'}
+                    dominantBaseline="central"
+                    fontSize="9.5"
+                    fontWeight="700"
+                    fill="#1B4332"
+                  >
+                    {lbl}
+                  </text>
+                );
+              })}
+            </svg>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {traineeCompetencies.slice(0, 3).map(comp => (
+              <div key={comp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12.5, padding: '6px 10px', background: '#F8FAF8', borderRadius: 8 }}>
+                <span style={{ fontWeight: 600, color: '#16251B' }}>{comp.name}</span>
+                <span style={{ fontWeight: 800, color: comp.level >= 75 ? '#047857' : '#D97706' }}>{comp.level}%</span>
               </div>
             ))}
-          </div>
-
-          {/* Quick assessment callout */}
-          <div style={{
-            padding: '14px',
-            background: 'rgba(99, 102, 241, 0.08)',
-            border: '1px solid rgba(99, 102, 241, 0.25)',
-            borderRadius: 10,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div>
-              <strong style={{ fontSize: 13, color: '#2F5233', display: 'block' }}>Validate Next Competency</strong>
-              <span style={{ fontSize: 11, color: '#485563' }}>Take diagnostic quiz to update your score</span>
-            </div>
-            <button
-              className="trainee-btn-intel"
-              style={{ padding: '7px 14px', fontSize: 12 }}
-              onClick={() => onNavigate('assessment')}
-            >
-              Take Quiz →
-            </button>
           </div>
         </section>
       </div>
@@ -279,7 +395,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
           <div className="trainee-panel-header">
             <div className="trainee-panel-title-group">
               <h3><span>✦</span> Skill Gap Insight</h3>
-              <p>AI-driven diagnosis of developmental milestones</p>
+              <p>Targeted developmental milestones</p>
             </div>
             <button className="trainee-panel-link" onClick={() => onNavigate('skill-gap')}>
               Full Gap Analysis →
@@ -288,7 +404,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
 
           <div className="trainee-gap-card">
             <div className="trainee-gap-badge">
-              <span>●</span> Your Next Growth Area
+              <span>●</span> Priority Remediation Target
             </div>
             <h4 className="trainee-gap-title">{primaryGap.skill}</h4>
 
@@ -315,7 +431,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
             </div>
 
             <p className="trainee-gap-rec">
-              Recommended Action: Complete <strong>"{primaryGap.recommendedCourse}"</strong> and consult with recommended faculty <strong>{primaryGap.recommendedTrainer.name}</strong> ({primaryGap.recommendedTrainer.match}% Match).
+              Action Plan: Complete <strong>"{primaryGap.recommendedCourse}"</strong> and book 1-on-1 office hours with faculty <strong>{primaryGap.recommendedTrainer.name}</strong> ({primaryGap.recommendedTrainer.match}% Match).
             </p>
 
             <div style={{ display: 'flex', gap: 12 }}>
@@ -339,11 +455,11 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
         <section className="trainee-panel">
           <div className="trainee-panel-header">
             <div className="trainee-panel-title-group">
-              <h3><span>♟</span> Recommended Trainers</h3>
-              <p>Faculty matched to your competency requirements</p>
+              <h3><span>♟</span> Accredited Faculty Advisors</h3>
+              <p>Instructors for domain mentorship &amp; practical guidance</p>
             </div>
             <button className="trainee-panel-link" onClick={() => onNavigate('trainers')}>
-              View All Matches →
+              View All Faculty →
             </button>
           </div>
 
@@ -370,7 +486,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                       <strong style={{ fontSize: 13.5, color: '#16251B' }}>{trainer.name}</strong>
                       {trainer.isBestMatch && (
                         <span style={{ fontSize: 10, background: '#2F5233', color: '#FFFFFF', padding: '1px 6px', borderRadius: 10, fontWeight: 700 }}>
-                          Best Match
+                          Lead Mentor
                         </span>
                       )}
                     </div>
@@ -401,6 +517,88 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
           </div>
         </section>
       </div>
+
+      {/* FORMULA PRACTICE FLASHCARD MODAL */}
+      {flashcardOpen && (
+        <div className="trainee-modal-backdrop" onClick={() => setFlashcardOpen(false)}>
+          <div className="trainee-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 520 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #DCE6DF', paddingBottom: 10, marginBottom: 14 }}>
+              <div>
+                <span style={{ fontSize: 10.5, fontWeight: 800, color: '#1B4332', textTransform: 'uppercase' }}>
+                  {FORMULA_FLASHCARDS[currentCardIdx].topic}
+                </span>
+                <h3 style={{ margin: '2px 0 0', fontSize: 16, color: '#12281B' }}>Meteorological Practice Flashcard</h3>
+              </div>
+              <button
+                type="button"
+                style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#688273' }}
+                onClick={() => setFlashcardOpen(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div
+              onClick={() => setCardFlipped(!cardFlipped)}
+              style={{
+                minHeight: 160,
+                background: cardFlipped ? '#1B4332' : '#F4F8F5',
+                color: cardFlipped ? '#FFFFFF' : '#12281B',
+                border: '1.5px solid #C4DFC9',
+                borderRadius: 14,
+                padding: 20,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                marginBottom: 16
+              }}
+            >
+              <small style={{ color: cardFlipped ? '#A7C957' : '#557060', fontWeight: 700, marginBottom: 8 }}>
+                {cardFlipped ? 'REVEALED FORMULA & PRINCIPLE' : 'CLICK CARD TO FLIP'}
+              </small>
+              <strong style={{ fontSize: cardFlipped ? 14 : 15, lineHeight: 1.5, fontFamily: cardFlipped ? 'monospace' : 'inherit' }}>
+                {cardFlipped ? FORMULA_FLASHCARDS[currentCardIdx].formula : FORMULA_FLASHCARDS[currentCardIdx].question}
+              </strong>
+              {cardFlipped && (
+                <p style={{ margin: '10px 0 0', fontSize: 12, color: '#D2ECC9' }}>
+                  {FORMULA_FLASHCARDS[currentCardIdx].note}
+                </p>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <button
+                type="button"
+                className="trainee-btn-secondary"
+                disabled={currentCardIdx === 0}
+                onClick={() => {
+                  setCardFlipped(false);
+                  setCurrentCardIdx(prev => Math.max(0, prev - 1));
+                }}
+              >
+                ← Previous
+              </button>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#557060' }}>
+                {currentCardIdx + 1} of {FORMULA_FLASHCARDS.length}
+              </span>
+              <button
+                type="button"
+                className="trainee-btn-primary"
+                onClick={() => {
+                  setCardFlipped(false);
+                  setCurrentCardIdx(prev => (prev + 1) % FORMULA_FLASHCARDS.length);
+                }}
+              >
+                Next Card →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

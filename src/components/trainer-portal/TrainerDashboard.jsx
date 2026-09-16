@@ -591,6 +591,9 @@ export default function TrainerDashboard({ onBack }) {
                 </div>
               </div>
 
+              {/* Live Classroom Poll Launcher Widget */}
+              <LiveClassroomPollWidget onNotify={showToast} />
+
               {/* My Courses Section */}
               <section className="trainer-card-panel">
                 <div className="trainer-panel-header">
@@ -936,3 +939,200 @@ export default function TrainerDashboard({ onBack }) {
     </div>
   )
 }
+
+function LiveClassroomPollWidget({ onNotify }) {
+  const PRESET_POLLS = [
+    {
+      id: 'poll-1',
+      topic: 'Radar Meteorology & Signal Processing',
+      question: 'What is the primary factor determining maximum unambiguous velocity (V_max) in Doppler Weather Radar?',
+      options: [
+        { key: 'A', text: 'Pulse Repetition Frequency (PRF) × Radar Wavelength / 4', votes: 58, correct: true },
+        { key: 'B', text: 'Azimuthal antenna rotation speed and beam width', votes: 12, correct: false },
+        { key: 'C', text: 'Atmospheric pressure lapse rate at 500 hPa', votes: 9, correct: false },
+        { key: 'D', text: 'Reflectivity factor (Z) calibration constant', votes: 5, correct: false }
+      ],
+      explanation: 'V_max = (λ × PRF) / 4. Increasing PRF elevates unambiguous velocity but decreases maximum unambiguous range (Doppler Dilemma).'
+    },
+    {
+      id: 'poll-2',
+      topic: 'Numerical Weather Prediction (NWP)',
+      question: 'Which numerical time-integration scheme is unconditionally stable for linear advective modeling?',
+      options: [
+        { key: 'A', text: 'Crank-Nicolson Implicit Scheme', votes: 51, correct: true },
+        { key: 'B', text: 'Forward Euler Explicit Scheme', votes: 15, correct: false },
+        { key: 'C', text: 'Standard Leapfrog Scheme without Asselin Filter', votes: 11, correct: false },
+        { key: 'D', text: 'Adams-Bashforth 2nd Order Scheme', votes: 7, correct: false }
+      ],
+      explanation: 'The Crank-Nicolson implicit scheme is unconditionally stable for linear hyperbolic and parabolic partial differential equations.'
+    },
+    {
+      id: 'poll-3',
+      topic: 'Satellite Climatology & Radiometry',
+      question: 'Which spectral band on INSAT-3D/3DR is best suited to track mid-to-upper tropospheric moisture flux?',
+      options: [
+        { key: 'A', text: '6.7 µm – 7.1 µm Water Vapor Absorption Channel', votes: 64, correct: true },
+        { key: 'B', text: '0.65 µm Visible Reflected Solar Channel', votes: 8, correct: false },
+        { key: 'C', text: '10.8 µm Longwave Thermal Window Channel', votes: 9, correct: false },
+        { key: 'D', text: '3.9 µm Shortwave Infrared Channel', votes: 3, correct: false }
+      ],
+      explanation: 'The 6.7–7.1 µm channel captures strong vibrational absorption of H2O molecules in the 300–600 hPa altitude band.'
+    }
+  ]
+
+  const [activePollIndex, setActivePollIndex] = useState(0)
+  const [pollState, setPollState] = useState(PRESET_POLLS[0])
+  const [showExplanation, setShowExplanation] = useState(false)
+  const [isSimulating, setIsSimulating] = useState(false)
+
+  const currentPoll = pollState
+  const totalVotes = currentPoll.options.reduce((acc, opt) => acc + opt.votes, 0)
+
+  const handleSelectPoll = (idx) => {
+    setActivePollIndex(idx)
+    setPollState(PRESET_POLLS[idx])
+    setShowExplanation(false)
+    if (onNotify) onNotify(`Switched to poll question: "${PRESET_POLLS[idx].topic}"`)
+  }
+
+  const handleSimulateResponse = () => {
+    setIsSimulating(true)
+    const randomIdx = Math.random() > 0.3 ? 0 : Math.floor(Math.random() * currentPoll.options.length)
+    const updatedOptions = currentPoll.options.map((opt, idx) => {
+      if (idx === randomIdx) {
+        return { ...opt, votes: opt.votes + 1 }
+      }
+      return opt
+    })
+    setPollState(prev => ({ ...prev, options: updatedOptions }))
+    setTimeout(() => setIsSimulating(false), 400)
+    if (onNotify) onNotify('Received live cohort response from IMD Pune Node (+1 Vote)')
+  }
+
+  const handleResetVotes = () => {
+    setPollState(prev => ({
+      ...prev,
+      options: prev.options.map(o => ({ ...o, votes: Math.floor(o.votes / 3) }))
+    }))
+    setShowExplanation(false)
+    if (onNotify) onNotify('Live poll cohort counter reset.')
+  }
+
+  return (
+    <section className="trainer-card-panel trainer-live-poll-section">
+      <div className="trainer-panel-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="trainer-live-pulse-badge">
+            <span className="live-dot-ping" />
+            <span className="live-dot" />
+            LIVE COHORT POLLING
+          </div>
+          <div>
+            <h3 className="trainer-panel-title">Interactive Classroom Quick-Poll</h3>
+            <p className="trainer-panel-subtitle">Broadcast rapid conceptual checks to regional meteorological training nodes in real-time</p>
+          </div>
+        </div>
+        <div className="trainer-panel-actions">
+          <button
+            type="button"
+            className="btn-trainer-secondary small"
+            onClick={handleResetVotes}
+            title="Reset active poll responses"
+          >
+            ↺ Reset Session
+          </button>
+          <button
+            type="button"
+            className="btn-trainer-primary small"
+            onClick={handleSimulateResponse}
+            disabled={isSimulating}
+          >
+            {isSimulating ? 'Receiving Data...' : '⚡ Simulate Trainee Vote'}
+          </button>
+        </div>
+      </div>
+
+      {/* Preset Question Picker Pills */}
+      <div className="trainer-poll-pills-row">
+        <span className="trainer-poll-pills-lbl">Active Topics:</span>
+        {PRESET_POLLS.map((p, idx) => (
+          <button
+            key={p.id}
+            type="button"
+            className={`trainer-poll-selector-pill ${activePollIndex === idx ? 'active' : ''}`}
+            onClick={() => handleSelectPoll(idx)}
+          >
+            {idx + 1}. {p.topic}
+          </button>
+        ))}
+      </div>
+
+      {/* Main Poll Card */}
+      <div className="trainer-poll-display-card">
+        <div className="trainer-poll-meta-header">
+          <div className="trainer-poll-badge-node">
+            <span>📡 Target Cohorts:</span>
+            <strong>IMD Pune, Delhi Alipore, Chennai (84 Trainees Connected)</strong>
+          </div>
+          <div className="trainer-poll-total-votes">
+            Total Responses: <strong>{totalVotes}</strong>
+          </div>
+        </div>
+
+        <h4 className="trainer-poll-question-text">{currentPoll.question}</h4>
+
+        {/* Options Breakdown */}
+        <div className="trainer-poll-options-grid">
+          {currentPoll.options.map((opt) => {
+            const pct = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0
+            return (
+              <div
+                key={opt.key}
+                className={`trainer-poll-option-row ${showExplanation && opt.correct ? 'is-correct' : ''}`}
+              >
+                <div className="trainer-poll-option-key">{opt.key}</div>
+                <div className="trainer-poll-option-content">
+                  <div className="trainer-poll-option-text-row">
+                    <span className="trainer-poll-opt-text">{opt.text}</span>
+                    <span className="trainer-poll-opt-pct">
+                      {showExplanation && opt.correct && <span className="correct-tag">✓ Correct Key</span>}
+                      <strong>{pct}%</strong> ({opt.votes} votes)
+                    </span>
+                  </div>
+                  <div className="trainer-poll-bar-track">
+                    <div
+                      className={`trainer-poll-bar-fill ${showExplanation && opt.correct ? 'correct-fill' : ''}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Reveal Answer / Explanation Footer */}
+        <div className="trainer-poll-footer-actions">
+          <button
+            type="button"
+            className={`btn-trainer-secondary small ${showExplanation ? 'active-reveal' : ''}`}
+            onClick={() => setShowExplanation(!showExplanation)}
+          >
+            {showExplanation ? 'Hide Institutional Key & Solution' : '👁 Reveal Key & Scientific Explanation'}
+          </button>
+          <span className="trainer-poll-nodes-status">
+            4/4 Regional Nodes Synced • Latency: 12ms
+          </span>
+        </div>
+
+        {showExplanation && (
+          <div className="trainer-poll-explanation-box">
+            <strong>Institutional Formulation & Scientific Rationale:</strong>
+            <p>{currentPoll.explanation}</p>
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+

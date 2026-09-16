@@ -36,11 +36,11 @@
 }
 
 /* ==========================================================================
-   SIDEBAR (Fixed, Non-Scrolling, Exact Unified Design with Trainer & Admin)
+   SIDEBAR (Fixed, Non-Scrolling, Proportionate, Rich Layout)
    ========================================================================== */
 .trainee-sidebar-container {
-  width: 270px;
-  background: #1B4332;
+  width: 275px;
+  background: #143527;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
@@ -52,14 +52,15 @@
   z-index: 100;
   flex-shrink: 0;
   box-sizing: border-box;
-  box-shadow: 4px 0 24px rgba(10, 35, 22, 0.15);
+  box-shadow: 4px 0 24px rgba(10, 35, 22, 0.18);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden; /* Strict: Never scroll on desktop */
+  overflow: hidden; /* Strict: Never scroll */
 }
 
 .trainee-sidebar-header {
-  padding: 14px 16px 10px;
+  padding: 13px 16px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
 }
 
 .trainee-sidebar-brand {
@@ -78,14 +79,14 @@
 .trainee-sidebar-logo-icon {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(167, 201, 87, 0.25) 0%, rgba(47, 82, 51, 0.6) 100%);
-  border: 1px solid rgba(167, 201, 87, 0.4);
+  border-radius: 9px;
+  background: linear-gradient(135deg, rgba(167, 201, 87, 0.28) 0%, rgba(47, 82, 51, 0.7) 100%);
+  border: 1.5px solid rgba(167, 201, 87, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .trainee-sidebar-logo-icon img,
@@ -112,7 +113,7 @@
 }
 
 .trainee-brand-part-conn {
-  color: #A7C957 !important; /* High contrast vibrant lime */
+  color: #A7C957 !important;
 }
 
 .trainee-brand-portal-badge {
@@ -141,17 +142,17 @@
   display: inline-block;
 }
 
-/* Sidebar Navigation Items - Proportional, Equal-Sized with Zero Scroll */
+/* Sidebar Navigation Items - Non-Scrolling, Proportionate, Top-Aligned */
 .trainee-sidebar-nav-scroll {
   flex: 1;
   min-height: 0;
-  overflow-y: hidden; /* Strict: Never scroll on desktop */
+  overflow-y: hidden; /* Strict: Zero scroll */
   overflow-x: hidden;
-  padding: 10px 12px;
+  padding: 8px 12px 6px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
 .trainee-sidebar-nav-scroll::-webkit-scrollbar {
@@ -161,17 +162,18 @@
 .trainee-nav-group {
   display: flex;
   flex-direction: column;
-  gap: 3.5px;
+  gap: 2px;
 }
 
 .trainee-nav-group-title {
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 800;
   letter-spacing: 1.1px;
   text-transform: uppercase;
   color: #9ECBA8;
-  padding: 4px 10px 3px;
+  padding: 1px 8px 2px;
   user-select: none;
+  opacity: 0.88;
 }
 
 .trainee-nav-item-btn {
@@ -179,13 +181,13 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 8.5px 12px;
-  min-height: 38px;
-  border-radius: 9px;
+  padding: 6.5px 10px;
+  min-height: 34px;
+  border-radius: 8px;
   background: transparent;
   border: 1px solid transparent;
-  color: #D6E4DA;
-  font-size: 13.5px;
+  color: #DCE8E0;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   text-align: left;
@@ -214,12 +216,12 @@
 .trainee-nav-btn-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 
 .trainee-nav-icon {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -227,10 +229,10 @@
 }
 
 .trainee-nav-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   stroke: currentColor;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .trainee-nav-item-btn.active .trainee-nav-icon svg {
@@ -240,11 +242,11 @@
 
 .trainee-nav-badge {
   font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
+  font-weight: 800;
+  padding: 1.5px 7px;
   border-radius: 9px;
   background: rgba(167, 201, 87, 0.22);
-  color: #BEE379;
+  color: #C3EAA0;
 }
 
 .trainee-nav-item-btn.active .trainee-nav-badge {
@@ -255,14 +257,14 @@
 
 /* Institutional Status & Pulse Widget */
 .trainee-sidebar-status-card {
-  margin: 4px 12px 6px;
-  padding: 6px 12px;
-  border-radius: 10px;
+  margin: 3px 12px 5px;
+  padding: 6px 10px;
+  border-radius: 9px;
   background: rgba(167, 201, 87, 0.08);
   border: 1px solid rgba(167, 201, 87, 0.2);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   flex-shrink: 0;
 }
 
@@ -290,11 +292,6 @@
   border-radius: 50%;
   background: rgba(16, 185, 129, 0.4);
   animation: traineeStatusPing 2s infinite cubic-bezier(0, 0, 0.2, 1);
-}
-
-@keyframes traineeStatusPing {
-  0% { transform: scale(0.6); opacity: 0.8; }
-  80%, 100% { transform: scale(1.8); opacity: 0; }
 }
 
 .trainee-status-info {
@@ -327,13 +324,14 @@
 .trainee-sidebar-user-card {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 6px 8px;
-  border-radius: 10px;
+  border-radius: 9px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
   transition: all 0.2s ease;
+  justify-content: space-between;
 }
 
 .trainee-sidebar-user-card:hover {
@@ -342,13 +340,13 @@
 }
 
 .trainee-user-avatar {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: linear-gradient(135deg, #A7C957 0%, #2F5233 100%);
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 11.5px;
+  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -361,8 +359,8 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 8px;
-  height: 8px;
+  width: 7.5px;
+  height: 7.5px;
   border-radius: 50%;
   background: #10B981;
   border: 1.5px solid #1B4332;
@@ -376,7 +374,7 @@
 }
 
 .trainee-user-name {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   color: #FFFFFF;
   white-space: nowrap;
@@ -400,73 +398,26 @@
   justify-content: center;
   width: 26px;
   height: 26px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #D6E4DA;
+  border-radius: 7px;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  color: #FCA5A5;
   cursor: pointer;
-  transition: all 0.16s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .trainee-user-card-exit-btn:hover {
-  background: #DC2626;
-  border-color: #DC2626;
+  background: rgba(239, 68, 68, 0.3);
   color: #FFFFFF;
-}
-
-/* Micro scaling for smaller laptop viewports */
-@media (max-height: 750px) {
-  .trainee-sidebar-header {
-    padding: 8px 12px 5px;
-  }
-  .trainee-sidebar-logo-icon {
-    width: 28px;
-    height: 28px;
-  }
-  .trainee-brand-name {
-    font-size: 15px;
-  }
-  .trainee-sidebar-nav-scroll {
-    padding: 4px 8px;
-    gap: 1px;
-  }
-  .trainee-nav-group-title {
-    font-size: 8.5px;
-    padding: 1px 6px;
-  }
-  .trainee-nav-item-btn {
-    padding: 4px 7px;
-    min-height: 28px;
-    font-size: 11.5px;
-  }
-  .trainee-nav-icon {
-    width: 14px;
-    height: 14px;
-  }
-  .trainee-nav-icon svg {
-    width: 14px;
-    height: 14px;
-  }
-  .trainee-sidebar-status-card {
-    margin: 2px 8px 3px;
-    padding: 4px 8px;
-  }
-  .trainee-status-title {
-    font-size: 9.5px;
-  }
-  .trainee-status-subtitle {
-    font-size: 8px;
-  }
-  .trainee-sidebar-footer {
-    padding: 5px 8px 6px;
-  }
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: scale(1.06);
 }
 
 /* Master Content Area */
 .trainee-content-area {
-  margin-left: 270px;
-  width: calc(100% - 270px);
+  margin-left: 275px;
+  width: calc(100% - 275px);
   min-height: 100vh;
   flex-grow: 1;
   display: flex;

@@ -16,11 +16,11 @@
 }
 
 /* ==========================================================================
-   SIDEBAR
+   SIDEBAR (Fixed, Non-Scrolling, Proportionate, Rich Layout)
    ========================================================================== */
 .trainer-sidebar-container {
-  width: 270px;
-  background: #1B4332;
+  width: 275px;
+  background: #143527;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
@@ -32,13 +32,15 @@
   z-index: 100;
   flex-shrink: 0;
   box-sizing: border-box;
-  box-shadow: 4px 0 24px rgba(10, 35, 22, 0.15);
+  box-shadow: 4px 0 24px rgba(10, 35, 22, 0.18);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden; /* Strict: Never scroll */
 }
 
 .trainer-sidebar-header {
-  padding: 14px 16px 10px;
+  padding: 13px 16px 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
 }
 
 .trainer-sidebar-brand {
@@ -57,14 +59,14 @@
 .trainer-sidebar-logo-icon {
   width: 34px;
   height: 34px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(167, 201, 87, 0.25) 0%, rgba(47, 82, 51, 0.6) 100%);
-  border: 1px solid rgba(167, 201, 87, 0.4);
+  border-radius: 9px;
+  background: linear-gradient(135deg, rgba(167, 201, 87, 0.28) 0%, rgba(47, 82, 51, 0.7) 100%);
+  border: 1.5px solid rgba(167, 201, 87, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .trainer-sidebar-logo-icon img,
@@ -91,13 +93,13 @@
 }
 
 .trainer-brand-part-conn {
-  color: #A7C957 !important; /* High contrast vibrant lime/light green */
+  color: #A7C957 !important;
 }
 
 .trainer-brand-portal-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   margin-top: 2px;
   font-size: 8.5px;
   font-weight: 800;
@@ -106,8 +108,8 @@
   color: #D2ECC9;
   background: rgba(167, 201, 87, 0.16);
   border: 1px solid rgba(167, 201, 87, 0.3);
-  padding: 7.5px 7.5px;
-  border-radius: 150px;
+  padding: 2px 7.5px;
+  border-radius: 12px;
   width: fit-content;
 }
 
@@ -120,17 +122,17 @@
   display: inline-block;
 }
 
-/* Sidebar Navigation Items */
+/* Sidebar Navigation Items - Non-Scrolling, Proportionate, Top-Aligned */
 .trainer-sidebar-nav-scroll {
   flex: 1;
   min-height: 0;
-  overflow-y: hidden; /* Strict: Never scroll on desktop */
+  overflow-y: hidden; /* Strict: Zero scroll */
   overflow-x: hidden;
-  padding: 10px 12px;
+  padding: 8px 12px 6px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Dynamically distributes groups across available vertical space */
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 8px;
 }
 
 .trainer-sidebar-nav-scroll::-webkit-scrollbar {
@@ -140,17 +142,18 @@
 .trainer-nav-group {
   display: flex;
   flex-direction: column;
-  gap: 3.5px;
+  gap: 2px;
 }
 
 .trainer-nav-group-title {
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 10px;
+  font-weight: 800;
   letter-spacing: 1.1px;
   text-transform: uppercase;
   color: #9ECBA8;
-  padding: 4px 10px 3px;
+  padding: 1px 8px 2px;
   user-select: none;
+  opacity: 0.88;
 }
 
 .trainer-nav-item-btn {
@@ -158,13 +161,13 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 8.5px 12px;
-  min-height: 38px;
-  border-radius: 9px;
+  padding: 6.5px 10px;
+  min-height: 34px;
+  border-radius: 8px;
   background: transparent;
   border: 1px solid transparent;
-  color: #D6E4DA;
-  font-size: 13.5px;
+  color: #DCE8E0;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   text-align: left;
@@ -193,12 +196,12 @@
 .trainer-nav-btn-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 
 .trainer-nav-icon {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -206,10 +209,10 @@
 }
 
 .trainer-nav-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   stroke: currentColor;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .trainer-nav-item-btn.active .trainer-nav-icon svg {
@@ -219,11 +222,11 @@
 
 .trainer-nav-badge {
   font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
+  font-weight: 800;
+  padding: 1.5px 7px;
   border-radius: 9px;
   background: rgba(167, 201, 87, 0.22);
-  color: #BEE379;
+  color: #C3EAA0;
 }
 
 .trainer-nav-item-btn.active .trainer-nav-badge {
@@ -234,14 +237,14 @@
 
 /* Institutional Status & Pulse Widget */
 .trainer-sidebar-status-card {
-  margin: 6px 12px 8px;
-  padding: 8px 12px;
-  border-radius: 10px;
+  margin: 3px 12px 5px;
+  padding: 6px 10px;
+  border-radius: 9px;
   background: rgba(167, 201, 87, 0.08);
   border: 1px solid rgba(167, 201, 87, 0.2);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   flex-shrink: 0;
 }
 
@@ -271,11 +274,6 @@
   animation: trainerStatusPing 2s infinite cubic-bezier(0, 0, 0.2, 1);
 }
 
-@keyframes trainerStatusPing {
-  0% { transform: scale(0.6); opacity: 0.8; }
-  80%, 100% { transform: scale(1.8); opacity: 0; }
-}
-
 .trainer-status-info {
   display: flex;
   flex-direction: column;
@@ -283,21 +281,21 @@
 }
 
 .trainer-status-title {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   color: #D2ECC9;
   line-height: 1.2;
 }
 
 .trainer-status-subtitle {
-  font-size: 9.5px;
+  font-size: 9px;
   color: #9ECBA8;
   line-height: 1.2;
 }
 
 /* Sidebar Footer Profile & Integrated Exit */
 .trainer-sidebar-footer {
-  padding: 10px 12px 12px;
+  padding: 8px 12px 10px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(10, 35, 22, 0.35);
   flex-shrink: 0;
@@ -306,9 +304,9 @@
 .trainer-sidebar-user-card {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
-  border-radius: 10px;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 9px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
@@ -322,13 +320,13 @@
 }
 
 .trainer-user-avatar {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: linear-gradient(135deg, #A7C957 0%, #2F5233 100%);
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 11.5px;
+  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -356,7 +354,7 @@
 }
 
 .trainer-user-name {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
   color: #FFFFFF;
   white-space: nowrap;
@@ -376,9 +374,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
   background: rgba(239, 68, 68, 0.14);
   border: 1px solid rgba(239, 68, 68, 0.28);
   color: #FCA5A5;
@@ -394,85 +392,6 @@
   transform: scale(1.06);
 }
 
-/* Adaptive height adjustments to guarantee zero scrolling across all laptop and desktop viewports */
-@media (max-height: 820px) {
-  .trainer-sidebar-header {
-    padding: 12px 14px 8px;
-  }
-  .trainer-sidebar-nav-scroll {
-    padding: 6px 10px;
-    gap: 3px;
-  }
-  .trainer-nav-group {
-    gap: 2.5px;
-  }
-  .trainer-nav-group-title {
-    font-size: 9.5px;
-    padding: 2px 8px 1px;
-  }
-  .trainer-nav-item-btn {
-    padding: 6.5px 10px;
-    min-height: 34px;
-    font-size: 12.5px;
-  }
-  .trainer-sidebar-status-card {
-    margin: 4px 10px 5px;
-    padding: 6px 10px;
-  }
-  .trainer-sidebar-footer {
-    padding: 8px 10px 10px;
-  }
-}
-
-@media (max-height: 700px) {
-  .trainer-sidebar-header {
-    padding: 8px 12px 6px;
-  }
-  .trainer-sidebar-logo-icon {
-    width: 28px;
-    height: 28px;
-  }
-  .trainer-brand-name {
-    font-size: 15px;
-  }
-  .trainer-brand-portal-badge {
-    display: none;
-  }
-  .trainer-sidebar-nav-scroll {
-    padding: 4px 8px;
-    gap: 2px;
-  }
-  .trainer-nav-group-title {
-    font-size: 8.5px;
-    padding: 1px 6px;
-  }
-  .trainer-nav-item-btn {
-    padding: 5px 8px;
-    min-height: 28px;
-    font-size: 11.5px;
-  }
-  .trainer-nav-icon,
-  .trainer-nav-icon svg {
-    width: 15px;
-    height: 15px;
-  }
-  .trainer-sidebar-status-card {
-    display: none; /* Safely collapse status widget on small vertical viewports */
-  }
-  .trainer-sidebar-footer {
-    padding: 6px 8px;
-  }
-  .trainer-user-avatar {
-    width: 26px;
-    height: 26px;
-    font-size: 10px;
-  }
-  .trainer-user-card-exit-btn {
-    width: 24px;
-    height: 24px;
-  }
-}
-
 /* ==========================================================================
    MAIN CONTENT WRAPPER
    ========================================================================== */
@@ -482,8 +401,8 @@
   flex-direction: column;
   min-width: 0;
   background: #F8FAF8;
-  margin-left: 270px;
-  width: calc(100% - 270px);
+  margin-left: 275px;
+  width: calc(100% - 275px);
   box-sizing: border-box;
 }
 
@@ -1775,3 +1694,252 @@
     font-size: 11px;
   }
 }
+
+/* ==========================================================================
+   LIVE CLASSROOM QUICK-POLL WIDGET
+   ========================================================================== */
+.trainer-live-poll-section {
+  border: 1px solid rgba(47, 82, 51, 0.22);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9FCF9 100%);
+  box-shadow: 0 4px 20px rgba(27, 67, 50, 0.06);
+}
+
+.trainer-live-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #065F46;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.live-dot-ping {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.4);
+  animation: trainerStatusPing 1.8s infinite cubic-bezier(0, 0, 0.2, 1);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+}
+
+.trainer-poll-pills-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.trainer-poll-pills-lbl {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #557260;
+}
+
+.trainer-poll-selector-pill {
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid #D5E3D8;
+  background: #FFFFFF;
+  color: #2F5233;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.trainer-poll-selector-pill:hover {
+  background: #EEF6EA;
+  border-color: #2F5233;
+}
+
+.trainer-poll-selector-pill.active {
+  background: #2F5233;
+  color: #FFFFFF;
+  border-color: #244227;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(47, 82, 51, 0.2);
+}
+
+.trainer-poll-display-card {
+  background: #F8FAF8;
+  border: 1px solid #DCE6DF;
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.trainer-poll-meta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 11.5px;
+  color: #557260;
+}
+
+.trainer-poll-badge-node strong {
+  color: #1B4332;
+  margin-left: 4px;
+}
+
+.trainer-poll-total-votes strong {
+  color: #2F5233;
+  font-size: 13px;
+}
+
+.trainer-poll-question-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #16251B;
+  margin: 0 0 14px;
+  line-height: 1.35;
+}
+
+.trainer-poll-options-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.trainer-poll-option-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #FFFFFF;
+  border: 1px solid #E2EBE5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: all 0.2s ease;
+}
+
+.trainer-poll-option-row.is-correct {
+  background: #F0FDF4;
+  border-color: #86EFAC;
+}
+
+.trainer-poll-option-key {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: #EEF6EA;
+  color: #2F5233;
+  font-weight: 800;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.trainer-poll-option-row.is-correct .trainer-poll-option-key {
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.trainer-poll-option-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.trainer-poll-option-text-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.trainer-poll-opt-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #16251B;
+}
+
+.trainer-poll-opt-pct {
+  font-size: 12px;
+  color: #557260;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trainer-poll-opt-pct .correct-tag {
+  background: #D1FAE5;
+  color: #065F46;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.trainer-poll-bar-track {
+  width: 100%;
+  height: 7px;
+  background: #E8F0EA;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.trainer-poll-bar-fill {
+  height: 100%;
+  background: #A7C957;
+  border-radius: 10px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trainer-poll-bar-fill.correct-fill {
+  background: #10B981;
+}
+
+.trainer-poll-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid #E2EBE5;
+}
+
+.trainer-poll-nodes-status {
+  font-size: 11px;
+  color: #6C8675;
+}
+
+.btn-trainer-secondary.active-reveal {
+  background: #2F5233;
+  color: #FFFFFF;
+  border-color: #2F5233;
+}
+
+.trainer-poll-explanation-box {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #EEF6EA;
+  border: 1px solid #D2ECC9;
+  font-size: 12px;
+  color: #1B4332;
+  line-height: 1.4;
+  animation: popoverFadeIn 0.25s ease;
+}
+
+.trainer-poll-explanation-box strong {
+  display: block;
+  color: #2F5233;
+  margin-bottom: 4px;
+}
+
+.trainer-poll-explanation-box p {
+  margin: 0;
+}
+

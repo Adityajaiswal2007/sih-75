@@ -139,7 +139,7 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
       ]
     },
     {
-      group: 'Competencies & AI Match',
+      group: 'Competencies & Mentorship',
       items: [
         {
           id: 'competencies',
