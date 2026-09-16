@@ -313,7 +313,7 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
                               onClick={(e) => {
                                 e.stopPropagation()
                                 setAlertsOpen(false)
-                                onGetStarted ? onGetStarted() : onLogin()
+                                if (onGetStarted) { onGetStarted() } else { onLogin() }
                               }}
                             >
                               {item.action} →
@@ -431,7 +431,7 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
                 className="mobile-quick-btn register"
                 onClick={() => {
                   setMobileMenuOpen(false)
-                  onGetStarted ? onGetStarted() : onLogin()
+                  if (onGetStarted) { onGetStarted() } else { onLogin() }
                 }}
               >
                 Get Started Free →

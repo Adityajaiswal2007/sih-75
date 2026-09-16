@@ -50,6 +50,38 @@ const INITIAL_NOTIFICATIONS = [
   { id: 4, title: 'Scheduled Platform Audit', desc: 'System integrity and security logs synchronized with MoES server.', time: '1d ago', unread: false }
 ]
 
+const MONTHLY_ANALYTICS = [
+  { month: 'Apr', trainees: 1420, completed: 1100, hours: 8900, score: 72 },
+  { month: 'May', trainees: 1680, completed: 1320, hours: 9800, score: 73 },
+  { month: 'Jun', trainees: 1890, completed: 1480, hours: 10600, score: 75 },
+  { month: 'Jul', trainees: 2150, completed: 1720, hours: 11400, score: 74 },
+  { month: 'Aug', trainees: 2340, completed: 1890, hours: 12100, score: 77 },
+  { month: 'Sep', trainees: 2486, completed: 1948, hours: 12840, score: 78 }
+]
+
+const DOMAIN_ANALYTICS = [
+  { domain: 'Meteorology & NWP', percent: 38, count: 945, color: '#1B4332' },
+  { domain: 'Satellite Remote Sensing', percent: 24, count: 597, color: '#2D6A4F' },
+  { domain: 'GIS & Spatial Analytics', percent: 18, count: 447, color: '#40916C' },
+  { domain: 'Python & HPC Computing', percent: 14, count: 348, color: '#74C69D' },
+  { domain: 'Ocean & Climatology', percent: 6, count: 149, color: '#B7E4C7' }
+]
+
+const REGIONAL_CENTER_PERFORMANCE = [
+  { name: 'IMD Pune Training Node', trainees: 642, passRate: 94, avgScore: 84.2, status: 'Top Performing' },
+  { name: 'IMD New Delhi Directorate HQ', trainees: 720, passRate: 91, avgScore: 82.5, status: 'Top Performing' },
+  { name: 'IITM Pune Atmospheric Wing', trainees: 480, passRate: 88, avgScore: 79.4, status: 'Strong' },
+  { name: 'NCMRWF Noida Modeling Center', trainees: 390, passRate: 85, avgScore: 76.8, status: 'Developing' },
+  { name: 'INCOIS Hyderabad Ocean Node', trainees: 254, passRate: 82, avgScore: 74.2, status: 'Developing' }
+]
+
+const GRADE_DISTRIBUTION = [
+  { grade: 'Distinction (85%+)', percent: 34, count: 845, color: '#1B4332' },
+  { grade: 'Proficient (70-84%)', percent: 42, count: 1044, color: '#2D6A4F' },
+  { grade: 'Developing (55-69%)', percent: 18, count: 448, color: '#D97706' },
+  { grade: 'Needs Remediation (<55%)', percent: 6, count: 149, color: '#DC2626' }
+]
+
 export default function AdminDashboard({ onBack }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('Dashboard')
@@ -59,12 +91,18 @@ export default function AdminDashboard({ onBack }) {
   const [period, setPeriod] = useState('30 Days')
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS)
 
+  // Analytics tab filters and interactive state
+  const [analyticsPeriod, setAnalyticsPeriod] = useState('30 Days')
+  const [analyticsCenter, setAnalyticsCenter] = useState('All Centers')
+  const [hoveredMonth, setHoveredMonth] = useState(null)
+  const [hoveredDomain, setHoveredDomain] = useState(null)
+
   // Data states
   const [courses, setCourses] = useState(INITIAL_COURSES)
   const [trainers, setTrainers] = useState(INITIAL_TRAINERS)
   const [trainees, setTrainees] = useState(INITIAL_TRAINEES)
-  const [assessments, setAssessments] = useState(INITIAL_ASSESSMENTS)
-  const [competencies, setCompetencies] = useState(INITIAL_COMPETENCIES)
+  const [assessments] = useState(INITIAL_ASSESSMENTS)
+  const [competencies] = useState(INITIAL_COMPETENCIES)
 
   // Modal State
   const [activeModal, setActiveModal] = useState(null)
@@ -72,6 +110,188 @@ export default function AdminDashboard({ onBack }) {
   const [newTrainerForm, setNewTrainerForm] = useState({ name: '', expertise: 'Meteorology', email: '' })
   const [newCourseForm, setNewCourseForm] = useState({ name: '', domain: 'Meteorology', enrolled: '120' })
   const [actionSuccessMsg, setActionSuccessMsg] = useState('')
+
+  // User Management / Create User state
+  const [userMgmtStep, setUserMgmtStep] = useState('select') // 'select' | 'form-trainee' | 'form-trainer' | 'success'
+  const [createdUserResult, setCreatedUserResult] = useState(null)
+  const [traineeFormErrors, setTraineeFormErrors] = useState({})
+  const [trainerFormErrors, setTrainerFormErrors] = useState({})
+
+  // Generated ID state for current creation session
+  const [generatedTraineeId, setGeneratedTraineeId] = useState(() => `TRN-${Math.floor(10000 + Math.random() * 90000)}`)
+  const [generatedTrainerId, setGeneratedTrainerId] = useState(() => `TRR-${Math.floor(10000 + Math.random() * 90000)}`)
+  const [generatedTempPassword, setGeneratedTempPassword] = useState(() => `IMD#${Math.floor(1000 + Math.random() * 9000)}!x`)
+  const [showPasswordInSuccess, setShowPasswordInSuccess] = useState(false)
+  const [copiedKey, setCopiedKey] = useState(false)
+
+  // Trainee Form Fields
+  const [traineeFormData, setTraineeFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    mobile: '',
+    employeeId: '',
+    dept: 'Meteorology Division',
+    designation: 'Scientific Officer',
+    skillLevel: 'Intermediate',
+    areasOfInterest: 'Radar Analysis & Satellite Climatology',
+    learningGoals: 'Master numerical prediction modeling and Doppler radar interpretation'
+  })
+
+  // Trainer Form Fields
+  const [trainerFormData, setTrainerFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    mobile: '',
+    employeeId: '',
+    dept: 'Atmospheric Sciences Wing',
+    designation: 'Senior Faculty / Lead Trainer',
+    expertise: 'Weather Data Analysis & NWP',
+    coreCompetencies: 'WRF Modeling, Python for Earth Science, Doppler Radar',
+    experience: '8+ Years',
+    certifications: 'WMO Senior Instructor Certified, IMD Lead Fellow',
+    domains: 'Meteorology & Numerical Modeling',
+    availability: 'Full-Time (Mon-Fri)'
+  })
+
+  const startCreateTrainee = () => {
+    setGeneratedTraineeId(`TRN-${Math.floor(10000 + Math.random() * 90000)}`)
+    setGeneratedTempPassword(`IMD#${Math.floor(1000 + Math.random() * 9000)}!k`)
+    setTraineeFormErrors({})
+    setUserMgmtStep('form-trainee')
+  }
+
+  const startCreateTrainer = () => {
+    setGeneratedTrainerId(`TRR-${Math.floor(10000 + Math.random() * 90000)}`)
+    setGeneratedTempPassword(`IMD#${Math.floor(1000 + Math.random() * 9000)}!t`)
+    setTrainerFormErrors({})
+    setUserMgmtStep('form-trainer')
+  }
+
+  const handleCreateTraineeSubmit = (e) => {
+    e.preventDefault()
+    const errors = {}
+    if (!traineeFormData.firstName.trim()) errors.firstName = 'First name is required'
+    if (!traineeFormData.lastName.trim()) errors.lastName = 'Last name is required'
+    if (!traineeFormData.email.trim()) {
+      errors.email = 'Official email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(traineeFormData.email.trim())) {
+      errors.email = 'Enter a valid institutional email (e.g. name@imd.gov.in)'
+    }
+    if (!traineeFormData.employeeId.trim()) errors.employeeId = 'Employee / Staff ID is required'
+    if (!traineeFormData.dept.trim()) errors.dept = 'Department is required'
+    if (!traineeFormData.designation.trim()) errors.designation = 'Designation is required'
+
+    if (Object.keys(errors).length > 0) {
+      setTraineeFormErrors(errors)
+      return
+    }
+
+    const fullName = `${traineeFormData.firstName.trim()} ${traineeFormData.lastName.trim()}`
+    const newTraineeEntry = {
+      id: generatedTraineeId,
+      name: fullName,
+      dept: traineeFormData.dept,
+      enrolled: '1 Enrolled',
+      score: '80%',
+      status: 'Active'
+    }
+    setTrainees([newTraineeEntry, ...trainees])
+
+    setCreatedUserResult({
+      name: fullName,
+      role: 'Trainee',
+      userId: generatedTraineeId,
+      email: traineeFormData.email.trim(),
+      tempPassword: generatedTempPassword,
+      status: 'Active',
+      dept: traineeFormData.dept,
+      designation: traineeFormData.designation
+    })
+    setUserMgmtStep('success')
+    setActionSuccessMsg(`Trainee account ${generatedTraineeId} created successfully!`)
+    setTimeout(() => setActionSuccessMsg(''), 4000)
+  }
+
+  const handleCreateTrainerSubmit = (e) => {
+    e.preventDefault()
+    const errors = {}
+    if (!trainerFormData.firstName.trim()) errors.firstName = 'First name is required'
+    if (!trainerFormData.lastName.trim()) errors.lastName = 'Last name is required'
+    if (!trainerFormData.email.trim()) {
+      errors.email = 'Official email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trainerFormData.email.trim())) {
+      errors.email = 'Enter a valid institutional email (e.g. dr.name@imd.gov.in)'
+    }
+    if (!trainerFormData.employeeId.trim()) errors.employeeId = 'Employee / Staff ID is required'
+    if (!trainerFormData.dept.trim()) errors.dept = 'Department is required'
+    if (!trainerFormData.designation.trim()) errors.designation = 'Designation is required'
+
+    if (Object.keys(errors).length > 0) {
+      setTrainerFormErrors(errors)
+      return
+    }
+
+    const fullName = `${trainerFormData.firstName.trim()} ${trainerFormData.lastName.trim()}`
+    const newTrainerEntry = {
+      name: fullName,
+      expertise: trainerFormData.expertise,
+      score: '92%',
+      trained: '0 trainees',
+      rating: '5.0/5',
+      status: 'Accredited'
+    }
+    setTrainers([newTrainerEntry, ...trainers])
+
+    setCreatedUserResult({
+      name: fullName,
+      role: 'Trainer',
+      userId: generatedTrainerId,
+      email: trainerFormData.email.trim(),
+      tempPassword: generatedTempPassword,
+      status: 'Active',
+      dept: trainerFormData.dept,
+      designation: trainerFormData.designation
+    })
+    setUserMgmtStep('success')
+    setActionSuccessMsg(`Trainer account ${generatedTrainerId} created successfully!`)
+    setTimeout(() => setActionSuccessMsg(''), 4000)
+  }
+
+  const handleCreateAnother = () => {
+    setTraineeFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      mobile: '',
+      employeeId: '',
+      dept: 'Meteorology Division',
+      designation: 'Scientific Officer',
+      skillLevel: 'Intermediate',
+      areasOfInterest: 'Radar Analysis & Satellite Climatology',
+      learningGoals: 'Master numerical prediction modeling and Doppler radar interpretation'
+    })
+    setTrainerFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      mobile: '',
+      employeeId: '',
+      dept: 'Atmospheric Sciences Wing',
+      designation: 'Senior Faculty / Lead Trainer',
+      expertise: 'Weather Data Analysis & NWP',
+      coreCompetencies: 'WRF Modeling, Python for Earth Science, Doppler Radar',
+      experience: '8+ Years',
+      certifications: 'WMO Senior Instructor Certified, IMD Lead Fellow',
+      domains: 'Meteorology & Numerical Modeling',
+      availability: 'Full-Time (Mon-Fri)'
+    })
+    setTraineeFormErrors({})
+    setTrainerFormErrors({})
+    setCreatedUserResult(null)
+    setUserMgmtStep('select')
+  }
 
   const openTrainerProfile = () => {
     window.location.hash = '#trainer-profile'
@@ -221,6 +441,18 @@ export default function AdminDashboard({ onBack }) {
     {
       group: 'Personnel & Faculty',
       items: [
+        {
+          id: 'User Management',
+          label: 'User Management',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <line x1="19" y1="8" x2="19" y2="14" />
+              <line x1="22" y1="11" x2="16" y2="11" />
+            </svg>
+          )
+        },
         {
           id: 'Trainees',
           label: 'Trainees',
@@ -408,19 +640,25 @@ export default function AdminDashboard({ onBack }) {
             </button>
             <div className="admin-nav-heading-wrap">
               <h1 className="admin-nav-heading-title">
-                {activeTab === 'Dashboard' ? 'Institutional Dashboard' : `${activeTab} Management`}
+                {activeTab === 'Dashboard' ? 'Admin Workspace' : activeTab}
               </h1>
               <span className="admin-nav-heading-sub">
-                Monitor learning activity, capacity growth, and institutional performance.
+                {activeTab === 'Dashboard'
+                  ? 'Monitor learning activity, workforce competencies, and institutional performance.'
+                  : activeTab === 'Analytics'
+                  ? 'Institutional capacity telemetry, competency gain, and training analytics.'
+                  : activeTab === 'User Management'
+                  ? 'Create and provision authorized trainee and trainer accounts.'
+                  : `Manage institutional ${activeTab.toLowerCase()} and capacity records.`}
               </span>
             </div>
           </div>
 
           <div className="admin-nav-actions-wrap">
-            {/* Global Search Bar with adequate width and full placeholder */}
+            {/* Global Search Bar with adequate width and shortcut badge */}
             <div className="admin-search-wrapper">
               <span className="admin-search-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
@@ -428,10 +666,21 @@ export default function AdminDashboard({ onBack }) {
               <input
                 type="text"
                 className="admin-search-input"
-                placeholder="Search courses, trainers, competencies..."
+                placeholder="Search courses, faculty, competencies..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+              <kbd style={{
+                background: '#EEF4EF',
+                border: '1px solid #D2E2D6',
+                borderRadius: 4,
+                padding: '2px 6px',
+                fontSize: 10,
+                color: '#496653',
+                fontWeight: 700,
+                letterSpacing: 0.5,
+                marginRight: 6
+              }}>⌘K</kbd>
             </div>
 
             {/* Notification Bell */}
@@ -562,14 +811,11 @@ export default function AdminDashboard({ onBack }) {
                   </p>
                 </div>
                 <div className="admin-action-btn-group">
-                  <button type="button" className="btn-admin-action primary" onClick={() => setActiveModal('addTrainee')}>
-                    <span>+</span> Add Trainee
+                  <button type="button" className="btn-admin-action primary" onClick={() => setActiveTab('User Management')}>
+                    <span>👥</span> Manage Users
                   </button>
-                  <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal('addTrainer')}>
-                    <span>+</span> Add Trainer
-                  </button>
-                  <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal('createCourse')}>
-                    <span>+</span> Create Course
+                  <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal('createNotice')}>
+                    <span>📢</span> Broadcast Notice
                   </button>
                 </div>
               </div>
@@ -910,9 +1156,6 @@ export default function AdminDashboard({ onBack }) {
                   <h2 className="admin-panel-title">Institutional Courses Catalog</h2>
                   <p className="admin-panel-subtitle">Manage accredited syllabi, enrollments, and competency tracks.</p>
                 </div>
-                <button type="button" className="btn-admin-action primary" onClick={() => setActiveModal('createCourse')}>
-                  + Add New Course
-                </button>
               </div>
 
               <div style={{ overflowX: 'auto', marginTop: 10 }}>
@@ -960,9 +1203,6 @@ export default function AdminDashboard({ onBack }) {
                   <h2 className="admin-panel-title">Competency Assessments &amp; Exams</h2>
                   <p className="admin-panel-subtitle">Centralized evaluation roster and credentialing checkpoints.</p>
                 </div>
-                <button type="button" className="btn-admin-action primary" onClick={() => setActiveModal('scheduleAssessment')}>
-                  + Schedule Assessment
-                </button>
               </div>
 
               <div style={{ overflowX: 'auto', marginTop: 10 }}>
@@ -1033,6 +1273,681 @@ export default function AdminDashboard({ onBack }) {
             </div>
           )}
 
+          {/* TAB: USER MANAGEMENT / CREATE USER */}
+          {activeTab === 'User Management' && (
+            <div className="admin-create-user-container">
+              <div className="admin-card-panel admin-create-user-panel">
+                <div className="admin-panel-head">
+                  <div className="admin-panel-title-wrap">
+                    <div className="admin-welcome-kicker" style={{ marginBottom: 6 }}>
+                      <span>AUTHORIZATION PORTAL</span> • MoES / IMD Access Control
+                    </div>
+                    <h2 className="admin-panel-title">Create User</h2>
+                    <p className="admin-panel-subtitle">
+                      Create authorized trainee and trainer accounts for the CapacityConnect portal.
+                    </p>
+                  </div>
+                  {userMgmtStep !== 'select' && (
+                    <button
+                      type="button"
+                      className="btn-admin-action secondary"
+                      onClick={() => {
+                        setUserMgmtStep('select')
+                        setTraineeFormErrors({})
+                        setTrainerFormErrors({})
+                      }}
+                    >
+                      ← Back to Selection
+                    </button>
+                  )}
+                </div>
+
+                {/* STEP 1: SELECT ROLE (2 Large Cards) */}
+                {userMgmtStep === 'select' && (
+                  <div className="admin-create-user-selection-grid">
+                    {/* Create Trainee Card */}
+                    <div className="admin-create-user-role-card">
+                      <div className="admin-create-user-role-icon-box trainee-theme">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                          <circle cx="9" cy="7" r="4" />
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                      </div>
+                      <div className="admin-create-user-role-info">
+                        <span className="admin-create-user-role-tag trainee-tag">Learner Track</span>
+                        <h3 className="admin-create-user-role-title">Create Trainee</h3>
+                        <p className="admin-create-user-role-desc">
+                          Create a trainee profile and provide access to assigned learning programs.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-admin-action primary admin-create-user-role-btn"
+                        onClick={startCreateTrainee}
+                      >
+                        Create Trainee →
+                      </button>
+                    </div>
+
+                    {/* Create Trainer Card */}
+                    <div className="admin-create-user-role-card">
+                      <div className="admin-create-user-role-icon-box trainer-theme">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                          <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        </svg>
+                      </div>
+                      <div className="admin-create-user-role-info">
+                        <span className="admin-create-user-role-tag trainer-tag">Faculty &amp; Instructor</span>
+                        <h3 className="admin-create-user-role-title">Create Trainer</h3>
+                        <p className="admin-create-user-role-desc">
+                          Create a trainer profile and provide access to training and learner management tools.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-admin-action primary admin-create-user-role-btn"
+                        onClick={startCreateTrainer}
+                      >
+                        Create Trainer →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* STEP 2A: TRAINEE FORM */}
+                {userMgmtStep === 'form-trainee' && (
+                  <form className="admin-create-user-form" onSubmit={handleCreateTraineeSubmit}>
+                    <div className="admin-create-user-form-header">
+                      <div className="admin-create-user-form-badge trainee-tag">Trainee Account Provisioning</div>
+                      <h3 className="admin-create-user-form-title">Trainee Profile Information</h3>
+                      <p className="admin-create-user-form-sub">
+                        Enter institutional and learning details for the new trainee. Login credentials will be generated automatically.
+                      </p>
+                    </div>
+
+                    {/* Section: Personal Information */}
+                    <div className="admin-create-user-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">01</span> Personal Information
+                      </div>
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>First Name <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Rahul"
+                            value={traineeFormData.firstName}
+                            onChange={(e) => {
+                              setTraineeFormData({ ...traineeFormData, firstName: e.target.value })
+                              if (traineeFormErrors.firstName) setTraineeFormErrors({ ...traineeFormErrors, firstName: '' })
+                            }}
+                          />
+                          {traineeFormErrors.firstName && <span className="admin-create-user-error-text">{traineeFormErrors.firstName}</span>}
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Last Name <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Sharma"
+                            value={traineeFormData.lastName}
+                            onChange={(e) => {
+                              setTraineeFormData({ ...traineeFormData, lastName: e.target.value })
+                              if (traineeFormErrors.lastName) setTraineeFormErrors({ ...traineeFormErrors, lastName: '' })
+                            }}
+                          />
+                          {traineeFormErrors.lastName && <span className="admin-create-user-error-text">{traineeFormErrors.lastName}</span>}
+                        </div>
+                      </div>
+
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>Official Email <span className="req-star">*</span></label>
+                          <input
+                            type="email"
+                            placeholder="e.g. rahul.sharma@imd.gov.in"
+                            value={traineeFormData.email}
+                            onChange={(e) => {
+                              setTraineeFormData({ ...traineeFormData, email: e.target.value })
+                              if (traineeFormErrors.email) setTraineeFormErrors({ ...traineeFormErrors, email: '' })
+                            }}
+                          />
+                          {traineeFormErrors.email && <span className="admin-create-user-error-text">{traineeFormErrors.email}</span>}
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Mobile Number</label>
+                          <input
+                            type="tel"
+                            placeholder="e.g. +91 98765 43210"
+                            value={traineeFormData.mobile}
+                            onChange={(e) => setTraineeFormData({ ...traineeFormData, mobile: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Organization Information */}
+                    <div className="admin-create-user-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">02</span> Organization Information
+                      </div>
+                      <div className="admin-create-user-grid-3col">
+                        <div className="admin-form-group">
+                          <label>Employee / Staff ID <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. EMP-48201"
+                            value={traineeFormData.employeeId}
+                            onChange={(e) => {
+                              setTraineeFormData({ ...traineeFormData, employeeId: e.target.value })
+                              if (traineeFormErrors.employeeId) setTraineeFormErrors({ ...traineeFormErrors, employeeId: '' })
+                            }}
+                          />
+                          {traineeFormErrors.employeeId && <span className="admin-create-user-error-text">{traineeFormErrors.employeeId}</span>}
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Department <span className="req-star">*</span></label>
+                          <select
+                            value={traineeFormData.dept}
+                            onChange={(e) => {
+                              setTraineeFormData({ ...traineeFormData, dept: e.target.value })
+                              if (traineeFormErrors.dept) setTraineeFormErrors({ ...traineeFormErrors, dept: '' })
+                            }}
+                          >
+                            <option>Meteorology Division</option>
+                            <option>Climatology Unit</option>
+                            <option>Remote Sensing Lab</option>
+                            <option>Hydrology Division</option>
+                            <option>Numerical Modeling Unit</option>
+                            <option>Ocean Science Wing</option>
+                            <option>Seismology &amp; Geophysics</option>
+                          </select>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Designation <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Scientific Assistant"
+                            value={traineeFormData.designation}
+                            onChange={(e) => {
+                              setTraineeFormData({ ...traineeFormData, designation: e.target.value })
+                              if (traineeFormErrors.designation) setTraineeFormErrors({ ...traineeFormErrors, designation: '' })
+                            }}
+                          />
+                          {traineeFormErrors.designation && <span className="admin-create-user-error-text">{traineeFormErrors.designation}</span>}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Learning Profile */}
+                    <div className="admin-create-user-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">03</span> Learning Profile
+                      </div>
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>Current Skill Level</label>
+                          <select
+                            value={traineeFormData.skillLevel}
+                            onChange={(e) => setTraineeFormData({ ...traineeFormData, skillLevel: e.target.value })}
+                          >
+                            <option>Beginner (Foundation)</option>
+                            <option>Intermediate (Practitioner)</option>
+                            <option>Advanced (Specialist)</option>
+                          </select>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Areas of Interest</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Radar Meteorology, Satellite Analytics, GIS"
+                            value={traineeFormData.areasOfInterest}
+                            onChange={(e) => setTraineeFormData({ ...traineeFormData, areasOfInterest: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Learning Goals</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Complete Numerical Weather Prediction certification within 6 months"
+                          value={traineeFormData.learningGoals}
+                          onChange={(e) => setTraineeFormData({ ...traineeFormData, learningGoals: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Section: Account Information (Auto-generated & Read-only) */}
+                    <div className="admin-create-user-section account-info-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">04</span> Account Information
+                      </div>
+                      <div className="admin-create-user-grid-3col">
+                        <div className="admin-form-group">
+                          <label>User ID (Auto-Generated)</label>
+                          <div className="admin-create-user-readonly-box">
+                            <span className="readonly-icon">🆔</span>
+                            <code>{generatedTraineeId}</code>
+                            <span className="readonly-badge">Generated</span>
+                          </div>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Temporary Password</label>
+                          <div className="admin-create-user-readonly-box">
+                            <span className="readonly-icon">🔒</span>
+                            <code>{generatedTempPassword}</code>
+                            <span className="readonly-badge">Generated</span>
+                          </div>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Account Status</label>
+                          <div className="admin-create-user-readonly-box">
+                            <span className="admin-status-pill excellent" style={{ margin: 0 }}>
+                              ● Active
+                            </span>
+                            <small style={{ color: '#597363', marginLeft: 'auto' }}>Standard Access</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="admin-create-user-actions-row">
+                      <button
+                        type="button"
+                        className="btn-admin-action secondary"
+                        onClick={() => setUserMgmtStep('select')}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn-admin-action primary"
+                      >
+                        Create Trainee ✓
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* STEP 2B: TRAINER FORM */}
+                {userMgmtStep === 'form-trainer' && (
+                  <form className="admin-create-user-form" onSubmit={handleCreateTrainerSubmit}>
+                    <div className="admin-create-user-form-header">
+                      <div className="admin-create-user-form-badge trainer-tag">Faculty Account Provisioning</div>
+                      <h3 className="admin-create-user-form-title">Trainer Profile Information</h3>
+                      <p className="admin-create-user-form-sub">
+                        Enter institutional and faculty expertise details for the new trainer. Login credentials will be generated automatically.
+                      </p>
+                    </div>
+
+                    {/* Section: Personal Information */}
+                    <div className="admin-create-user-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">01</span> Personal Information
+                      </div>
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>First Name <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Priya"
+                            value={trainerFormData.firstName}
+                            onChange={(e) => {
+                              setTrainerFormData({ ...trainerFormData, firstName: e.target.value })
+                              if (trainerFormErrors.firstName) setTrainerFormErrors({ ...trainerFormErrors, firstName: '' })
+                            }}
+                          />
+                          {trainerFormErrors.firstName && <span className="admin-create-user-error-text">{trainerFormErrors.firstName}</span>}
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Last Name <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Nair"
+                            value={trainerFormData.lastName}
+                            onChange={(e) => {
+                              setTrainerFormData({ ...trainerFormData, lastName: e.target.value })
+                              if (trainerFormErrors.lastName) setTrainerFormErrors({ ...trainerFormErrors, lastName: '' })
+                            }}
+                          />
+                          {trainerFormErrors.lastName && <span className="admin-create-user-error-text">{trainerFormErrors.lastName}</span>}
+                        </div>
+                      </div>
+
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>Official Email <span className="req-star">*</span></label>
+                          <input
+                            type="email"
+                            placeholder="e.g. dr.priya.nair@imd.gov.in"
+                            value={trainerFormData.email}
+                            onChange={(e) => {
+                              setTrainerFormData({ ...trainerFormData, email: e.target.value })
+                              if (trainerFormErrors.email) setTrainerFormErrors({ ...trainerFormErrors, email: '' })
+                            }}
+                          />
+                          {trainerFormErrors.email && <span className="admin-create-user-error-text">{trainerFormErrors.email}</span>}
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Mobile Number</label>
+                          <input
+                            type="tel"
+                            placeholder="e.g. +91 98765 12345"
+                            value={trainerFormData.mobile}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, mobile: e.target.value })}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Organization Information */}
+                    <div className="admin-create-user-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">02</span> Organization Information
+                      </div>
+                      <div className="admin-create-user-grid-3col">
+                        <div className="admin-form-group">
+                          <label>Employee / Staff ID <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. FAC-90214"
+                            value={trainerFormData.employeeId}
+                            onChange={(e) => {
+                              setTrainerFormData({ ...trainerFormData, employeeId: e.target.value })
+                              if (trainerFormErrors.employeeId) setTrainerFormErrors({ ...trainerFormErrors, employeeId: '' })
+                            }}
+                          />
+                          {trainerFormErrors.employeeId && <span className="admin-create-user-error-text">{trainerFormErrors.employeeId}</span>}
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Department <span className="req-star">*</span></label>
+                          <select
+                            value={trainerFormData.dept}
+                            onChange={(e) => {
+                              setTrainerFormData({ ...trainerFormData, dept: e.target.value })
+                              if (trainerFormErrors.dept) setTrainerFormErrors({ ...trainerFormErrors, dept: '' })
+                            }}
+                          >
+                            <option>Atmospheric Sciences Wing</option>
+                            <option>Meteorology Division</option>
+                            <option>Remote Sensing &amp; Satellite Center</option>
+                            <option>Numerical Modeling &amp; HPC Unit</option>
+                            <option>Hydrological Research Wing</option>
+                            <option>Climate Research &amp; Services (CRS)</option>
+                          </select>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Designation <span className="req-star">*</span></label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Senior Faculty / Scientist-F"
+                            value={trainerFormData.designation}
+                            onChange={(e) => {
+                              setTrainerFormData({ ...trainerFormData, designation: e.target.value })
+                              if (trainerFormErrors.designation) setTrainerFormErrors({ ...trainerFormErrors, designation: '' })
+                            }}
+                          />
+                          {trainerFormErrors.designation && <span className="admin-create-user-error-text">{trainerFormErrors.designation}</span>}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Professional Profile */}
+                    <div className="admin-create-user-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">03</span> Professional Profile
+                      </div>
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>Areas of Expertise</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Weather Data Analysis &amp; NWP, Radar Climatology"
+                            value={trainerFormData.expertise}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, expertise: e.target.value })}
+                          />
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Core Competencies</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. WRF Modeling, Python for Earth Science, Doppler Radar"
+                            value={trainerFormData.coreCompetencies}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, coreCompetencies: e.target.value })}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>Years of Experience</label>
+                          <select
+                            value={trainerFormData.experience}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, experience: e.target.value })}
+                          >
+                            <option>2 - 4 Years</option>
+                            <option>5 - 7 Years</option>
+                            <option>8+ Years</option>
+                            <option>12+ Years</option>
+                            <option>15+ Years (Senior Fellow)</option>
+                          </select>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Certifications</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. WMO Class I Certified, IMD Lead Fellow"
+                            value={trainerFormData.certifications}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, certifications: e.target.value })}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="admin-create-user-grid-2col">
+                        <div className="admin-form-group">
+                          <label>Training Domains</label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Meteorology &amp; Numerical Modeling"
+                            value={trainerFormData.domains}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, domains: e.target.value })}
+                          />
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Availability</label>
+                          <select
+                            value={trainerFormData.availability}
+                            onChange={(e) => setTrainerFormData({ ...trainerFormData, availability: e.target.value })}
+                          >
+                            <option>Full-Time (Mon-Fri)</option>
+                            <option>Part-Time / Visiting</option>
+                            <option>Weekend Cohorts</option>
+                            <option>On-Demand Guest Lectures</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section: Account Information (Auto-generated & Read-only) */}
+                    <div className="admin-create-user-section account-info-section">
+                      <div className="admin-create-user-section-title">
+                        <span className="section-num">04</span> Account Information
+                      </div>
+                      <div className="admin-create-user-grid-3col">
+                        <div className="admin-form-group">
+                          <label>User ID (Auto-Generated)</label>
+                          <div className="admin-create-user-readonly-box">
+                            <span className="readonly-icon">🆔</span>
+                            <code>{generatedTrainerId}</code>
+                            <span className="readonly-badge">Generated</span>
+                          </div>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Temporary Password</label>
+                          <div className="admin-create-user-readonly-box">
+                            <span className="readonly-icon">🔒</span>
+                            <code>{generatedTempPassword}</code>
+                            <span className="readonly-badge">Generated</span>
+                          </div>
+                        </div>
+                        <div className="admin-form-group">
+                          <label>Account Status</label>
+                          <div className="admin-create-user-readonly-box">
+                            <span className="admin-status-pill excellent" style={{ margin: 0 }}>
+                              ● Active
+                            </span>
+                            <small style={{ color: '#597363', marginLeft: 'auto' }}>Faculty Portal Access</small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="admin-create-user-actions-row">
+                      <button
+                        type="button"
+                        className="btn-admin-action secondary"
+                        onClick={() => setUserMgmtStep('select')}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn-admin-action primary"
+                      >
+                        Create Trainer ✓
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* STEP 3: SUCCESS CONFIRMATION */}
+                {userMgmtStep === 'success' && createdUserResult && (
+                  <div className="admin-create-user-success-wrap">
+                    <div className="admin-create-user-success-card">
+                      <div className="admin-create-user-success-badge-icon">
+                        ✓
+                      </div>
+                      <h3 className="admin-create-user-success-title">User Created Successfully</h3>
+                      <p className="admin-create-user-success-sub">
+                        Authorized profile and credentials have been provisioned in the CapacityConnect database.
+                      </p>
+
+                      {/* Credentials / Details Summary Table */}
+                      <div className="admin-create-user-summary-box">
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Full Name</span>
+                          <strong className="summary-value">{createdUserResult.name}</strong>
+                        </div>
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Assigned Role</span>
+                          <span className={`admin-create-user-role-pill ${createdUserResult.role === 'Trainer' ? 'trainer' : 'trainee'}`}>
+                            {createdUserResult.role}
+                          </span>
+                        </div>
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Generated User ID</span>
+                          <div className="summary-id-wrap">
+                            <code className="summary-code-id">{createdUserResult.userId}</code>
+                            <button
+                              type="button"
+                              className="btn-copy-mini"
+                              onClick={() => {
+                                navigator.clipboard.writeText(createdUserResult.userId)
+                                setCopiedKey('userId')
+                                setTimeout(() => setCopiedKey(false), 2500)
+                              }}
+                              title="Copy User ID"
+                            >
+                              {copiedKey === 'userId' ? '✓ Copied' : '📋 Copy'}
+                            </button>
+                          </div>
+                        </div>
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Official Email</span>
+                          <span className="summary-value">{createdUserResult.email}</span>
+                        </div>
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Temporary Password</span>
+                          <div className="summary-pwd-wrap">
+                            <code className="summary-code-pwd">
+                              {showPasswordInSuccess ? createdUserResult.tempPassword : '••••••••••••'}
+                            </code>
+                            <button
+                              type="button"
+                              className="btn-copy-mini"
+                              onClick={() => setShowPasswordInSuccess(!showPasswordInSuccess)}
+                            >
+                              {showPasswordInSuccess ? 'Hide' : 'Show'}
+                            </button>
+                            <button
+                              type="button"
+                              className="btn-copy-mini"
+                              onClick={() => {
+                                navigator.clipboard.writeText(createdUserResult.tempPassword)
+                                setCopiedKey('tempPwd')
+                                setTimeout(() => setCopiedKey(false), 2500)
+                              }}
+                              title="Copy Password"
+                            >
+                              {copiedKey === 'tempPwd' ? '✓ Copied' : '📋 Copy'}
+                            </button>
+                          </div>
+                        </div>
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Department / Unit</span>
+                          <span className="summary-value">{createdUserResult.dept}</span>
+                        </div>
+                        <div className="admin-create-user-summary-row">
+                          <span className="summary-label">Account Status</span>
+                          <span className="admin-status-pill excellent">
+                            ● {createdUserResult.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Email Confirmation Notice */}
+                      <div className="admin-create-user-email-notice">
+                        <span className="email-notice-icon">✉️</span>
+                        <div className="email-notice-text">
+                          <strong>Login credentials dispatched</strong>
+                          <p>Login credentials have been sent to the user's registered email ({createdUserResult.email}). The user will be prompted to reset their temporary password upon initial authentication.</p>
+                        </div>
+                      </div>
+
+                      {/* Success Actions */}
+                      <div className="admin-create-user-success-actions">
+                        <button
+                          type="button"
+                          className="btn-admin-action secondary"
+                          onClick={() => {
+                            if (createdUserResult.role === 'Trainer') {
+                              openTrainerProfile()
+                            } else {
+                              setActiveTab('Trainees')
+                            }
+                          }}
+                        >
+                          View Profile →
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-admin-action primary"
+                          onClick={handleCreateAnother}
+                        >
+                          + Create Another User
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* TAB: TRAINEES */}
           {activeTab === 'Trainees' && (
             <div className="admin-card-panel">
@@ -1041,8 +1956,15 @@ export default function AdminDashboard({ onBack }) {
                   <h2 className="admin-panel-title">Institutional Trainees Directory</h2>
                   <p className="admin-panel-subtitle">2,486 active learners across MoES / IMD centers and universities.</p>
                 </div>
-                <button type="button" className="btn-admin-action primary" onClick={() => setActiveModal('addTrainee')}>
-                  + Register Trainee
+                <button
+                  type="button"
+                  className="btn-admin-action secondary"
+                  onClick={() => {
+                    setActionSuccessMsg('Exporting Trainees Directory (CSV)...')
+                    setTimeout(() => setActionSuccessMsg(''), 3000)
+                  }}
+                >
+                  <span>⬇</span> Export Directory (CSV)
                 </button>
               </div>
 
@@ -1089,8 +2011,15 @@ export default function AdminDashboard({ onBack }) {
                   <h2 className="admin-panel-title">Accredited Faculty &amp; Trainers</h2>
                   <p className="admin-panel-subtitle">Verified subject matter experts across meteorological disciplines.</p>
                 </div>
-                <button type="button" className="btn-admin-action primary" onClick={() => setActiveModal('addTrainer')}>
-                  + Invite Faculty
+                <button
+                  type="button"
+                  className="btn-admin-action secondary"
+                  onClick={() => {
+                    setActionSuccessMsg('Exporting Faculty Registry (PDF)...')
+                    setTimeout(() => setActionSuccessMsg(''), 3000)
+                  }}
+                >
+                  <span>⬇</span> Export Registry (PDF)
                 </button>
               </div>
 
@@ -1232,49 +2161,482 @@ export default function AdminDashboard({ onBack }) {
             </div>
           )}
 
-          {/* TAB: ANALYTICS */}
+          {/* TAB: ANALYTICS (Redesigned with Rich Interactive SVG Charts, Donut Pie, Regional Benchmark & AI Insights) */}
           {activeTab === 'Analytics' && (
-            <div className="admin-card-panel">
-              <div className="admin-panel-head">
-                <div className="admin-panel-title-wrap">
-                  <h2 className="admin-panel-title">Institutional Capacity &amp; Learning Analytics</h2>
-                  <p className="admin-panel-subtitle">Comprehensive metrics on completion, competency gain, and training ROI.</p>
+            <div className="admin-analytics-container">
+              {/* Sleek Top Filter Bar */}
+              <div className="admin-analytics-toolbar">
+                <div className="admin-analytics-toolbar-left">
+                  <div className="admin-analytics-time-pills">
+                    {['7 Days', '30 Days', '90 Days', '1 Year'].map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        className={`admin-analytics-time-btn ${analyticsPeriod === p ? 'active' : ''}`}
+                        onClick={() => setAnalyticsPeriod(p)}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+
+                  <select
+                    className="admin-center-filter-select"
+                    value={analyticsCenter}
+                    onChange={(e) => setAnalyticsCenter(e.target.value)}
+                  >
+                    <option>All National Centers</option>
+                    <option>IMD New Delhi Directorate HQ</option>
+                    <option>IMD Pune Training Node</option>
+                    <option>IITM Pune Atmospheric Wing</option>
+                    <option>NCMRWF Noida Modeling Center</option>
+                    <option>INCOIS Hyderabad Ocean Node</option>
+                  </select>
+                </div>
+
+                <div className="admin-analytics-toolbar-right">
+                  <button
+                    type="button"
+                    className="btn-admin-action primary"
+                    onClick={() => {
+                      setActionSuccessMsg('Exporting Institutional Analytics Dossier (PDF)...')
+                      setTimeout(() => setActionSuccessMsg(''), 4000)
+                    }}
+                  >
+                    <span>📊</span> Export Dossier (PDF)
+                  </button>
                 </div>
               </div>
 
-              <div className="admin-kpis-grid" style={{ marginBottom: 20 }}>
-                <div className="admin-kpi-card">
-                  <span className="admin-kpi-label">Total Learning Hours</span>
-                  <strong className="admin-kpi-value">12,840</strong>
-                  <span className="admin-kpi-subtext">+18% vs last quarter</span>
+              {/* 4 Clean Glassmorphic KPI Cards */}
+              <div className="admin-analytics-kpi-grid">
+                <div className="admin-analytics-kpi-card">
+                  <div className="kpi-top">
+                    <span className="kpi-label">Total Learning Hours</span>
+                    <span className="kpi-badge positive">↑ +18.4%</span>
+                  </div>
+                  <strong className="kpi-num">12,840 <small style={{ fontSize: 14, fontWeight: 600, color: '#597363' }}>hrs</small></strong>
+                  <div className="kpi-mini-bar">
+                    <div className="kpi-mini-fill" style={{ width: '84%', background: 'linear-gradient(90deg, #1B4332, #52B788)' }} />
+                  </div>
+                  <span className="kpi-foot">Avg 5.1 hrs/trainee this month</span>
                 </div>
-                <div className="admin-kpi-card">
-                  <span className="admin-kpi-label">Completion Rate</span>
-                  <strong className="admin-kpi-value">78.4%</strong>
-                  <span className="admin-kpi-subtext">Above national benchmark</span>
+
+                <div className="admin-analytics-kpi-card">
+                  <div className="kpi-top">
+                    <span className="kpi-label">Completion Velocity</span>
+                    <span className="kpi-badge positive">↑ +4.2%</span>
+                  </div>
+                  <strong className="kpi-num">78.4%</strong>
+                  <div className="kpi-mini-bar">
+                    <div className="kpi-mini-fill" style={{ width: '78.4%', background: 'linear-gradient(90deg, #2D6A4F, #74C69D)' }} />
+                  </div>
+                  <span className="kpi-foot">1,948 of 2,486 completed track</span>
                 </div>
-                <div className="admin-kpi-card">
-                  <span className="admin-kpi-label">Certified Trainees</span>
-                  <strong className="admin-kpi-value">1,894</strong>
-                  <span className="admin-kpi-subtext">WMO / MoES accredited</span>
+
+                <div className="admin-analytics-kpi-card">
+                  <div className="kpi-top">
+                    <span className="kpi-label">Certified Personnel</span>
+                    <span className="kpi-badge positive">92% 1st Pass</span>
+                  </div>
+                  <strong className="kpi-num">1,894</strong>
+                  <div className="kpi-mini-bar">
+                    <div className="kpi-mini-fill" style={{ width: '92%', background: 'linear-gradient(90deg, #1B4332, #40916C)' }} />
+                  </div>
+                  <span className="kpi-foot">MoES / WMO accredited learners</span>
+                </div>
+
+                <div className="admin-analytics-kpi-card">
+                  <div className="kpi-top">
+                    <span className="kpi-label">Institutional Index</span>
+                    <span className="kpi-badge positive">↑ +5.2% YoY</span>
+                  </div>
+                  <strong className="kpi-num">74.8%</strong>
+                  <div className="kpi-mini-bar">
+                    <div className="kpi-mini-fill" style={{ width: '74.8%', background: 'linear-gradient(90deg, #D97706, #F59E0B)' }} />
+                  </div>
+                  <span className="kpi-foot">Target threshold: 75.0%</span>
                 </div>
               </div>
 
-              <div style={{ padding: 20, border: '1.5px solid #DCE6DF', borderRadius: 16, background: '#F8FAF8' }}>
-                <h3 style={{ margin: '0 0 10px', fontSize: 16, color: '#12281B' }}>Quarterly Training Progress Summary</h3>
-                <p style={{ margin: '0 0 16px', fontSize: 13.5, color: '#4F6B58' }}>
-                  The institutional training network achieved a 5.2% net growth in meteorology and HPC competency indices for Q3 2026.
-                </p>
-                <button
-                  type="button"
-                  className="btn-admin-action primary"
-                  onClick={() => {
-                    setActionSuccessMsg('Exporting Quarterly Institutional Capacity Report (PDF)...')
-                    setTimeout(() => setActionSuccessMsg(''), 4000)
-                  }}
-                >
-                  Download Executive Report (PDF) &rarr;
-                </button>
+              {/* Row 1: Dual Interactive Charts (Bar & Spline Trend + Donut Pie) */}
+              <div className="admin-analytics-charts-row">
+                {/* Left (60%): Monthly Training Velocity & Assessment Outcomes */}
+                <div className="admin-card-panel admin-chart-panel">
+                  <div className="admin-panel-head">
+                    <div className="admin-panel-title-wrap">
+                      <h3 className="admin-panel-title">Training Velocity &amp; Completion Trajectory</h3>
+                      <p className="admin-panel-subtitle">Monthly learner enrollments vs successful cohort completions</p>
+                    </div>
+                    <div className="admin-chart-legend">
+                      <span className="legend-item"><span className="legend-dot enrolled" /> Enrolled</span>
+                      <span className="legend-item"><span className="legend-dot completed" /> Completed</span>
+                      <span className="legend-item"><span className="legend-dot score" /> Avg Score %</span>
+                    </div>
+                  </div>
+
+                  <div className="admin-svg-chart-container">
+                    <svg viewBox="0 0 540 220" className="admin-analytics-svg">
+                      {/* Grid Lines */}
+                      <line x1="40" y1="30" x2="520" y2="30" stroke="#EDF2EE" strokeDasharray="4 4" />
+                      <line x1="40" y1="75" x2="520" y2="75" stroke="#EDF2EE" strokeDasharray="4 4" />
+                      <line x1="40" y1="120" x2="520" y2="120" stroke="#EDF2EE" strokeDasharray="4 4" />
+                      <line x1="40" y1="165" x2="520" y2="165" stroke="#EDF2EE" strokeDasharray="4 4" />
+                      <line x1="40" y1="180" x2="520" y2="180" stroke="#D1E0D6" strokeWidth="1.5" />
+
+                      {/* Y-Axis Labels */}
+                      <text x="32" y="34" textAnchor="end" fontSize="10" fill="#789582">2.5k</text>
+                      <text x="32" y="79" textAnchor="end" fontSize="10" fill="#789582">2.0k</text>
+                      <text x="32" y="124" textAnchor="end" fontSize="10" fill="#789582">1.5k</text>
+                      <text x="32" y="169" textAnchor="end" fontSize="10" fill="#789582">1.0k</text>
+
+                      {/* Trend Spline Area & Line for Avg Score */}
+                      <path
+                        d="M 75 125 Q 155 120, 235 110 T 395 95 T 475 88"
+                        fill="none"
+                        stroke="#F59E0B"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                      />
+
+                      {/* Monthly Paired Bars */}
+                      {MONTHLY_ANALYTICS.map((d, i) => {
+                        const baseX = 75 + i * 80
+                        const maxVal = 2600
+                        const barHeightEnrolled = (d.trainees / maxVal) * 140
+                        const barHeightCompleted = (d.completed / maxVal) * 140
+                        const isHovered = hoveredMonth === d.month
+
+                        return (
+                          <g
+                            key={d.month}
+                            onMouseEnter={() => setHoveredMonth(d.month)}
+                            onMouseLeave={() => setHoveredMonth(null)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            {/* Hover background column */}
+                            {isHovered && (
+                              <rect
+                                x={baseX - 25}
+                                y="20"
+                                width="50"
+                                height="160"
+                                fill="rgba(167, 201, 87, 0.12)"
+                                rx="8"
+                              />
+                            )}
+
+                            {/* Enrolled Bar */}
+                            <rect
+                              x={baseX - 16}
+                              y={180 - barHeightEnrolled}
+                              width="14"
+                              height={barHeightEnrolled}
+                              rx="4"
+                              fill="#1B4332"
+                              opacity={isHovered ? 1 : 0.9}
+                            />
+
+                            {/* Completed Bar */}
+                            <rect
+                              x={baseX + 2}
+                              y={180 - barHeightCompleted}
+                              width="14"
+                              height={barHeightCompleted}
+                              rx="4"
+                              fill="#52B788"
+                              opacity={isHovered ? 1 : 0.9}
+                            />
+
+                            {/* Score dot on spline */}
+                            <circle
+                              cx={baseX}
+                              cy={180 - (d.score / 100) * 140}
+                              r={isHovered ? 5.5 : 4}
+                              fill="#FFFFFF"
+                              stroke="#F59E0B"
+                              strokeWidth="2.5"
+                            />
+
+                            {/* X Axis Month Label */}
+                            <text
+                              x={baseX}
+                              y="198"
+                              textAnchor="middle"
+                              fontSize="11"
+                              fontWeight={isHovered ? '700' : '600'}
+                              fill={isHovered ? '#1B4332' : '#557260'}
+                            >
+                              {d.month}
+                            </text>
+                          </g>
+                        )
+                      })}
+                    </svg>
+
+                    {/* Interactive Month Hover Banner */}
+                    <div className="admin-chart-tooltip-banner">
+                      {hoveredMonth ? (
+                        (() => {
+                          const mData = MONTHLY_ANALYTICS.find(m => m.month === hoveredMonth)
+                          return (
+                            <div className="tooltip-content-active">
+                              <strong>📅 {mData.month} 2026 Telemetry:</strong>
+                              <span>👥 Enrolled: <strong>{mData.trainees}</strong></span>
+                              <span>✓ Completed: <strong>{mData.completed}</strong></span>
+                              <span>⏱ Study: <strong>{mData.hours} hrs</strong></span>
+                              <span>🎯 Avg Score: <strong>{mData.score}%</strong></span>
+                            </div>
+                          )
+                        })()
+                      ) : (
+                        <div className="tooltip-content-default">
+                          <span>💡 Hover over any monthly column above to inspect granular enrollment and outcome metrics.</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right (40%): Domain Enrollment Distribution (Donut Pie Chart) */}
+                <div className="admin-card-panel admin-donut-panel">
+                  <div className="admin-panel-head">
+                    <div className="admin-panel-title-wrap">
+                      <h3 className="admin-panel-title">Domain Distribution</h3>
+                      <p className="admin-panel-subtitle">Share of enrolled trainees across disciplines</p>
+                    </div>
+                  </div>
+
+                  <div className="admin-donut-layout">
+                    {/* SVG Donut Circle */}
+                    <div className="admin-donut-svg-wrap">
+                      <svg viewBox="0 0 180 180" className="admin-donut-svg">
+                        <circle cx="90" cy="90" r="70" fill="none" stroke="#EDF2EE" strokeWidth="22" />
+                        {(() => {
+                          const circumference = 2 * Math.PI * 70 // ~439.82
+                          let cumulativePercent = 0
+                          return DOMAIN_ANALYTICS.map((dom) => {
+                            const strokeDasharray = `${(dom.percent / 100) * circumference} ${circumference}`
+                            const strokeDashoffset = -((cumulativePercent / 100) * circumference)
+                            cumulativePercent += dom.percent
+                            const isHovered = hoveredDomain === dom.domain
+
+                            return (
+                              <circle
+                                key={dom.domain}
+                                cx="90"
+                                cy="90"
+                                r="70"
+                                fill="none"
+                                stroke={dom.color}
+                                strokeWidth={isHovered ? 26 : 22}
+                                strokeDasharray={strokeDasharray}
+                                strokeDashoffset={strokeDashoffset}
+                                strokeLinecap="butt"
+                                transform="rotate(-90 90 90)"
+                                style={{
+                                  transition: 'stroke-width 0.2s ease, filter 0.2s ease',
+                                  cursor: 'pointer',
+                                  filter: isHovered ? 'brightness(1.15) drop-shadow(0 2px 8px rgba(0,0,0,0.2))' : 'none'
+                                }}
+                                onMouseEnter={() => setHoveredDomain(dom.domain)}
+                                onMouseLeave={() => setHoveredDomain(null)}
+                              />
+                            )
+                          })
+                        })()}
+                      </svg>
+
+                      {/* Donut Center Readout */}
+                      <div className="admin-donut-center-readout">
+                        {hoveredDomain ? (
+                          (() => {
+                            const h = DOMAIN_ANALYTICS.find(d => d.domain === hoveredDomain)
+                            return (
+                              <>
+                                <strong className="donut-center-num">{h.percent}%</strong>
+                                <span className="donut-center-label">{h.count} trainees</span>
+                              </>
+                            )
+                          })()
+                        ) : (
+                          <>
+                            <strong className="donut-center-num">2,486</strong>
+                            <span className="donut-center-label">Active Learners</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Domain Breakdown Chips */}
+                    <div className="admin-donut-legend-stack">
+                      {DOMAIN_ANALYTICS.map((d) => (
+                        <div
+                          key={d.domain}
+                          className={`admin-donut-legend-row ${hoveredDomain === d.domain ? 'hovered' : ''}`}
+                          onMouseEnter={() => setHoveredDomain(d.domain)}
+                          onMouseLeave={() => setHoveredDomain(null)}
+                        >
+                          <div className="legend-row-left">
+                            <span className="legend-circle" style={{ backgroundColor: d.color }} />
+                            <span className="legend-name">{d.domain}</span>
+                          </div>
+                          <div className="legend-row-right">
+                            <strong className="legend-percent">{d.percent}%</strong>
+                            <small className="legend-count">({d.count})</small>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: Regional Center Benchmarks & Grade Band Distribution */}
+              <div className="admin-analytics-charts-row">
+                {/* Left: Regional Centers Benchmark */}
+                <div className="admin-card-panel">
+                  <div className="admin-panel-head">
+                    <div className="admin-panel-title-wrap">
+                      <h3 className="admin-panel-title">National Training Centers Benchmark</h3>
+                      <p className="admin-panel-subtitle">Institutional throughput and passing thresholds across nodes</p>
+                    </div>
+                  </div>
+
+                  <div className="admin-center-benchmark-stack">
+                    {REGIONAL_CENTER_PERFORMANCE.map((c) => (
+                      <div className="admin-center-row" key={c.name}>
+                        <div className="admin-center-info">
+                          <strong className="center-name">{c.name}</strong>
+                          <span className="center-trainees">{c.trainees} registered trainees</span>
+                        </div>
+                        <div className="admin-center-bar-col">
+                          <div className="admin-center-track">
+                            <div
+                              className="admin-center-fill"
+                              style={{
+                                width: `${c.passRate}%`,
+                                background: c.passRate >= 90
+                                  ? 'linear-gradient(90deg, #1B4332, #40916C)'
+                                  : 'linear-gradient(90deg, #2D6A4F, #52B788)'
+                              }}
+                            />
+                          </div>
+                          <div className="admin-center-submeta">
+                            <span>Pass Rate: <strong>{c.passRate}%</strong></span>
+                            <span>Avg Score: <strong>{c.avgScore}%</strong></span>
+                          </div>
+                        </div>
+                        <div className="admin-center-status-col">
+                          <span className={`admin-status-pill ${c.status === 'Top Performing' ? 'excellent' : c.status === 'Strong' ? 'good' : 'warning'}`}>
+                            {c.status}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Grade Band Distribution */}
+                <div className="admin-card-panel">
+                  <div className="admin-panel-head">
+                    <div className="admin-panel-title-wrap">
+                      <h3 className="admin-panel-title">Competency Grade Band Distribution</h3>
+                      <p className="admin-panel-subtitle">Institutional cohort classification based on MoES assessment rubric</p>
+                    </div>
+                  </div>
+
+                  {/* Stacked Percentage Bar */}
+                  <div className="admin-stacked-grade-bar">
+                    {GRADE_DISTRIBUTION.map((g) => (
+                      <div
+                        key={g.grade}
+                        className="admin-grade-segment"
+                        style={{ width: `${g.percent}%`, backgroundColor: g.color }}
+                        title={`${g.grade}: ${g.percent}% (${g.count} trainees)`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* 4 Grade Band Cards */}
+                  <div className="admin-grade-cards-grid">
+                    {GRADE_DISTRIBUTION.map((g) => (
+                      <div className="admin-grade-item-card" key={g.grade}>
+                        <div className="grade-header">
+                          <span className="grade-indicator-dot" style={{ backgroundColor: g.color }} />
+                          <span className="grade-title">{g.grade}</span>
+                        </div>
+                        <strong className="grade-big-num">{g.percent}%</strong>
+                        <span className="grade-count-sub">{g.count} trainees</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Remedial Notice Box */}
+                  <div className="admin-grade-remedial-notice">
+                    <span className="notice-icon">⚠️</span>
+                    <div>
+                      <strong>Remedial Support Active</strong>
+                      <p style={{ margin: '2px 0 0' }}>149 trainees in the &lt;55% band have been automatically scheduled for 2-week mentor coaching clinics.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 3: AI Learning Insights & Strategic Interventions */}
+              <div className="admin-card-panel">
+                <div className="admin-panel-head">
+                  <div className="admin-panel-title-wrap">
+                    <h3 className="admin-panel-title">AI Learning Intelligence &amp; Strategic Observations</h3>
+                    <p className="admin-panel-subtitle">Automated pattern recognition and proactive capacity enhancement recommendations</p>
+                  </div>
+                </div>
+
+                <div className="admin-ai-insights-grid">
+                  <div className="admin-insight-card">
+                    <div className="insight-top">
+                      <span className="insight-badge high-demand">High Demand</span>
+                      <small>98% Confidence</small>
+                    </div>
+                    <strong className="insight-title">Numerical Weather Prediction Surge</strong>
+                    <p className="insight-text">
+                      Course enrollment in NWP Modeling increased by 42% this quarter. Additional WRF HPC compute nodes recommended.
+                    </p>
+                  </div>
+
+                  <div className="admin-insight-card">
+                    <div className="insight-top">
+                      <span className="insight-badge faculty-focus">Faculty Focus</span>
+                      <small>94% Confidence</small>
+                    </div>
+                    <strong className="insight-title">Radar Lab Completion Velocity</strong>
+                    <p className="insight-text">
+                      Dr. Rahul Sharma's Doppler Radar module achieved a 94% retention rate, highest among all practical laboratories.
+                    </p>
+                  </div>
+
+                  <div className="admin-insight-card">
+                    <div className="insight-top">
+                      <span className="insight-badge resolved">Intervention Success</span>
+                      <small>100% Verified</small>
+                    </div>
+                    <strong className="insight-title">Python Earth Science Remediation</strong>
+                    <p className="insight-text">
+                      Targeted refresher bootcamps reduced programming competency deficit by 16% over the preceding 60 days.
+                    </p>
+                  </div>
+
+                  <div className="admin-insight-card">
+                    <div className="insight-top">
+                      <span className="insight-badge cloud-lab">Resource Alert</span>
+                      <small>89% Peak</small>
+                    </div>
+                    <strong className="insight-title">Satellite Data Pipeline Throughput</strong>
+                    <p className="insight-text">
+                      Trainees actively querying INSAT-3D NetCDF datasets averaged 4.2 GB processed per session with zero latency.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -1430,153 +2792,6 @@ export default function AdminDashboard({ onBack }) {
       {/* ==========================================================================
           MODALS
           ========================================================================== */}
-      {/* Modal: Add Trainee */}
-      {activeModal === 'addTrainee' && (
-        <div className="admin-modal-backdrop" onClick={() => setActiveModal(null)}>
-          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="admin-modal-close-btn" onClick={() => setActiveModal(null)}>✕</button>
-            <h2 className="admin-modal-title">Register New Trainee</h2>
-            <p className="admin-modal-subtitle">Add personnel to the institutional capacity building roster.</p>
-            <form onSubmit={handleAddTrainee} className="admin-modal-form">
-              <div className="admin-form-group">
-                <label>Full Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Ramesh Chandra"
-                  required
-                  value={newTraineeForm.name}
-                  onChange={(e) => setNewTraineeForm({ ...newTraineeForm, name: e.target.value })}
-                />
-              </div>
-              <div className="admin-form-group">
-                <label>Department / Center</label>
-                <select
-                  value={newTraineeForm.dept}
-                  onChange={(e) => setNewTraineeForm({ ...newTraineeForm, dept: e.target.value })}
-                >
-                  <option>Meteorology Division</option>
-                  <option>Climatology Unit</option>
-                  <option>Remote Sensing Lab</option>
-                  <option>Hydrology Division</option>
-                  <option>Numerical Modeling Unit</option>
-                </select>
-              </div>
-              <div className="admin-form-group">
-                <label>Institutional Email</label>
-                <input
-                  type="email"
-                  placeholder="ramesh@imd.gov.in"
-                  value={newTraineeForm.email}
-                  onChange={(e) => setNewTraineeForm({ ...newTraineeForm, email: e.target.value })}
-                />
-              </div>
-              <div className="admin-modal-actions-row">
-                <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal(null)}>Cancel</button>
-                <button type="submit" className="btn-admin-action primary">Confirm Registration</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal: Add Trainer */}
-      {activeModal === 'addTrainer' && (
-        <div className="admin-modal-backdrop" onClick={() => setActiveModal(null)}>
-          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="admin-modal-close-btn" onClick={() => setActiveModal(null)}>✕</button>
-            <h2 className="admin-modal-title">Accredit New Faculty</h2>
-            <p className="admin-modal-subtitle">Invite verified instructor or domain specialist to training portal.</p>
-            <form onSubmit={handleAddTrainer} className="admin-modal-form">
-              <div className="admin-form-group">
-                <label>Faculty Full Name</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Dr. Sunita Rao"
-                  required
-                  value={newTrainerForm.name}
-                  onChange={(e) => setNewTrainerForm({ ...newTrainerForm, name: e.target.value })}
-                />
-              </div>
-              <div className="admin-form-group">
-                <label>Domain Specialization</label>
-                <select
-                  value={newTrainerForm.expertise}
-                  onChange={(e) => setNewTrainerForm({ ...newTrainerForm, expertise: e.target.value })}
-                >
-                  <option>Meteorology</option>
-                  <option>Remote Sensing &amp; GIS</option>
-                  <option>Atmospheric Physics &amp; NWP</option>
-                  <option>Climate Modeling &amp; AI</option>
-                  <option>Hydrometeorology</option>
-                </select>
-              </div>
-              <div className="admin-form-group">
-                <label>Institutional Email</label>
-                <input
-                  type="email"
-                  placeholder="sunita.rao@moes.gov.in"
-                  value={newTrainerForm.email}
-                  onChange={(e) => setNewTrainerForm({ ...newTrainerForm, email: e.target.value })}
-                />
-              </div>
-              <div className="admin-modal-actions-row">
-                <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal(null)}>Cancel</button>
-                <button type="submit" className="btn-admin-action primary">Send Accreditation Invite</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal: Create Course */}
-      {activeModal === 'createCourse' && (
-        <div className="admin-modal-backdrop" onClick={() => setActiveModal(null)}>
-          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="admin-modal-close-btn" onClick={() => setActiveModal(null)}>✕</button>
-            <h2 className="admin-modal-title">Create Institutional Course</h2>
-            <p className="admin-modal-subtitle">Define syllabus and competency parameters for new cohort.</p>
-            <form onSubmit={handleAddCourse} className="admin-modal-form">
-              <div className="admin-form-group">
-                <label>Course Title</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Advanced NWP Ensemble Forecasting"
-                  required
-                  value={newCourseForm.name}
-                  onChange={(e) => setNewCourseForm({ ...newCourseForm, name: e.target.value })}
-                />
-              </div>
-              <div className="admin-form-group">
-                <label>Domain</label>
-                <select
-                  value={newCourseForm.domain}
-                  onChange={(e) => setNewCourseForm({ ...newCourseForm, domain: e.target.value })}
-                >
-                  <option>Meteorology</option>
-                  <option>Remote Sensing</option>
-                  <option>Programming</option>
-                  <option>Geospatial</option>
-                  <option>Modeling</option>
-                </select>
-              </div>
-              <div className="admin-form-group">
-                <label>Planned Trainee Capacity</label>
-                <input
-                  type="number"
-                  placeholder="120"
-                  value={newCourseForm.enrolled}
-                  onChange={(e) => setNewCourseForm({ ...newCourseForm, enrolled: e.target.value })}
-                />
-              </div>
-              <div className="admin-modal-actions-row">
-                <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal(null)}>Cancel</button>
-                <button type="submit" className="btn-admin-action primary">Publish Course</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* Modal: Assign Trainer */}
       {activeModal === 'assignTrainer' && (
         <div className="admin-modal-backdrop" onClick={() => setActiveModal(null)}>
@@ -1645,43 +2860,6 @@ export default function AdminDashboard({ onBack }) {
               >
                 Schedule Workshop &rarr;
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal: Schedule Assessment */}
-      {activeModal === 'scheduleAssessment' && (
-        <div className="admin-modal-backdrop" onClick={() => setActiveModal(null)}>
-          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="admin-modal-close-btn" onClick={() => setActiveModal(null)}>✕</button>
-            <h2 className="admin-modal-title">Schedule Assessment Exam</h2>
-            <p className="admin-modal-subtitle">Set date and target cohort for competency certification test.</p>
-            <div className="admin-modal-form">
-              <div className="admin-form-group">
-                <label>Assessment Title</label>
-                <input type="text" placeholder="e.g. Doppler Radar Certification Evaluation" />
-              </div>
-              <div className="admin-form-group">
-                <label>Target Course</label>
-                <select>
-                  {courses.map(c => <option key={c.id}>{c.name}</option>)}
-                </select>
-              </div>
-              <div className="admin-modal-actions-row">
-                <button type="button" className="btn-admin-action secondary" onClick={() => setActiveModal(null)}>Cancel</button>
-                <button
-                  type="button"
-                  className="btn-admin-action primary"
-                  onClick={() => {
-                    setActiveModal(null)
-                    setActionSuccessMsg('Assessment successfully scheduled!')
-                    setTimeout(() => setActionSuccessMsg(''), 4000)
-                  }}
-                >
-                  Confirm Schedule
-                </button>
-              </div>
             </div>
           </div>
         </div>

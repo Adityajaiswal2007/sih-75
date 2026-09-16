@@ -35,14 +35,11 @@ import {
 // Icons
 import {
   ArrowLeft,
-  ChevronRight,
-  Shield,
-  User
+  ChevronRight
 } from 'lucide-react';
 
 export default function TrainerProfilePage({ onBack, defaultRole = 'trainee', trainerData }) {
   // Main State
-  const [isAdminView, setIsAdminView] = useState(defaultRole === 'admin');
   const [trainer, setTrainer] = useState(() => {
     if (trainerData) {
       return {

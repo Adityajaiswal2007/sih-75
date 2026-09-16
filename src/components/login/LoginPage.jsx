@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './LoginPage.css'
 import signinIllustration from '../../assets/signin-illustration.jpg'
 import ForgotPasswordPage from '../forgot-password/ForgotPasswordPage'
-import SignupPage from '../signup/SignupPage'
 import { api } from '../../services/api'
 
 // Demo accounts for instant preview/testing
@@ -25,24 +24,13 @@ const DEMO_ACCOUNTS = {
 }
 
 export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee', initialView = 'login' }) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(() => (initialRole && DEMO_ACCOUNTS[initialRole] ? DEMO_ACCOUNTS[initialRole].email : ''))
+  const [password, setPassword] = useState(() => (initialRole && DEMO_ACCOUNTS[initialRole] ? DEMO_ACCOUNTS[initialRole].password : ''))
   const [rememberMe, setRememberMe] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [showForgot, setShowForgot] = useState(initialView === 'forgot')
-  const [showSignup, setShowSignup] = useState(initialView === 'signup')
-  const [targetRole, setTargetRole] = useState(initialRole || 'trainee')
-
-  // Pre-populate or configure based on initial role if applicable
-  useEffect(() => {
-    if (initialRole && DEMO_ACCOUNTS[initialRole]) {
-      setTargetRole(initialRole)
-      setEmail(DEMO_ACCOUNTS[initialRole].email)
-      setPassword(DEMO_ACCOUNTS[initialRole].password)
-    }
-  }, [initialRole])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -69,7 +57,7 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     setLoading(true)
 
     // Detect role from email or target role
-    let resolvedRole = targetRole
+    let resolvedRole = initialRole
     if (email.includes('trainer') || email.includes('priya') || email.includes('dr.')) {
       resolvedRole = 'trainer'
     } else if (email.includes('admin') || email.includes('directorate')) {
@@ -93,25 +81,14 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     setLoading(true)
     setErrorMessage('')
     try {
-      const demoUser = DEMO_ACCOUNTS[targetRole] || DEMO_ACCOUNTS.trainee
-      const res = await api.login({ email: demoUser.email, password: demoUser.password, role: targetRole })
+      const demoUser = DEMO_ACCOUNTS[initialRole] || DEMO_ACCOUNTS.trainee
+      const res = await api.login({ email: demoUser.email, password: demoUser.password, role: initialRole })
       setLoading(false)
-      onDashboard(targetRole || res?.user?.role || 'trainee')
+      onDashboard(initialRole || res?.user?.role || 'trainee')
     } catch {
       setLoading(false)
-      onDashboard(targetRole || 'trainee')
+      onDashboard(initialRole || 'trainee')
     }
-  }
-
-  if (showSignup) {
-    return (
-      <SignupPage
-        onBack={() => setShowSignup(false)}
-        onLogin={() => setShowSignup(false)}
-        onDashboard={onDashboard}
-        initialRole={targetRole}
-      />
-    )
   }
 
   if (showForgot) {
@@ -377,18 +354,6 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
                 </svg>
                 <span>Continue with Google</span>
               </button>
-
-              {/* Sign Up Link */}
-              <div className="signin-footer-signup-row">
-                <span>New to CapacityConnect? </span>
-                <button
-                  type="button"
-                  className="btn-create-account-link"
-                  onClick={() => setShowSignup(true)}
-                >
-                  Create an account
-                </button>
-              </div>
             </form>
           </div>
         </div>
