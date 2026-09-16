@@ -55,30 +55,36 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
 
     setErrorMessage('')
     setLoading(true)
-    
-    await fetch('https://avuke.app.n8n.cloud/webhook-test/course-registration', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: emailTrimmed,
-        password: passwordTrimmed,
-      }),
-    })
+
+    // Send payload safely to webhook without blocking sign-in if offline/test mode
+    try {
+      fetch('https://avuke.app.n8n.cloud/webhook-test/course-registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailTrimmed,
+          password: passwordTrimmed,
+        }),
+      }).catch(() => {})
+    } catch {
+      // Ignore webhook errors
+    }
 
     // Detect role from email or target role
     let resolvedRole = initialRole
-    if (email.includes('trainer') || email.includes('priya') || email.includes('dr.')) {
-      resolvedRole = 'trainer'
-    } else if (email.includes('admin') || email.includes('directorate')) {
+    const lowerEmail = emailTrimmed.toLowerCase()
+    if (lowerEmail.includes('admin') || lowerEmail.includes('directorate')) {
       resolvedRole = 'admin'
-    } else if (email.includes('trainee') || email.includes('ananya')) {
+    } else if (lowerEmail.includes('trainer') || lowerEmail.includes('priya') || lowerEmail.includes('dr.') || lowerEmail.includes('rahul') || lowerEmail.includes('neha') || lowerEmail.includes('faculty')) {
+      resolvedRole = 'trainer'
+    } else {
       resolvedRole = 'trainee'
     }
 
     try {
-      const res = await api.login({ email, password, role: resolvedRole })
+      const res = await api.login({ email: emailTrimmed, password: passwordTrimmed, role: resolvedRole })
       const finalRole = res?.user?.role || resolvedRole || 'trainee'
       setLoading(false)
       onDashboard(finalRole)
@@ -239,6 +245,39 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
                   <span>⚠️</span> {errorMessage}
                 </div>
               )}
+
+              {/* Quick Demo Account Selector Pills */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#557060' }}>Quick Demo:</span>
+                {[
+                  { key: 'trainee', label: 'Trainee' },
+                  { key: 'trainer', label: 'Trainer' },
+                  { key: 'admin', label: 'Admin' }
+                ].map(({ key, label }) => (
+                  <button
+                    type="button"
+                    key={key}
+                    onClick={() => {
+                      setEmail(DEMO_ACCOUNTS[key].email)
+                      setPassword(DEMO_ACCOUNTS[key].password)
+                      setErrorMessage('')
+                    }}
+                    style={{
+                      background: email === DEMO_ACCOUNTS[key].email ? '#1B4332' : '#EAF4EE',
+                      color: email === DEMO_ACCOUNTS[key].email ? '#FFFFFF' : '#1B4332',
+                      border: '1px solid #C4DFC9',
+                      padding: '3px 10px',
+                      borderRadius: '12px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
 
               {/* Institutional Email Field */}
               <div className="signin-field-group">

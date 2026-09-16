@@ -75,7 +75,7 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
 
   const NAV_SECTIONS = [
     {
-      group: 'Learner Core',
+      group: 'Academic & Learning',
       items: [
         {
           id: 'dashboard',
@@ -109,21 +109,37 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
               <polyline points="2 12 12 17 22 12" />
             </svg>
           )
-        },
+        }
+      ]
+    },
+    {
+      group: 'Assessments & Credentials',
+      items: [
         {
           id: 'assessment',
           label: 'Assessments',
+          badge: '1 Live',
           icon: (
             <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 11l3 3L22 4" />
               <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
             </svg>
           )
+        },
+        {
+          id: 'certificates',
+          label: 'Certificates',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="8" r="7" />
+              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+            </svg>
+          )
         }
       ]
     },
     {
-      group: 'Competency & Growth',
+      group: 'Competencies & AI Match',
       items: [
         {
           id: 'competencies',
@@ -157,21 +173,11 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
               <path d="M8 12h8" />
             </svg>
           )
-        },
-        {
-          id: 'certificates',
-          label: 'Certificates',
-          icon: (
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="8" r="7" />
-              <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-            </svg>
-          )
         }
       ]
     },
     {
-      group: 'Support & Governance',
+      group: 'Support & Portal',
       items: [
         {
           id: 'announcements',

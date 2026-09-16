@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './AdminDashboard.css'
 import cloverIcon from '../../assets/landing/arcticons-clover0.svg'
 
 // Initial Mock Data
 const INITIAL_COMPETENCIES = [
-  { name: 'Python & Programming', score: 82, target: 80, trainees: 324, status: 'Strong' },
-  { name: 'Data Analysis', score: 74, target: 75, trainees: 286, status: 'Developing' },
-  { name: 'Weather Data Analysis', score: 68, target: 75, trainees: 210, status: 'Developing' },
-  { name: 'GIS & Spatial Analytics', score: 61, target: 75, trainees: 194, status: 'Developing' },
-  { name: 'Satellite Remote Sensing', score: 54, target: 75, trainees: 165, status: 'Action Required' },
-  { name: 'Machine Learning in Weather', score: 47, target: 75, trainees: 126, status: 'Action Required' }
+  { name: 'Python & Programming', score: 82, target: 80, trainees: 324, status: 'Strong', domain: 'Programming' },
+  { name: 'Data Analysis', score: 74, target: 75, trainees: 286, status: 'Developing', domain: 'Meteorology' },
+  { name: 'Weather Data Analysis', score: 68, target: 75, trainees: 210, status: 'Developing', domain: 'Meteorology' },
+  { name: 'GIS & Spatial Analytics', score: 61, target: 75, trainees: 194, status: 'Developing', domain: 'Geospatial' },
+  { name: 'Satellite Remote Sensing', score: 54, target: 75, trainees: 165, status: 'Action Required', domain: 'Remote Sensing' },
+  { name: 'Machine Learning in Weather', score: 47, target: 75, trainees: 126, status: 'Action Required', domain: 'Modeling' }
 ]
 
 const INITIAL_COURSES = [
@@ -82,6 +82,103 @@ const GRADE_DISTRIBUTION = [
   { grade: 'Needs Remediation (<55%)', percent: 6, count: 149, color: '#DC2626' }
 ]
 
+// Live Institutional Activities Feed
+const LIVE_INSTITUTIONAL_ACTIVITIES = [
+  { id: 1, type: 'Certification', icon: '🏆', title: 'Radar Meteorology Certification', desc: '18 trainees from IMD Pune Node completed distinction criteria (Avg 89%).', time: 'Just now', center: 'IMD Pune Node' },
+  { id: 2, type: 'Enrollment', icon: '📥', title: 'New Cohort Enrolled', desc: '42 trainees enrolled in Numerical Weather Prediction (NWP) Module 3.', time: '12m ago', center: 'New Delhi HQ' },
+  { id: 3, type: 'Faculty', icon: '👨‍🏫', title: 'Trainer Allocation Complete', desc: 'Dr. Priya Nair assigned as Lead Instructor for Advanced Earth Observation.', time: '34m ago', center: 'IITM Pune' },
+  { id: 4, type: 'System', icon: '🛡️', title: 'Automated Competency Sync', desc: 'Workforce skill matrix synchronized with MoES Central Repository.', time: '1h ago', center: 'NCMRWF Noida' },
+  { id: 5, type: 'Assessment', icon: '📝', title: 'Assessment Roster Released', desc: 'Python for Geospatial Data scheduled for Sept 22 with 130 candidates.', time: '2h ago', center: 'INCOIS Hyderabad' }
+]
+
+// 5 Official Regional Center Nodes
+const REGIONAL_NODES_DATA = [
+  {
+    id: 'node-pune',
+    name: 'IMD Pune Training Node',
+    city: 'Pune, Maharashtra',
+    lead: 'Dr. S. K. Roy (Director of Training)',
+    capacity: 750,
+    enrolled: 642,
+    passRate: 94,
+    avgScore: 84.2,
+    status: 'Operational • Optimal',
+    latency: '18ms',
+    uptime: '99.98%',
+    activeCohorts: 8,
+    color: '#1B4332'
+  },
+  {
+    id: 'node-delhi',
+    name: 'IMD New Delhi Directorate HQ',
+    city: 'Mausam Bhawan, New Delhi',
+    lead: 'Dr. M. Mohapatra (Director General)',
+    capacity: 850,
+    enrolled: 720,
+    passRate: 91,
+    avgScore: 82.5,
+    status: 'Operational • High Activity',
+    latency: '12ms',
+    uptime: '100%',
+    activeCohorts: 10,
+    color: '#2D6A4F'
+  },
+  {
+    id: 'node-iitm',
+    name: 'IITM Pune Atmospheric Wing',
+    city: 'Pashan, Pune',
+    lead: 'Dr. R. Krishnan (Director)',
+    capacity: 550,
+    enrolled: 480,
+    passRate: 88,
+    avgScore: 79.4,
+    status: 'Operational • Normal',
+    latency: '22ms',
+    uptime: '99.94%',
+    activeCohorts: 6,
+    color: '#40916C'
+  },
+  {
+    id: 'node-ncmrwf',
+    name: 'NCMRWF Noida Modeling Center',
+    city: 'Sector 62, Noida',
+    lead: 'Dr. V. S. Prasad (Head of HPC)',
+    capacity: 450,
+    enrolled: 390,
+    passRate: 85,
+    avgScore: 76.8,
+    status: 'Operational • Normal',
+    latency: '15ms',
+    uptime: '99.91%',
+    activeCohorts: 5,
+    color: '#52B788'
+  },
+  {
+    id: 'node-incois',
+    name: 'INCOIS Hyderabad Ocean Node',
+    city: 'Pragathi Nagar, Hyderabad',
+    lead: 'Dr. T. Srinivasa Kumar (Director)',
+    capacity: 350,
+    enrolled: 254,
+    passRate: 82,
+    avgScore: 74.2,
+    status: 'Operational • Normal',
+    latency: '26ms',
+    uptime: '99.85%',
+    activeCohorts: 4,
+    color: '#74C69D'
+  }
+]
+
+// 5-Stage Cohort Funnel Progression
+const COHORT_FUNNEL_STAGES = [
+  { stage: '1. Enrolled Candidates', count: 2486, pct: 100, desc: 'Registered personnel across all national nodes', color: '#1B4332' },
+  { stage: '2. Active Learning', count: 2210, pct: 88.9, desc: 'Completed ≥3 study modules and assignments', color: '#2D6A4F' },
+  { stage: '3. Mid-Term Evaluated', count: 1840, pct: 74.0, desc: 'Appeared in certified practical evaluations', color: '#40916C' },
+  { stage: '4. Remedial Coaching', count: 149, pct: 6.0, desc: 'Assigned targeted 1-on-1 mentor sessions', color: '#D97706' },
+  { stage: '5. Certified Distinction', count: 1691, pct: 68.0, desc: 'Accredited with official MoES competency badge', color: '#10B981' }
+]
+
 export default function AdminDashboard({ onBack }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('Dashboard')
@@ -91,11 +188,33 @@ export default function AdminDashboard({ onBack }) {
   const [period, setPeriod] = useState('30 Days')
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS)
 
+  // Interactive spotlight command palette
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
+  const [commandSearch, setCommandSearch] = useState('')
+  const [selectedNode, setSelectedNode] = useState(null)
+  const [reportModalOpen, setReportModalOpen] = useState(false)
+  const [activeActivityFilter, setActiveActivityFilter] = useState('All')
+
   // Analytics tab filters and interactive state
   const [analyticsPeriod, setAnalyticsPeriod] = useState('30 Days')
   const [analyticsCenter, setAnalyticsCenter] = useState('All Centers')
   const [hoveredMonth, setHoveredMonth] = useState(null)
   const [hoveredDomain, setHoveredDomain] = useState(null)
+
+  // Global Ctrl+K Shortcut Listener
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setCommandPaletteOpen((prev) => !prev)
+      }
+      if (e.key === 'Escape') {
+        setCommandPaletteOpen(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   // Data states
   const [courses, setCourses] = useState(INITIAL_COURSES)
@@ -656,7 +775,7 @@ export default function AdminDashboard({ onBack }) {
 
           <div className="admin-nav-actions-wrap">
             {/* Global Search Bar with adequate width and shortcut badge */}
-            <div className="admin-search-wrapper">
+            <div className="admin-search-wrapper" onClick={() => setCommandPaletteOpen(true)} style={{ cursor: 'pointer' }}>
               <span className="admin-search-icon">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
@@ -666,21 +785,29 @@ export default function AdminDashboard({ onBack }) {
               <input
                 type="text"
                 className="admin-search-input"
-                placeholder="Search courses, faculty, competencies..."
+                placeholder="Quick search or jump (Ctrl + K)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setCommandPaletteOpen(true)}
               />
-              <kbd style={{
-                background: '#EEF4EF',
-                border: '1px solid #D2E2D6',
-                borderRadius: 4,
-                padding: '2px 6px',
-                fontSize: 10,
-                color: '#496653',
-                fontWeight: 700,
-                letterSpacing: 0.5,
-                marginRight: 6
-              }}>⌘K</kbd>
+              <kbd
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setCommandPaletteOpen(true)
+                }}
+                style={{
+                  background: '#EEF4EF',
+                  border: '1px solid #D2E2D6',
+                  borderRadius: 4,
+                  padding: '2px 6px',
+                  fontSize: 10,
+                  color: '#496653',
+                  fontWeight: 700,
+                  letterSpacing: 0.5,
+                  marginRight: 6,
+                  cursor: 'pointer'
+                }}
+              >⌘K</kbd>
             </div>
 
             {/* Notification Bell */}
@@ -820,7 +947,7 @@ export default function AdminDashboard({ onBack }) {
                 </div>
               </div>
 
-              {/* 5 KPI Metric Cards */}
+              {/* 5 KPI Metric Cards with Sparkline Micro-Visualizations */}
               <div className="admin-kpis-grid">
                 <div className="admin-kpi-card">
                   <div className="admin-kpi-top-row">
@@ -830,6 +957,12 @@ export default function AdminDashboard({ onBack }) {
                   <span className="admin-kpi-label">Total Trainees</span>
                   <strong className="admin-kpi-value">2,486</strong>
                   <span className="admin-kpi-subtext">Active enrolled personnel</span>
+                  <div className="admin-kpi-sparkline-wrap">
+                    <svg viewBox="0 0 100 24" className="admin-kpi-sparkline-svg" preserveAspectRatio="none">
+                      <path d="M0,20 Q20,18 40,12 T70,8 T100,2" fill="none" stroke="#2D6A4F" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M0,20 Q20,18 40,12 T70,8 T100,2 L100,24 L0,24 Z" fill="rgba(45, 106, 79, 0.12)" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div className="admin-kpi-card">
@@ -840,6 +973,12 @@ export default function AdminDashboard({ onBack }) {
                   <span className="admin-kpi-label">Active Trainers</span>
                   <strong className="admin-kpi-value">148</strong>
                   <span className="admin-kpi-subtext">Verified domain faculty</span>
+                  <div className="admin-kpi-sparkline-wrap">
+                    <svg viewBox="0 0 100 24" className="admin-kpi-sparkline-svg" preserveAspectRatio="none">
+                      <path d="M0,22 Q30,16 60,10 T100,4" fill="none" stroke="#40916C" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M0,22 Q30,16 60,10 T100,4 L100,24 L0,24 Z" fill="rgba(64, 145, 108, 0.12)" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div className="admin-kpi-card">
@@ -849,7 +988,13 @@ export default function AdminDashboard({ onBack }) {
                   </div>
                   <span className="admin-kpi-label">Active Courses</span>
                   <strong className="admin-kpi-value">{courses.length}</strong>
-                  <span className="admin-kpi-subtext">Meteorological & GIS tracks</span>
+                  <span className="admin-kpi-subtext">Meteorological &amp; GIS tracks</span>
+                  <div className="admin-kpi-sparkline-wrap">
+                    <svg viewBox="0 0 100 24" className="admin-kpi-sparkline-svg" preserveAspectRatio="none">
+                      <path d="M0,16 Q25,8 50,14 T100,6" fill="none" stroke="#52B788" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M0,16 Q25,8 50,14 T100,6 L100,24 L0,24 Z" fill="rgba(82, 183, 136, 0.12)" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div className="admin-kpi-card">
@@ -860,6 +1005,12 @@ export default function AdminDashboard({ onBack }) {
                   <span className="admin-kpi-label">Assessments</span>
                   <strong className="admin-kpi-value">186</strong>
                   <span className="admin-kpi-subtext">Competency certifications</span>
+                  <div className="admin-kpi-sparkline-wrap">
+                    <svg viewBox="0 0 100 24" className="admin-kpi-sparkline-svg" preserveAspectRatio="none">
+                      <path d="M0,20 Q35,22 65,8 T100,4" fill="none" stroke="#1B4332" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M0,20 Q35,22 65,8 T100,4 L100,24 L0,24 Z" fill="rgba(27, 67, 50, 0.12)" />
+                    </svg>
+                  </div>
                 </div>
 
                 <div className="admin-kpi-card">
@@ -870,6 +1021,117 @@ export default function AdminDashboard({ onBack }) {
                   <span className="admin-kpi-label">Avg. Competency Score</span>
                   <strong className="admin-kpi-value">74.8%</strong>
                   <span className="admin-kpi-subtext">Institutional index</span>
+                  <div className="admin-kpi-sparkline-wrap">
+                    <svg viewBox="0 0 100 24" className="admin-kpi-sparkline-svg" preserveAspectRatio="none">
+                      <path d="M0,18 Q30,12 60,14 T100,3" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M0,18 Q30,12 60,14 T100,3 L100,24 L0,24 Z" fill="rgba(16, 185, 129, 0.12)" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* LIVE INSTITUTIONAL PULSE & STREAM TICKER */}
+              <div className="admin-live-pulse-container">
+                <div className="admin-live-pulse-header">
+                  <div className="admin-live-pulse-badge">
+                    <span className="admin-pulse-beacon" />
+                    <span>LIVE MOES PULSE</span>
+                  </div>
+                  <div className="admin-pulse-filters">
+                    {['All', 'Certification', 'Enrollment', 'Faculty', 'System'].map((flt) => (
+                      <button
+                        type="button"
+                        key={flt}
+                        className={`admin-pulse-filter-pill ${activeActivityFilter === flt ? 'active' : ''}`}
+                        onClick={() => setActiveActivityFilter(flt)}
+                      >
+                        {flt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="admin-live-activity-stream">
+                  {LIVE_INSTITUTIONAL_ACTIVITIES
+                    .filter(act => activeActivityFilter === 'All' || act.type === activeActivityFilter)
+                    .map((act) => (
+                      <div className="admin-stream-card" key={act.id}>
+                        <div className="admin-stream-icon-box">{act.icon}</div>
+                        <div className="admin-stream-content">
+                          <div className="admin-stream-title-row">
+                            <strong>{act.title}</strong>
+                            <span className="admin-stream-tag">{act.center}</span>
+                          </div>
+                          <p className="admin-stream-desc">{act.desc}</p>
+                          <small className="admin-stream-time">{act.time}</small>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
+              {/* MOES / IMD NATIONAL TRAINING NODES & TOPOLOGY MATRIX */}
+              <div className="admin-card-panel" style={{ marginTop: 20 }}>
+                <div className="admin-panel-head">
+                  <div className="admin-panel-title-wrap">
+                    <h2 className="admin-panel-title">MoES &amp; IMD National Training Nodes Topology</h2>
+                    <p className="admin-panel-subtitle">Distributed training infrastructure telemetry, capacity loads, and latency health.</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="admin-panel-action-btn"
+                    onClick={() => {
+                      setActionSuccessMsg('Synchronizing node telemetry across 5 national training centers...')
+                      setTimeout(() => setActionSuccessMsg(''), 3000)
+                    }}
+                  >
+                    ⚡ Ping All Nodes
+                  </button>
+                </div>
+
+                <div className="admin-nodes-grid">
+                  {REGIONAL_NODES_DATA.map((node) => (
+                    <div
+                      key={node.id}
+                      className="admin-node-card"
+                      onClick={() => setSelectedNode(node)}
+                      title="Click to inspect node performance"
+                    >
+                      <div className="admin-node-top">
+                        <div className="admin-node-name-group">
+                          <span className="admin-node-pin">📍 {node.city}</span>
+                          <strong className="admin-node-name">{node.name}</strong>
+                          <small className="admin-node-lead">{node.lead}</small>
+                        </div>
+                        <span className="admin-node-status-badge">{node.status}</span>
+                      </div>
+
+                      <div className="admin-node-metrics-bar">
+                        <div className="admin-node-submetric">
+                          <small>Enrolled Load</small>
+                          <strong>{node.enrolled} / {node.capacity}</strong>
+                        </div>
+                        <div className="admin-node-submetric">
+                          <small>Pass Benchmark</small>
+                          <strong style={{ color: '#1B4332' }}>{node.passRate}%</strong>
+                        </div>
+                        <div className="admin-node-submetric">
+                          <small>Latency</small>
+                          <strong style={{ color: '#047857' }}>{node.latency}</strong>
+                        </div>
+                      </div>
+
+                      {/* Capacity Progress Bar */}
+                      <div className="admin-health-track" style={{ height: 6, marginTop: 10 }}>
+                        <div
+                          className="admin-health-fill"
+                          style={{
+                            width: `${(node.enrolled / node.capacity) * 100}%`,
+                            background: 'linear-gradient(90deg, #1B4332, #40916C)'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -2060,12 +2322,156 @@ export default function AdminDashboard({ onBack }) {
             <div className="admin-card-panel">
               <div className="admin-panel-head">
                 <div className="admin-panel-title-wrap">
-                  <h2 className="admin-panel-title">Institutional Competency Framework</h2>
-                  <p className="admin-panel-subtitle">Target benchmarks, threshold analytics, and gap resolution programs.</p>
+                  <h2 className="admin-panel-title">Institutional Competency Framework &amp; Radar Analysis</h2>
+                  <p className="admin-panel-subtitle">Multi-domain proficiency radar, threshold benchmarks, and workforce gap resolution.</p>
+                </div>
+                <button
+                  type="button"
+                  className="btn-admin-action secondary"
+                  onClick={() => {
+                    setActionSuccessMsg('Competency framework export dispatched to Directorate email.')
+                    setTimeout(() => setActionSuccessMsg(''), 3500)
+                  }}
+                >
+                  📥 Export Framework Matrix
+                </button>
+              </div>
+
+              {/* Multi-Domain Competency Radar / Spider Chart */}
+              <div className="admin-two-col-grid" style={{ marginTop: 14, alignItems: 'center' }}>
+                <div className="admin-radar-chart-card">
+                  <div className="admin-radar-header">
+                    <strong>Competency Spider Radar</strong>
+                    <div className="admin-radar-legend">
+                      <span className="legend-item"><span className="legend-dot target" /> Benchmark (75%)</span>
+                      <span className="legend-item"><span className="legend-dot actual" /> Trainee Avg</span>
+                    </div>
+                  </div>
+                  
+                  <div className="admin-radar-svg-wrap">
+                    <svg viewBox="0 0 340 320" className="admin-radar-svg">
+                      {/* Concentric Background Hexagons */}
+                      {[0.25, 0.5, 0.75, 1.0].map((scale, i) => {
+                        const r = 110 * scale
+                        const pts = [0, 1, 2, 3, 4, 5].map(idx => {
+                          const angle = (idx * 2 * Math.PI) / 6 - Math.PI / 2
+                          const x = 170 + r * Math.cos(angle)
+                          const y = 160 + r * Math.sin(angle)
+                          return `${x},${y}`
+                        }).join(' ')
+                        return (
+                          <polygon
+                            key={i}
+                            points={pts}
+                            fill={scale === 1.0 ? 'rgba(27, 67, 50, 0.03)' : 'none'}
+                            stroke="#D6E4DA"
+                            strokeWidth="1"
+                            strokeDasharray={scale === 0.75 ? '3 3' : 'none'}
+                          />
+                        )
+                      })}
+
+                      {/* Axis lines */}
+                      {[0, 1, 2, 3, 4, 5].map((idx) => {
+                        const angle = (idx * 2 * Math.PI) / 6 - Math.PI / 2
+                        const x = 170 + 110 * Math.cos(angle)
+                        const y = 160 + 110 * Math.sin(angle)
+                        return <line key={idx} x1="170" y1="160" x2={x} y2={y} stroke="#DCE6DF" strokeWidth="1.2" />
+                      })}
+
+                      {/* Target Polygon (75% Benchmark) */}
+                      {(() => {
+                        const targetR = 110 * 0.75
+                        const targetPts = [0, 1, 2, 3, 4, 5].map(idx => {
+                          const angle = (idx * 2 * Math.PI) / 6 - Math.PI / 2
+                          return `${170 + targetR * Math.cos(angle)},${160 + targetR * Math.sin(angle)}`
+                        }).join(' ')
+                        return (
+                          <polygon
+                            points={targetPts}
+                            fill="rgba(217, 119, 6, 0.06)"
+                            stroke="#D97706"
+                            strokeWidth="1.8"
+                            strokeDasharray="4 4"
+                          />
+                        )
+                      })()}
+
+                      {/* Actual Trainee Scores Polygon */}
+                      {(() => {
+                        const actualPts = competencies.map((comp, idx) => {
+                          const angle = (idx * 2 * Math.PI) / 6 - Math.PI / 2
+                          const r = 110 * (comp.score / 100)
+                          return `${170 + r * Math.cos(angle)},${160 + r * Math.sin(angle)}`
+                        }).join(' ')
+                        return (
+                          <polygon
+                            points={actualPts}
+                            fill="rgba(45, 106, 79, 0.22)"
+                            stroke="#1B4332"
+                            strokeWidth="2.5"
+                          />
+                        )
+                      })()}
+
+                      {/* Labels and Data Points */}
+                      {competencies.map((comp, idx) => {
+                        const angle = (idx * 2 * Math.PI) / 6 - Math.PI / 2
+                        const r = 110 * (comp.score / 100)
+                        const x = 170 + r * Math.cos(angle)
+                        const y = 160 + r * Math.sin(angle)
+                        const labelR = 132
+                        const lx = 170 + labelR * Math.cos(angle)
+                        const ly = 160 + labelR * Math.sin(angle)
+                        return (
+                          <g key={comp.name}>
+                            <circle cx={x} cy={y} r="4.5" fill="#1B4332" stroke="#FFFFFF" strokeWidth="2" />
+                            <text
+                              x={lx}
+                              y={ly}
+                              textAnchor={lx > 170 ? 'start' : lx < 170 ? 'end' : 'middle'}
+                              dominantBaseline="central"
+                              fontSize="10"
+                              fontWeight="700"
+                              fill="#1B4332"
+                            >
+                              {comp.name.split(' ')[0]} ({comp.score}%)
+                            </text>
+                          </g>
+                        )
+                      })}
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Priority Gap Remediation Proposal */}
+                <div style={{ padding: 20, border: '1.5px solid #DCE6DF', borderRadius: 16, background: '#FBFDFB' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                    <span style={{ fontSize: 18 }}>💡</span>
+                    <strong style={{ fontSize: 15, color: '#12281B' }}>Automated Gap Resolution Plan</strong>
+                  </div>
+                  <p style={{ fontSize: 13, color: '#456150', lineHeight: 1.6, margin: '0 0 14px' }}>
+                    Machine Learning and Remote Sensing tracks currently operate under the 75% national benchmark. The directorate has scheduled remedial workshops for 220 active candidates.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <div style={{ padding: 12, borderRadius: 10, background: '#FEF3C7', border: '1px solid #FDE68A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 12.5, fontWeight: 700, color: '#92400E' }}>Machine Learning in Weather (-28% Gap)</span>
+                      <button type="button" className="btn-admin-action primary" style={{ padding: '4px 10px', fontSize: 11.5 }} onClick={() => setActiveModal({ type: 'gap', data: { name: 'Machine Learning in Weather', current: '47%', target: '75%', gap: '-28%', trainees: 126 } })}>
+                        Launch Clinic
+                      </button>
+                    </div>
+                    <div style={{ padding: 12, borderRadius: 10, background: '#FEF3C7', border: '1px solid #FDE68A', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: 12.5, fontWeight: 700, color: '#92400E' }}>Satellite Remote Sensing (-21% Gap)</span>
+                      <button type="button" className="btn-admin-action primary" style={{ padding: '4px 10px', fontSize: 11.5 }} onClick={() => setActiveModal({ type: 'gap', data: { name: 'Satellite Remote Sensing', current: '54%', target: '75%', gap: '-21%', trainees: 94 } })}>
+                        Launch Clinic
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 10 }}>
+              {/* Detailed Progress Bars */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 18 }}>
                 {competencies.map((comp) => (
                   <div key={comp.name} style={{ padding: 18, border: '1.5px solid #DCE6DF', borderRadius: 14, background: '#FFFFFF' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -2708,10 +3114,64 @@ export default function AdminDashboard({ onBack }) {
               <div className="admin-panel-head">
                 <div className="admin-panel-title-wrap">
                   <h2 className="admin-panel-title">Audit Reports &amp; Compliance Logs</h2>
-                  <p className="admin-panel-subtitle">Official records, accreditation audits, and institutional compliance exports.</p>
+                  <p className="admin-panel-subtitle">Official records, accreditation audits, cohort progress funnel, and institutional compliance exports.</p>
+                </div>
+                <button
+                  type="button"
+                  className="btn-admin-action primary"
+                  onClick={() => setReportModalOpen(true)}
+                >
+                  📑 Generate Directorate Report
+                </button>
+              </div>
+
+              {/* COHORT PROGRESSION FUNNEL */}
+              <div className="admin-funnel-container" style={{ margin: '14px 0 20px', padding: 20, border: '1.5px solid #DCE6DF', borderRadius: 16, background: '#FFFFFF' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                  <div>
+                    <strong style={{ fontSize: 15, color: '#12281B' }}>National Trainee Lifecycle &amp; Conversion Funnel</strong>
+                    <p style={{ margin: '3px 0 0', fontSize: 12.5, color: '#526E5D' }}>Progression from registration to accredited competency distinction.</p>
+                  </div>
+                  <span className="admin-status-pill excellent">68.0% Completion Rate</span>
+                </div>
+
+                <div className="admin-funnel-bars-stack">
+                  {COHORT_FUNNEL_STAGES.map((stg, i) => (
+                    <div key={i} className="admin-funnel-row">
+                      <div className="admin-funnel-label-col">
+                        <strong>{stg.stage}</strong>
+                        <small>{stg.desc}</small>
+                      </div>
+                      <div className="admin-funnel-bar-col">
+                        <div className="admin-health-track" style={{ height: 18, borderRadius: 8, background: '#EEF4EF' }}>
+                          <div
+                            className="admin-health-fill"
+                            style={{
+                              width: `${stg.pct}%`,
+                              background: stg.color,
+                              borderRadius: 8,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'flex-end',
+                              paddingRight: 8,
+                              color: '#FFFFFF',
+                              fontSize: 11,
+                              fontWeight: 800
+                            }}
+                          >
+                            {stg.count.toLocaleString()}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="admin-funnel-pct-col">
+                        <strong>{stg.pct}%</strong>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
+              {/* DOWNLOADABLE AUDIT REPORTS */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginTop: 10 }}>
                 {[
                   { name: 'MoES Annual Capacity Audit Report 2026', date: 'Sept 2026', format: 'PDF • 4.2 MB' },
@@ -2790,8 +3250,228 @@ export default function AdminDashboard({ onBack }) {
       </div>
 
       {/* ==========================================================================
-          MODALS
+          MODALS & SPOTLIGHT SUITE
           ========================================================================== */}
+      {/* COMMAND PALETTE (CTRL + K) SPOTLIGHT MODAL */}
+      {commandPaletteOpen && (
+        <div className="admin-modal-backdrop" onClick={() => setCommandPaletteOpen(false)}>
+          <div className="admin-spotlight-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-spotlight-input-wrap">
+              <span className="admin-spotlight-search-icon">🔍</span>
+              <input
+                type="text"
+                autoFocus
+                placeholder="Jump to tab, search trainees, faculty, courses, or actions..."
+                value={commandSearch}
+                onChange={(e) => setCommandSearch(e.target.value)}
+                className="admin-spotlight-input"
+              />
+              <kbd className="admin-spotlight-esc" onClick={() => setCommandPaletteOpen(false)}>ESC</kbd>
+            </div>
+
+            <div className="admin-spotlight-results">
+              {/* Quick Navigation Targets */}
+              <div className="admin-spotlight-group">
+                <span className="admin-spotlight-group-title">Navigation Tabs</span>
+                {[
+                  { id: 'Dashboard', icon: '📊', name: 'Dashboard Overview' },
+                  { id: 'Analytics', icon: '📈', name: 'Institutional Analytics' },
+                  { id: 'User Management', icon: '👥', name: 'User Management (Create Trainee / Trainer)' },
+                  { id: 'Courses', icon: '📚', name: 'Courses Catalog' },
+                  { id: 'Assessments', icon: '📋', name: 'Assessments & Exams' },
+                  { id: 'Trainees', icon: '🎓', name: 'Trainees Directory' },
+                  { id: 'Trainers', icon: '👨‍🏫', name: 'Faculty & Trainers Directory' },
+                  { id: 'Competencies', icon: '🎯', name: 'Competencies Framework & Radar' },
+                  { id: 'Trainer Matching', icon: '🤖', name: 'AI Trainer Matching Engine' },
+                  { id: 'Reports', icon: '📑', name: 'Audit Reports & Funnel' }
+                ]
+                  .filter(tab => !commandSearch || tab.name.toLowerCase().includes(commandSearch.toLowerCase()) || tab.id.toLowerCase().includes(commandSearch.toLowerCase()))
+                  .map(tab => (
+                    <div
+                      key={tab.id}
+                      className="admin-spotlight-item"
+                      onClick={() => {
+                        setActiveTab(tab.id)
+                        setCommandPaletteOpen(false)
+                        setCommandSearch('')
+                      }}
+                    >
+                      <span className="admin-spotlight-item-icon">{tab.icon}</span>
+                      <span className="admin-spotlight-item-name">{tab.name}</span>
+                      <span className="admin-spotlight-item-badge">Jump &rarr;</span>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Quick Actions */}
+              <div className="admin-spotlight-group">
+                <span className="admin-spotlight-group-title">Quick Administrative Actions</span>
+                <div
+                  className="admin-spotlight-item"
+                  onClick={() => {
+                    setCommandPaletteOpen(false)
+                    setActiveTab('User Management')
+                    startCreateTrainee()
+                  }}
+                >
+                  <span className="admin-spotlight-item-icon">➕</span>
+                  <span className="admin-spotlight-item-name">Create Authorized Trainee Profile</span>
+                  <span className="admin-spotlight-item-badge">Action</span>
+                </div>
+                <div
+                  className="admin-spotlight-item"
+                  onClick={() => {
+                    setCommandPaletteOpen(false)
+                    setActiveTab('User Management')
+                    startCreateTrainer()
+                  }}
+                >
+                  <span className="admin-spotlight-item-icon">👨‍🏫</span>
+                  <span className="admin-spotlight-item-name">Create Authorized Trainer / Faculty Profile</span>
+                  <span className="admin-spotlight-item-badge">Action</span>
+                </div>
+                <div
+                  className="admin-spotlight-item"
+                  onClick={() => {
+                    setCommandPaletteOpen(false)
+                    setActiveModal('createNotice')
+                  }}
+                >
+                  <span className="admin-spotlight-item-icon">📢</span>
+                  <span className="admin-spotlight-item-name">Broadcast Platform Notice to MoES Network</span>
+                  <span className="admin-spotlight-item-badge">Action</span>
+                </div>
+                <div
+                  className="admin-spotlight-item"
+                  onClick={() => {
+                    setCommandPaletteOpen(false)
+                    setReportModalOpen(true)
+                  }}
+                >
+                  <span className="admin-spotlight-item-icon">📑</span>
+                  <span className="admin-spotlight-item-name">Generate Executive Directorate Report</span>
+                  <span className="admin-spotlight-item-badge">Action</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* REGIONAL TRAINING NODE INSPECTOR MODAL */}
+      {selectedNode && (
+        <div className="admin-modal-backdrop" onClick={() => setSelectedNode(null)}>
+          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 540 }}>
+            <button type="button" className="admin-modal-close-btn" onClick={() => setSelectedNode(null)}>✕</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+              <span style={{ fontSize: 24 }}>📍</span>
+              <div>
+                <h2 className="admin-modal-title" style={{ margin: 0 }}>{selectedNode.name}</h2>
+                <small style={{ color: '#557060' }}>{selectedNode.city}</small>
+              </div>
+            </div>
+
+            <div style={{ background: '#F4F8F5', border: '1px solid #D2E2D6', borderRadius: 12, padding: 14, margin: '14px 0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, textAlign: 'center' }}>
+                <div>
+                  <small style={{ color: '#688273' }}>Capacity Load</small>
+                  <strong style={{ display: 'block', fontSize: 16, color: '#12281B' }}>{selectedNode.enrolled} / {selectedNode.capacity}</strong>
+                </div>
+                <div>
+                  <small style={{ color: '#688273' }}>Pass Rate</small>
+                  <strong style={{ display: 'block', fontSize: 16, color: '#1B4332' }}>{selectedNode.passRate}%</strong>
+                </div>
+                <div>
+                  <small style={{ color: '#688273' }}>Server Uptime</small>
+                  <strong style={{ display: 'block', fontSize: 16, color: '#047857' }}>{selectedNode.uptime}</strong>
+                </div>
+              </div>
+            </div>
+
+            <p style={{ fontSize: 13, color: '#3A5445', lineHeight: 1.6 }}>
+              <strong>Center Directorate Lead:</strong> {selectedNode.lead}<br />
+              <strong>Active Training Cohorts:</strong> {selectedNode.activeCohorts} parallel sessions (Radar Meteorology, NWP Modeling, GIS Data Processing).<br />
+              <strong>Telemetry Ping:</strong> {selectedNode.latency} latency • Synchronized with MoES National Cloud Node.
+            </p>
+
+            <div className="admin-modal-actions-row" style={{ marginTop: 18 }}>
+              <button type="button" className="btn-admin-action secondary" onClick={() => setSelectedNode(null)}>Close</button>
+              <button
+                type="button"
+                className="btn-admin-action primary"
+                onClick={() => {
+                  setSelectedNode(null)
+                  setActionSuccessMsg(`Node audit report generated for ${selectedNode.name}!`)
+                  setTimeout(() => setActionSuccessMsg(''), 4000)
+                }}
+              >
+                Run Node Integrity Audit &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DIRECTORATE EXECUTIVE REPORT MODAL */}
+      {reportModalOpen && (
+        <div className="admin-modal-backdrop" onClick={() => setReportModalOpen(false)}>
+          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 640 }}>
+            <button type="button" className="admin-modal-close-btn" onClick={() => setReportModalOpen(false)}>✕</button>
+            <div style={{ borderBottom: '2px solid #1B4332', paddingBottom: 12, marginBottom: 14 }}>
+              <div style={{ fontSize: 10.5, fontWeight: 800, color: '#2D6A4F', letterSpacing: 1.2, textTransform: 'uppercase' }}>
+                MINISTRY OF EARTH SCIENCES • GOVERNMENT OF INDIA
+              </div>
+              <h2 className="admin-modal-title" style={{ margin: '4px 0 2px' }}>CapacityConnect Institutional Intelligence Brief</h2>
+              <p style={{ margin: 0, fontSize: 12, color: '#688273' }}>
+                Executive summary for Q3 2026 Directorate Review • Generated on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, margin: '14px 0' }}>
+              <div style={{ background: '#F8FAF8', padding: 10, borderRadius: 10, textAlign: 'center', border: '1px solid #DCE6DF' }}>
+                <small style={{ color: '#688273' }}>Total Trainees</small>
+                <strong style={{ display: 'block', fontSize: 17, color: '#12281B' }}>2,486</strong>
+              </div>
+              <div style={{ background: '#F8FAF8', padding: 10, borderRadius: 10, textAlign: 'center', border: '1px solid #DCE6DF' }}>
+                <small style={{ color: '#688273' }}>Accredited Faculty</small>
+                <strong style={{ display: 'block', fontSize: 17, color: '#1B4332' }}>148</strong>
+              </div>
+              <div style={{ background: '#F8FAF8', padding: 10, borderRadius: 10, textAlign: 'center', border: '1px solid #DCE6DF' }}>
+                <small style={{ color: '#688273' }}>Pass Rate</small>
+                <strong style={{ display: 'block', fontSize: 17, color: '#047857' }}>78.4%</strong>
+              </div>
+              <div style={{ background: '#F8FAF8', padding: 10, borderRadius: 10, textAlign: 'center', border: '1px solid #DCE6DF' }}>
+                <small style={{ color: '#688273' }}>Competency Index</small>
+                <strong style={{ display: 'block', fontSize: 17, color: '#10B981' }}>74.8%</strong>
+              </div>
+            </div>
+
+            <div style={{ fontSize: 12.5, color: '#314D3C', lineHeight: 1.6, background: '#F4F8F5', padding: 14, borderRadius: 12, border: '1px solid #D5E4D8' }}>
+              <strong>Key Directorate Highlights:</strong>
+              <ul style={{ margin: '6px 0 0', paddingLeft: 18 }}>
+                <li>Top performing node: <strong>IMD Pune Training Node</strong> with 94% certification rate.</li>
+                <li>Radar Meteorology &amp; Python HPC reached milestone completion thresholds (&gt;80%).</li>
+                <li>Targeted remedial clinics initiated for 149 trainees in Machine Learning &amp; Satellite Remote Sensing.</li>
+              </ul>
+            </div>
+
+            <div className="admin-modal-actions-row" style={{ marginTop: 18 }}>
+              <button type="button" className="btn-admin-action secondary" onClick={() => setReportModalOpen(false)}>Close</button>
+              <button
+                type="button"
+                className="btn-admin-action primary"
+                onClick={() => {
+                  setReportModalOpen(false)
+                  setActionSuccessMsg('Official Directorate PDF Report generated & ready for download!')
+                  setTimeout(() => setActionSuccessMsg(''), 4000)
+                }}
+              >
+                📥 Download Official PDF Brief
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Modal: Assign Trainer */}
       {activeModal === 'assignTrainer' && (
         <div className="admin-modal-backdrop" onClick={() => setActiveModal(null)}>

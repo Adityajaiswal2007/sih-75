@@ -2886,3 +2886,470 @@
   }
 }
 
+/* ==========================================================================
+   KPI SPARKLINES & MICRO VISUALIZATIONS
+   ========================================================================== */
+.admin-kpi-sparkline-wrap {
+  margin-top: 10px;
+  width: 100%;
+  height: 24px;
+}
+
+.admin-kpi-sparkline-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ==========================================================================
+   LIVE INSTITUTIONAL PULSE & STREAM TICKER
+   ========================================================================== */
+.admin-live-pulse-container {
+  margin-top: 20px;
+  background: #FFFFFF;
+  border: 1.5px solid #DCE6DF;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 16px rgba(10, 35, 22, 0.04);
+}
+
+.admin-live-pulse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-live-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #1B4332;
+  background: #EAF4EE;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #C4DFC9;
+}
+
+.admin-pulse-beacon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: beaconPulse 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes beaconPulse {
+  to {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+}
+
+.admin-pulse-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.admin-pulse-filter-pill {
+  background: #F4F8F5;
+  border: 1px solid #DCE6DF;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #496653;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.admin-pulse-filter-pill:hover,
+.admin-pulse-filter-pill.active {
+  background: #1B4332;
+  color: #FFFFFF;
+  border-color: #1B4332;
+}
+
+.admin-live-activity-stream {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.admin-stream-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #FBFDFB;
+  border: 1px solid #E3ECE5;
+  border-radius: 12px;
+  transition: all 0.16s ease;
+}
+
+.admin-stream-card:hover {
+  border-color: #2F5233;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 35, 22, 0.05);
+}
+
+.admin-stream-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #EEF5F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.admin-stream-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-stream-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.admin-stream-title-row strong {
+  font-size: 12.5px;
+  color: #12281B;
+  font-weight: 700;
+}
+
+.admin-stream-tag {
+  font-size: 9.5px;
+  font-weight: 700;
+  background: #E8F3EB;
+  color: #1B4332;
+  padding: 1.5px 6px;
+  border-radius: 6px;
+}
+
+.admin-stream-desc {
+  margin: 2px 0 4px;
+  font-size: 11.5px;
+  color: #557060;
+  line-height: 1.4;
+}
+
+.admin-stream-time {
+  font-size: 10px;
+  color: #8CA394;
+}
+
+/* ==========================================================================
+   REGIONAL NODES TOPOLOGY GRID
+   ========================================================================== */
+.admin-nodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.admin-node-card {
+  padding: 16px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1.5px solid #DCE6DF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-node-card:hover {
+  border-color: #2F5233;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 35, 22, 0.06);
+}
+
+.admin-node-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.admin-node-name-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-node-pin {
+  font-size: 11px;
+  color: #4B6856;
+  font-weight: 600;
+}
+
+.admin-node-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #12281B;
+}
+
+.admin-node-lead {
+  font-size: 11px;
+  color: #6C8575;
+}
+
+.admin-node-status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #047857;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  padding: 3px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.admin-node-metrics-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: #F8FAF8;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.admin-node-submetric small {
+  display: block;
+  font-size: 10px;
+  color: #6C8575;
+}
+
+.admin-node-submetric strong {
+  font-size: 13px;
+  color: #12281B;
+}
+
+/* ==========================================================================
+   COMPETENCY RADAR & SPIDER CHART
+   ========================================================================== */
+.admin-radar-chart-card {
+  padding: 18px;
+  background: #FFFFFF;
+  border: 1.5px solid #DCE6DF;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.admin-radar-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.admin-radar-header strong {
+  font-size: 14px;
+  color: #12281B;
+}
+
+.admin-radar-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 11.5px;
+  color: #496653;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.target { background: #D97706; }
+.legend-dot.actual { background: #1B4332; }
+
+.admin-radar-svg-wrap {
+  width: 100%;
+  max-width: 340px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-radar-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   COHORT FUNNEL
+   ========================================================================== */
+.admin-funnel-bars-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-funnel-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 60px;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-funnel-label-col strong {
+  font-size: 12.5px;
+  color: #12281B;
+  display: block;
+}
+
+.admin-funnel-label-col small {
+  font-size: 11px;
+  color: #688273;
+}
+
+.admin-funnel-pct-col {
+  text-align: right;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1B4332;
+}
+
+/* ==========================================================================
+   COMMAND PALETTE (CTRL + K) SPOTLIGHT MODAL
+   ========================================================================== */
+.admin-spotlight-modal {
+  background: #FFFFFF;
+  border: 1.5px solid #C4DFC9;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 20px 60px rgba(10, 35, 22, 0.28);
+  overflow: hidden;
+  animation: spotlightFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes spotlightFadeIn {
+  from { opacity: 0; transform: scale(0.96) translateY(-10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.admin-spotlight-input-wrap {
+  display: flex;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1.5px solid #E8F0EA;
+  gap: 12px;
+  background: #FBFDFB;
+}
+
+.admin-spotlight-search-icon {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.admin-spotlight-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  font-weight: 500;
+  color: #12281B;
+  background: transparent;
+}
+
+.admin-spotlight-esc {
+  background: #EEF4EF;
+  border: 1px solid #D2E2D6;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #557060;
+  cursor: pointer;
+}
+
+.admin-spotlight-results {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-spotlight-group-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #799784;
+  padding: 4px 8px;
+}
+
+.admin-spotlight-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.admin-spotlight-item:hover {
+  background: #EAF4EE;
+  transform: translateX(3px);
+}
+
+.admin-spotlight-item-icon {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.admin-spotlight-item-name {
+  flex: 1;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #16261C;
+}
+
+.admin-spotlight-item-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2D6A4F;
+  background: rgba(45, 106, 79, 0.1);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+  .admin-funnel-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
