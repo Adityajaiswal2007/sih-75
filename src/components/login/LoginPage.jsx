@@ -79,9 +79,6 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
       }),
     })
 
-// Detect role from email or target role
-let resolvedRole = targetRole
-
     // Detect role from email or target role
     let resolvedRole = targetRole
     if (email.includes('trainer') || email.includes('priya') || email.includes('dr.')) {
