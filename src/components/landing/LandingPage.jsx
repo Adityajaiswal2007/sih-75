@@ -84,12 +84,239 @@ const initialAlerts = [
   }
 ]
 
+// 5 Official Regional Meteorological Training Nodes
+const REGIONAL_CENTERS = [
+  {
+    id: 'node-pune',
+    name: 'IMD Pune Training Node',
+    city: 'Pune, Maharashtra',
+    lead: 'Dr. S. K. Roy',
+    designation: 'Director of Training',
+    trainees: 642,
+    passRate: 94,
+    uptime: '99.98%',
+    activeCohorts: 8,
+    primaryFocus: 'Doppler Radar & Climatological Observation',
+    modules: ['Radar Meteorology', 'Synoptic Weather Maps', 'Severe Storm Tracking']
+  },
+  {
+    id: 'node-delhi',
+    name: 'IMD New Delhi Directorate HQ',
+    city: 'Mausam Bhawan, New Delhi',
+    lead: 'Dr. M. Mohapatra',
+    designation: 'Director General of Meteorology',
+    trainees: 720,
+    passRate: 91,
+    uptime: '100%',
+    activeCohorts: 10,
+    primaryFocus: 'National Forecasting Operations & Cyclone Warning',
+    modules: ['Tropical Cyclones', 'Aviation Meteorology', 'Public Weather Delivery']
+  },
+  {
+    id: 'node-iitm',
+    name: 'IITM Pune Atmospheric Wing',
+    city: 'Pashan, Pune',
+    lead: 'Dr. R. Krishnan',
+    designation: 'Director & Climate Scientist',
+    trainees: 480,
+    passRate: 88,
+    uptime: '99.94%',
+    activeCohorts: 6,
+    primaryFocus: 'Atmospheric Dynamics & Climate Change Modeling',
+    modules: ['Monsoon Dynamics', 'Cloud Physics', 'Aerosol Chemistry']
+  },
+  {
+    id: 'node-ncmrwf',
+    name: 'NCMRWF Noida Modeling Center',
+    city: 'Sector 62, Noida, UP',
+    lead: 'Dr. V. S. Prasad',
+    designation: 'Head of High-Performance Computing',
+    trainees: 390,
+    passRate: 85,
+    uptime: '99.96%',
+    activeCohorts: 5,
+    primaryFocus: 'Global & Regional NWP Simulation on Supercomputers',
+    modules: ['Data Assimilation', 'Ensemble Prediction Systems', 'HPC Workflows']
+  },
+  {
+    id: 'node-incois',
+    name: 'INCOIS Hyderabad Ocean Node',
+    city: 'Pragathi Nagar, Hyderabad',
+    lead: 'Dr. T. Srinivasa Kumar',
+    designation: 'Director of Ocean Services',
+    trainees: 254,
+    passRate: 82,
+    uptime: '99.91%',
+    activeCohorts: 4,
+    primaryFocus: 'Marine Meteorology, Tsunami Early Warning & Ocean State',
+    modules: ['Ocean Surface Waves', 'Coastal Surge Modeling', 'Marine Advisories']
+  }
+]
+
+// Meteorological Competency Domains
+const COMPETENCY_DOMAINS = [
+  {
+    id: 'nwp',
+    name: 'Numerical Weather Prediction (NWP)',
+    tag: 'Core Modeling',
+    benchmark: '80%',
+    avgScore: '84.2%',
+    hours: '45 hrs',
+    prereq: 'Atmospheric Thermodynamics & PDE',
+    certifiedCount: 780,
+    desc: 'Mathematical formulations of fluid motion, grid parameterization, and boundary condition modeling.'
+  },
+  {
+    id: 'radar',
+    name: 'Satellite & Doppler Radar Systems',
+    tag: 'Observation Systems',
+    benchmark: '75%',
+    avgScore: '78.6%',
+    hours: '38 hrs',
+    prereq: 'Electromagnetic Wave Propagation',
+    certifiedCount: 640,
+    desc: 'Interpretation of INSAT/GPM multispectral channels, dual-polarization radar velocity, and reflectivity.'
+  },
+  {
+    id: 'gis',
+    name: 'GIS & Spatial Hydrology Mapping',
+    tag: 'Spatial Analytics',
+    benchmark: '75%',
+    avgScore: '81.4%',
+    hours: '30 hrs',
+    prereq: 'Coordinate Systems & QGIS/GDAL',
+    certifiedCount: 520,
+    desc: 'Cartographic delineation of river basin catchments, precipitation overlays, and flood zone vulnerability.'
+  },
+  {
+    id: 'python',
+    name: 'Python & Earth Science HPC Computing',
+    tag: 'Computational Science',
+    benchmark: '85%',
+    avgScore: '89.1%',
+    hours: '50 hrs',
+    prereq: 'Object-Oriented Logic & NumPy/Xarray',
+    certifiedCount: 910,
+    desc: 'High-throughput parsing of NetCDF4/GRIB2 multidimensional meteorological arrays and automated pipeline workflows.'
+  },
+  {
+    id: 'ocean',
+    name: 'Marine Climatology & Coastal Warning',
+    tag: 'Ocean Meteorology',
+    benchmark: '75%',
+    avgScore: '76.8%',
+    hours: '32 hrs',
+    prereq: 'Hydrodynamic Equations & Tidal Gauges',
+    certifiedCount: 390,
+    desc: 'Storm surge estimation, sea surface temperature anomaly analysis, and high-seas weather warnings.'
+  }
+]
+
+// Mini Course Preview Data
+const PREVIEW_COURSES = [
+  {
+    id: 'c1',
+    category: 'Forecasting',
+    title: 'Numerical Weather Prediction (NWP) Fundamentals',
+    level: 'Advanced',
+    duration: '6 Weeks',
+    modules: 6,
+    lessons: 24,
+    avgScore: '84%',
+    syllabus: ['Governing Atmospheric Equations', 'Numerical Discretization & Grid Schemes', 'Data Assimilation Methods (3D/4D-Var)', 'Model Parameterizations & Verification']
+  },
+  {
+    id: 'c2',
+    category: 'Observation',
+    title: 'Satellite Climatology & Doppler Radar Meteorology',
+    level: 'Intermediate',
+    duration: '5 Weeks',
+    modules: 5,
+    lessons: 18,
+    avgScore: '79%',
+    syllabus: ['Geostationary vs Polar Satellite Orbits', 'Spectral Radiance & Water Vapor Channels', 'Radar Reflectivity (dBZ) & Velocity Signatures', 'Severe Mesoscale Convective Identification']
+  },
+  {
+    id: 'c3',
+    category: 'Computing',
+    title: 'Python Fundamentals for Earth Science & NetCDF',
+    level: 'Foundational',
+    duration: '4 Weeks',
+    modules: 4,
+    lessons: 16,
+    avgScore: '88%',
+    syllabus: ['NumPy & Pandas for Time-Series Met Data', 'Handling NetCDF4 and GRIB2 Data with Xarray', 'Cartopy & Matplotlib Geospatial Visualization', 'Automated Daily Forecast Report Generation']
+  },
+  {
+    id: 'c4',
+    category: 'Geospatial',
+    title: 'GIS & Spatial Mapping for Hydrological Disaster Warning',
+    level: 'Intermediate',
+    duration: '4 Weeks',
+    modules: 4,
+    lessons: 14,
+    avgScore: '81%',
+    syllabus: ['Digital Elevation Models (DEM) & Watershed Analysis', 'Spatial Interpolation (Kriging & IDW) of Rainfall', 'Inundation Layering & Vulnerability Indexing', 'Publishing Live Web Map Service (WMS) Layers']
+  }
+]
+
+// FAQ Items
+const FAQS = [
+  {
+    q: 'How are meteorological training candidates enrolled across regional center nodes?',
+    a: 'Candidates are nominated through the central MoES Directorate or registered via IMD Regional Headquarters. Once verified by an administrative supervisor, trainees are assigned to their designated regional center node (Pune, New Delhi, IITM, NCMRWF, or INCOIS).'
+  },
+  {
+    q: 'What criteria are required to earn MoES Certificate Accreditation?',
+    a: 'Officers must maintain at least 80% attendance in live lectures and laboratory practicals, achieve 75% or higher on module evaluations, and pass the final practical assessment under accredited faculty evaluation.'
+  },
+  {
+    q: 'Are courses and simulation labs accessible from field stations?',
+    a: 'Yes. The CapacityConnect platform is cloud-synchronized with central IMD supercomputing nodes, allowing officers in coastal or remote observatories to access syllabus modules, flashcard drills, and quizzes on any desktop or tablet.'
+  },
+  {
+    q: 'How does the faculty mentor allocation system work?',
+    a: 'Our deterministic mentor allocation algorithm pairs trainees with senior faculty based on technical domain expertise (e.g. NWP Modeling, Radar, GIS), regional node proximity, and current faculty mentorship capacity.'
+  },
+  {
+    q: 'What happens if a trainee scores below the 75% competency benchmark?',
+    a: 'The system flags specific competency sub-domains (e.g. Thermodynamic Soundings or Python NetCDF extraction) and automatically recommends a 2-week remedial review track before re-examination.'
+  }
+]
+
+// Institutional Testimonials
+const TESTIMONIALS = [
+  {
+    quote: 'The unified Doppler Radar and synoptic forecasting curriculum reduced our seasonal cyclone onboarding ramp-up by over 50% across the Western coast.',
+    author: 'Dr. S. K. Roy',
+    role: 'Director of Meteorological Training',
+    center: 'IMD Pune Training Node'
+  },
+  {
+    quote: 'Standardized assessment rubrics and practical Python labs ensure consistent competency benchmarks across all national earth science centers.',
+    author: 'Dr. Priya Nair',
+    role: 'Senior Faculty & Lead NWP Specialist',
+    center: 'IITM Pune Atmospheric Wing'
+  },
+  {
+    quote: 'Instant milestone tracking and radar competency drills helped me prepare for operational high-seas weather advisory duty with complete confidence.',
+    author: 'Pooja Sharma',
+    role: 'Meteorological Officer (Distinction)',
+    center: 'IMD New Delhi Directorate HQ'
+  }
+]
+
 export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
   const [alertsOpen, setAlertsOpen] = useState(false)
   const [alertFilter, setAlertFilter] = useState('all')
   const [alerts, setAlerts] = useState(initialAlerts)
   const [activeNav, setActiveNav] = useState('hero')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [selectedNode, setSelectedNode] = useState(REGIONAL_CENTERS[0])
+  const [selectedDomain, setSelectedDomain] = useState(COMPETENCY_DOMAINS[0])
+  const [courseCategoryFilter, setCourseCategoryFilter] = useState('All')
+  const [expandedCourse, setExpandedCourse] = useState(null)
+  const [openFaq, setOpenFaq] = useState(0)
   const alertsRef = useRef(null)
 
   const unreadCount = alerts.filter(a => a.unread).length
@@ -142,6 +369,11 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
     return true
   })
 
+  const filteredCourses = PREVIEW_COURSES.filter(c => {
+    if (courseCategoryFilter === 'All') return true
+    return c.category === courseCategoryFilter
+  })
+
   return (
     <div className="landing-root">
       {/* Top Floating / Centered Redesigned Navbar */}
@@ -154,7 +386,7 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             </div>
             <div className="landing-logo-text-group">
               <span className="landing-brand-text">CapacityConnect</span>
-              <span className="landing-brand-subtag">Smart Capacity Platform</span>
+              <span className="landing-brand-subtag">MoES / IMD Capacity Platform</span>
             </div>
           </div>
 
@@ -169,24 +401,31 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             </button>
             <button
               type="button"
+              className={`landing-nav-link ${activeNav === 'network' ? 'active' : ''}`}
+              onClick={() => scrollToSection('network')}
+            >
+              Centers
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'competencies' ? 'active' : ''}`}
+              onClick={() => scrollToSection('competencies')}
+            >
+              Competencies
+            </button>
+            <button
+              type="button"
+              className={`landing-nav-link ${activeNav === 'courses' ? 'active' : ''}`}
+              onClick={() => scrollToSection('courses')}
+            >
+              Courses
+            </button>
+            <button
+              type="button"
               className={`landing-nav-link ${activeNav === 'features' ? 'active' : ''}`}
               onClick={() => scrollToSection('features')}
             >
               Features
-            </button>
-            <button
-              type="button"
-              className={`landing-nav-link ${activeNav === 'how-it-works' ? 'active' : ''}`}
-              onClick={() => scrollToSection('how-it-works')}
-            >
-              How it works
-            </button>
-            <button
-              type="button"
-              className={`landing-nav-link ${activeNav === 'roles' ? 'active' : ''}`}
-              onClick={() => scrollToSection('roles')}
-            >
-              Tracks
             </button>
             <button
               type="button"
@@ -197,10 +436,10 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             </button>
             <button
               type="button"
-              className={`landing-nav-link ${activeNav === 'footer' ? 'active' : ''}`}
-              onClick={() => scrollToSection('footer')}
+              className={`landing-nav-link ${activeNav === 'faq' ? 'active' : ''}`}
+              onClick={() => scrollToSection('faq')}
             >
-              About
+              FAQ
             </button>
           </div>
 
@@ -230,7 +469,7 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
                     <div className="alerts-header-title-row">
                       <div className="alerts-header-title">
                         <span className="alerts-header-icon">🔔</span>
-                        <strong>Notifications & Alerts</strong>
+                        <strong>Notifications &amp; Alerts</strong>
                       </div>
                       {unreadCount > 0 ? (
                         <span className="alerts-count-chip">{unreadCount} New</span>
@@ -239,7 +478,7 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
                       )}
                     </div>
                     <div className="alerts-header-actions">
-                      <p className="alerts-subheading">Updates on courses, deadlines & trainer masterclasses.</p>
+                      <p className="alerts-subheading">Updates on courses, deadlines &amp; trainer masterclasses.</p>
                       {unreadCount > 0 && (
                         <button type="button" className="alerts-mark-read-btn" onClick={markAllRead}>
                           Mark all as read
@@ -381,24 +620,31 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
               </button>
               <button
                 type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'network' ? 'active' : ''}`}
+                onClick={() => scrollToSection('network')}
+              >
+                <span>🏢</span> Centers
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'competencies' ? 'active' : ''}`}
+                onClick={() => scrollToSection('competencies')}
+              >
+                <span>🎯</span> Competencies
+              </button>
+              <button
+                type="button"
+                className={`mobile-nav-link-btn ${activeNav === 'courses' ? 'active' : ''}`}
+                onClick={() => scrollToSection('courses')}
+              >
+                <span>📖</span> Courses
+              </button>
+              <button
+                type="button"
                 className={`mobile-nav-link-btn ${activeNav === 'features' ? 'active' : ''}`}
                 onClick={() => scrollToSection('features')}
               >
                 <span>✦</span> Features
-              </button>
-              <button
-                type="button"
-                className={`mobile-nav-link-btn ${activeNav === 'how-it-works' ? 'active' : ''}`}
-                onClick={() => scrollToSection('how-it-works')}
-              >
-                <span>⚡</span> How it works
-              </button>
-              <button
-                type="button"
-                className={`mobile-nav-link-btn ${activeNav === 'roles' ? 'active' : ''}`}
-                onClick={() => scrollToSection('roles')}
-              >
-                <span>👥</span> Tracks
               </button>
               <button
                 type="button"
@@ -409,10 +655,10 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
               </button>
               <button
                 type="button"
-                className={`mobile-nav-link-btn ${activeNav === 'footer' ? 'active' : ''}`}
-                onClick={() => scrollToSection('footer')}
+                className={`mobile-nav-link-btn ${activeNav === 'faq' ? 'active' : ''}`}
+                onClick={() => scrollToSection('faq')}
               >
-                <span>ℹ️</span> About
+                <span>❓</span> FAQ
               </button>
             </div>
             <div className="mobile-nav-quick-actions">
@@ -445,26 +691,51 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
       <section id="hero" className="landing-hero-section">
         <div className="landing-hero-container">
           <div className="landing-hero-content">
-            <div className="landing-badge-pill">
-              <span>Smart Education Platform</span>
+            {/* Real-time Institutional Status Pill */}
+            <div className="landing-hero-telemetry-badge">
+              <span className="telemetry-live-dot" />
+              <span className="telemetry-text">MoES &bull; IMD National Training Network Active</span>
             </div>
 
             <h1 className="landing-hero-title">
-              Learn. Improve.<br />
-              <span className="landing-hero-gradient">Match. Grow.</span>
+              National Meteorological<br />
+              <span className="landing-hero-gradient">Capacity &amp; Skill Network</span>
             </h1>
 
             <p className="landing-hero-subtitle">
-              A unified platform to learn, assess, match and grow competencies.
+              A unified institutional framework for meteorological officer accreditation, Doppler radar simulations, numerical weather modeling, and continuous professional competency growth.
             </p>
 
             <div className="landing-hero-buttons">
               <button type="button" className="landing-btn-primary" onClick={onGetStarted}>
-                Get Started
+                Access Portal Now &rarr;
               </button>
-              <button type="button" className="landing-btn-secondary" onClick={() => scrollToSection('features')}>
-                Explore Platform →
+              <button type="button" className="landing-btn-secondary" onClick={() => scrollToSection('network')}>
+                Explore Regional Nodes
               </button>
+            </div>
+
+            {/* Quick Hero Telemetry Bar */}
+            <div className="landing-hero-quick-telemetry">
+              <div className="telemetry-item">
+                <strong>5</strong>
+                <span>Regional Nodes</span>
+              </div>
+              <div className="telemetry-divider" />
+              <div className="telemetry-item">
+                <strong>2,486+</strong>
+                <span>Certified Officers</span>
+              </div>
+              <div className="telemetry-divider" />
+              <div className="telemetry-item">
+                <strong>94.2%</strong>
+                <span>Pass Rate</span>
+              </div>
+              <div className="telemetry-divider" />
+              <div className="telemetry-item">
+                <strong>140+</strong>
+                <span>Accredited Faculty</span>
+              </div>
             </div>
           </div>
 
@@ -476,23 +747,274 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
               <div className="float-badge-icon">
                 <img src={bookOpenHero} alt="Learning" />
               </div>
-              <span className="float-badge-text">Better Learning<br />Outcomes</span>
+              <span className="float-badge-text">Doppler Radar<br />Lab Practical</span>
             </div>
 
             <div className="landing-float-badge float-badge-2">
               <div className="float-badge-icon">
                 <img src={peopleHero} alt="Communities" />
               </div>
-              <span className="float-badge-text">Stronger<br />Communities</span>
+              <span className="float-badge-text">5 Regional<br />Center Nodes</span>
             </div>
 
             <div className="landing-float-badge float-badge-3">
               <div className="float-badge-icon">
                 <img src={securityHero} alt="Workforce" />
               </div>
-              <span className="float-badge-text">Skilled<br />Workforce</span>
+              <span className="float-badge-text">MoES Verified<br />Accreditation</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Institutional Trust & Partner Ribbon */}
+      <section className="landing-trust-ribbon">
+        <div className="trust-ribbon-label">INSTITUTIONAL METEOROLOGICAL PARTNERS &bull; GOVERNMENT OF INDIA</div>
+        <div className="trust-ribbon-grid">
+          <div className="trust-ribbon-item">
+            <span className="trust-item-icon">🏛️</span>
+            <div>
+              <strong>MoES</strong>
+              <small>Ministry of Earth Sciences</small>
+            </div>
+          </div>
+          <div className="trust-ribbon-item">
+            <span className="trust-item-icon">📡</span>
+            <div>
+              <strong>IMD</strong>
+              <small>India Meteorological Dept</small>
+            </div>
+          </div>
+          <div className="trust-ribbon-item">
+            <span className="trust-item-icon">💻</span>
+            <div>
+              <strong>NCMRWF</strong>
+              <small>Medium Range Weather Forecasting</small>
+            </div>
+          </div>
+          <div className="trust-ribbon-item">
+            <span className="trust-item-icon">🌦️</span>
+            <div>
+              <strong>IITM</strong>
+              <small>Tropical Meteorology Pune</small>
+            </div>
+          </div>
+          <div className="trust-ribbon-item">
+            <span className="trust-item-icon">🌊</span>
+            <div>
+              <strong>INCOIS</strong>
+              <small>Ocean Information Services</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Regional Training Nodes Section */}
+      <section id="network" className="landing-network-section">
+        <div className="landing-section-header">
+          <div className="landing-section-kicker">REGIONAL INFRASTRUCTURE</div>
+          <h2 className="landing-section-title">5 Operational Regional Training Hubs</h2>
+          <p className="landing-section-subtitle">
+            Click any regional node to inspect live capacity, center leadership, uptime metrics, and active training modules.
+          </p>
+        </div>
+
+        <div className="landing-network-layout">
+          {/* Node Selector List */}
+          <div className="network-nodes-list">
+            {REGIONAL_CENTERS.map((node) => (
+              <button
+                type="button"
+                key={node.id}
+                className={`network-node-btn ${selectedNode.id === node.id ? 'active' : ''}`}
+                onClick={() => setSelectedNode(node)}
+              >
+                <div className="node-btn-left">
+                  <span className="node-status-dot" />
+                  <div>
+                    <strong className="node-btn-name">{node.name}</strong>
+                    <span className="node-btn-city">{node.city}</span>
+                  </div>
+                </div>
+                <div className="node-btn-right">
+                  <span className="node-pill">{node.activeCohorts} Cohorts</span>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Detailed Node Inspector Display Card */}
+          <div className="network-inspector-card">
+            <div className="inspector-header">
+              <div>
+                <span className="inspector-badge">OPERATIONAL &bull; LIVE NODE</span>
+                <h3 className="inspector-title">{selectedNode.name}</h3>
+                <p className="inspector-city">📍 {selectedNode.city}</p>
+              </div>
+              <div className="inspector-uptime">
+                <strong>{selectedNode.uptime}</strong>
+                <span>Uptime</span>
+              </div>
+            </div>
+
+            <div className="inspector-meta-grid">
+              <div className="inspector-meta-box">
+                <small>Center Director / Lead</small>
+                <strong>{selectedNode.lead}</strong>
+                <span>{selectedNode.designation}</span>
+              </div>
+              <div className="inspector-meta-box">
+                <small>Active Enrolled Trainees</small>
+                <strong>{selectedNode.trainees}</strong>
+                <span>Across {selectedNode.activeCohorts} batches</span>
+              </div>
+              <div className="inspector-meta-box">
+                <small>Historical Pass Rate</small>
+                <strong style={{ color: '#10B981' }}>{selectedNode.passRate}%</strong>
+                <span>Benchmark: 75%</span>
+              </div>
+            </div>
+
+            <div className="inspector-focus-box">
+              <small>PRIMARY RESEARCH &amp; TRAINING DOMAIN</small>
+              <p>{selectedNode.primaryFocus}</p>
+            </div>
+
+            <div className="inspector-modules-wrap">
+              <small>ACTIVE SYLLABUS MODULES</small>
+              <div className="inspector-modules-pills">
+                {selectedNode.modules.map((m, idx) => (
+                  <span key={idx} className="inspector-mod-pill">
+                    ✓ {m}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Meteorological Competency Explorer */}
+      <section id="competencies" className="landing-competencies-section">
+        <div className="landing-section-header">
+          <div className="landing-section-kicker">CURRICULUM BENCHMARKS</div>
+          <h2 className="landing-section-title">Institutional Competency Framework</h2>
+          <p className="landing-section-subtitle">
+            Explore core earth science disciplines and competency standards required for operational weather duty.
+          </p>
+        </div>
+
+        <div className="landing-competency-layout">
+          {/* Domain Tabs */}
+          <div className="competency-domain-tabs">
+            {COMPETENCY_DOMAINS.map((domain) => (
+              <button
+                type="button"
+                key={domain.id}
+                className={`competency-tab-btn ${selectedDomain.id === domain.id ? 'active' : ''}`}
+                onClick={() => setSelectedDomain(domain)}
+              >
+                <span>{domain.name}</span>
+                <small>{domain.tag}</small>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Domain Inspector */}
+          <div className="competency-detail-card">
+            <div className="comp-detail-top">
+              <div>
+                <span className="comp-tag">{selectedDomain.tag}</span>
+                <h3 className="comp-title">{selectedDomain.name}</h3>
+                <p className="comp-desc">{selectedDomain.desc}</p>
+              </div>
+              <div className="comp-score-badge">
+                <span>Avg Cohort Score</span>
+                <strong>{selectedDomain.avgScore}</strong>
+                <small>Target: {selectedDomain.benchmark}</small>
+              </div>
+            </div>
+
+            <div className="comp-specs-grid">
+              <div className="comp-spec-box">
+                <small>Instructional Hours</small>
+                <strong>{selectedDomain.hours}</strong>
+              </div>
+              <div className="comp-spec-box">
+                <small>Officers Certified</small>
+                <strong>{selectedDomain.certifiedCount}+</strong>
+              </div>
+              <div className="comp-spec-box wide">
+                <small>Prerequisites &amp; Foundational Knowledge</small>
+                <strong>{selectedDomain.prereq}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Mini Course Catalog Preview */}
+      <section id="courses" className="landing-courses-section">
+        <div className="landing-section-header">
+          <div className="landing-section-kicker">ACADEMIC OFFERINGS</div>
+          <h2 className="landing-section-title">Explore Specialized Meteorological Courses</h2>
+          <p className="landing-section-subtitle">
+            Comprehensive curricula designed in partnership with IMD and IITM senior faculty.
+          </p>
+        </div>
+
+        {/* Filter Category Pills */}
+        <div className="courses-filter-pills">
+          {['All', 'Forecasting', 'Observation', 'Computing', 'Geospatial'].map((cat) => (
+            <button
+              type="button"
+              key={cat}
+              className={`cat-filter-pill ${courseCategoryFilter === cat ? 'active' : ''}`}
+              onClick={() => setCourseCategoryFilter(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Course Cards Grid */}
+        <div className="preview-courses-grid">
+          {filteredCourses.map((c) => (
+            <div key={c.id} className="preview-course-card">
+              <div className="course-card-top">
+                <span className="course-cat-tag">{c.category}</span>
+                <span className="course-level-tag">{c.level}</span>
+              </div>
+              <h4 className="course-card-title">{c.title}</h4>
+              <div className="course-card-meta">
+                <span>⏱️ {c.duration}</span>
+                <span>📚 {c.modules} Modules ({c.lessons} Lessons)</span>
+                <span>⭐ {c.avgScore} Avg Score</span>
+              </div>
+
+              <div className="course-syllabus-preview">
+                <button
+                  type="button"
+                  className="syllabus-toggle-btn"
+                  onClick={() => setExpandedCourse(expandedCourse === c.id ? null : c.id)}
+                >
+                  <span>{expandedCourse === c.id ? 'Hide Syllabus Modules' : 'View Syllabus Modules'}</span>
+                  <span>{expandedCourse === c.id ? '▲' : '▼'}</span>
+                </button>
+
+                {expandedCourse === c.id && (
+                  <ul className="syllabus-modules-list">
+                    {c.syllabus.map((s, idx) => (
+                      <li key={idx}>
+                        <span className="mod-num">M{idx + 1}</span>
+                        <span>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -693,6 +1215,31 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
         </div>
       </section>
 
+      {/* Faculty & Officer Testimonials Spotlight */}
+      <section className="landing-testimonials-section">
+        <div className="landing-section-header">
+          <div className="landing-section-kicker">INSTITUTIONAL VOICES</div>
+          <h2 className="landing-section-title">Trusted by Meteorological Leaders</h2>
+          <p className="landing-section-subtitle">
+            Hear from directors and certified officers across our national network.
+          </p>
+        </div>
+
+        <div className="landing-testimonials-grid">
+          {TESTIMONIALS.map((t, idx) => (
+            <div key={idx} className="testimonial-card">
+              <div className="testimonial-quote-icon">“</div>
+              <p className="testimonial-quote-text">{t.quote}</p>
+              <div className="testimonial-author-meta">
+                <strong>{t.author}</strong>
+                <span className="test-role">{t.role}</span>
+                <span className="test-center">📍 {t.center}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Impact & Benefits Section */}
       <section id="impact" className="landing-impact-section">
         <div className="landing-section-header">
@@ -709,8 +1256,8 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <div className="landing-stat-icon-wrap">
               <img src={statUsersIcon} alt="Learners" />
             </div>
-            <div className="landing-stat-number">10K+</div>
-            <div className="landing-stat-label">Active Learners</div>
+            <div className="landing-stat-number">2,486+</div>
+            <div className="landing-stat-label">Certified Officers</div>
           </div>
 
           {/* Stat 2 */}
@@ -718,8 +1265,8 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <div className="landing-stat-icon-wrap">
               <img src={statGradCapIcon} alt="Trainers" />
             </div>
-            <div className="landing-stat-number">500+</div>
-            <div className="landing-stat-label">Trainers</div>
+            <div className="landing-stat-number">140+</div>
+            <div className="landing-stat-label">Accredited Faculty</div>
           </div>
 
           {/* Stat 3 */}
@@ -727,8 +1274,8 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <div className="landing-stat-icon-wrap">
               <img src={statBookIcon} alt="Courses" />
             </div>
-            <div className="landing-stat-number">200+</div>
-            <div className="landing-stat-label">Courses</div>
+            <div className="landing-stat-number">48+</div>
+            <div className="landing-stat-label">Operational Modules</div>
           </div>
 
           {/* Stat 4 */}
@@ -736,8 +1283,8 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <div className="landing-stat-icon-wrap">
               <img src={statTrendingIcon} alt="Success Rate" />
             </div>
-            <div className="landing-stat-number">95%</div>
-            <div className="landing-stat-label">Success Rate</div>
+            <div className="landing-stat-number">94.2%</div>
+            <div className="landing-stat-label">Assessment Pass Rate</div>
           </div>
 
           {/* Stat 5 */}
@@ -746,8 +1293,39 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
               <img src={statTargetIcon} alt="Growth" />
             </div>
             <div className="landing-stat-number">100%</div>
-            <div className="landing-stat-label">Growth Focused</div>
+            <div className="landing-stat-label">MoES Verified</div>
           </div>
+        </div>
+      </section>
+
+      {/* Interactive FAQ Section */}
+      <section id="faq" className="landing-faq-section">
+        <div className="landing-section-header">
+          <div className="landing-section-kicker">FREQUENTLY ASKED QUESTIONS</div>
+          <h2 className="landing-section-title">Everything You Need to Know</h2>
+          <p className="landing-section-subtitle">
+            Answers regarding accreditation, regional node facilities, and assessment criteria.
+          </p>
+        </div>
+
+        <div className="landing-faq-container">
+          {FAQS.map((faq, idx) => (
+            <div
+              key={idx}
+              className={`faq-item ${openFaq === idx ? 'open' : ''}`}
+              onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
+            >
+              <button type="button" className="faq-question-btn">
+                <span>{faq.q}</span>
+                <span className="faq-toggle-icon">{openFaq === idx ? '−' : '+'}</span>
+              </button>
+              {openFaq === idx && (
+                <div className="faq-answer-pane">
+                  <p>{faq.a}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -762,12 +1340,12 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
             <img src={leafDecor6} alt="" className="cta-leaf leaf-5" />
           </div>
 
-          <h2 className="landing-cta-title">Ready to Build a Stronger Tomorrow?</h2>
+          <h2 className="landing-cta-title">Ready to Enhance Meteorological Excellence?</h2>
           <p className="landing-cta-subtitle">
-            Join CapacityConnect and take the first step towards your growth.
+            Join India&apos;s unified meteorological capacity platform and accelerate your professional accreditation.
           </p>
           <button type="button" className="landing-cta-btn" onClick={onGetStarted}>
-            Get Started →
+            Get Started Now →
           </button>
         </div>
       </section>
@@ -782,7 +1360,7 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
               <span className="landing-footer-brand-name">CapacityConnect</span>
             </div>
             <p className="landing-footer-desc">
-              CapacityConnect is a unified digital platform for learning, skill development, assessments, trainer matching and progress tracking.
+              CapacityConnect is an institutional platform for earth science learning, meteorological skill development, Doppler radar simulation, faculty matching, and verified credential accreditation under MoES &amp; IMD.
             </p>
           </div>
 
@@ -790,23 +1368,23 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
           <div className="landing-footer-col">
             <h4 className="landing-footer-col-title">PLATFORM MODULES</h4>
             <ul className="landing-footer-links">
-              <li><button type="button" onClick={() => scrollToSection('features')}>User Management</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Course &amp; Content</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Assessment &amp; Evaluation</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Skill Gap Analysis</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Trainer Matching</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Progress Tracking</button></li>
+              <li><button type="button" onClick={() => scrollToSection('network')}>Regional Centers Hub</button></li>
+              <li><button type="button" onClick={() => scrollToSection('competencies')}>Competency Framework</button></li>
+              <li><button type="button" onClick={() => scrollToSection('courses')}>Course Catalog</button></li>
+              <li><button type="button" onClick={() => scrollToSection('features')}>Assessment Suite</button></li>
+              <li><button type="button" onClick={() => scrollToSection('impact')}>National Impact</button></li>
             </ul>
           </div>
 
           {/* Portals Column */}
           <div className="landing-footer-col">
-            <h4 className="landing-footer-col-title">QUICK PORTALS</h4>
+            <h4 className="landing-footer-col-title">REGIONAL NODES</h4>
             <ul className="landing-footer-links">
-              <li><button type="button" onClick={() => onNavigateRole ? onNavigateRole('trainee') : onLogin()}>Trainee Portal</button></li>
-              <li><button type="button" onClick={() => onNavigateRole ? onNavigateRole('trainer') : onLogin()}>Trainer Portal</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Courses Catalog</button></li>
-              <li><button type="button" onClick={() => scrollToSection('features')}>Assessments Suite</button></li>
+              <li><button type="button" onClick={() => scrollToSection('network')}>IMD Pune Training Node</button></li>
+              <li><button type="button" onClick={() => scrollToSection('network')}>IMD New Delhi Directorate HQ</button></li>
+              <li><button type="button" onClick={() => scrollToSection('network')}>IITM Pune Atmospheric Wing</button></li>
+              <li><button type="button" onClick={() => scrollToSection('network')}>NCMRWF Noida Modeling Center</button></li>
+              <li><button type="button" onClick={() => scrollToSection('network')}>INCOIS Hyderabad Ocean Node</button></li>
             </ul>
           </div>
 
@@ -814,17 +1392,17 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
           <div className="landing-footer-col">
             <h4 className="landing-footer-col-title">RESOURCES</h4>
             <ul className="landing-footer-links">
-              <li><button type="button" onClick={() => scrollToSection('hero')}>About Us</button></li>
-              <li><button type="button" onClick={() => scrollToSection('footer')}>Contact Us</button></li>
+              <li><button type="button" onClick={() => scrollToSection('hero')}>About Platform</button></li>
+              <li><button type="button" onClick={() => scrollToSection('faq')}>Accreditation FAQs</button></li>
               <li><button type="button" onClick={() => scrollToSection('footer')}>Help &amp; Support</button></li>
-              <li><button type="button" onClick={() => scrollToSection('footer')}>Privacy Policy</button></li>
+              <li><button type="button" onClick={() => scrollToSection('footer')}>MoES Guidelines</button></li>
               <li><button type="button" onClick={() => scrollToSection('footer')}>Terms &amp; Conditions</button></li>
             </ul>
           </div>
         </div>
 
         <div className="landing-footer-bottom">
-          <p>© {new Date().getFullYear()} CapacityConnect. All rights reserved. Building capable people for a better tomorrow.</p>
+          <p>© {new Date().getFullYear()} CapacityConnect &bull; Ministry of Earth Sciences (MoES) &bull; India Meteorological Department (IMD). All rights reserved.</p>
         </div>
       </footer>
     </div>
