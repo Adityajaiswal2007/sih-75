@@ -979,7 +979,7 @@
    ROLE TRACKS (TRAINERS & TRAINEES)
    ========================================================================== */
 .landing-tracks-section {
-  padding: 60px 20px;
+  padding: 60px 20px 80px;
   max-width: 1360px;
   margin: 0 auto;
 }
@@ -991,31 +991,50 @@
 }
 
 .landing-track-card {
-  background: #F6F8F2;
-  border: 1px solid #D5E2D9;
+  background: #FFFFFF;
+  border: 1.5px solid #D5E2D9;
   border-radius: 24px;
   padding: 36px 32px 0;
-  box-shadow: 0 8px 30px rgba(6, 78, 59, 0.08);
+  box-shadow: 0 10px 32px rgba(6, 78, 59, 0.06);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .landing-track-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(6, 78, 59, 0.12);
+}
+
+.landing-track-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
 .landing-track-badge {
-  display: inline-block;
-  align-self: flex-start;
-  background: #E2ECE5;
+  display: inline-flex;
+  align-items: center;
+  background: #E8F3ED;
   color: #013E37;
   font-size: 12px;
   font-weight: 800;
-  padding: 5px 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 14px;
   border-radius: 20px;
-  margin-bottom: 16px;
+}
+
+.landing-role-tag {
+  background: #013E37;
+  color: #FFFFFF;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  letter-spacing: 0.03em;
 }
 
 .landing-track-title {
@@ -1028,35 +1047,48 @@
 }
 
 .landing-track-desc {
-  font-size: 14.5px;
+  font-size: 14px;
   line-height: 1.6;
-  color: #557066;
+  color: #4A6357;
   margin: 0 0 20px;
 }
 
-.landing-track-btn {
-  align-self: flex-start;
-  background: #013E37;
-  color: #FFFFFF;
-  font-size: 13.5px;
-  font-weight: 700;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  margin-bottom: 24px;
-  transition: all 0.2s ease;
+.landing-track-capabilities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 14px;
+  margin-bottom: 28px;
+  background: #F4F8F5;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid #E2EDE6;
 }
 
-.landing-track-btn:hover {
-  background: #064E3B;
-  transform: translateX(2px);
+.landing-track-cap-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #143527;
+}
+
+.landing-cap-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2F5233;
+  flex-shrink: 0;
 }
 
 .landing-track-image-box {
   width: 100%;
   border-radius: 16px 16px 0 0;
   overflow: hidden;
+  margin-top: auto;
+  border: 1px solid #E2EDE6;
+  border-bottom: none;
+  background: #F9FCFA;
 }
 
 .landing-track-image-box img {
@@ -2719,6 +2751,24 @@
   .landing-testimonials-grid {
     grid-template-columns: 1fr;
   }
+  .landing-tracks-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .landing-steps-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  .landing-step-card {
+    min-width: 200px;
+    flex: 1 1 calc(50% - 24px);
+  }
+  .landing-step-connector {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -2742,5 +2792,11 @@
   .landing-hero-quick-telemetry {
     width: 100%;
     gap: 12px;
+  }
+  .landing-track-capabilities {
+    grid-template-columns: 1fr;
+  }
+  .landing-step-card {
+    flex: 1 1 100%;
   }
 }

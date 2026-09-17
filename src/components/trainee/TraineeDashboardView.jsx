@@ -503,7 +503,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                     style={{ fontSize: 11.5 }}
                     onClick={() => {
                       if (onOpenTrainerProfile) {
-                        onOpenTrainerProfile(trainer.id);
+                        onOpenTrainerProfile(trainer);
                       } else {
                         onNavigate('trainers');
                       }
@@ -521,18 +521,24 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
       {/* FORMULA PRACTICE FLASHCARD MODAL */}
       {flashcardOpen && (
         <div className="trainee-modal-backdrop" onClick={() => setFlashcardOpen(false)}>
-          <div className="trainee-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 520 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #DCE6DF', paddingBottom: 10, marginBottom: 14 }}>
+          <div
+            className="trainee-modal-container"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: 540, background: '#FFFFFF', padding: 24 }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1.5px solid #DCE6DF', paddingBottom: 12, marginBottom: 16 }}>
               <div>
-                <span style={{ fontSize: 10.5, fontWeight: 800, color: '#1B4332', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 10.5, fontWeight: 800, color: '#2F5233', background: '#EEF6EA', padding: '3px 8px', borderRadius: 6, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
                   {FORMULA_FLASHCARDS[currentCardIdx].topic}
                 </span>
-                <h3 style={{ margin: '2px 0 0', fontSize: 16, color: '#12281B' }}>Meteorological Practice Flashcard</h3>
+                <h3 style={{ margin: '6px 0 0', fontSize: 17, fontWeight: 800, color: '#16251B' }}>Meteorological Practice Flashcard</h3>
               </div>
               <button
                 type="button"
-                style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer', color: '#688273' }}
+                className="trainee-modal-close-btn"
+                style={{ position: 'static', background: '#EEF4EF', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, cursor: 'pointer', color: '#16251B', border: 'none' }}
                 onClick={() => setFlashcardOpen(false)}
+                title="Close"
               >
                 ✕
               </button>
@@ -541,31 +547,32 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
             <div
               onClick={() => setCardFlipped(!cardFlipped)}
               style={{
-                minHeight: 160,
-                background: cardFlipped ? '#1B4332' : '#F4F8F5',
-                color: cardFlipped ? '#FFFFFF' : '#12281B',
-                border: '1.5px solid #C4DFC9',
-                borderRadius: 14,
-                padding: 20,
+                minHeight: 180,
+                background: cardFlipped ? '#16251B' : '#F7FAF8',
+                color: cardFlipped ? '#FFFFFF' : '#16251B',
+                border: cardFlipped ? '2px solid #2F5233' : '2px dashed #C4DFC9',
+                borderRadius: 16,
+                padding: '24px 20px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                marginBottom: 16
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                marginBottom: 20,
+                boxShadow: cardFlipped ? '0 12px 28px rgba(22, 37, 27, 0.25)' : 'none'
               }}
             >
-              <small style={{ color: cardFlipped ? '#A7C957' : '#557060', fontWeight: 700, marginBottom: 8 }}>
-                {cardFlipped ? 'REVEALED FORMULA & PRINCIPLE' : 'CLICK CARD TO FLIP'}
-              </small>
-              <strong style={{ fontSize: cardFlipped ? 14 : 15, lineHeight: 1.5, fontFamily: cardFlipped ? 'monospace' : 'inherit' }}>
+              <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '0.6px', color: cardFlipped ? '#A7C957' : '#527A5A', marginBottom: 10, textTransform: 'uppercase' }}>
+                {cardFlipped ? '✓ REVEALED FORMULA & PRINCIPLE' : '👆 CLICK CARD TO FLIP & REVEAL'}
+              </span>
+              <div style={{ fontSize: cardFlipped ? 15 : 16, fontWeight: 700, lineHeight: 1.5, fontFamily: cardFlipped ? 'monospace' : 'inherit' }}>
                 {cardFlipped ? FORMULA_FLASHCARDS[currentCardIdx].formula : FORMULA_FLASHCARDS[currentCardIdx].question}
-              </strong>
+              </div>
               {cardFlipped && (
-                <p style={{ margin: '10px 0 0', fontSize: 12, color: '#D2ECC9' }}>
-                  {FORMULA_FLASHCARDS[currentCardIdx].note}
+                <p style={{ margin: '14px 0 0', fontSize: 12.5, color: '#D6E3D8', lineHeight: 1.5, background: 'rgba(255,255,255,0.06)', padding: '8px 12px', borderRadius: 8 }}>
+                  💡 {FORMULA_FLASHCARDS[currentCardIdx].note}
                 </p>
               )}
             </div>
@@ -575,6 +582,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
                 type="button"
                 className="trainee-btn-secondary"
                 disabled={currentCardIdx === 0}
+                style={{ opacity: currentCardIdx === 0 ? 0.5 : 1, cursor: currentCardIdx === 0 ? 'not-allowed' : 'pointer' }}
                 onClick={() => {
                   setCardFlipped(false);
                   setCurrentCardIdx(prev => Math.max(0, prev - 1));
@@ -582,7 +590,7 @@ export default function TraineeDashboardView({ onNavigate, onOpenTrainerProfile 
               >
                 ← Previous
               </button>
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#557060' }}>
+              <span style={{ fontSize: 12.5, fontWeight: 700, color: '#2F5233', background: '#EEF6EA', padding: '4px 12px', borderRadius: 12 }}>
                 {currentCardIdx + 1} of {FORMULA_FLASHCARDS.length}
               </span>
               <button

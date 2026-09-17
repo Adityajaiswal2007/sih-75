@@ -8,6 +8,8 @@ import TraineePortal from './components/trainee/TraineePortal'
 import AdminDashboard from './components/admin/AdminDashboard'
 import TrainerDashboard from './components/trainer-portal/TrainerDashboard'
 
+import { recommendedTrainers } from './components/trainee/traineeData'
+
 function Logo({ onClick }) {
   return (
     <a className="logo" href="#top" onClick={onClick} aria-label="CapacityConnect home">
@@ -25,6 +27,18 @@ function App() {
   const [activeTrainer, setActiveTrainer] = useState(null)
 
   const [loginView, setLoginView] = useState('login')
+
+  const handleOpenTrainerProfile = (trainer) => {
+    let resolved = trainer
+    if (typeof trainer === 'string') {
+      resolved = recommendedTrainers.find(t => t.id === trainer || t.name === trainer) || { name: trainer, id: trainer }
+    } else if (!trainer) {
+      resolved = recommendedTrainers[0]
+    }
+    setActiveTrainer(resolved)
+    window.location.hash = '#trainer-profile'
+    setCurrentHash('#trainer-profile')
+  }
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -73,11 +87,7 @@ function App() {
   if (currentHash === '#trainee') return (
     <TraineeDashboard
       onBack={() => { window.location.hash = ''; setDashboardRole(null); setCurrentHash('') }}
-      onOpenTrainerProfile={(trainer) => {
-        setActiveTrainer(trainer)
-        window.location.hash = '#trainer-profile'
-        setCurrentHash('#trainer-profile')
-      }}
+      onOpenTrainerProfile={handleOpenTrainerProfile}
     />
   )
 
@@ -85,11 +95,7 @@ function App() {
   if (dashboardRole === 'trainee') return (
     <TraineeDashboard
       onBack={() => { window.location.hash = ''; setDashboardRole(null); setCurrentHash('') }}
-      onOpenTrainerProfile={(trainer) => {
-        setActiveTrainer(trainer)
-        window.location.hash = '#trainer-profile'
-        setCurrentHash('#trainer-profile')
-      }}
+      onOpenTrainerProfile={handleOpenTrainerProfile}
     />
   )
   if (dashboardRole === 'admin') return <AdminDashboard onBack={() => { window.location.hash = ''; setDashboardRole(null); setCurrentHash('') }} />

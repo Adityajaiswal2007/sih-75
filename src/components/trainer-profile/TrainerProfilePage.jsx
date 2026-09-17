@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TrainerProfile.css';
 
 // Subcomponents
@@ -20,16 +20,9 @@ import ToastNotification from './ToastNotification';
 
 // Mock Data
 import {
-  initialTrainerData,
-  trainerStats,
-  competencyMatchData,
-  aboutData,
-  competenciesList,
-  experienceList,
-  coursesList,
-  performanceMetrics,
-  traineeReviews,
-  similarTrainersList
+  getTrainerProfile,
+  getSimilarTrainers,
+  initialTrainerData
 } from './trainerProfileData';
 
 // Icons
@@ -39,42 +32,53 @@ import {
 } from 'lucide-react';
 
 export default function TrainerProfilePage({ onBack, defaultRole = 'trainee', trainerData }) {
-  // Main State
-  const [trainer, setTrainer] = useState(() => {
+  const isAdminView = defaultRole === 'admin';
+
+  // Dynamic Profile Record
+  const [profileRecord, setProfileRecord] = useState(() => getTrainerProfile(trainerData));
+
+  useEffect(() => {
     if (trainerData) {
-      return {
-        ...initialTrainerData,
-        id: trainerData.id || initialTrainerData.id,
-        name: trainerData.name || initialTrainerData.name,
-        title: trainerData.role || initialTrainerData.title,
-        department: trainerData.organization || initialTrainerData.department,
-        organization: trainerData.organization || initialTrainerData.organization,
-        avatar: trainerData.avatar || initialTrainerData.avatar,
-        tagline: trainerData.tagline || initialTrainerData.tagline,
-        rating: trainerData.rating || initialTrainerData.rating,
-        reviewsCount: trainerData.reviewsCount || initialTrainerData.reviewsCount,
-        experience: trainerData.experience || initialTrainerData.experience,
-        traineesTrained: trainerData.traineesTrained || initialTrainerData.traineesTrained,
-        matchScore: trainerData.matchScore || initialTrainerData.matchScore || 94,
-        expertise: trainerData.expertise || initialTrainerData.expertise || ['Meteorology', 'Weather Analytics']
-      };
+      setProfileRecord(getTrainerProfile(trainerData));
     }
-    return initialTrainerData;
-  });
-  const stats = trainerStats;
-  const matchData = {
-    ...competencyMatchData,
-    overallScore: trainer.matchScore || competencyMatchData.overallScore
+  }, [trainerData]);
+
+  const trainer = profileRecord;
+  const stats = profileRecord.stats || {
+    courses: String(profileRecord.totalCourses || 10),
+    trainees: String(profileRecord.totalTrainees || 500),
+    experience: profileRecord.experienceYears || '10+ Years',
+    successRate: profileRecord.successRate || '94%',
+    averageRating: String(profileRecord.rating || '4.8')
   };
-  const competencies = competenciesList;
-  const experiences = experienceList;
-  const courses = coursesList;
-  const performance = performanceMetrics;
-  const reviews = traineeReviews;
-  const similarTrainers = similarTrainersList;
+  const matchData = profileRecord.competencyMatch || {
+    score: profileRecord.matchScore || 90,
+    targetRole: profileRecord.designation,
+    description: profileRecord.tagline,
+    matchedCompetencies: []
+  };
+  const aboutData = profileRecord.about || {
+    bio: profileRecord.tagline,
+    extendedBio: profileRecord.tagline,
+    specializations: profileRecord.specializations || [],
+    education: [],
+    languages: []
+  };
+  const competencies = profileRecord.competencies || [];
+  const experiences = profileRecord.experiences || [];
+  const courses = profileRecord.courses || [];
+  const performance = profileRecord.performance || {
+    averageScore: 86,
+    completionRate: 92,
+    successRate: 94,
+    averageFeedback: String(profileRecord.rating || '4.8'),
+    monthlyTrend: []
+  };
+  const reviews = profileRecord.reviews || [];
+  const similarTrainers = getSimilarTrainers(profileRecord.id);
 
   // Modal & Toast State
-  const [activeModal, setActiveModal] = useState(null); // 'contact', 'request', 'match-details', 'assign-course', 'edit-profile', 'all-competencies', 'course-details', 'all-feedback'
+  const [activeModal, setActiveModal] = useState(null);
   const [modalData, setModalData] = useState(null);
   const [toastMessage, setToastMessage] = useState('');
 
@@ -100,7 +104,6 @@ export default function TrainerProfilePage({ onBack, defaultRole = 'trainee', tr
     } else if (actionName === 'Edit Profile') {
       setActiveModal('edit-profile');
     } else if (actionName === 'View Analytics') {
-      // Scroll to performance section
       const el = document.getElementById('section-performance');
       if (el) el.scrollIntoView({ behavior: 'smooth' });
       triggerToast('Navigated to Performance & Training Analytics');
@@ -110,8 +113,9 @@ export default function TrainerProfilePage({ onBack, defaultRole = 'trainee', tr
   };
 
   const handleSelectSimilarTrainer = (selectedTrainer) => {
-    triggerToast(`Viewing profile of ${selectedTrainer.name}`);
-    // Smoothly scroll to top
+    const fullProfile = getTrainerProfile(selectedTrainer);
+    setProfileRecord(fullProfile);
+    triggerToast(`Viewing profile of ${fullProfile.name}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -121,7 +125,7 @@ export default function TrainerProfilePage({ onBack, defaultRole = 'trainee', tr
   };
 
   const handleUpdateTrainer = (updatedData) => {
-    setTrainer((prev) => ({
+    setProfileRecord((prev) => ({
       ...prev,
       ...updatedData
     }));

@@ -7,15 +7,14 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
 
   const categories = [
-    'All',
-    'Weather Data Analysis',
-    'Meteorology',
-    'Climate Science',
-    'Python',
-    'GIS',
-    'Machine Learning',
-    'Remote Sensing',
-    'Scientific Computing'
+    { label: 'All Courses', value: 'All', icon: '🌐' },
+    { label: 'Weather Data Analysis', value: 'Weather Data Analysis', icon: '⚡' },
+    { label: 'Meteorology', value: 'Meteorology', icon: '🌪' },
+    { label: 'Climate Science', value: 'Climate Science', icon: '🌱' },
+    { label: 'Machine Learning', value: 'Machine Learning', icon: '🤖' },
+    { label: 'Remote Sensing', value: 'Remote Sensing', icon: '🛰' },
+    { label: 'GIS & Mapping', value: 'GIS & Spatial Mapping', icon: '🗺' },
+    { label: 'Scientific Computing', value: 'Scientific Computing', icon: '💻' }
   ];
 
   const difficulties = ['All', 'Beginner', 'Intermediate', 'Advanced'];
@@ -24,12 +23,14 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
     const matchesSearch =
       course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       course.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
+      course.instructor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (course.competencies && course.competencies.some(c => c.toLowerCase().includes(searchQuery.toLowerCase())));
 
     const matchesCategory =
       selectedCategory === 'All' ||
       course.category === selectedCategory ||
-      course.domain === selectedCategory;
+      course.domain === selectedCategory ||
+      (course.competencies && course.competencies.some(c => c.includes(selectedCategory)));
 
     const matchesDifficulty =
       selectedDifficulty === 'All' || course.difficulty === selectedDifficulty;
@@ -37,90 +38,121 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
 
-  return (
-    <div className="trainee-catalog-view">
-      {/* Top Banner */}
-      <div style={{ marginBottom: 28 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.8px', color: '#2F5233', textTransform: 'uppercase' }}>
-            ACADEMIC CURRICULUM
-          </span>
-        </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#16251B', margin: 0 }}>Course Catalog</h1>
-        <p style={{ color: '#485563', fontSize: 13.5, margin: '4px 0 20px' }}>
-          Find accredited courses that match your developmental goals and bridge diagnosed competency gaps.
-        </p>
+  const getDifficultyColor = (diff) => {
+    switch (diff) {
+      case 'Beginner':
+        return { bg: '#E8F5E9', text: '#2E7D32', border: '#C8E6C9' };
+      case 'Intermediate':
+        return { bg: '#E3F2FD', text: '#1565C0', border: '#BBDEFB' };
+      case 'Advanced':
+        return { bg: '#F3E5F5', text: '#7B1FA2', border: '#E1BEE7' };
+      default:
+        return { bg: '#EEF6EA', text: '#2F5233', border: '#D6E3D8' };
+    }
+  };
 
-        {/* Search and Secondary Filter Row */}
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-          <div className="trainee-search-input-wrap" style={{ width: 340, position: 'relative' }}>
-            <span className="trainee-search-icon">⌕</span>
+  return (
+    <div className="trainee-catalog-view-wrapper">
+      {/* 1. Page Header */}
+      <div className="trainee-catalog-header">
+        <div className="trainee-catalog-kicker-row">
+          <span className="trainee-catalog-kicker">ACADEMIC CURRICULUM · IMD &amp; MoES NODAL CATALOG</span>
+          <span className="trainee-catalog-live-badge">● 2026 Active Cohorts</span>
+        </div>
+        <h1 className="trainee-catalog-title">Course Catalog</h1>
+        <p className="trainee-catalog-subtitle">
+          Discover accredited meteorological training programs, radar polarimetry labs, and atmospheric computing courses mapped to institutional competency benchmarks.
+        </p>
+      </div>
+
+      {/* 2. Interactive Search & Filter Controls Bar */}
+      <div className="trainee-catalog-controls-card">
+        <div className="trainee-catalog-controls-top">
+          {/* Main Search Input */}
+          <div className="trainee-catalog-search-box">
+            <svg
+              className="trainee-catalog-search-svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
             <input
               type="text"
-              placeholder="Search courses, modules, faculty..."
+              className="trainee-catalog-search-input"
+              placeholder="Search by course title, competency, or faculty instructor..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              style={{ paddingLeft: 34 }}
             />
+            {searchQuery && (
+              <button
+                type="button"
+                className="trainee-catalog-search-clear"
+                onClick={() => setSearchQuery('')}
+                title="Clear search"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, color: '#485563', fontWeight: 600 }}>Difficulty:</span>
-            <select
-              value={selectedDifficulty}
-              onChange={e => setSelectedDifficulty(e.target.value)}
-              style={{
-                background: '#FFFFFF',
-                border: '1px solid #D6E3D8',
-                color: '#16251B',
-                padding: '8px 14px',
-                borderRadius: 8,
-                fontSize: 12.5,
-                fontWeight: 500,
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              {difficulties.map(d => (
-                <option key={d} value={d} style={{ color: '#16251B', background: '#FFFFFF' }}>
-                  {d}
-                </option>
-              ))}
-            </select>
+          {/* Difficulty Dropdown */}
+          <div className="trainee-catalog-select-group">
+            <label className="trainee-catalog-select-label">Difficulty Level:</label>
+            <div className="trainee-catalog-select-wrapper">
+              <select
+                className="trainee-catalog-select"
+                value={selectedDifficulty}
+                onChange={e => setSelectedDifficulty(e.target.value)}
+              >
+                {difficulties.map(d => (
+                  <option key={d} value={d}>
+                    {d === 'All' ? 'All Difficulties' : `${d} Level`}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
+        </div>
+
+        {/* Category Horizontal Filter Chips */}
+        <div className="trainee-catalog-category-scroll">
+          {categories.map(cat => {
+            const isActive = selectedCategory === cat.value;
+            return (
+              <button
+                key={cat.value}
+                type="button"
+                className={`trainee-catalog-pill-btn ${isActive ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(cat.value)}
+              >
+                <span className="trainee-pill-icon">{cat.icon}</span>
+                <span>{cat.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Category Pills */}
-      <div className="trainee-catalog-filters">
-        {categories.map(cat => (
+      {/* 3. Results Telemetry & Active Filters */}
+      <div className="trainee-catalog-results-meta">
+        <div className="trainee-catalog-count-text">
+          Showing <strong>{filteredCourses.length}</strong> accredited {filteredCourses.length === 1 ? 'course' : 'courses'}
+          {selectedCategory !== 'All' && <span className="trainee-catalog-filter-tag">Category: {selectedCategory}</span>}
+          {selectedDifficulty !== 'All' && <span className="trainee-catalog-filter-tag">Level: {selectedDifficulty}</span>}
+          {searchQuery && <span className="trainee-catalog-filter-tag">Query: "{searchQuery}"</span>}
+        </div>
+        {(selectedCategory !== 'All' || selectedDifficulty !== 'All' || searchQuery) && (
           <button
-            key={cat}
-            className={`trainee-filter-chip ${selectedCategory === cat ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Courses Grid */}
-      {filteredCourses.length === 0 ? (
-        <div
-          style={{
-            padding: '60px 20px',
-            textAlign: 'center',
-            background: '#FFFFFF',
-            border: '1px solid #D6E3D8',
-            borderRadius: 16
-          }}
-        >
-          <div style={{ fontSize: 32, marginBottom: 12 }}>🔍</div>
-          <h3 style={{ color: '#16251B', fontSize: 18, margin: '0 0 6px', fontWeight: 700 }}>No courses match your filter criteria</h3>
-          <p style={{ color: '#485563', fontSize: 13 }}>Try adjusting your search query or selecting a different category filter.</p>
-          <button
-            className="trainee-btn-secondary"
-            style={{ marginTop: 16 }}
+            type="button"
+            className="trainee-catalog-reset-btn"
             onClick={() => {
               setSearchQuery('');
               setSelectedCategory('All');
@@ -129,89 +161,169 @@ export default function TraineeCatalogView({ onNavigate, onEnrollClick }) {
           >
             Reset Filters
           </button>
+        )}
+      </div>
+
+      {/* 4. Course Cards Grid */}
+      {filteredCourses.length === 0 ? (
+        <div className="trainee-catalog-empty-state">
+          <div className="trainee-catalog-empty-icon">🔍</div>
+          <h3 className="trainee-catalog-empty-title">No Courses Match Your Filter Criteria</h3>
+          <p className="trainee-catalog-empty-desc">
+            Try adjusting your search terms or choosing a different category or difficulty level.
+          </p>
+          <button
+            type="button"
+            className="trainee-btn-primary"
+            style={{ marginTop: 14 }}
+            onClick={() => {
+              setSearchQuery('');
+              setSelectedCategory('All');
+              setSelectedDifficulty('All');
+            }}
+          >
+            Show All Courses
+          </button>
         </div>
       ) : (
-        <div className="trainee-course-grid">
-          {filteredCourses.map(course => (
-            <div className="trainee-course-card" key={course.id}>
-              <div className="trainee-course-top">
-                <div className="trainee-course-icon">{course.thumbnailIcon}</div>
-                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                  <span className="trainee-course-category-badge">{course.category}</span>
-                  <span
-                    style={{
-                      fontSize: 10.5,
-                      padding: '3px 8px',
-                      borderRadius: 12,
-                      background: '#EEF6EA',
-                      color: '#2F5233',
-                      fontWeight: 600,
-                      border: '1px solid #D6E3D8'
-                    }}
-                  >
-                    {course.difficulty}
-                  </span>
-                </div>
-              </div>
+        <div className="trainee-catalog-grid">
+          {filteredCourses.map(course => {
+            const diffStyle = getDifficultyColor(course.difficulty);
 
-              <h3 className="trainee-course-title">{course.title}</h3>
-              <p className="trainee-course-desc">{course.description}</p>
-
-              {/* Progress if already enrolled */}
-              {course.enrolled && (
-                <div style={{ marginBottom: 14 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11.5, marginBottom: 4 }}>
-                    <span style={{ color: '#2F5233', fontWeight: 600 }}>Enrolled</span>
-                    <span style={{ color: '#2F5233', fontWeight: 700 }}>{course.progress}%</span>
+            return (
+              <div className="trainee-catalog-card" key={course.id}>
+                {/* Top Row: Icon + Category Badge + Difficulty Pill */}
+                <div className="trainee-catalog-card-header">
+                  <div className="trainee-catalog-card-thumb">
+                    <span>{course.thumbnailIcon}</span>
                   </div>
-                  <div className="trainee-progress-bar-wrap" style={{ height: 5 }}>
-                    <div className="trainee-progress-bar-fill" style={{ width: `${course.progress}%` }} />
+                  <div className="trainee-catalog-card-badges">
+                    <span className="trainee-catalog-badge-category">
+                      {course.category}
+                    </span>
+                    <span
+                      className="trainee-catalog-badge-diff"
+                      style={{
+                        background: diffStyle.bg,
+                        color: diffStyle.text,
+                        borderColor: diffStyle.border
+                      }}
+                    >
+                      {course.difficulty}
+                    </span>
                   </div>
                 </div>
-              )}
 
-              {/* Meta stats */}
-              <div className="trainee-course-meta-row">
-                <span>⏱ {course.duration}</span>
-                <span>•</span>
-                <span>▤ {course.modulesCount} modules</span>
-                <span>•</span>
-                <span>★ {course.rating} ({course.enrolledCount})</span>
-              </div>
-
-              <div style={{ fontSize: 11.5, color: '#485563', marginBottom: 16 }}>
-                Instructor: <strong style={{ color: '#16251B' }}>{course.instructor}</strong>
-              </div>
-
-              {/* Card Footer Actions */}
-              <div className="trainee-course-footer">
-                <button
-                  className="trainee-panel-link"
+                {/* Course Title & Overview */}
+                <h3
+                  className="trainee-catalog-card-title"
                   onClick={() => onNavigate('course-detail', { courseId: course.id })}
+                  title={course.title}
                 >
-                  View Details →
-                </button>
+                  {course.title}
+                </h3>
+                <p className="trainee-catalog-card-desc">
+                  {course.description || course.overview}
+                </p>
 
-                {course.enrolled ? (
-                  <button
-                    className="trainee-btn-primary"
-                    style={{ padding: '8px 16px', fontSize: 12.5 }}
-                    onClick={() => onNavigate('learning', { courseId: course.id })}
-                  >
-                    {course.progress === 100 ? 'Review Course' : 'Continue Learning'}
-                  </button>
-                ) : (
-                  <button
-                    className="trainee-btn-secondary"
-                    style={{ padding: '8px 16px', fontSize: 12.5 }}
-                    onClick={() => onEnrollClick && onEnrollClick(course)}
-                  >
-                    Enroll Now
-                  </button>
+                {/* Competency Tags */}
+                {course.competencies && course.competencies.length > 0 && (
+                  <div className="trainee-catalog-comp-chips">
+                    {course.competencies.slice(0, 2).map((comp, idx) => (
+                      <span key={idx} className="trainee-catalog-comp-chip">
+                        <span style={{ color: '#2F6B3C', fontWeight: 800 }}>✓</span> {comp}
+                      </span>
+                    ))}
+                    {course.competencies.length > 2 && (
+                      <span className="trainee-catalog-comp-chip-more">
+                        +{course.competencies.length - 2} more
+                      </span>
+                    )}
+                  </div>
                 )}
+
+                {/* Progress Bar (if already enrolled) */}
+                {course.enrolled && (
+                  <div className="trainee-catalog-enrolled-box">
+                    <div className="trainee-catalog-enrolled-top">
+                      <span className="trainee-catalog-enrolled-label">
+                        <span className="trainee-catalog-enrolled-dot" /> Active Enrollment
+                      </span>
+                      <strong className="trainee-catalog-enrolled-percent">{course.progress}%</strong>
+                    </div>
+                    <div className="trainee-progress-bar-wrap" style={{ height: 6 }}>
+                      <div
+                        className="trainee-progress-bar-fill"
+                        style={{
+                          width: `${course.progress}%`,
+                          background: course.progress === 100 ? '#2F6B3C' : 'linear-gradient(90deg, #527A5A, #2F5233)'
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Meta Row: Duration · Modules · Rating */}
+                <div className="trainee-catalog-meta-bar">
+                  <div className="trainee-catalog-meta-item">
+                    <span>⏱</span>
+                    <span>{course.duration}</span>
+                  </div>
+                  <span className="trainee-catalog-meta-dot">•</span>
+                  <div className="trainee-catalog-meta-item">
+                    <span>▤</span>
+                    <span>{course.modulesCount} lessons</span>
+                  </div>
+                  <span className="trainee-catalog-meta-dot">•</span>
+                  <div className="trainee-catalog-meta-item rating">
+                    <span>★</span>
+                    <strong>{course.rating}</strong>
+                    <small>({course.enrolledCount})</small>
+                  </div>
+                </div>
+
+                {/* Faculty Instructor Row */}
+                <div className="trainee-catalog-faculty-row">
+                  <div className="trainee-catalog-faculty-avatar">
+                    {course.instructorAvatar || 'FC'}
+                  </div>
+                  <div className="trainee-catalog-faculty-info">
+                    <strong className="trainee-catalog-faculty-name">{course.instructor}</strong>
+                    <small className="trainee-catalog-faculty-role">{course.instructorRole}</small>
+                  </div>
+                </div>
+
+                {/* Card Actions Footer */}
+                <div className="trainee-catalog-card-footer">
+                  <button
+                    type="button"
+                    className="trainee-catalog-btn-details"
+                    onClick={() => onNavigate('course-detail', { courseId: course.id })}
+                  >
+                    View Details →
+                  </button>
+
+                  {course.enrolled ? (
+                    <button
+                      type="button"
+                      className="trainee-catalog-btn-action primary"
+                      onClick={() => onNavigate('learning', { courseId: course.id })}
+                    >
+                      {course.progress === 100 ? 'Review Course' : 'Continue ▶'}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="trainee-catalog-btn-action enroll"
+                      onClick={() => onEnrollClick && onEnrollClick(course)}
+                    >
+                      Enroll Now +
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

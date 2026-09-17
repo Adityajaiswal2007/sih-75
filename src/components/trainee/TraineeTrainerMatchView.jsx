@@ -151,8 +151,9 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
         </div>
 
         {/* CTAs */}
-        <div style={{ display: 'flex', gap: 14 }}>
+        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
           <button
+            type="button"
             className="trainee-btn-intel"
             style={{ fontSize: 13.5, padding: '12px 24px' }}
             onClick={() => handleViewProfile(bestMatch)}
@@ -160,10 +161,11 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
             View Full Trainer Profile ↗
           </button>
           <button
+            type="button"
             className="trainee-btn-secondary"
             onClick={() => onNavigate('course-detail', { courseId: 'crs-001' })}
           >
-            Explore Courses Taught
+            Explore Courses Taught ({bestMatch.coursesTaught.length}) →
           </button>
         </div>
       </div>
@@ -176,6 +178,7 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
         <div style={{ display: 'flex', gap: 8 }}>
           {['All', 'Meteorology', 'Remote Sensing', 'Machine Learning'].map(tag => (
             <button
+              type="button"
               key={tag}
               className={`trainee-filter-chip ${filterExpertise === tag ? 'active' : ''}`}
               style={{ fontSize: 11, padding: '4px 10px' }}
@@ -188,65 +191,85 @@ export default function TraineeTrainerMatchView({ onNavigate, onOpenTrainerProfi
       </div>
 
       <div className="trainee-trainers-grid">
-        {filteredTrainers.map(trainer => (
-          <div
-            key={trainer.id}
-            className={`trainee-trainer-card ${trainer.isBestMatch ? 'best-match' : ''}`}
-          >
-            {trainer.isBestMatch && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 12,
-                  right: 12,
-                  fontSize: 10,
-                  fontWeight: 700,
-                  background: '#527A5A',
-                  color: '#fff',
-                  padding: '2px 8px',
-                  borderRadius: 10
-                }}
-              >
-                Top Pick
-              </span>
-            )}
+        {filteredTrainers.map(trainer => {
+          const firstCourseId =
+            trainer.name.includes('Rahul')
+              ? 'crs-001'
+              : trainer.name.includes('Neha')
+              ? 'crs-005'
+              : trainer.name.includes('Amit')
+              ? 'crs-006'
+              : 'crs-001';
 
-            <div className="trainee-trainer-header">
-              <div className="trainee-trainer-avatar">{trainer.avatar}</div>
-              <div className="trainee-trainer-name-box">
-                <h4>{trainer.name}</h4>
-                <p>{trainer.organization}</p>
+          return (
+            <div
+              key={trainer.id}
+              className={`trainee-trainer-card ${trainer.isBestMatch ? 'best-match' : ''}`}
+            >
+              {trainer.isBestMatch && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    background: '#2F6B3C',
+                    color: '#fff',
+                    padding: '2px 8px',
+                    borderRadius: 10
+                  }}
+                >
+                  Top Pick
+                </span>
+              )}
+
+              <div className="trainee-trainer-header">
+                <div className="trainee-trainer-avatar">{trainer.avatar}</div>
+                <div className="trainee-trainer-name-box">
+                  <h4>{trainer.name}</h4>
+                  <p>{trainer.organization}</p>
+                </div>
+              </div>
+
+              <div className="trainee-trainer-match-score">
+                <strong>{trainer.matchScore}%</strong>
+                <small>Competency Match for your learning path</small>
+              </div>
+
+              <p style={{ fontSize: 12, color: '#485563', margin: '0 0 14px', lineHeight: 1.5 }}>
+                {trainer.tagline}
+              </p>
+
+              <div className="trainee-trainer-tags">
+                {trainer.coursesTaught.map((crs, idx) => (
+                  <span key={idx} className="trainee-trainer-tag">
+                    {crs}
+                  </span>
+                ))}
+              </div>
+
+              <div style={{ paddingTop: 14, borderTop: '1px solid #D6E3D8', display: 'flex', gap: 10 }}>
+                <button
+                  type="button"
+                  className="trainee-btn-primary"
+                  style={{ flex: 1, fontSize: 12, padding: '8px 12px' }}
+                  onClick={() => handleViewProfile(trainer)}
+                >
+                  View Profile ↗
+                </button>
+                <button
+                  type="button"
+                  className="trainee-btn-secondary"
+                  style={{ fontSize: 11.5, padding: '8px 12px' }}
+                  onClick={() => onNavigate('course-detail', { courseId: firstCourseId })}
+                >
+                  Courses →
+                </button>
               </div>
             </div>
-
-            <div className="trainee-trainer-match-score">
-              <strong>{trainer.matchScore}%</strong>
-              <small>Competency Match for your learning path</small>
-            </div>
-
-            <p style={{ fontSize: 12, color: '#485563', margin: '0 0 14px', lineHeight: 1.5 }}>
-              {trainer.tagline}
-            </p>
-
-            <div className="trainee-trainer-tags">
-              {trainer.coursesTaught.map((crs, idx) => (
-                <span key={idx} className="trainee-trainer-tag">
-                  {crs}
-                </span>
-              ))}
-            </div>
-
-            <div style={{ paddingTop: 14, borderTop: '1px solid #D6E3D8', display: 'flex', gap: 10 }}>
-              <button
-                className="trainee-btn-primary"
-                style={{ width: '100%', fontSize: 12, padding: '8px' }}
-                onClick={() => handleViewProfile(trainer)}
-              >
-                View Profile ↗
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -18,7 +18,6 @@ import featureChartIcon from '../../assets/landing/ci-chart-line0.svg'
 import featureTrainerIcon from '../../assets/landing/ix-user-check-filled0.svg'
 import featureProgressIcon from '../../assets/landing/ci-trending-up0.svg'
 
-import step1Icon from '../../assets/landing/basil-user-plus-solid0.svg'
 import step2Icon from '../../assets/landing/akar-icons-book-open1.svg'
 import step3Icon from '../../assets/landing/basil-user-plus-solid2.svg'
 import step4Icon from '../../assets/landing/basil-user-plus-solid3.svg'
@@ -27,7 +26,6 @@ import step5Icon from '../../assets/landing/ci-trending-up1.svg'
 import arrowRight1 from '../../assets/landing/basil-arrow-right-outline0.svg'
 import arrowRight2 from '../../assets/landing/basil-arrow-right-outline1.svg'
 import arrowRight3 from '../../assets/landing/basil-arrow-right-outline2.svg'
-import arrowRight4 from '../../assets/landing/basil-arrow-right-outline3.svg'
 
 import trainerImg from '../../assets/landing/frame-270.png'
 import traineeImg from '../../assets/landing/frame-280.png'
@@ -1105,9 +1103,9 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
       <section id="how-it-works" className="landing-steps-section">
         <div className="landing-section-header">
           <div className="landing-section-kicker">How It Works</div>
-          <h2 className="landing-section-title">Simple Steps to a Better Tomorrow</h2>
+          <h2 className="landing-section-title">Simple Steps to Professional Excellence</h2>
           <p className="landing-section-subtitle">
-            A simple journey from learning to growth.
+            A structured workflow from competency discovery to verified certification.
           </p>
         </div>
 
@@ -1116,10 +1114,10 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
           <div className="landing-step-card">
             <div className="landing-step-num-badge">1</div>
             <div className="landing-step-icon-circle">
-              <img src={step1Icon} alt="Sign Up" />
+              <img src={step2Icon} alt="Explore" />
             </div>
-            <h3 className="landing-step-title">Sign Up</h3>
-            <p className="landing-step-desc">Create your account and get started.</p>
+            <h3 className="landing-step-title">Explore</h3>
+            <p className="landing-step-desc">Discover courses and competency benchmarks.</p>
           </div>
 
           <img src={arrowRight1} alt="" className="landing-step-connector" aria-hidden="true" />
@@ -1128,10 +1126,10 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
           <div className="landing-step-card">
             <div className="landing-step-num-badge">2</div>
             <div className="landing-step-icon-circle">
-              <img src={step2Icon} alt="Explore" />
+              <img src={step3Icon} alt="Learn & Practice" />
             </div>
-            <h3 className="landing-step-title">Explore</h3>
-            <p className="landing-step-desc">Discover courses and learning opportunities.</p>
+            <h3 className="landing-step-title">Learn &amp; Practice</h3>
+            <p className="landing-step-desc">Build skills through simulations and assessments.</p>
           </div>
 
           <img src={arrowRight2} alt="" className="landing-step-connector" aria-hidden="true" />
@@ -1140,10 +1138,10 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
           <div className="landing-step-card">
             <div className="landing-step-num-badge">3</div>
             <div className="landing-step-icon-circle">
-              <img src={step3Icon} alt="Learn & Practice" />
+              <img src={step4Icon} alt="Get Matched" />
             </div>
-            <h3 className="landing-step-title">Learn &amp; Practice</h3>
-            <p className="landing-step-desc">Build skills through learning and assessment.</p>
+            <h3 className="landing-step-title">Get Matched</h3>
+            <p className="landing-step-desc">Connect with accredited faculty and mentors.</p>
           </div>
 
           <img src={arrowRight3} alt="" className="landing-step-connector" aria-hidden="true" />
@@ -1152,64 +1150,88 @@ export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
           <div className="landing-step-card">
             <div className="landing-step-num-badge">4</div>
             <div className="landing-step-icon-circle">
-              <img src={step4Icon} alt="Get Matched" />
+              <img src={step5Icon} alt="Grow & Certify" />
             </div>
-            <h3 className="landing-step-title">Get Matched</h3>
-            <p className="landing-step-desc">Connect with the right trainer.</p>
-          </div>
-
-          <img src={arrowRight4} alt="" className="landing-step-connector" aria-hidden="true" />
-
-          {/* Step 5 */}
-          <div className="landing-step-card">
-            <div className="landing-step-num-badge">5</div>
-            <div className="landing-step-icon-circle">
-              <img src={step5Icon} alt="Grow" />
-            </div>
-            <h3 className="landing-step-title">Grow</h3>
-            <p className="landing-step-desc">Track progress and achieve your goals.</p>
+            <h3 className="landing-step-title">Grow &amp; Certify</h3>
+            <p className="landing-step-desc">Track competency progress and earn verified credentials.</p>
           </div>
         </div>
       </section>
 
       {/* Role Tracks Section (Trainers & Trainees) */}
       <section id="roles" className="landing-tracks-section">
+        <div className="landing-section-header">
+          <div className="landing-section-kicker">TWO CORE ROLES</div>
+          <h2 className="landing-section-title">Built for Instructors &amp; Trainee Officers</h2>
+          <p className="landing-section-subtitle">
+            Dedicated functional environments engineered for institutional faculty and learning cadets.
+          </p>
+        </div>
+
         <div className="landing-tracks-grid">
           {/* Card: For Trainers */}
           <div className="landing-track-card">
-            <div className="landing-track-badge">For Trainers</div>
-            <h3 className="landing-track-title">Share Your Expertise.<br />Make an Impact.</h3>
+            <div className="landing-track-top">
+              <div className="landing-track-badge">Instructor &amp; Faculty Role</div>
+              <span className="landing-role-tag">Trainer</span>
+            </div>
+            <h3 className="landing-track-title">Trainer &amp; Evaluator</h3>
             <p className="landing-track-desc">
-              Create courses, conduct assessments, connect with learners and track progress — all in one place.
+              Author training modules, conduct automated assessments, monitor cohort telemetry, and deliver targeted mentorship across regional training nodes.
             </p>
-            <button
-              type="button"
-              className="landing-track-btn"
-              onClick={() => (onNavigateRole ? onNavigateRole('trainer') : onGetStarted())}
-            >
-              Explore as Trainer →
-            </button>
+            <div className="landing-track-capabilities">
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Course authoring &amp; syllabus mapping</span>
+              </div>
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Automated quizzes &amp; assignment evaluation</span>
+              </div>
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Real-time batch competency analytics</span>
+              </div>
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Skill gap intervention &amp; mentorship</span>
+              </div>
+            </div>
             <div className="landing-track-image-box">
-              <img src={trainerImg} alt="Trainer Experience" />
+              <img src={trainerImg} alt="Trainer Portal Interface" />
             </div>
           </div>
 
           {/* Card: For Trainees */}
           <div className="landing-track-card">
-            <div className="landing-track-badge">For Trainees</div>
-            <h3 className="landing-track-title">Build Your Skills.<br />Achieve Your Goals.</h3>
+            <div className="landing-track-top">
+              <div className="landing-track-badge">Cadet &amp; Officer Role</div>
+              <span className="landing-role-tag">Trainee</span>
+            </div>
+            <h3 className="landing-track-title">Trainee &amp; Learner</h3>
             <p className="landing-track-desc">
-              Access quality learning, take assessments, get matched with trainers and track your progress.
+              Access standardized weather observation curriculum, complete diagnostic gap analyses, practice simulations, and earn verified national credentials.
             </p>
-            <button
-              type="button"
-              className="landing-track-btn"
-              onClick={() => (onNavigateRole ? onNavigateRole('trainee') : onGetStarted())}
-            >
-              Explore as Trainee →
-            </button>
+            <div className="landing-track-capabilities">
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Curated course catalog &amp; learning pathways</span>
+              </div>
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Diagnostic skill gap assessments</span>
+              </div>
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Automated mentor matching recommendations</span>
+              </div>
+              <div className="landing-track-cap-item">
+                <span className="landing-cap-dot"></span>
+                <span>Tamper-evident competency certificates</span>
+              </div>
+            </div>
             <div className="landing-track-image-box">
-              <img src={traineeImg} alt="Trainee Experience" />
+              <img src={traineeImg} alt="Trainee Portal Interface" />
             </div>
           </div>
         </div>
