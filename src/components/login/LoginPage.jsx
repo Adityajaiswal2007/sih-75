@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './LoginPage.css'
 import signinIllustration from '../../assets/signin-illustration.jpg'
 import ForgotPasswordPage from '../forgot-password/ForgotPasswordPage'
+import SignupPage from '../signup/SignupPage'
 import { api } from '../../services/api'
 
 // Demo accounts for instant preview/testing
@@ -31,6 +32,7 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [showForgot, setShowForgot] = useState(initialView === 'forgot')
+  const [showSignup, setShowSignup] = useState(initialView === 'signup')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -92,6 +94,20 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     }
   }
 
+  if (showSignup) {
+    return (
+      <SignupPage
+        onBack={onBack}
+        onLogin={() => {
+          setShowSignup(false)
+          setShowForgot(false)
+        }}
+        onDashboard={onDashboard}
+        initialRole={initialRole === 'admin' ? 'trainer' : initialRole || 'trainer'}
+      />
+    )
+  }
+
   if (showForgot) {
     return <ForgotPasswordPage onBack={() => setShowForgot(false)} />
   }
@@ -104,8 +120,18 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
           <button type="button" className="btn-back-home-pill" onClick={onBack}>
             <span className="back-arrow">←</span> Back to Home
           </button>
-          <div className="signin-slogan-pill">
-            <span>Skill Today &nbsp;•&nbsp; Better Tomorrow</span>
+          <div className="signin-nav-right-actions">
+            <span className="signin-nav-signup-text">Don't have an account?</span>
+            <button
+              type="button"
+              className="btn-nav-signup-pill"
+              onClick={() => setShowSignup(true)}
+            >
+              Sign up
+            </button>
+            <div className="signin-slogan-pill">
+              <span>Skill Today &nbsp;•&nbsp; Better Tomorrow</span>
+            </div>
           </div>
         </div>
 
@@ -388,6 +414,18 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
                 </svg>
                 <span>Continue with Google</span>
               </button>
+
+              {/* Create Account Link */}
+              <div className="signin-footer-signup-row">
+                <span>Don't have an account yet? </span>
+                <button
+                  type="button"
+                  className="btn-create-account-link"
+                  onClick={() => setShowSignup(true)}
+                >
+                  Create an account →
+                </button>
+              </div>
             </form>
           </div>
         </div>

@@ -62,6 +62,42 @@
   transform: translateX(-2px);
 }
 
+.signin-nav-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.signin-nav-signup-text {
+  font-size: 13.5px;
+  color: #4a6352;
+  font-weight: 500;
+}
+
+.btn-nav-signup-pill {
+  background: #2f5233;
+  color: #ffffff;
+  border: 1px solid #2f5233;
+  border-radius: 30px;
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 6px rgba(47, 82, 51, 0.15);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-nav-signup-pill:hover {
+  background: #1b4332;
+  border-color: #1b4332;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(47, 82, 51, 0.25);
+}
+
 .signin-slogan-pill {
   background: #e4efe6;
   border: 1px solid #d2e4d6;
