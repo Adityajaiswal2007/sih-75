@@ -73,7 +73,7 @@ const TRAINEE_GOALS_OPTIONS = [
 ]
 
 export default function SignupPage({ onBack, onLogin, onDashboard, initialRole = 'trainer' }) {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(0)
   const [role, setRole] = useState(initialRole || 'trainer')
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -199,6 +199,11 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
   const canProceedStep3 = role === 'trainer' ? selectedExpertise.length > 0 : selectedInterests.length > 0
 
   const handleNext = () => {
+    if (step === 0) {
+      if (!role) return
+      setStep(1)
+      return
+    }
     if (step === 1) {
       setTouched({ firstName: true, lastName: true, email: true, mobile: true, password: true, confirmPassword: true })
       if (!canProceedStep1) return
@@ -209,7 +214,7 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
   }
 
   const handlePrev = () => {
-    setStep((prev) => Math.max(1, prev - 1))
+    setStep((prev) => Math.max(0, prev - 1))
   }
 
   const handleFinalSubmit = async () => {
@@ -463,38 +468,128 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
             {/* Card Top Icon & Title */}
             <div className="card-top-identity">
               <span className="card-diamond-icon">◇</span>
-              <h2 className="card-title">Create your account</h2>
-            </div>
-
-            {/* Stepper Progress Bar */}
-            <div className="stepper-bar-container">
-              <div className="stepper-progress-track">
-                <div
-                  className="stepper-progress-fill"
-                  style={{ width: `${((step - 1) / 3) * 100}%` }}
-                />
-              </div>
-              <div className="stepper-labels-row">
-                <div className={`step-label-item ${step >= 1 ? 'active' : ''} ${step === 1 ? 'current' : ''}`} onClick={() => setStep(1)}>
-                  <span className="step-num">01</span>
-                  <span className="step-text">Account</span>
-                </div>
-                <div className={`step-label-item ${step >= 2 ? 'active' : ''} ${step === 2 ? 'current' : ''}`} onClick={() => step > 2 && setStep(2)}>
-                  <span className="step-num">02</span>
-                  <span className="step-text">Profile</span>
-                </div>
-                <div className={`step-label-item ${step >= 3 ? 'active' : ''} ${step === 3 ? 'current' : ''}`} onClick={() => step > 3 && setStep(3)}>
-                  <span className="step-num">03</span>
-                  <span className="step-text">{role === 'trainer' ? 'Expertise' : 'Preferences'}</span>
-                </div>
-                <div className={`step-label-item ${step >= 4 ? 'active' : ''} ${step === 4 ? 'current' : ''}`} onClick={() => step === 4 && setStep(4)}>
-                  <span className="step-num">04</span>
-                  <span className="step-text">{role === 'trainer' ? 'Documents' : 'Review'}</span>
-                </div>
+              <div className="card-title-with-badge">
+                <h2 className="card-title">
+                  {step === 0 ? 'Select your role' : 'Create your account'}
+                </h2>
+                {step >= 1 && (
+                  <div className="role-active-badge-pill">
+                    <span>Role: <strong>{role === 'trainer' ? 'Trainer / Faculty' : 'Trainee / Learner'}</strong></span>
+                    <button
+                      type="button"
+                      className="btn-change-role-link"
+                      onClick={() => setStep(0)}
+                      title="Change chosen role"
+                    >
+                      Change
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Step 1: Account Information & Role Selection */}
+            {/* Stepper Progress Bar (Only visible when step >= 1) */}
+            {step >= 1 ? (
+              <div className="stepper-bar-container">
+                <div className="stepper-progress-track">
+                  <div
+                    className="stepper-progress-fill"
+                    style={{ width: `${((step - 1) / 3) * 100}%` }}
+                  />
+                </div>
+                <div className="stepper-labels-row">
+                  <div className={`step-label-item ${step >= 1 ? 'active' : ''} ${step === 1 ? 'current' : ''}`} onClick={() => setStep(1)}>
+                    <span className="step-num">01</span>
+                    <span className="step-text">Account</span>
+                  </div>
+                  <div className={`step-label-item ${step >= 2 ? 'active' : ''} ${step === 2 ? 'current' : ''}`} onClick={() => step > 2 && setStep(2)}>
+                    <span className="step-num">02</span>
+                    <span className="step-text">Profile</span>
+                  </div>
+                  <div className={`step-label-item ${step >= 3 ? 'active' : ''} ${step === 3 ? 'current' : ''}`} onClick={() => step > 3 && setStep(3)}>
+                    <span className="step-num">03</span>
+                    <span className="step-text">{role === 'trainer' ? 'Expertise' : 'Preferences'}</span>
+                  </div>
+                  <div className={`step-label-item ${step >= 4 ? 'active' : ''} ${step === 4 ? 'current' : ''}`} onClick={() => step === 4 && setStep(4)}>
+                    <span className="step-num">04</span>
+                    <span className="step-text">{role === 'trainer' ? 'Documents' : 'Review'}</span>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Step 0: Role Selection (First Screen inside Card) */}
+            {step === 0 && (
+              <div className="role-selection-step-wrap animate-fadeIn">
+                <p className="step-instruction role-instruction-lead">
+                  Please select your role to personalize your registration flow and requirements:
+                </p>
+
+                <div className="role-cards-selection-grid">
+                  {/* Option 1: Trainer */}
+                  <div
+                    className={`role-selection-card ${role === 'trainer' ? 'selected' : ''}`}
+                    onClick={() => setRole('trainer')}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setRole('trainer') }}
+                  >
+                    <div className="role-card-radio-indicator">
+                      <div className={`custom-radio-dot ${role === 'trainer' ? 'checked' : ''}`} />
+                    </div>
+                    <div className="role-card-header">
+                      <div className="role-card-icon-badge trainer-badge">
+                        <span>🎓</span>
+                      </div>
+                      <div className="role-card-title-group">
+                        <h3 className="role-card-heading">Trainer &amp; Faculty</h3>
+                        <span className="role-card-subtag">Subject Expert / Instructor</span>
+                      </div>
+                    </div>
+                    <p className="role-card-description">
+                      Design curriculum, conduct live webinars, evaluate trainee assessments, and upload institutional credentials.
+                    </p>
+                    <div className="role-card-highlights">
+                      <span className="role-feature-pill">✦ Course Authoring</span>
+                      <span className="role-feature-pill">✦ Trainee Evaluation</span>
+                      <span className="role-feature-pill">✦ Faculty Badge</span>
+                    </div>
+                  </div>
+
+                  {/* Option 2: Trainee */}
+                  <div
+                    className={`role-selection-card ${role === 'trainee' ? 'selected' : ''}`}
+                    onClick={() => setRole('trainee')}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setRole('trainee') }}
+                  >
+                    <div className="role-card-radio-indicator">
+                      <div className={`custom-radio-dot ${role === 'trainee' ? 'checked' : ''}`} />
+                    </div>
+                    <div className="role-card-header">
+                      <div className="role-card-icon-badge trainee-badge">
+                        <span>📚</span>
+                      </div>
+                      <div className="role-card-title-group">
+                        <h3 className="role-card-heading">Trainee &amp; Learner</h3>
+                        <span className="role-card-subtag">Officer / Student / Researcher</span>
+                      </div>
+                    </div>
+                    <p className="role-card-description">
+                      Explore AI-recommended courses, track capacity competencies, earn verifiable certificates, and get mentored.
+                    </p>
+                    <div className="role-card-highlights">
+                      <span className="role-feature-pill">✦ Skill Matching</span>
+                      <span className="role-feature-pill">✦ Competency Tracker</span>
+                      <span className="role-feature-pill">✦ Certifications</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Step 1: Account Information & Personal Details */}
             {step === 1 && (
               <div className="step-content-box animate-fadeIn">
                 <p className="step-instruction">
@@ -682,57 +777,6 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                   {form.password && form.confirmPassword && !passwordsMatch && (
                     <span className="pwd-error-inline"> • Passwords do not match</span>
                   )}
-                </div>
-
-                {/* Role Selector Card Deck */}
-                <div className="role-selection-section">
-                  <h3 className="role-section-title">Select your role</h3>
-                  <p className="role-section-subtitle">Choose how you want to use Capacity Connect.</p>
-
-                  <div className="role-cards-grid">
-                    {/* Trainer Option */}
-                    <div
-                      className={`role-option-card ${role === 'trainer' ? 'selected' : ''}`}
-                      onClick={() => setRole('trainer')}
-                    >
-                      <div className="role-card-icon-box trainer-color">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                          <line x1="8" y1="21" x2="16" y2="21"></line>
-                          <line x1="12" y1="17" x2="12" y2="21"></line>
-                        </svg>
-                      </div>
-                      <div className="role-card-content">
-                        <strong>Trainer</strong>
-                        <p>Create courses, train learners and share knowledge</p>
-                      </div>
-                      <div className="role-card-radio">
-                        <span className={`custom-radio-circle ${role === 'trainer' ? 'checked' : ''}`} />
-                      </div>
-                    </div>
-
-                    {/* Trainee Option */}
-                    <div
-                      className={`role-option-card ${role === 'trainee' ? 'selected' : ''}`}
-                      onClick={() => setRole('trainee')}
-                    >
-                      <div className="role-card-icon-box trainee-color">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="9" cy="7" r="4"></circle>
-                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                      </div>
-                      <div className="role-card-content">
-                        <strong>Trainee</strong>
-                        <p>Learn new skills, take courses and track your progress</p>
-                      </div>
-                      <div className="role-card-radio">
-                        <span className={`custom-radio-circle ${role === 'trainee' ? 'checked' : ''}`} />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
@@ -1285,48 +1329,75 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
 
             {/* Bottom Actions Bar */}
             <div className="card-actions-row">
-              {step > 1 ? (
-                <button
-                  type="button"
-                  className="btn-card-back"
-                  onClick={handlePrev}
-                >
-                  ← Back
-                </button>
+              {step === 0 ? (
+                <>
+                  <button
+                    type="button"
+                    className="btn-card-back"
+                    onClick={onBack}
+                  >
+                    ← Back to Home
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-primary-signup"
+                    onClick={() => setStep(1)}
+                    disabled={!role}
+                  >
+                    <span>Continue as {role === 'trainer' ? 'Trainer' : 'Trainee'}</span>
+                    <span className="btn-arrow-icon">→</span>
+                  </button>
+                </>
               ) : (
-                <button
-                  type="button"
-                  className="btn-card-back"
-                  onClick={onBack}
-                >
-                  ← Back
-                </button>
-              )}
-
-              {step < 4 ? (
-                <button
-                  type="button"
-                  className="btn-primary-signup"
-                  onClick={handleNext}
-                  disabled={step === 1 && !canProceedStep1}
-                >
-                  Continue →
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn-primary-signup submit-cta"
-                  onClick={handleFinalSubmit}
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <span className="btn-loading-spin">Creating Account...</span>
-                  ) : role === 'trainer' ? (
-                    'Submit & Verify Documents →'
+                <>
+                  {step === 1 ? (
+                    <button
+                      type="button"
+                      className="btn-card-back"
+                      onClick={() => setStep(0)}
+                    >
+                      ← Change Role
+                    </button>
                   ) : (
-                    'Complete Registration →'
+                    <button
+                      type="button"
+                      className="btn-card-back"
+                      onClick={handlePrev}
+                    >
+                      ← Back
+                    </button>
                   )}
-                </button>
+
+                  {step < 4 ? (
+                    <button
+                      type="button"
+                      className="btn-primary-signup"
+                      onClick={handleNext}
+                      disabled={
+                        (step === 1 && !canProceedStep1) ||
+                        (step === 2 && !canProceedStep2) ||
+                        (step === 3 && !canProceedStep3)
+                      }
+                    >
+                      Continue →
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn-primary-signup submit-cta"
+                      onClick={handleFinalSubmit}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <span className="btn-loading-spin">Creating Account...</span>
+                      ) : role === 'trainer' ? (
+                        'Submit & Verify Documents →'
+                      ) : (
+                        'Complete Registration →'
+                      )}
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </div>

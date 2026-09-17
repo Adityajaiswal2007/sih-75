@@ -274,8 +274,8 @@
 
 .card-top-identity {
   display: flex;
-  align-items: center;
-  gap: 9px;
+  align-items: flex-start;
+  gap: 10px;
   margin-bottom: 12px;
 }
 
@@ -283,15 +283,220 @@
   font-size: 18px;
   color: #2f5233;
   font-weight: bold;
+  margin-top: 4px;
+}
+
+.card-title-with-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .card-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 25px;
+  font-size: 24px;
   font-weight: 800;
   color: #12281b;
   margin: 0;
   letter-spacing: -0.01em;
+}
+
+.role-active-badge-pill {
+  background: #e9f2eb;
+  border: 1px solid #c7decb;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #2f5233;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-active-badge-pill strong {
+  font-weight: 700;
+}
+
+.btn-change-role-link {
+  background: none;
+  border: none;
+  color: #166534;
+  font-weight: 700;
+  font-size: 11.5px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-family: inherit;
+}
+
+.btn-change-role-link:hover {
+  color: #14532d;
+}
+
+/* ==========================================================================
+   Step 0: Role Selection Cards inside Create Account Card
+   ========================================================================== */
+
+.role-selection-step-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.role-instruction-lead {
+  font-size: 13.5px;
+  color: #4a6352;
+  margin: 0 0 10px 0;
+  line-height: 1.45;
+}
+
+.role-cards-selection-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.role-selection-card {
+  position: relative;
+  background: #fbfdfb;
+  border: 2px solid #dbe8de;
+  border-radius: 16px;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  user-select: none;
+}
+
+.role-selection-card:hover {
+  background: #ffffff;
+  border-color: #52805b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(47, 82, 51, 0.08);
+}
+
+.role-selection-card.selected {
+  background: #ffffff;
+  border-color: #2f5233;
+  box-shadow: 0 0 0 3px rgba(47, 82, 51, 0.15), 0 8px 24px rgba(47, 82, 51, 0.1);
+}
+
+.role-card-radio-indicator {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+}
+
+.custom-radio-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #a8c4b0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.role-selection-card.selected .custom-radio-dot {
+  border-color: #2f5233;
+  background: #2f5233;
+}
+
+.role-selection-card.selected .custom-radio-dot::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.role-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.role-card-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.role-selection-card:hover .role-card-icon-badge {
+  transform: scale(1.06);
+}
+
+.trainer-badge {
+  background: #e2ede5;
+  border: 1px solid #c5decb;
+}
+
+.trainee-badge {
+  background: #edf3ee;
+  border: 1px solid #cce0d2;
+}
+
+.role-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.role-card-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #162b1e;
+  margin: 0;
+}
+
+.role-card-subtag {
+  font-size: 12px;
+  color: #55725f;
+  font-weight: 500;
+}
+
+.role-card-description {
+  font-size: 13px;
+  color: #4b6653;
+  line-height: 1.45;
+  margin: 2px 0 6px 0;
+}
+
+.role-card-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.role-feature-pill {
+  background: #f1f7f2;
+  border: 1px solid #dbe8dd;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2b4e34;
+}
+
+.role-selection-card.selected .role-feature-pill {
+  background: #e6f1e8;
+  border-color: #b7d6be;
+  color: #1e4528;
 }
 
 /* Stepper Progress Bar */
