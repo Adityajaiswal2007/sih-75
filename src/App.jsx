@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import api from './services/api'
 import LoginPage from './components/login/LoginPage'
 import LandingPage from './components/landing/LandingPage'
 import TrainerProfilePage from './components/trainer-profile/TrainerProfilePage'
@@ -8,6 +9,15 @@ import AdminDashboard from './components/admin/AdminDashboard'
 import TrainerDashboard from './components/trainer-portal/TrainerDashboard'
 
 import { recommendedTrainers } from './components/trainee/traineeData'
+
+function Logo({ onClick }) {
+  return (
+    <a className="logo" href="#top" onClick={onClick} aria-label="CapacityConnect home">
+      <span className="logo-mark">◇</span>
+      <span className="logo-text">Capacity<span className="logo-accent">Connect</span></span>
+    </a>
+  )
+}
 
 function App() {
   const [showLogin, setShowLogin] = useState(false)
@@ -47,12 +57,14 @@ function App() {
       } else if (hash === '#forgot-password') {
         window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`)
         setLoginView('forgot')
-        setShowLogin(true)
       } else if (hash === '#trainer') {
+        setShowLogin(false)
         setDashboardRole('trainer')
       } else if (hash === '#admin') {
+        setShowLogin(false)
         setDashboardRole('admin')
       } else if (hash === '#trainee') {
+        setShowLogin(false)
         setDashboardRole('trainee')
       }
     }

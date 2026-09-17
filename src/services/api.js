@@ -116,60 +116,49 @@ class ApiClient {
 
   // Auth Endpoints
   async login(credentials) {
-    try {
-      const data = await this.request('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify(credentials),
-      })
-      if (data.token) this.setToken(data.token)
-      return { success: true, user: data.user || credentials }
-    } catch {
-      // Automatic Role Determination Fallback
-      const normalizedEmail = (credentials.email || '').toLowerCase().trim()
-      const registeredUsers = this.getRegisteredUsers()
-      const existingUser = registeredUsers.find(u => u.email?.toLowerCase() === normalizedEmail)
+    const normalizedEmail = (credentials.email || '').toLowerCase().trim()
+    const registeredUsers = this.getRegisteredUsers()
+    const existingUser = registeredUsers.find(u => u.email?.toLowerCase() === normalizedEmail)
 
-      let resolvedRole = 'trainee'
-      let resolvedName = normalizedEmail.split('@')[0] || 'User'
+    let resolvedRole = 'trainee'
+    let resolvedName = normalizedEmail.split('@')[0] || 'User'
 
-      if (credentials.role) {
-        resolvedRole = credentials.role
-      } else if (existingUser && existingUser.role) {
-        resolvedRole = existingUser.role
-        resolvedName = `${existingUser.firstName || ''} ${existingUser.lastName || ''}`.trim() || resolvedName
-      } else if (normalizedEmail.includes('admin')) {
-        resolvedRole = 'admin'
-        resolvedName = 'Institutional Admin'
-      } else if (
-        normalizedEmail.includes('priya') ||
-        normalizedEmail.includes('nair') ||
-        normalizedEmail.includes('trainer') ||
-        normalizedEmail.includes('faculty') ||
-        normalizedEmail.includes('dr.rahul')
-      ) {
-        resolvedRole = 'trainer'
-        resolvedName = 'Dr. Priya Nair'
-      } else if (
-        normalizedEmail.includes('ananya') ||
-        normalizedEmail.includes('trainee') ||
-        normalizedEmail.includes('rahul.sharma')
-      ) {
-        resolvedRole = 'trainee'
-        resolvedName = 'Ananya Verma'
-      }
-
-      const user = {
-        name: resolvedName,
-        email: credentials.email,
-        role: resolvedRole,
-      }
-
-      // Generate a session token
-      const mockToken = `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-      this.setToken(mockToken)
-
-      return { success: true, user, isFallback: true }
+    if (credentials.role) {
+      resolvedRole = credentials.role
+    } else if (existingUser && existingUser.role) {
+      resolvedRole = existingUser.role
+      resolvedName = `${existingUser.firstName || ''} ${existingUser.lastName || ''}`.trim() || resolvedName
+    } else if (normalizedEmail.includes('admin') || normalizedEmail.includes('directorate')) {
+      resolvedRole = 'admin'
+      resolvedName = 'Institutional Admin'
+    } else if (
+      normalizedEmail.includes('priya') ||
+      normalizedEmail.includes('nair') ||
+      normalizedEmail.includes('trainer') ||
+      normalizedEmail.includes('faculty') ||
+      normalizedEmail.includes('dr.rahul')
+    ) {
+      resolvedRole = 'trainer'
+      resolvedName = 'Dr. Priya Nair'
+    } else if (
+      normalizedEmail.includes('ananya') ||
+      normalizedEmail.includes('trainee') ||
+      normalizedEmail.includes('rahul.sharma')
+    ) {
+      resolvedRole = 'trainee'
+      resolvedName = 'Ananya Verma'
     }
+
+    const user = {
+      name: resolvedName,
+      email: credentials.email,
+      role: resolvedRole,
+    }
+
+    const mockToken = `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    this.setToken(mockToken)
+
+    return { success: true, user, isFallback: true }
   }
 
   async register(userData) {

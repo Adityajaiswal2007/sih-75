@@ -304,7 +304,7 @@ const TESTIMONIALS = [
   }
 ]
 
-export default function LandingPage({ onLogin, onGetStarted }) {
+export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
   const [alertsOpen, setAlertsOpen] = useState(false)
   const [alertFilter, setAlertFilter] = useState('all')
   const [alerts, setAlerts] = useState(initialAlerts)
@@ -739,7 +739,7 @@ export default function LandingPage({ onLogin, onGetStarted }) {
 
           <div className="landing-hero-visual-wrapper">
             <img className="landing-hero-main-img" src={heroImg} alt="Learner on CapacityConnect Platform" />
-            
+
             {/* Floating Highlight Badges */}
             <div className="landing-float-badge float-badge-1">
               <div className="float-badge-icon">

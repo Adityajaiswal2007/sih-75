@@ -223,7 +223,8 @@ export default function AdminDashboard({ onBack }) {
   const [assessments] = useState(INITIAL_ASSESSMENTS)
   const [competencies] = useState(INITIAL_COMPETENCIES)
 
-  // Feedback Notification State
+  // Modal & Notification States
+  const [activeModal, setActiveModal] = useState(null)
   const [actionSuccessMsg, setActionSuccessMsg] = useState('')
 
   // User Management / Create User state
