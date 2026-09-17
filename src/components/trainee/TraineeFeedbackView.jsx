@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './TraineePortal.css';
-import { allCourses, traineeUser } from './traineeData';
+import { allCourses } from './traineeData';
 
 const INITIAL_FEEDBACK_HISTORY = [
   {
@@ -51,7 +51,7 @@ const SUGGESTION_TAGS = [
   'Satellite Real-Time API Practice'
 ];
 
-export default function TraineeFeedbackView({ onNavigate, showToast }) {
+export default function TraineeFeedbackView({ showToast }) {
   const [activeTab, setActiveTab] = useState('form'); // 'form' | 'history'
   const [historyList, setHistoryList] = useState(INITIAL_FEEDBACK_HISTORY);
 
@@ -97,7 +97,7 @@ export default function TraineeFeedbackView({ onNavigate, showToast }) {
     setter(val);
   };
 
-  const renderStarSelector = (value, setter, max = 5) => {
+  const renderStarSelector = (value, setter) => {
     return (
       <div className="trainee-feedback-star-group">
         {[1, 2, 3, 4, 5].map((star) => (

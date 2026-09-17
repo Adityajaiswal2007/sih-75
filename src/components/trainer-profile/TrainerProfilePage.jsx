@@ -21,8 +21,7 @@ import ToastNotification from './ToastNotification';
 // Mock Data
 import {
   getTrainerProfile,
-  getSimilarTrainers,
-  initialTrainerData
+  getSimilarTrainers
 } from './trainerProfileData';
 
 // Icons

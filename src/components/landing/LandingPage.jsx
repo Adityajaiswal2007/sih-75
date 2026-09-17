@@ -304,7 +304,7 @@ const TESTIMONIALS = [
   }
 ]
 
-export default function LandingPage({ onLogin, onGetStarted, onNavigateRole }) {
+export default function LandingPage({ onLogin, onGetStarted }) {
   const [alertsOpen, setAlertsOpen] = useState(false)
   const [alertFilter, setAlertFilter] = useState('all')
   const [alerts, setAlerts] = useState(initialAlerts)

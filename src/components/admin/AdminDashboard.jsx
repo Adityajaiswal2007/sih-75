@@ -217,17 +217,13 @@ export default function AdminDashboard({ onBack }) {
   }, [])
 
   // Data states
-  const [courses, setCourses] = useState(INITIAL_COURSES)
+  const [courses] = useState(INITIAL_COURSES)
   const [trainers, setTrainers] = useState(INITIAL_TRAINERS)
   const [trainees, setTrainees] = useState(INITIAL_TRAINEES)
   const [assessments] = useState(INITIAL_ASSESSMENTS)
   const [competencies] = useState(INITIAL_COMPETENCIES)
 
-  // Modal State
-  const [activeModal, setActiveModal] = useState(null)
-  const [newTraineeForm, setNewTraineeForm] = useState({ name: '', dept: 'Meteorology Division', email: '' })
-  const [newTrainerForm, setNewTrainerForm] = useState({ name: '', expertise: 'Meteorology', email: '' })
-  const [newCourseForm, setNewCourseForm] = useState({ name: '', domain: 'Meteorology', enrolled: '120' })
+  // Feedback Notification State
   const [actionSuccessMsg, setActionSuccessMsg] = useState('')
 
   // User Management / Create User state
@@ -502,7 +498,6 @@ export default function AdminDashboard({ onBack }) {
         handleLoadDemoCsv()
         return
       }
-      const headers = lines[0].split(',').map(h => h.trim().toLowerCase())
       const rows = []
       const existingEmails = new Set(trainers.map(t => (t.name || '').toLowerCase()))
       
@@ -755,62 +750,6 @@ export default function AdminDashboard({ onBack }) {
   }
 
   const unreadCount = notifications.filter(n => n.unread).length
-
-  // Handlers for adding items
-  const handleAddTrainee = (e) => {
-    e.preventDefault()
-    if (!newTraineeForm.name) return
-    const newEntry = {
-      id: `TR-${Math.floor(1000 + Math.random() * 9000)}`,
-      name: newTraineeForm.name,
-      dept: newTraineeForm.dept,
-      enrolled: '1 Enrolled',
-      score: '80%',
-      status: 'Active'
-    }
-    setTrainees([newEntry, ...trainees])
-    setActiveModal(null)
-    setNewTraineeForm({ name: '', dept: 'Meteorology Division', email: '' })
-    setActionSuccessMsg(`Trainee ${newEntry.name} registered successfully!`)
-    setTimeout(() => setActionSuccessMsg(''), 4000)
-  }
-
-  const handleAddTrainer = (e) => {
-    e.preventDefault()
-    if (!newTrainerForm.name) return
-    const newEntry = {
-      name: newTrainerForm.name,
-      expertise: newTrainerForm.expertise,
-      score: '90%',
-      trained: '0 trainees',
-      rating: '5.0/5',
-      status: 'Accredited'
-    }
-    setTrainers([newEntry, ...trainers])
-    setActiveModal(null)
-    setNewTrainerForm({ name: '', expertise: 'Meteorology', email: '' })
-    setActionSuccessMsg(`Trainer invite dispatched to ${newEntry.name}!`)
-    setTimeout(() => setActionSuccessMsg(''), 4000)
-  }
-
-  const handleAddCourse = (e) => {
-    e.preventDefault()
-    if (!newCourseForm.name) return
-    const newEntry = {
-      id: `C${Math.floor(100 + Math.random() * 900)}`,
-      name: newCourseForm.name,
-      enrolled: Number(newCourseForm.enrolled) || 100,
-      completion: '0%',
-      avgScore: '80%',
-      status: 'Good',
-      domain: newCourseForm.domain
-    }
-    setCourses([newEntry, ...courses])
-    setActiveModal(null)
-    setNewCourseForm({ name: '', domain: 'Meteorology', enrolled: '120' })
-    setActionSuccessMsg(`Course "${newEntry.name}" published to catalog!`)
-    setTimeout(() => setActionSuccessMsg(''), 4000)
-  }
 
   // Sidebar navigation structure with SVGs
   const NAV_SECTIONS = [

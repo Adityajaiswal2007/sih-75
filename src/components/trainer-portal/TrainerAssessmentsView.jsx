@@ -255,7 +255,7 @@ export function TrainerAssessmentsView({ assessments, onOpenModal }) {
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          {SAMPLE_PENDING_SUBMISSIONS.map((sub, i) => (
+          {SAMPLE_PENDING_SUBMISSIONS.map((sub) => (
             <button
               key={sub.id}
               type="button"
