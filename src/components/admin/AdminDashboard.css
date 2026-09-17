@@ -295,101 +295,111 @@
 
 /* Sidebar Footer Profile & Integrated Exit */
 .admin-sidebar-footer {
-  padding: 8px 12px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(10, 35, 22, 0.35);
+  padding: 10px 14px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 35, 22, 0.55);
   flex-shrink: 0;
 }
 
-.admin-sidebar-user-card {
+.admin-sidebar-footer .admin-sidebar-user-card {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
   transition: all 0.2s ease;
   justify-content: space-between;
 }
 
-.admin-sidebar-user-card:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.18);
+.admin-sidebar-footer .admin-sidebar-user-card:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: #A7C957;
+  transform: translateY(-1px);
 }
 
-.admin-user-avatar {
-  width: 30px;
-  height: 30px;
+.admin-sidebar-footer .admin-user-avatar {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #A7C957 0%, #2F5233 100%);
-  color: #FFFFFF;
-  font-weight: 800;
-  font-size: 11px;
+  background: linear-gradient(135deg, #A7C957 0%, #386641 100%);
+  color: #143527;
+  font-weight: 900;
+  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   position: relative;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.admin-online-indicator {
+.admin-sidebar-footer .admin-online-indicator {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 7.5px;
-  height: 7.5px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #10B981;
-  border: 1.5px solid #1B4332;
+  border: 1.5px solid #143527;
 }
 
-.admin-user-info {
+.admin-sidebar-footer .admin-user-info {
   display: flex;
   flex-direction: column;
   min-width: 0;
   flex: 1;
 }
 
-.admin-user-name {
-  font-size: 12px;
-  font-weight: 700;
-  color: #FFFFFF;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.admin-sidebar-footer .admin-user-info strong,
+.admin-sidebar-footer .admin-user-name {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  line-height: 1.3 !important;
+  display: block !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-.admin-user-role {
-  font-size: 9.5px;
-  color: #92B99E;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.admin-sidebar-footer .admin-user-info small,
+.admin-sidebar-footer .admin-user-role {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #A7C957 !important;
+  line-height: 1.2 !important;
+  display: block !important;
+  margin-top: 1px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-.admin-user-card-exit-btn {
+.admin-sidebar-footer .admin-user-card-exit-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  background: rgba(239, 68, 68, 0.14);
-  border: 1px solid rgba(239, 68, 68, 0.28);
-  color: #FCA5A5;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #FECACA;
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
-.admin-user-card-exit-btn:hover {
-  background: rgba(239, 68, 68, 0.3);
+.admin-sidebar-footer .admin-user-card-exit-btn:hover {
+  background: #EF4444;
   color: #FFFFFF;
-  border-color: rgba(239, 68, 68, 0.5);
-  transform: scale(1.06);
+  border-color: #EF4444;
+  transform: scale(1.08);
 }
 
 /* ==========================================================================
@@ -4624,12 +4634,121 @@
   color: #92400E;
 }
 
-.admin-preview-table tbody tr.preview-row-duplicate {
-  background: #FFFBEB;
+/* Bulk Ingestion Preview Table */
+.admin-bulk-preview-table-wrap {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1.5px solid #E2EAE5;
+  overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(22, 38, 28, 0.04);
+  margin-top: 16px;
+  max-height: 480px;
+  overflow-y: auto;
 }
 
-.admin-preview-table tbody tr.preview-row-invalid {
-  background: #FEF2F2;
+.admin-bulk-preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.admin-bulk-preview-table thead tr {
+  background: #F4F8F5;
+  border-bottom: 2px solid #D5E2D8;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.admin-bulk-preview-table th {
+  padding: 13px 16px;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #2F5233;
+  white-space: nowrap;
+  vertical-align: middle;
+  background: #F4F8F5;
+}
+
+.admin-bulk-preview-table tbody tr {
+  border-bottom: 1px solid #EBF1ED;
+  transition: background-color 0.15s ease;
+}
+
+.admin-bulk-preview-table tbody tr:hover {
+  background-color: #F8FBF9;
+}
+
+.admin-bulk-preview-table tbody tr.preview-row-duplicate {
+  background-color: #FFFBEB;
+}
+
+.admin-bulk-preview-table tbody tr.preview-row-duplicate:hover {
+  background-color: #FEF3C7;
+}
+
+.admin-bulk-preview-table tbody tr.preview-row-invalid {
+  background-color: #FEF2F2;
+}
+
+.admin-bulk-preview-table tbody tr.preview-row-invalid:hover {
+  background-color: #FEE2E2;
+}
+
+.admin-bulk-preview-table td {
+  padding: 13px 16px;
+  vertical-align: middle;
+  color: #16261C;
+  font-size: 12.5px;
+}
+
+.bulk-row-num {
+  font-size: 12px;
+  font-weight: 800;
+  color: #597363;
+}
+
+.bulk-user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #16251B;
+}
+
+.bulk-staff-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 11.5px;
+  background: #F1F5F2;
+  border: 1px solid #D5E2D8;
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: #1B4332;
+  white-space: nowrap;
+}
+
+.bulk-pwd-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 11.5px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: #1E40AF;
+  white-space: nowrap;
+}
+
+.bulk-cell-text {
+  font-weight: 600;
+  color: #16251B;
+  font-size: 12.5px;
+}
+
+.bulk-cell-sub {
+  font-size: 12px;
+  color: #597363;
 }
 
 /* Stage 3: Live Processing Card */

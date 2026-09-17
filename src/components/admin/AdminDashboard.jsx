@@ -3205,41 +3205,47 @@ export default function AdminDashboard({ onBack }) {
                       </div>
 
                       {/* Preview Table */}
-                      <div className="admin-table-responsive" style={{ maxHeight: 420, overflowY: 'auto' }}>
-                        <table className="admin-table admin-preview-table">
+                      <div className="admin-bulk-preview-table-wrap">
+                        <table className="admin-bulk-preview-table">
                           <thead>
                             <tr>
-                              <th># Row</th>
-                              <th>Name</th>
-                              <th>Official Email</th>
-                              <th>Staff ID</th>
-                              <th>Department</th>
-                              <th>Designation</th>
-                              <th>Generated ID</th>
-                              <th>Auto Password</th>
-                              <th>Validation Status</th>
+                              <th style={{ width: '5%' }}># Row</th>
+                              <th style={{ width: '15%' }}>Staff Name</th>
+                              <th style={{ width: '16%' }}>Official Email</th>
+                              <th style={{ width: '9%' }}>Staff ID</th>
+                              <th style={{ width: '14%' }}>Department</th>
+                              <th style={{ width: '12%' }}>Designation</th>
+                              <th style={{ width: '10%' }}>Generated ID</th>
+                              <th style={{ width: '9%' }}>Auto Password</th>
+                              <th style={{ width: '10%' }}>Validation Status</th>
                             </tr>
                           </thead>
                           <tbody>
                             {bulkRows.map((row, idx) => (
                               <tr key={idx} className={`preview-row-${row.status}`}>
-                                <td><strong>#{row.rowNum}</strong></td>
-                                <td><strong>{row.firstName} {row.lastName}</strong></td>
-                                <td><code>{row.email}</code></td>
-                                <td>{row.employeeId || <em style={{ color: '#DC2626' }}>Missing</em>}</td>
-                                <td>{row.dept}</td>
-                                <td>{row.designation}</td>
-                                <td><code className="admin-id-badge">{row.autoId}</code></td>
-                                <td><code>{row.tempPwd}</code></td>
+                                <td><strong className="bulk-row-num">#{row.rowNum}</strong></td>
+                                <td><strong className="bulk-user-name">{row.firstName} {row.lastName}</strong></td>
+                                <td><span className="admin-email-text">{row.email}</span></td>
+                                <td>
+                                  {row.employeeId ? (
+                                    <code className="bulk-staff-badge">{row.employeeId}</code>
+                                  ) : (
+                                    <em style={{ color: '#DC2626', fontSize: 12 }}>Missing</em>
+                                  )}
+                                </td>
+                                <td><span className="bulk-cell-text">{row.dept}</span></td>
+                                <td><span className="bulk-cell-sub">{row.designation}</span></td>
+                                <td><code className="admin-id-badge" style={{ whiteSpace: 'nowrap' }}>{row.autoId}</code></td>
+                                <td><code className="bulk-pwd-badge">{row.tempPwd}</code></td>
                                 <td>
                                   {row.status === 'valid' && (
-                                    <span className="admin-status-pill excellent">✔ Valid &amp; Ready</span>
+                                    <span className="admin-status-pill excellent" style={{ whiteSpace: 'nowrap' }}>✔ Valid &amp; Ready</span>
                                   )}
                                   {row.status === 'duplicate' && (
-                                    <span className="admin-status-pill warning" title={row.reason}>⚠ Duplicate Email</span>
+                                    <span className="admin-status-pill warning" style={{ whiteSpace: 'nowrap' }} title={row.reason}>⚠ Duplicate Email</span>
                                   )}
                                   {row.status === 'invalid' && (
-                                    <span className="admin-status-pill bad" title={row.reason}>✕ {row.reason}</span>
+                                    <span className="admin-status-pill bad" style={{ whiteSpace: 'nowrap' }} title={row.reason}>✕ {row.reason}</span>
                                   )}
                                 </td>
                               </tr>
@@ -3318,23 +3324,23 @@ export default function AdminDashboard({ onBack }) {
                               📥 Download Error Report (.csv)
                             </button>
                           </div>
-                          <div className="admin-table-responsive" style={{ maxHeight: 200, overflowY: 'auto' }}>
-                            <table className="admin-table">
+                          <div className="admin-bulk-preview-table-wrap" style={{ maxHeight: 220, overflowY: 'auto' }}>
+                            <table className="admin-bulk-preview-table">
                               <thead>
                                 <tr>
-                                  <th>Row #</th>
-                                  <th>Name</th>
-                                  <th>Email</th>
-                                  <th>Identified Issue</th>
+                                  <th style={{ width: '10%' }}>Row #</th>
+                                  <th style={{ width: '25%' }}>Staff Name</th>
+                                  <th style={{ width: '25%' }}>Email Address</th>
+                                  <th style={{ width: '40%' }}>Identified Validation Issue</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {bulkSummary.failedRows.map((row, idx) => (
-                                  <tr key={idx}>
-                                    <td><strong>#{row.rowNum}</strong></td>
-                                    <td>{row.firstName} {row.lastName}</td>
-                                    <td><code>{row.email}</code></td>
-                                    <td><span className="admin-status-pill bad">{row.reason}</span></td>
+                                  <tr key={idx} className="preview-row-invalid">
+                                    <td><strong className="bulk-row-num">#{row.rowNum}</strong></td>
+                                    <td><strong>{row.firstName} {row.lastName}</strong></td>
+                                    <td><span className="admin-email-text">{row.email}</span></td>
+                                    <td><span className="admin-status-pill bad">✕ {row.reason}</span></td>
                                   </tr>
                                 ))}
                               </tbody>

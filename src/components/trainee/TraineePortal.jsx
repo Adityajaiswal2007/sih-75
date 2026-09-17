@@ -17,6 +17,7 @@ import TraineeAnnouncementsView from './TraineeAnnouncementsView';
 import TraineeProfileView from './TraineeProfileView';
 import TraineeSettingsView from './TraineeSettingsView';
 import TraineeHelpView from './TraineeHelpView';
+import TraineeFeedbackView from './TraineeFeedbackView';
 import { EnrollmentModal, CertificateModal, EditProfileModal } from './TraineeModals';
 
 export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
@@ -179,6 +180,16 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
     {
       group: 'Support & Portal',
       items: [
+        {
+          id: 'feedback',
+          label: 'Feedback',
+          badge: 'New',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+          )
+        },
         {
           id: 'announcements',
           label: 'Announcements',
@@ -349,6 +360,7 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
                 {activeSection === 'trainers' && 'Trainer Directory'}
                 {activeSection === 'certificates' && 'My Certificates'}
                 {activeSection === 'announcements' && 'Official Announcements'}
+                {activeSection === 'feedback' && 'Training & Platform Feedback'}
                 {activeSection === 'help' && 'Help & Support'}
                 {activeSection === 'settings' && 'Account Settings'}
                 {activeSection === 'profile' && 'Learner Profile'}
@@ -549,6 +561,13 @@ export default function TraineePortal({ onBack, onOpenTrainerProfile }) {
 
           {activeSection === 'announcements' && (
             <TraineeAnnouncementsView onNavigate={handleNavigate} />
+          )}
+
+          {activeSection === 'feedback' && (
+            <TraineeFeedbackView
+              onNavigate={handleNavigate}
+              showToast={showToast}
+            />
           )}
 
           {activeSection === 'profile' && (
