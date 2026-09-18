@@ -121,14 +121,6 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
             <span className="back-arrow">←</span> Back to Home
           </button>
           <div className="signin-nav-right-actions">
-            <span className="signin-nav-signup-text">Don't have an account?</span>
-            <button
-              type="button"
-              className="btn-nav-signup-pill"
-              onClick={() => setShowSignup(true)}
-            >
-              Sign up
-            </button>
             <div className="signin-slogan-pill">
               <span>Skill Today &nbsp;•&nbsp; Better Tomorrow</span>
             </div>
