@@ -2235,3 +2235,160 @@
   }
 }
 
+/* ==========================================================================
+   STAGE 5: PROFILE CREATION SUCCESS & LOGIN REDIRECT STYLES
+   ========================================================================== */
+
+.signup-success-container {
+  max-width: 680px;
+  width: 100%;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.signup-success-card {
+  background: #ffffff;
+  border: 1px solid #d1e5d7;
+  border-radius: 24px;
+  padding: 40px 36px;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(47, 82, 51, 0.08);
+  width: 100%;
+}
+
+.success-icon-wrap {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  background: #eaf5ee;
+  border: 2px solid #a7d7b5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-emoji {
+  font-size: 36px;
+}
+
+.success-role-badge {
+  display: inline-block;
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 12px;
+}
+
+.success-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #173322;
+  margin-bottom: 8px;
+}
+
+.success-subtitle {
+  font-size: 14.5px;
+  color: #4a6352;
+  line-height: 1.5;
+  max-width: 520px;
+  margin: 0 auto 24px;
+}
+
+.trainee-welcome-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+  text-align: left;
+}
+
+.summary-stat-pill {
+  background: #f4f9f5;
+  border: 1px solid #dbebe0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-stat-pill span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #617c6a;
+  font-weight: 600;
+}
+
+.summary-stat-pill strong {
+  font-size: 13.5px;
+  color: #1b3826;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.success-login-notice {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.success-login-notice .notice-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.signup-success-countdown {
+  font-size: 13px;
+  color: #557060;
+  margin-bottom: 22px;
+}
+
+.signup-success-countdown strong {
+  color: #1b4332;
+}
+
+.success-action-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn-secondary-signup {
+  background: #ffffff;
+  color: #2b4534;
+  border: 1px solid #c9dec0;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary-signup:hover {
+  background: #f0f7f2;
+  border-color: #2f5233;
+  color: #1b4332;
+}
+

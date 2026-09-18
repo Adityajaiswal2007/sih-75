@@ -25,14 +25,38 @@ const DEMO_ACCOUNTS = {
 }
 
 export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee', initialView = 'login' }) {
+  const [selectedRole, setSelectedRole] = useState(initialRole || 'trainee')
   const [email, setEmail] = useState(() => (initialRole && DEMO_ACCOUNTS[initialRole] ? DEMO_ACCOUNTS[initialRole].email : ''))
   const [password, setPassword] = useState(() => (initialRole && DEMO_ACCOUNTS[initialRole] ? DEMO_ACCOUNTS[initialRole].password : ''))
   const [rememberMe, setRememberMe] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
   const [showForgot, setShowForgot] = useState(initialView === 'forgot')
   const [showSignup, setShowSignup] = useState(initialView === 'signup')
+
+  const handleSwitchToLogin = (targetRole, prefillEmail, prefillPassword, successNotice) => {
+    setShowSignup(false)
+    setShowForgot(false)
+    if (targetRole) {
+      setSelectedRole(targetRole)
+    }
+    if (prefillEmail) {
+      setEmail(prefillEmail)
+    } else if (targetRole && DEMO_ACCOUNTS[targetRole]) {
+      setEmail(DEMO_ACCOUNTS[targetRole].email)
+    }
+    if (prefillPassword) {
+      setPassword(prefillPassword)
+    } else if (targetRole && DEMO_ACCOUNTS[targetRole]) {
+      setPassword(DEMO_ACCOUNTS[targetRole].password)
+    }
+    if (successNotice) {
+      setSuccessMessage(successNotice)
+    }
+    setErrorMessage('')
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -58,15 +82,23 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     setErrorMessage('')
     setLoading(true)
 
-    // Detect role from email or target role
-    let resolvedRole = initialRole
-    const lowerEmail = emailTrimmed.toLowerCase()
-    if (lowerEmail.includes('admin') || lowerEmail.includes('directorate')) {
-      resolvedRole = 'admin'
-    } else if (lowerEmail.includes('trainer') || lowerEmail.includes('priya') || lowerEmail.includes('dr.') || lowerEmail.includes('rahul') || lowerEmail.includes('neha') || lowerEmail.includes('faculty')) {
-      resolvedRole = 'trainer'
+    // Detect role from registered users list or selected role
+    let resolvedRole = selectedRole || initialRole || 'trainee'
+    const registeredUsers = api.getRegisteredUsers?.() || []
+    const matchedUser = registeredUsers.find(u => u.email?.toLowerCase() === emailTrimmed.toLowerCase())
+    if (matchedUser && matchedUser.role) {
+      resolvedRole = matchedUser.role
     } else {
-      resolvedRole = 'trainee'
+      const lowerEmail = emailTrimmed.toLowerCase()
+      if (lowerEmail.includes('admin') || lowerEmail.includes('directorate')) {
+        resolvedRole = 'admin'
+      } else if (lowerEmail.includes('trainer') || lowerEmail.includes('priya') || lowerEmail.includes('dr.') || lowerEmail.includes('rahul') || lowerEmail.includes('neha') || lowerEmail.includes('faculty')) {
+        resolvedRole = 'trainer'
+      } else if (selectedRole) {
+        resolvedRole = selectedRole
+      } else {
+        resolvedRole = 'trainee'
+      }
     }
 
     try {
@@ -84,13 +116,14 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     setLoading(true)
     setErrorMessage('')
     try {
-      const demoUser = DEMO_ACCOUNTS[initialRole] || DEMO_ACCOUNTS.trainee
-      const res = await api.login({ email: demoUser.email, password: demoUser.password, role: initialRole })
+      const roleKey = selectedRole || initialRole || 'trainee'
+      const demoUser = DEMO_ACCOUNTS[roleKey] || DEMO_ACCOUNTS.trainee
+      const res = await api.login({ email: demoUser.email, password: demoUser.password, role: roleKey })
       setLoading(false)
-      onDashboard(initialRole || res?.user?.role || 'trainee')
+      onDashboard(roleKey || res?.user?.role || 'trainee')
     } catch {
       setLoading(false)
-      onDashboard(initialRole || 'trainee')
+      onDashboard(selectedRole || initialRole || 'trainee')
     }
   }
 
@@ -98,12 +131,9 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
     return (
       <SignupPage
         onBack={onBack}
-        onLogin={() => {
-          setShowSignup(false)
-          setShowForgot(false)
-        }}
+        onLogin={handleSwitchToLogin}
         onDashboard={onDashboard}
-        initialRole={initialRole === 'admin' ? 'trainer' : initialRole || 'trainer'}
+        initialRole={selectedRole === 'admin' ? 'trainer' : selectedRole || 'trainer'}
       />
     )
   }
@@ -241,6 +271,14 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
                 </div>
               </div>
 
+              {/* Success Notice from Profile Creation / Redirect */}
+              {successMessage && (
+                <div className="signin-alert-box signin-success-box animate-fadeIn">
+                  <span>✓</span>
+                  <span>{successMessage}</span>
+                </div>
+              )}
+
               {/* Error Notice */}
               {errorMessage && (
                 <div className="signin-alert-box">
@@ -250,7 +288,7 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
 
               {/* Quick Demo Account Selector Pills */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: '#557060' }}>Quick Demo:</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#557060' }}>Role / Demo:</span>
                 {[
                   { key: 'trainee', label: 'Trainee' },
                   { key: 'trainer', label: 'Trainer' },
@@ -260,17 +298,19 @@ export default function LoginPage({ onBack, onDashboard, initialRole = 'trainee'
                     type="button"
                     key={key}
                     onClick={() => {
+                      setSelectedRole(key)
                       setEmail(DEMO_ACCOUNTS[key].email)
                       setPassword(DEMO_ACCOUNTS[key].password)
                       setErrorMessage('')
+                      setSuccessMessage('')
                     }}
                     style={{
-                      background: email === DEMO_ACCOUNTS[key].email ? '#1B4332' : '#EAF4EE',
-                      color: email === DEMO_ACCOUNTS[key].email ? '#FFFFFF' : '#1B4332',
+                      background: selectedRole === key || email === DEMO_ACCOUNTS[key].email ? '#1B4332' : '#EAF4EE',
+                      color: selectedRole === key || email === DEMO_ACCOUNTS[key].email ? '#FFFFFF' : '#1B4332',
                       border: '1px solid #C4DFC9',
-                      padding: '3px 10px',
+                      padding: '4px 12px',
                       borderRadius: '12px',
-                      fontSize: '11px',
+                      fontSize: '11.5px',
                       fontWeight: 700,
                       cursor: 'pointer',
                       transition: 'all 0.15s ease'

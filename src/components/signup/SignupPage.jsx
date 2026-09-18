@@ -303,6 +303,36 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
     setStep((prev) => Math.max(1, prev - 1))
   }
 
+  const [redirectCount, setRedirectCount] = useState(5)
+
+  // Auto-redirect to login after successful profile creation
+  React.useEffect(() => {
+    if (!submitted) return
+    const timer = setInterval(() => {
+      setRedirectCount((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer)
+          handleProceedToLogin()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [submitted, role, form.email, form.password])
+
+  const handleProceedToLogin = () => {
+    if (typeof onLogin === 'function') {
+      const roleTitle = role === 'trainer' ? 'Trainer' : 'Trainee'
+      onLogin(
+        role,
+        form.email,
+        form.password,
+        `✓ ${roleTitle} profile created successfully for ${form.firstName} ${form.lastName}! Please log in to access your portal.`
+      )
+    }
+  }
+
   const handleFinalSubmit = async () => {
     setLoading(true)
     try {
@@ -320,51 +350,74 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
       // Fallback inside mock API
     }
     setLoading(false)
-    if (role === 'trainer') {
-      if (typeof onDashboard === 'function') {
-        onDashboard('trainer')
-      }
-    } else {
-      setSubmitted(true)
-    }
+    setRedirectCount(5)
+    setSubmitted(true)
   }
 
-  // Post Submission Screen (Trainee)
+  // Post Submission Success Screen (Both Trainer and Trainee)
   if (submitted) {
+    const isTrainer = role === 'trainer'
     return (
       <div className="signup-page-wrap">
-        <div className="signup-success-container">
+        <div className="signup-success-container animate-fadeIn">
           <div className="signup-success-card">
             <div className="success-icon-wrap">
-              <span className="success-emoji">🎓</span>
+              <span className="success-emoji">{isTrainer ? '👨‍🏫' : '🎓'}</span>
             </div>
-            <h1 className="success-title">Welcome to CapacityConnect!</h1>
+
+            <div className="success-role-badge">
+              {isTrainer ? '✓ Trainer & Faculty Profile Active' : '✓ Trainee Learning Profile Active'}
+            </div>
+
+            <h1 className="success-title">
+              {isTrainer ? 'Welcome to CapacityConnect Faculty!' : 'Welcome to CapacityConnect!'}
+            </h1>
+            
             <p className="success-subtitle">
-              Hello <strong>{form.firstName} {form.lastName}</strong>, your personalized trainee learning profile is ready.
+              Hello <strong>{form.firstName} {form.lastName}</strong>, your {isTrainer ? 'Trainer' : 'Trainee'} profile has been verified and registered under <strong>{form.organization || 'IMD'}</strong>.
             </p>
 
             <div className="trainee-welcome-summary">
               <div className="summary-stat-pill">
-                <span>Domain</span>
-                <strong>{form.department || 'Meteorology & Data'}</strong>
+                <span>Account Role</span>
+                <strong>{isTrainer ? 'Faculty Trainer' : 'Trainee Learner'}</strong>
               </div>
               <div className="summary-stat-pill">
-                <span>Schedule</span>
-                <strong>{form.preferredSchedule || 'Flexible Hours'}</strong>
+                <span>Department</span>
+                <strong>{form.department || (isTrainer ? 'Meteorological Training' : 'Earth & Weather Sciences')}</strong>
               </div>
               <div className="summary-stat-pill">
-                <span>Level</span>
-                <strong>{form.skillLevel || form.preferredLearnerLevel || 'Intermediate'}</strong>
+                <span>{isTrainer ? 'Core Expertise' : 'Learning Focus'}</span>
+                <strong>
+                  {isTrainer
+                    ? (selectedExpertise[0] || 'Meteorology & NWP')
+                    : (selectedInterests[0] || 'Weather Forecasting')}
+                </strong>
               </div>
+              <div className="summary-stat-pill">
+                <span>Access Status</span>
+                <strong style={{ color: '#059669' }}>Cleared & Approved</strong>
+              </div>
+            </div>
+
+            <div className="success-login-notice">
+              <span className="notice-icon">🔐</span>
+              <span>
+                Your profile is live! Please sign in with your credentials (<strong>{form.email}</strong>) to access your {isTrainer ? 'Trainer Dashboard' : 'Trainee Portal'}.
+              </span>
+            </div>
+
+            <div className="signup-success-countdown">
+              Redirecting to Login in <strong>{redirectCount}s</strong>...
             </div>
 
             <div className="success-action-row">
               <button
                 type="button"
                 className="btn-primary-signup"
-                onClick={() => onDashboard('trainee')}
+                onClick={handleProceedToLogin}
               >
-                Go to Trainee Portal →
+                Proceed to Login ({isTrainer ? 'Trainer' : 'Trainee'}) →
               </button>
               <button
                 type="button"
