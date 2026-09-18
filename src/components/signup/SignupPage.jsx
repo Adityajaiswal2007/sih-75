@@ -73,8 +73,21 @@ const TRAINEE_GOALS_OPTIONS = [
 ]
 
 export default function SignupPage({ onBack, onLogin, onDashboard, initialRole = 'trainer' }) {
-  const [step, setStep] = useState(0)
+  const [stage, setStage] = useState('request') // 'request' | 'waiting' | 'approved' | 'rejected'
+  const [step, setStep] = useState(1)
   const [role, setRole] = useState(initialRole || 'trainer')
+  const [token, setToken] = useState('')
+  const [requestEmail, setRequestEmail] = useState('')
+  const [requestName, setRequestName] = useState('')
+  const [requestOrg, setRequestOrg] = useState('India Meteorological Department (IMD)')
+  const [requestRole, setRequestRole] = useState(initialRole || 'trainer')
+  const [tokenLookupInput, setTokenLookupInput] = useState('')
+  const [showTokenLookup, setShowTokenLookup] = useState(false)
+  const [tokenLookupError, setTokenLookupError] = useState('')
+  const [copiedToken, setCopiedToken] = useState(false)
+  const [requestError, setRequestError] = useState('')
+  const [requestLoading, setRequestLoading] = useState(false)
+
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -98,7 +111,7 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
     confirmPassword: '',
 
     // Step 2: Institutional / Academic Profile
-    organization: '',
+    organization: 'India Meteorological Department (IMD)',
     department: '',
     designation: '',
     highestQualification: "Master's Degree",
@@ -193,17 +206,90 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
     setUploadedDocuments((prev) => prev.filter((_, i) => i !== index))
   }
 
+  // Handle Initial Access Request Submit
+  const handleRequestSubmit = (e) => {
+    if (e) e.preventDefault()
+    const emailTrimmed = requestEmail.trim()
+    if (!emailTrimmed) {
+      setRequestError('Please enter your institutional email address.')
+      return
+    }
+    if (!isEmailValid(emailTrimmed)) {
+      setRequestError('Please enter a valid institutional email (e.g. name@imd.gov.in).')
+      return
+    }
+    setRequestError('')
+    setRequestLoading(true)
+
+    const randomDigits = Math.floor(1000 + Math.random() * 9000)
+    const generatedToken = `REQ-IMD-2026-${randomDigits}`
+
+    setTimeout(() => {
+      setToken(generatedToken)
+      setRole(requestRole)
+      setForm((prev) => {
+        const nameParts = requestName.trim().split(' ')
+        const fName = nameParts[0] || ''
+        const lName = nameParts.slice(1).join(' ') || ''
+        return {
+          ...prev,
+          email: emailTrimmed,
+          firstName: fName || prev.firstName,
+          lastName: lName || prev.lastName,
+          organization: requestOrg.trim() || prev.organization
+        }
+      })
+      setRequestLoading(false)
+      setStage('waiting')
+    }, 400)
+  }
+
+  // Simulate Approval
+  const handleSimulateApprove = () => {
+    setStage('approved')
+    setStep(1)
+  }
+
+  // Simulate Rejection
+  const handleSimulateReject = () => {
+    setStage('rejected')
+  }
+
+  // Copy Token
+  const handleCopyToken = () => {
+    if (token) {
+      navigator.clipboard?.writeText(token)
+      setCopiedToken(true)
+      setTimeout(() => setCopiedToken(false), 2000)
+    }
+  }
+
+  // Token Lookup
+  const handleLookupToken = (e) => {
+    e.preventDefault()
+    const trimmed = tokenLookupInput.trim().toUpperCase()
+    if (!trimmed) {
+      setTokenLookupError('Please enter a valid token number.')
+      return
+    }
+    setTokenLookupError('')
+    setToken(trimmed)
+    if (trimmed.includes('REJ') || trimmed.includes('DENY')) {
+      setStage('rejected')
+    } else if (trimmed.includes('APP') || trimmed.endsWith('1') || trimmed.endsWith('7')) {
+      setStage('approved')
+      setStep(1)
+    } else {
+      setStage('waiting')
+    }
+  }
+
   // Validation per step
   const canProceedStep1 = isFirstNameValid && isLastNameValid && isEmailValid(form.email) && isMobileValid(form.mobile) && isPasswordValid && passwordsMatch
   const canProceedStep2 = form.organization.trim().length >= 2
   const canProceedStep3 = role === 'trainer' ? selectedExpertise.length > 0 : selectedInterests.length > 0
 
   const handleNext = () => {
-    if (step === 0) {
-      if (!role) return
-      setStep(1)
-      return
-    }
     if (step === 1) {
       setTouched({ firstName: true, lastName: true, email: true, mobile: true, password: true, confirmPassword: true })
       if (!canProceedStep1) return
@@ -214,7 +300,7 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
   }
 
   const handlePrev = () => {
-    setStep((prev) => Math.max(0, prev - 1))
+    setStep((prev) => Math.max(1, prev - 1))
   }
 
   const handleFinalSubmit = async () => {
@@ -234,76 +320,17 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
       // Fallback inside mock API
     }
     setLoading(false)
-    setSubmitted(true)
+    if (role === 'trainer') {
+      if (typeof onDashboard === 'function') {
+        onDashboard('trainer')
+      }
+    } else {
+      setSubmitted(true)
+    }
   }
 
-  // Post Submission Screen
+  // Post Submission Screen (Trainee)
   if (submitted) {
-    if (role === 'trainer') {
-      return (
-        <div className="signup-page-wrap">
-          <div className="signup-success-container">
-            <div className="signup-success-card trainer-pending-card">
-              <div className="pending-badge-pill">
-                <span className="pending-pulse-dot" /> Document Verification In Review
-              </div>
-              <div className="success-icon-wrap pending-icon-glow">
-                <span className="success-emoji">📑</span>
-              </div>
-              <h1 className="success-title">Trainer Account Created!</h1>
-              <p className="success-subtitle">
-                Welcome, <strong>Dr./Prof. {form.firstName} {form.lastName}</strong>. Your profile has been created successfully.
-              </p>
-
-              <div className="verification-status-box">
-                <div className="status-header">
-                  <span className="status-label">DOCUMENT VERIFICATION STATUS</span>
-                  <span className="status-tag pending">Under Institutional Review</span>
-                </div>
-                <p className="status-desc">
-                  Our central institutional verification committee is currently reviewing your uploaded credentials (
-                  <strong>{uploadedDocuments.length > 0 ? uploadedDocuments.map((d) => d.name).join(', ') : 'Affiliation_ID_Credentials.pdf'}</strong>
-                  ). Standard review takes <strong>24 to 48 hours</strong>.
-                </p>
-                <div className="verification-steps-list">
-                  <div className="v-step done">
-                    <span className="v-step-num">✓</span>
-                    <span>Account Profile Initialized</span>
-                  </div>
-                  <div className="v-step active">
-                    <span className="v-step-num">2</span>
-                    <span>Institutional Credentials Review (Pending)</span>
-                  </div>
-                  <div className="v-step">
-                    <span className="v-step-num">3</span>
-                    <span>Verified Badge &amp; Course Publishing Rights</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="success-action-row">
-                <button
-                  type="button"
-                  className="btn-primary-signup"
-                  onClick={() => onDashboard('trainer')}
-                >
-                  Continue to Trainer Suite →
-                </button>
-                <button
-                  type="button"
-                  className="btn-secondary-signup"
-                  onClick={onBack}
-                >
-                  Back to Home
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    // Trainee Success
     return (
       <div className="signup-page-wrap">
         <div className="signup-success-container">
@@ -322,12 +349,12 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                 <strong>{form.department || 'Meteorology & Data'}</strong>
               </div>
               <div className="summary-stat-pill">
-                <span>Learning Mode</span>
-                <strong>{form.trainingMode}</strong>
+                <span>Schedule</span>
+                <strong>{form.preferredSchedule || 'Flexible Hours'}</strong>
               </div>
               <div className="summary-stat-pill">
                 <span>Level</span>
-                <strong>{form.skillLevel}</strong>
+                <strong>{form.skillLevel || form.preferredLearnerLevel || 'Intermediate'}</strong>
               </div>
             </div>
 
@@ -462,135 +489,479 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
             </div>
           </div>
 
-        {/* RIGHT COLUMN: Multi-Step Registration Card */}
+        {/* RIGHT COLUMN: Approval Workflow & Multi-Step Registration Card */}
         <div className="signup-form-column">
           <div className="signup-card-surface">
-            {/* Card Top Icon & Title */}
-            <div className="card-top-identity">
-              <span className="card-diamond-icon">◇</span>
-              <div className="card-title-with-badge">
-                <h2 className="card-title">
-                  {step === 0 ? 'Select your role' : 'Create your account'}
-                </h2>
-                {step >= 1 && (
-                  <div className="role-active-badge-pill">
-                    <span>Role: <strong>{role === 'trainer' ? 'Trainer / Faculty' : 'Trainee / Learner'}</strong></span>
-                    <button
-                      type="button"
-                      className="btn-change-role-link"
-                      onClick={() => setStep(0)}
-                      title="Change chosen role"
-                    >
-                      Change
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Stepper Progress Bar (Only visible when step >= 1) */}
-            {step >= 1 ? (
-              <div className="stepper-bar-container">
-                <div className="stepper-progress-track">
-                  <div
-                    className="stepper-progress-fill"
-                    style={{ width: `${((step - 1) / 3) * 100}%` }}
-                  />
-                </div>
-                <div className="stepper-labels-row">
-                  <div className={`step-label-item ${step >= 1 ? 'active' : ''} ${step === 1 ? 'current' : ''}`} onClick={() => setStep(1)}>
-                    <span className="step-num">01</span>
-                    <span className="step-text">Account</span>
-                  </div>
-                  <div className={`step-label-item ${step >= 2 ? 'active' : ''} ${step === 2 ? 'current' : ''}`} onClick={() => step > 2 && setStep(2)}>
-                    <span className="step-num">02</span>
-                    <span className="step-text">Profile</span>
-                  </div>
-                  <div className={`step-label-item ${step >= 3 ? 'active' : ''} ${step === 3 ? 'current' : ''}`} onClick={() => step > 3 && setStep(3)}>
-                    <span className="step-num">03</span>
-                    <span className="step-text">{role === 'trainer' ? 'Expertise' : 'Preferences'}</span>
-                  </div>
-                  <div className={`step-label-item ${step >= 4 ? 'active' : ''} ${step === 4 ? 'current' : ''}`} onClick={() => step === 4 && setStep(4)}>
-                    <span className="step-num">04</span>
-                    <span className="step-text">{role === 'trainer' ? 'Documents' : 'Review'}</span>
+            {/* STAGE 1: REQUEST FOR APPROVAL */}
+            {stage === 'request' && (
+              <div className="approval-stage-wrap animate-fadeIn">
+                <div className="card-top-identity">
+                  <span className="card-diamond-icon">◇</span>
+                  <div className="card-title-with-badge">
+                    <h2 className="card-title">Request Institutional Access</h2>
+                    <span className="stage-badge-pill">Step 1 of 2: Approval Request</span>
                   </div>
                 </div>
-              </div>
-            ) : null}
 
-            {/* Step 0: Role Selection (First Screen inside Card) */}
-            {step === 0 && (
-              <div className="role-selection-step-wrap animate-fadeIn">
                 <p className="step-instruction role-instruction-lead">
-                  Please select your role to personalize your registration flow and requirements:
+                  Select your role, enter your institutional email address, and submit your request for administrative review.
                 </p>
 
-                <div className="role-cards-selection-grid">
-                  {/* Option 1: Trainer */}
-                  <div
-                    className={`role-selection-card ${role === 'trainer' ? 'selected' : ''}`}
-                    onClick={() => setRole('trainer')}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setRole('trainer') }}
-                  >
-                    <div className="role-card-radio-indicator">
-                      <div className={`custom-radio-dot ${role === 'trainer' ? 'checked' : ''}`} />
-                    </div>
-                    <div className="role-card-header">
-                      <div className="role-card-icon-badge trainer-badge">
-                        <span>🎓</span>
+                {requestError && (
+                  <div className="request-alert-error">
+                    <span>⚠️ {requestError}</span>
+                  </div>
+                )}
+
+                <form onSubmit={handleRequestSubmit} className="request-access-form">
+                  {/* Role Selector Cards */}
+                  <div className="role-selection-section-compact">
+                    <label className="input-group-heading-label">1. Choose your role <span className="req-star">*</span></label>
+                    <div className="role-cards-selection-grid">
+                      {/* Option 1: Trainer */}
+                      <div
+                        className={`role-selection-card ${requestRole === 'trainer' ? 'selected' : ''}`}
+                        onClick={() => setRequestRole('trainer')}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setRequestRole('trainer') }}
+                      >
+                        <div className="role-card-radio-indicator">
+                          <div className={`custom-radio-dot ${requestRole === 'trainer' ? 'checked' : ''}`} />
+                        </div>
+                        <div className="role-card-header">
+                          <div className="role-card-icon-badge trainer-badge">
+                            <span>🎓</span>
+                          </div>
+                          <div className="role-card-title-group">
+                            <h3 className="role-card-heading">Trainer &amp; Faculty</h3>
+                            <span className="role-card-subtag">Subject Expert / Instructor</span>
+                          </div>
+                        </div>
+                        <p className="role-card-description">
+                          Create courses, conduct live training, evaluate assessments, and upload institutional credentials.
+                        </p>
                       </div>
-                      <div className="role-card-title-group">
-                        <h3 className="role-card-heading">Trainer &amp; Faculty</h3>
-                        <span className="role-card-subtag">Subject Expert / Instructor</span>
+
+                      {/* Option 2: Trainee */}
+                      <div
+                        className={`role-selection-card ${requestRole === 'trainee' ? 'selected' : ''}`}
+                        onClick={() => setRequestRole('trainee')}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setRequestRole('trainee') }}
+                      >
+                        <div className="role-card-radio-indicator">
+                          <div className={`custom-radio-dot ${requestRole === 'trainee' ? 'checked' : ''}`} />
+                        </div>
+                        <div className="role-card-header">
+                          <div className="role-card-icon-badge trainee-badge">
+                            <span>📚</span>
+                          </div>
+                          <div className="role-card-title-group">
+                            <h3 className="role-card-heading">Trainee &amp; Learner</h3>
+                            <span className="role-card-subtag">Officer / Student / Researcher</span>
+                          </div>
+                        </div>
+                        <p className="role-card-description">
+                          Access domain modules, track meteorological competencies, and earn verifiable certifications.
+                        </p>
                       </div>
-                    </div>
-                    <p className="role-card-description">
-                      Design curriculum, conduct live webinars, evaluate trainee assessments, and upload institutional credentials.
-                    </p>
-                    <div className="role-card-highlights">
-                      <span className="role-feature-pill">✦ Course Authoring</span>
-                      <span className="role-feature-pill">✦ Trainee Evaluation</span>
-                      <span className="role-feature-pill">✦ Faculty Badge</span>
                     </div>
                   </div>
 
-                  {/* Option 2: Trainee */}
-                  <div
-                    className={`role-selection-card ${role === 'trainee' ? 'selected' : ''}`}
-                    onClick={() => setRole('trainee')}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setRole('trainee') }}
-                  >
-                    <div className="role-card-radio-indicator">
-                      <div className={`custom-radio-dot ${role === 'trainee' ? 'checked' : ''}`} />
+                  {/* Institutional Email */}
+                  <div className="input-group">
+                    <label>
+                      2. Institutional Email Address <span className="req-star">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      value={requestEmail}
+                      onChange={(e) => {
+                        setRequestEmail(e.target.value)
+                        setRequestError('')
+                      }}
+                      placeholder="e.g. name@imd.gov.in or user@domain.gov.in"
+                      className={
+                        requestEmail.length > 0
+                          ? isEmailValid(requestEmail)
+                            ? 'input-success'
+                            : 'input-error'
+                          : ''
+                      }
+                      required
+                    />
+                    {requestEmail.length > 0 && isEmailValid(requestEmail) && (
+                      <small className="input-feedback-success">✓ Valid institutional email format</small>
+                    )}
+                  </div>
+
+                  {/* Full Name & Organization */}
+                  <div className="form-two-col">
+                    <div className="input-group">
+                      <label>
+                        3. Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={requestName}
+                        onChange={(e) => setRequestName(e.target.value)}
+                        placeholder="e.g. Dr. Rajesh Kumar"
+                      />
                     </div>
-                    <div className="role-card-header">
-                      <div className="role-card-icon-badge trainee-badge">
-                        <span>📚</span>
-                      </div>
-                      <div className="role-card-title-group">
-                        <h3 className="role-card-heading">Trainee &amp; Learner</h3>
-                        <span className="role-card-subtag">Officer / Student / Researcher</span>
-                      </div>
-                    </div>
-                    <p className="role-card-description">
-                      Explore AI-recommended courses, track capacity competencies, earn verifiable certificates, and get mentored.
-                    </p>
-                    <div className="role-card-highlights">
-                      <span className="role-feature-pill">✦ Skill Matching</span>
-                      <span className="role-feature-pill">✦ Competency Tracker</span>
-                      <span className="role-feature-pill">✦ Certifications</span>
+                    <div className="input-group">
+                      <label>
+                        4. Organization / Affiliation
+                      </label>
+                      <input
+                        type="text"
+                        value={requestOrg}
+                        onChange={(e) => setRequestOrg(e.target.value)}
+                        placeholder="e.g. India Meteorological Department"
+                      />
                     </div>
                   </div>
+
+                  {/* Trust notice */}
+                  <div className="request-security-note">
+                    <span className="security-icon">🔒</span>
+                    <span>All registration requests undergo institutional verification against departmental records.</span>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="card-actions-row">
+                    <button
+                      type="button"
+                      className="btn-card-back"
+                      onClick={onBack}
+                    >
+                      ← Back to Home
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn-primary-signup"
+                      disabled={requestLoading || !requestEmail}
+                    >
+                      {requestLoading ? (
+                        <span className="btn-loading-spin">Submitting Request...</span>
+                      ) : (
+                        <>
+                          <span>Request Approval →</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+
+                {/* Token Lookup Toggle */}
+                <div className="token-lookup-footer">
+                  <button
+                    type="button"
+                    className="btn-toggle-lookup"
+                    onClick={() => setShowTokenLookup(!showTokenLookup)}
+                  >
+                    {showTokenLookup ? '▲ Hide Token Tracker' : '🔍 Already submitted a request? Check token status →'}
+                  </button>
+
+                  {showTokenLookup && (
+                    <form onSubmit={handleLookupToken} className="token-lookup-form animate-fadeIn">
+                      <input
+                        type="text"
+                        value={tokenLookupInput}
+                        onChange={(e) => setTokenLookupInput(e.target.value)}
+                        placeholder="Enter Token ID (e.g. REQ-IMD-2026-8941)"
+                        className="token-lookup-input"
+                      />
+                      <button type="submit" className="btn-token-lookup-submit">
+                        Check Status
+                      </button>
+                      {tokenLookupError && (
+                        <small className="input-feedback-error">{tokenLookupError}</small>
+                      )}
+                    </form>
+                  )}
                 </div>
               </div>
             )}
 
-            {/* Step 1: Account Information & Personal Details */}
-            {step === 1 && (
+            {/* STAGE 2: WAITING FOR APPROVAL (TOKEN DISPLAY & 2-DAY SLA) */}
+            {stage === 'waiting' && (
+              <div className="waiting-stage-wrap animate-fadeIn">
+                <div className="card-top-identity">
+                  <span className="card-diamond-icon">⏳</span>
+                  <div className="card-title-with-badge">
+                    <h2 className="card-title">Awaiting Approval</h2>
+                    <span className="status-badge-pending">⏳ In Directorate Review</span>
+                  </div>
+                </div>
+
+                {/* Token & 2 Working Days Hero Box */}
+                <div className="approval-token-hero-box">
+                  <div className="token-hero-header">
+                    <span className="token-hero-label">APPROVAL TRACKING TOKEN</span>
+                    <button
+                      type="button"
+                      className="btn-copy-token"
+                      onClick={handleCopyToken}
+                    >
+                      {copiedToken ? '✓ Copied!' : '📋 Copy Token'}
+                    </button>
+                  </div>
+                  <div className="token-hero-value">{token || 'REQ-IMD-2026-8941'}</div>
+                  
+                  <div className="sla-timeline-pill">
+                    <span className="sla-clock-icon">🕒</span>
+                    <span className="sla-text">
+                      Review &amp; Verification takes <strong>up to 2 working days</strong>
+                    </span>
+                  </div>
+                </div>
+
+                <p className="waiting-instruction-desc">
+                  Your registration request has been assigned to the institutional verification committee. You will receive authorization clearance once verified.
+                </p>
+
+                {/* Request Details Summary */}
+                <div className="waiting-details-table">
+                  <div className="w-detail-row">
+                    <span className="w-detail-key">Requested Role:</span>
+                    <span className="w-detail-val">
+                      <strong>{role === 'trainer' ? 'Trainer & Faculty' : 'Trainee & Learner'}</strong>
+                    </span>
+                  </div>
+                  <div className="w-detail-row">
+                    <span className="w-detail-key">Institutional Email:</span>
+                    <span className="w-detail-val">{requestEmail || form.email || 'name@imd.gov.in'}</span>
+                  </div>
+                  <div className="w-detail-row">
+                    <span className="w-detail-key">Organization:</span>
+                    <span className="w-detail-val">{requestOrg || form.organization || 'India Meteorological Department'}</span>
+                  </div>
+                </div>
+
+                {/* Workflow Steps Indicator */}
+                <div className="waiting-workflow-track">
+                  <div className="track-step done">
+                    <div className="track-step-num">✓</div>
+                    <div className="track-step-info">
+                      <strong>Request Logged</strong>
+                      <span>Token Generated</span>
+                    </div>
+                  </div>
+                  <div className="track-step active">
+                    <div className="track-step-num">2</div>
+                    <div className="track-step-info">
+                      <strong>Directorate Review</strong>
+                      <span>Up to 2 working days</span>
+                    </div>
+                  </div>
+                  <div className="track-step locked">
+                    <div className="track-step-num">3</div>
+                    <div className="track-step-info">
+                      <strong>Account Creation</strong>
+                      <span>Awaiting approval</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Interactive Simulation Panel for Immediate Testing */}
+                <div className="simulation-control-box">
+                  <div className="simulation-label">
+                    <span>⚙️ PROTOTYPE SIMULATION CONTROLS</span>
+                  </div>
+                  <p className="simulation-desc">
+                    Test the response flows instantly:
+                  </p>
+                  <div className="simulation-buttons-row">
+                    <button
+                      type="button"
+                      className="btn-sim-approve"
+                      onClick={handleSimulateApprove}
+                    >
+                      ✓ Simulate Approval (Unlock Account Creation) →
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-sim-reject"
+                      onClick={handleSimulateReject}
+                    >
+                      ✕ Simulate Rejection (View Rejection Page)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="card-actions-row">
+                  <button
+                    type="button"
+                    className="btn-card-back"
+                    onClick={onBack}
+                  >
+                    ← Back to Home
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-secondary-signup"
+                    onClick={() => setStage('request')}
+                  >
+                    Submit Another Request
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STAGE 3: REJECTED STATE SCREEN */}
+            {stage === 'rejected' && (
+              <div className="rejected-stage-wrap animate-fadeIn">
+                <div className="card-top-identity">
+                  <span className="rejected-top-icon">✕</span>
+                  <div className="card-title-with-badge">
+                    <h2 className="card-title">Request Not Approved</h2>
+                    <span className="status-badge-rejected">Request Rejected</span>
+                  </div>
+                </div>
+
+                {/* Rejection Notice Banner */}
+                <div className="rejected-notice-card">
+                  <div className="rejected-header-row">
+                    <span className="rejected-tag-pill">Verification Status: NOT APPROVED</span>
+                    <span className="rejected-token-ref">Token: {token || 'REQ-IMD-2026-8941'}</span>
+                  </div>
+                  <p className="rejected-message">
+                    We regret to inform you that your registration request could not be approved at this time based on institutional domain criteria or administrative verification parameters.
+                  </p>
+                </div>
+
+                {/* Contact Admin / Head / HR Advisory Box */}
+                <div className="contact-advisory-box">
+                  <div className="advisory-title-group">
+                    <span className="advisory-icon">🏛️</span>
+                    <div>
+                      <h3 className="advisory-heading">Contact Administration or HR for Assistance</h3>
+                      <p className="advisory-subtext">
+                        If you believe this decision is in error, or require expedited authorization, please contact the administrative authorities directly:
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="contact-channels-grid">
+                    <div className="contact-channel-card">
+                      <div className="channel-icon">✉️</div>
+                      <div className="channel-info">
+                        <strong>Directorate Administrator</strong>
+                        <a href="mailto:admin.directorate@imd.gov.in" className="channel-link">admin.directorate@imd.gov.in</a>
+                      </div>
+                    </div>
+
+                    <div className="contact-channel-card">
+                      <div className="channel-icon">🎓</div>
+                      <div className="channel-info">
+                        <strong>Department Head (Training)</strong>
+                        <a href="mailto:head.training@imd.gov.in" className="channel-link">head.training@imd.gov.in</a>
+                      </div>
+                    </div>
+
+                    <div className="contact-channel-card">
+                      <div className="channel-icon">👥</div>
+                      <div className="channel-info">
+                        <strong>HR &amp; Capacity Division</strong>
+                        <a href="mailto:hr-training@imd.gov.in" className="channel-link">hr-training@imd.gov.in</a>
+                      </div>
+                    </div>
+
+                    <div className="contact-channel-card">
+                      <div className="channel-icon">📞</div>
+                      <div className="channel-info">
+                        <strong>Central Secretariat Helpline</strong>
+                        <span className="channel-text">+91-11-2461-1234 (Ext. 402 / 405)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="card-actions-row">
+                  <button
+                    type="button"
+                    className="btn-card-back"
+                    onClick={onBack}
+                  >
+                    ← Back to Home
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-primary-signup"
+                    onClick={() => setStage('request')}
+                  >
+                    Submit New Request →
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-secondary-signup"
+                    onClick={onLogin}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STAGE 4: APPROVED STATE -> CREATE ACCOUNT FORM */}
+            {stage === 'approved' && (
+              <>
+                {/* Approval Clearance Banner */}
+                <div className="approval-unlocked-banner animate-fadeIn">
+                  <span className="banner-check-icon">✓</span>
+                  <div className="banner-text-group">
+                    <strong>Institutional Clearance Approved (Token: {token || 'REQ-IMD-2026-8941'})</strong>
+                    <span>Please set your password and complete your profile details below.</span>
+                  </div>
+                </div>
+
+                {/* Card Top Icon & Title */}
+                <div className="card-top-identity">
+                  <span className="card-diamond-icon">◇</span>
+                  <div className="card-title-with-badge">
+                    <h2 className="card-title">Create your account</h2>
+                    <div className="role-active-badge-pill">
+                      <span>Role: <strong>{role === 'trainer' ? 'Trainer / Faculty' : 'Trainee / Learner'}</strong></span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stepper Progress Bar */}
+                <div className="stepper-bar-container">
+                  <div className="stepper-progress-track">
+                    <div
+                      className="stepper-progress-fill"
+                      style={{ width: `${((step - 1) / 3) * 100}%` }}
+                    />
+                  </div>
+                  <div className="stepper-labels-row">
+                    <div className={`step-label-item ${step >= 1 ? 'active' : ''} ${step === 1 ? 'current' : ''}`} onClick={() => setStep(1)}>
+                      <span className="step-num">01</span>
+                      <span className="step-text">Account</span>
+                    </div>
+                    <div className={`step-label-item ${step >= 2 ? 'active' : ''} ${step === 2 ? 'current' : ''}`} onClick={() => step > 2 && setStep(2)}>
+                      <span className="step-num">02</span>
+                      <span className="step-text">Profile</span>
+                    </div>
+                    <div className={`step-label-item ${step >= 3 ? 'active' : ''} ${step === 3 ? 'current' : ''}`} onClick={() => step > 3 && setStep(3)}>
+                      <span className="step-num">03</span>
+                      <span className="step-text">{role === 'trainer' ? 'Expertise' : 'Preferences'}</span>
+                    </div>
+                    <div className={`step-label-item ${step >= 4 ? 'active' : ''} ${step === 4 ? 'current' : ''}`} onClick={() => step === 4 && setStep(4)}>
+                      <span className="step-num">04</span>
+                      <span className="step-text">{role === 'trainer' ? 'Documents' : 'Review'}</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Step 1: Account Information & Personal Details (When stage === 'approved') */}
+            {stage === 'approved' && step === 1 && (
               <div className="step-content-box animate-fadeIn">
                 <p className="step-instruction">
                   Tell us about yourself — enter your personal details to set up your profile.
@@ -782,7 +1153,7 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
             )}
 
             {/* Step 2: Role-Specific Profile Details */}
-            {step === 2 && (
+            {stage === 'approved' && step === 2 && (
               <div className="step-content-box animate-fadeIn">
                 <p className="step-instruction">
                   {role === 'trainer'
@@ -950,7 +1321,7 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
             )}
 
             {/* Step 3: Skills, Topics & Teaching / Learning Logistics */}
-            {step === 3 && (
+            {stage === 'approved' && step === 3 && (
               <div className="step-content-box animate-fadeIn">
                 <p className="step-instruction">
                   {role === 'trainer'
@@ -1147,24 +1518,7 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
 
                     <div className="form-two-col">
                       <div className="input-group">
-                        <label>15. Preferred Learning Mode</label>
-                        <div className="mode-toggle-group">
-                          {['Online', 'Offline', 'Hybrid'].map((m) => (
-                            <button
-                              type="button"
-                              key={m}
-                              className={`mode-toggle-btn ${form.trainingMode === m ? 'active' : ''}`}
-                              onClick={() => setForm({ ...form, trainingMode: m })}
-                            >
-                              {m === 'Online' ? '🌐 ' : m === 'Offline' ? '🏢 ' : '🔄 '}
-                              {m}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="input-group">
-                        <label>16. Preferred Learner Level</label>
+                        <label>14. Preferred Learner Level</label>
                         <select
                           name="preferredLearnerLevel"
                           value={form.preferredLearnerLevel}
@@ -1175,11 +1529,9 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                           <option>Advanced &amp; Intensive</option>
                         </select>
                       </div>
-                    </div>
 
-                    <div className="form-two-col">
                       <div className="input-group">
-                        <label>17. Available Learning Time</label>
+                        <label>15. Available Learning Time</label>
                         <select name="learningTime" value={form.learningTime} onChange={updateForm}>
                           <option>2 - 4 hrs / week</option>
                           <option>5 - 10 hrs / week</option>
@@ -1187,23 +1539,24 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                           <option>Full-time / 20+ hrs / week</option>
                         </select>
                       </div>
-                      <div className="input-group">
-                        <label>18. Preferred Training Schedule</label>
-                        <select name="preferredSchedule" value={form.preferredSchedule} onChange={updateForm}>
-                          <option>Evening / Weekend Batches</option>
-                          <option>Morning Batches (7 AM - 10 AM)</option>
-                          <option>Self-Paced Flexible Hours</option>
-                          <option>Live Weekend Masterclasses</option>
-                        </select>
-                      </div>
+                    </div>
+
+                    <div className="input-group">
+                      <label>16. Preferred Training Schedule</label>
+                      <select name="preferredSchedule" value={form.preferredSchedule} onChange={updateForm}>
+                        <option>Evening / Weekend Batches</option>
+                        <option>Morning Batches (7 AM - 10 AM)</option>
+                        <option>Self-Paced Flexible Hours</option>
+                        <option>Live Weekend Masterclasses</option>
+                      </select>
                     </div>
                   </>
                 )}
               </div>
             )}
 
-            {/* Step 4: Certifications, Bio, Documents (Trainer) & Review */}
-            {step === 4 && (
+            {/* Step 4: Certifications, Bio, Document Upload & Final Summary */}
+            {stage === 'approved' && step === 4 && (
               <div className="step-content-box animate-fadeIn">
                 <p className="step-instruction">
                   {role === 'trainer'
@@ -1319,87 +1672,66 @@ export default function SignupPage({ onBack, onLogin, onDashboard, initialRole =
                       <strong>{form.organization || 'Not provided'}</strong>
                     </div>
                     <div>
-                      <span>Mode:</span>
-                      <strong>{form.trainingMode} ({form.skillLevel})</strong>
+                      <span>{role === 'trainer' ? 'Mode:' : 'Schedule:'}</span>
+                      <strong>{role === 'trainer' ? `${form.trainingMode} (${form.skillLevel})` : `${form.preferredSchedule || 'Flexible'} (${form.skillLevel || 'Intermediate'})`}</strong>
                     </div>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Bottom Actions Bar */}
-            <div className="card-actions-row">
-              {step === 0 ? (
-                <>
+            {/* Bottom Actions Bar for Approved Account Creation Stepper */}
+            {stage === 'approved' && (
+              <div className="card-actions-row">
+                {step === 1 ? (
                   <button
                     type="button"
                     className="btn-card-back"
-                    onClick={onBack}
+                    onClick={() => setStage('waiting')}
                   >
-                    ← Back to Home
+                    ← Back to Status
                   </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn-card-back"
+                    onClick={handlePrev}
+                  >
+                    ← Back
+                  </button>
+                )}
+
+                {step < 4 ? (
                   <button
                     type="button"
                     className="btn-primary-signup"
-                    onClick={() => setStep(1)}
-                    disabled={!role}
+                    onClick={handleNext}
+                    disabled={
+                      (step === 1 && !canProceedStep1) ||
+                      (step === 2 && !canProceedStep2) ||
+                      (step === 3 && !canProceedStep3)
+                    }
                   >
-                    <span>Continue as {role === 'trainer' ? 'Trainer' : 'Trainee'}</span>
-                    <span className="btn-arrow-icon">→</span>
+                    Continue →
                   </button>
-                </>
-              ) : (
-                <>
-                  {step === 1 ? (
-                    <button
-                      type="button"
-                      className="btn-card-back"
-                      onClick={() => setStep(0)}
-                    >
-                      ← Change Role
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn-card-back"
-                      onClick={handlePrev}
-                    >
-                      ← Back
-                    </button>
-                  )}
-
-                  {step < 4 ? (
-                    <button
-                      type="button"
-                      className="btn-primary-signup"
-                      onClick={handleNext}
-                      disabled={
-                        (step === 1 && !canProceedStep1) ||
-                        (step === 2 && !canProceedStep2) ||
-                        (step === 3 && !canProceedStep3)
-                      }
-                    >
-                      Continue →
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn-primary-signup submit-cta"
-                      onClick={handleFinalSubmit}
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <span className="btn-loading-spin">Creating Account...</span>
-                      ) : role === 'trainer' ? (
-                        'Submit & Verify Documents →'
-                      ) : (
-                        'Complete Registration →'
-                      )}
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn-primary-signup submit-cta"
+                    onClick={handleFinalSubmit}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span className="btn-loading-spin">Creating Account...</span>
+                    ) : role === 'trainer' ? (
+                      'Submit & Verify Documents →'
+                    ) : (
+                      'Complete Registration →'
+                    )}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

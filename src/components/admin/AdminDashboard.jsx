@@ -50,6 +50,105 @@ const INITIAL_NOTIFICATIONS = [
   { id: 4, title: 'Scheduled Platform Audit', desc: 'System integrity and security logs synchronized with MoES server.', time: '1d ago', unread: false }
 ]
 
+// Mock Dataset for Trainer & Trainee Approvals (Step 1 Registration Requests)
+const INITIAL_TRAINER_APPROVALS = [
+  {
+    id: 'REQ-IMD-2026-8941',
+    name: 'Dr. Rajesh Kumar',
+    email: 'rajesh.kumar@imd.gov.in',
+    role: 'Trainer',
+    organization: 'India Meteorological Department (IMD HQ New Delhi)',
+    submissionDate: 'Today, 09:30 IST',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-7723',
+    name: 'Dr. Sunita Rao',
+    email: 'sunita.rao@iitm.res.in',
+    role: 'Trainer',
+    organization: 'Indian Institute of Tropical Meteorology (IITM Pune)',
+    submissionDate: 'Yesterday, 16:15 IST',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-6819',
+    name: 'Dr. Meenakshi Sundaram',
+    email: 'm.sundaram@incois.gov.in',
+    role: 'Trainer',
+    organization: 'INCOIS (MoES Hyderabad)',
+    submissionDate: 'Yesterday, 11:20 IST',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-6150',
+    name: 'Dr. Alok Sengupta',
+    email: 'alok.sengupta@ncmrwf.gov.in',
+    role: 'Trainer',
+    organization: 'NCMRWF (Ministry of Earth Sciences, Noida)',
+    submissionDate: '16 Sep 2026',
+    slaTime: 'Approved',
+    status: 'Approved',
+    approvalMemo: 'MoES/APP/2026/092'
+  }
+]
+
+const INITIAL_TRAINEE_APPROVALS = [
+  {
+    id: 'REQ-IMD-2026-9284',
+    name: 'Aditya Jaiswal',
+    email: 'aditya.jaiswal@imd.gov.in',
+    role: 'Trainee',
+    organization: 'India Meteorological Department (Pune Node)',
+    submissionDate: 'Today, 11:45 IST',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-9102',
+    name: 'Ananya Verma',
+    email: 'ananya.verma@du.ac.in',
+    role: 'Trainee',
+    organization: 'Department of Physics & Astrophysics, Delhi University',
+    submissionDate: 'Yesterday, 14:20 IST',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-8840',
+    name: 'Suresh Menon',
+    email: 'suresh.menon@incois.gov.in',
+    role: 'Trainee',
+    organization: 'INCOIS Hyderabad (Ocean Science Wing)',
+    submissionDate: 'Yesterday, 09:10 IST',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-8219',
+    name: 'Sneha Patel',
+    email: 'sneha.patel@iitk.ac.in',
+    role: 'Trainee',
+    organization: 'IIT Kanpur (Earth Sciences Division)',
+    submissionDate: '16 Sep 2026',
+    slaTime: 'Up to 2 working days',
+    status: 'Pending'
+  },
+  {
+    id: 'REQ-IMD-2026-5321',
+    name: 'Vikram Mehta',
+    email: 'vikram.mehta@personalmail.com',
+    role: 'Trainee',
+    organization: 'Unverified Entity / Independent Applicant',
+    submissionDate: '15 Sep 2026',
+    slaTime: 'Rejected',
+    status: 'Rejected',
+    rejectionReason: 'Non-institutional email domain. Advised to contact the administrator or HR.'
+  }
+]
+
 const MONTHLY_ANALYTICS = [
   { month: 'Apr', trainees: 1420, completed: 1100, hours: 8900, score: 72 },
   { month: 'May', trainees: 1680, completed: 1320, hours: 9800, score: 73 },
@@ -247,6 +346,99 @@ export default function AdminDashboard({ onBack }) {
   const [suspensionMemoNumber, setSuspensionMemoNumber] = useState('MoES/EST/2026/891')
   const [suspensionEffectiveDate, setSuspensionEffectiveDate] = useState('2026-09-17')
   const [suspensionComments, setSuspensionComments] = useState('')
+
+  // Registration & Access Approvals State (Trainers & Trainees)
+  const [trainerApprovals, setTrainerApprovals] = useState(INITIAL_TRAINER_APPROVALS)
+  const [traineeApprovals, setTraineeApprovals] = useState(INITIAL_TRAINEE_APPROVALS)
+  const [approvalSubTab, setApprovalSubTab] = useState('trainers') // 'trainers' | 'trainees' | 'audit'
+  const [approvalSearchQuery, setApprovalSearchQuery] = useState('')
+  const [approvalStatusFilter, setApprovalStatusFilter] = useState('All') // 'All' | 'Pending' | 'Approved' | 'Rejected'
+  const [approvalDeptFilter, setApprovalDeptFilter] = useState('All')
+  const [selectedApprovalDetails, setSelectedApprovalDetails] = useState(null)
+  const [rejectingApprovalItem, setRejectingApprovalItem] = useState(null)
+  const [rejectionReasonInput, setRejectionReasonInput] = useState('Non-institutional domain or lack of official departmental sponsorship.')
+  const [selectedApprovalIds, setSelectedApprovalIds] = useState([])
+
+  const pendingTrainerCount = trainerApprovals.filter(a => a.status === 'Pending').length
+  const pendingTraineeCount = traineeApprovals.filter(a => a.status === 'Pending').length
+  const totalPendingCount = pendingTrainerCount + pendingTraineeCount
+
+  const handleApproveRequest = (item) => {
+    const memo = `MoES/APP/2026/${Math.floor(100 + Math.random() * 900)}`
+    if (item.role === 'Trainer') {
+      setTrainerApprovals(prev => prev.map(t => t.id === item.id ? { ...t, status: 'Approved', slaTime: 'Approved', approvalMemo: memo } : t))
+      if (!trainers.some(tr => tr.name === item.name)) {
+        setTrainers(prev => [
+          {
+            name: item.name,
+            expertise: item.department || 'Meteorology & NWP',
+            score: '94%',
+            trained: '0 trainees',
+            rating: '5.0/5',
+            status: 'Accredited'
+          },
+          ...prev
+        ])
+      }
+    } else {
+      setTraineeApprovals(prev => prev.map(t => t.id === item.id ? { ...t, status: 'Approved', slaTime: 'Approved', approvalMemo: memo } : t))
+      if (!trainees.some(tr => tr.name === item.name)) {
+        setTrainees(prev => [
+          {
+            id: `TR-${Math.floor(1140 + Math.random() * 100)}`,
+            name: item.name,
+            dept: item.department || 'Meteorology Division',
+            enrolled: '0 Enrolled',
+            score: 'New',
+            status: 'Active'
+          },
+          ...prev
+        ])
+      }
+    }
+    if (selectedApprovalDetails && selectedApprovalDetails.id === item.id) {
+      setSelectedApprovalDetails(null)
+    }
+    setActionSuccessMsg(`✓ Access Approved for ${item.name} (${item.id})! Memo ${memo} generated and clearance notification dispatched.`)
+    setTimeout(() => setActionSuccessMsg(''), 5000)
+  }
+
+  const handleInitiateReject = (item) => {
+    setRejectingApprovalItem(item)
+    setRejectionReasonInput('Non-institutional email domain or lack of official departmental sponsorship.')
+  }
+
+  const handleConfirmReject = () => {
+    if (!rejectingApprovalItem) return
+    const item = rejectingApprovalItem
+    if (item.role === 'Trainer') {
+      setTrainerApprovals(prev => prev.map(t => t.id === item.id ? { ...t, status: 'Rejected', slaTime: 'Rejected', rejectionReason: rejectionReasonInput } : t))
+    } else {
+      setTraineeApprovals(prev => prev.map(t => t.id === item.id ? { ...t, status: 'Rejected', slaTime: 'Rejected', rejectionReason: rejectionReasonInput } : t))
+    }
+    if (selectedApprovalDetails && selectedApprovalDetails.id === item.id) {
+      setSelectedApprovalDetails(null)
+    }
+    setRejectingApprovalItem(null)
+    setActionSuccessMsg(`✕ Access Request ${item.id} (${item.name}) rejected. Official notice logged with contact escalation advisory.`)
+    setTimeout(() => setActionSuccessMsg(''), 5000)
+  }
+
+  const handleBatchApprove = () => {
+    if (selectedApprovalIds.length === 0) return
+    if (approvalSubTab === 'trainers') {
+      setTrainerApprovals(prev => prev.map(t => selectedApprovalIds.includes(t.id) ? { ...t, status: 'Approved', slaTime: 'Approved', approvalMemo: `MoES/APP/2026/${Math.floor(100 + Math.random() * 900)}` } : t))
+    } else if (approvalSubTab === 'trainees') {
+      setTraineeApprovals(prev => prev.map(t => selectedApprovalIds.includes(t.id) ? { ...t, status: 'Approved', slaTime: 'Approved', approvalMemo: `MoES/APP/2026/${Math.floor(100 + Math.random() * 900)}` } : t))
+    }
+    setActionSuccessMsg(`✓ Batch Action Complete: Approved ${selectedApprovalIds.length} candidate registration requests!`)
+    setSelectedApprovalIds([])
+    setTimeout(() => setActionSuccessMsg(''), 5000)
+  }
+
+  const handleToggleSelectId = (id) => {
+    setSelectedApprovalIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  }
   const [suspensionLogs, setSuspensionLogs] = useState([
     {
       id: 'LOG-891',
@@ -398,7 +590,7 @@ export default function AdminDashboard({ onBack }) {
   }
 
   // Bulk Onboarding state
-  const [bulkImportRole, setBulkImportRole] = useState('Trainer') // 'Trainer' | 'Trainee'
+  const [bulkImportRole, setBulkImportRole] = useState('All') // 'All' | 'Trainer' | 'Trainee'
   const [bulkFile, setBulkFile] = useState(null)
   const [bulkRows, setBulkRows] = useState([])
   const [bulkStage, setBulkStage] = useState('upload') // 'upload' | 'preview' | 'processing' | 'result'
@@ -408,79 +600,49 @@ export default function AdminDashboard({ onBack }) {
   const [bulkDragActive, setBulkDragActive] = useState(false)
 
   // Generated ID state for current creation session
-  const [generatedTraineeId, setGeneratedTraineeId] = useState(() => `TRN-${Math.floor(10000 + Math.random() * 90000)}`)
-  const [generatedTrainerId, setGeneratedTrainerId] = useState(() => `TRR-${Math.floor(10000 + Math.random() * 90000)}`)
+  const [generatedSingleUserId, setGeneratedSingleUserId] = useState(() => `TRR-${Math.floor(10000 + Math.random() * 90000)}`)
   const [generatedTempPassword, setGeneratedTempPassword] = useState(() => `IMD#${Math.floor(1000 + Math.random() * 9000)}!x`)
   const [showPasswordInSuccess, setShowPasswordInSuccess] = useState(false)
   const [copiedKey, setCopiedKey] = useState(false)
 
-  // Trainee Form Fields
-  const [traineeFormData, setTraineeFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    mobile: '',
-    employeeId: '',
-    dept: 'Meteorology Division',
-    designation: 'Scientific Officer',
-    skillLevel: 'Intermediate',
-    areasOfInterest: 'Radar Analysis & Satellite Climatology',
-    learningGoals: 'Master numerical prediction modeling and Doppler radar interpretation'
-  })
+  // Single User Form Fields (Role, Name, Email, Organization)
+  const [singleUserRole, setSingleUserRole] = useState('Trainer') // 'Trainer' | 'Trainee'
+  const [singleUserName, setSingleUserName] = useState('')
+  const [singleUserEmail, setSingleUserEmail] = useState('')
+  const [singleUserOrg, setSingleUserOrg] = useState('Meteorology Division, IMD')
+  const [singleUserErrors, setSingleUserErrors] = useState({})
 
-  // Trainer Form Fields
-  const [trainerFormData, setTrainerFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    mobile: '',
-    employeeId: '',
-    dept: 'Atmospheric Sciences Wing',
-    designation: 'Senior Faculty / Lead Trainer',
-    expertise: 'Weather Data Analysis & NWP',
-    coreCompetencies: 'WRF Modeling, Python for Earth Science, Doppler Radar',
-    experience: '8+ Years',
-    certifications: 'WMO Senior Instructor Certified, IMD Lead Fellow',
-    domains: 'Meteorology & Numerical Modeling',
-    availability: 'Full-Time (Mon-Fri)'
-  })
-
-  // Bulk Demo Dataset for 1-Click Evaluation
+  // Bulk Demo Dataset for 1-Click Evaluation (Role, Name, Email, Organization)
   const DEMO_BULK_DATASET = [
-    { rowNum: 1, firstName: 'Dr. Suresh', lastName: 'Rao', email: 'suresh.rao@imd.gov.in', mobile: '+91 98231 44510', employeeId: 'FAC-8012', dept: 'Atmospheric Sciences Wing', designation: 'Scientist-F / Senior Faculty', expertise: 'Doppler Radar & NWP', experience: '12+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 2, firstName: 'Dr. Ananya', lastName: 'Deshmukh', email: 'ananya.d@imd.gov.in', mobile: '+91 98765 22119', employeeId: 'FAC-8015', dept: 'Meteorology Division', designation: 'Lead Trainer', expertise: 'Satellite Climatology', experience: '9+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 3, firstName: 'Dr. Rajesh', lastName: 'Iyer', email: 'rajesh.iyer@iitm.res.in', mobile: '+91 94451 88902', employeeId: 'FAC-8019', dept: 'Numerical Modeling Unit', designation: 'Principal Scientist', expertise: 'WRF & Earth Systems', experience: '15+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 4, firstName: 'Dr. Rahul', lastName: 'Sharma', email: 'rahul.sharma@imd.gov.in', mobile: '+91 98112 33445', employeeId: 'FAC-7001', dept: 'Meteorology Division', designation: 'Senior Faculty', expertise: 'Weather Data Analysis', experience: '10+ Years', status: 'duplicate', reason: 'Email already exists in database' },
-    { rowNum: 5, firstName: 'Dr. Meenakshi', lastName: 'Sundaram', email: 'm.sundaram@incois.gov.in', mobile: '+91 99881 77234', employeeId: 'FAC-8024', dept: 'Ocean Science Wing', designation: 'Associate Faculty', expertise: 'Ocean Circulation & GIS', experience: '7+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 6, firstName: 'Dr. Vikram', lastName: 'Kulkarni', email: 'v.kulkarni@ncmrwf.gov.in', mobile: '+91 97654 11223', employeeId: 'FAC-8028', dept: 'HPC & Modeling Lab', designation: 'Scientist-E', expertise: 'HPC Weather Analytics', experience: '8+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 7, firstName: 'Dr. Kavita', lastName: 'Menon', email: 'kavita.menon@imd.gov.in', mobile: '+91 98760 99881', employeeId: 'FAC-8031', dept: 'Remote Sensing Lab', designation: 'Faculty Specialist', expertise: 'Polarimetric Radar', experience: '6+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 8, firstName: 'Dr. Alok', lastName: 'Tripathi', email: 'alok.t@imd.gov.in', mobile: '+91 98221 66554', employeeId: '', dept: 'Hydrology Division', designation: 'Assistant Faculty', expertise: 'Hydro-Meteorology', experience: '4+ Years', status: 'invalid', reason: 'Employee ID is required' },
-    { rowNum: 9, firstName: 'Dr. Shalini', lastName: 'Pandey', email: 'shalini.p@imd.gov.in', mobile: '+91 94231 88776', employeeId: 'FAC-8036', dept: 'Climate Research Wing', designation: 'Scientist-D', expertise: 'Urban Climatology', experience: '8+ Years', status: 'valid', reason: 'Ready for ingestion' },
-    { rowNum: 10, firstName: 'Dr. Harish', lastName: 'Babu', email: 'harish.babu@imd.gov.in', mobile: '+91 98119 44332', employeeId: 'FAC-8040', dept: 'Meteorology Division', designation: 'Senior Faculty', expertise: 'Tropical Cyclones', experience: '11+ Years', status: 'valid', reason: 'Ready for ingestion' }
+    { rowNum: 1, role: 'Trainer', name: 'Dr. Suresh Rao', email: 'suresh.rao@imd.gov.in', organization: 'Atmospheric Sciences Wing', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 2, role: 'Trainer', name: 'Dr. Ananya Deshmukh', email: 'ananya.d@imd.gov.in', organization: 'Meteorology Division', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 3, role: 'Trainer', name: 'Dr. Rajesh Iyer', email: 'rajesh.iyer@iitm.res.in', organization: 'Numerical Modeling Unit', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 4, role: 'Trainer', name: 'Dr. Rahul Sharma', email: 'rahul.sharma@imd.gov.in', organization: 'Meteorology Division', status: 'duplicate', reason: 'Email already exists in database' },
+    { rowNum: 5, role: 'Trainee', name: 'Dr. Meenakshi Sundaram', email: 'm.sundaram@incois.gov.in', organization: 'Ocean Science Wing', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 6, role: 'Trainee', name: 'Aditya Jaiswal', email: 'aditya.j@imd.gov.in', organization: 'Meteorology Division', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 7, role: 'Trainer', name: 'Dr. Kavita Menon', email: 'kavita.menon@imd.gov.in', organization: 'Remote Sensing Lab', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 8, role: 'Trainee', name: 'Alok Tripathi', email: '', organization: 'Hydrology Division', status: 'invalid', reason: 'Email address is required' },
+    { rowNum: 9, role: 'Trainer', name: 'Dr. Shalini Pandey', email: 'shalini.p@imd.gov.in', organization: 'Climate Research Wing', status: 'valid', reason: 'Ready for ingestion' },
+    { rowNum: 10, role: 'Trainee', name: 'Harish Babu', email: 'harish.babu@imd.gov.in', organization: 'Meteorology Division', status: 'valid', reason: 'Ready for ingestion' }
   ]
 
-  const handleDownloadTemplate = (role = 'Trainer', format = 'csv') => {
-    let content = ''
-    if (role === 'Trainer') {
-      content = `First Name,Last Name,Official Email,Mobile,Employee ID,Department,Designation,Areas of Expertise,Core Competencies,Years of Experience,Certifications,Training Domains,Availability\nDr. Suresh,Rao,suresh.rao@imd.gov.in,+919823144510,FAC-8012,Atmospheric Sciences Wing,Scientist-F / Senior Faculty,Doppler Radar & NWP,WRF Modeling; Python,12+ Years,WMO Senior Instructor,Meteorology & NWP,Full-Time (Mon-Fri)\nDr. Ananya,Deshmukh,ananya.d@imd.gov.in,+919876522119,FAC-8015,Meteorology Division,Lead Trainer,Satellite Climatology,Radar; Remote Sensing,9+ Years,IMD Lead Fellow,Earth Observation,Full-Time (Mon-Fri)\n`
-    } else {
-      content = `First Name,Last Name,Official Email,Mobile,Employee ID,Department,Designation,Current Skill Level,Areas of Interest,Learning Goals\nAditya,Jaiswal,aditya.j@imd.gov.in,+919876543210,EMP-1082,Meteorology Division,Scientific Officer,Intermediate,Radar & Satellite,Master NWP models\nSneha,Patel,sneha.patel@imd.gov.in,+919823456789,EMP-1120,Numerical Modeling Unit,Scientific Assistant,Beginner,Python & HPC,Complete radar certification\n`
-    }
+  const handleDownloadTemplate = (format = 'csv') => {
+    const content = `Role,Name,Email,Organization\nTrainer,Dr. Suresh Rao,suresh.rao@imd.gov.in,Atmospheric Sciences Wing\nTrainer,Dr. Ananya Deshmukh,ananya.d@imd.gov.in,Meteorology Division\nTrainee,Aditya Jaiswal,aditya.j@imd.gov.in,Meteorology Division\nTrainee,Sneha Patel,sneha.patel@imd.gov.in,Numerical Modeling Unit\n`
     const blob = new Blob([content], { type: format === 'csv' ? 'text/csv;charset=utf-8;' : 'application/vnd.ms-excel' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.setAttribute('download', `capacityconnect_${role.toLowerCase()}_template.${format === 'csv' ? 'csv' : 'xlsx'}`)
+    link.setAttribute('download', `capacityconnect_user_import_template.${format === 'csv' ? 'csv' : 'xlsx'}`)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
   }
 
   const handleLoadDemoCsv = () => {
-    setBulkFile({ name: 'imd_faculty_q3_cohort_sample.csv', size: '3.4 KB' })
+    setBulkFile({ name: 'user_onboarding_cohort_sample.csv', size: '2.8 KB' })
     const enriched = DEMO_BULK_DATASET.map(row => ({
       ...row,
-      autoId: `TRR-${Math.floor(10000 + Math.random() * 90000)}`,
+      autoId: row.role === 'Trainer' ? `TRR-${Math.floor(10000 + Math.random() * 90000)}` : `TRN-${Math.floor(10000 + Math.random() * 90000)}`,
       tempPwd: `IMD#${Math.floor(1000 + Math.random() * 9000)}!x`
     }))
     setBulkRows(enriched)
@@ -494,45 +656,58 @@ export default function AdminDashboard({ onBack }) {
     const reader = new FileReader()
     reader.onload = (evt) => {
       const text = evt.target.result
-      const lines = text.split('\n').filter(l => l.trim().length > 0)
+      const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0)
       if (lines.length <= 1) {
         handleLoadDemoCsv()
         return
       }
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z]/g, ''))
+      const roleIdx = headers.findIndex(h => h.includes('role'))
+      const nameIdx = headers.findIndex(h => h.includes('name'))
+      const emailIdx = headers.findIndex(h => h.includes('email') || h.includes('mail'))
+      const orgIdx = headers.findIndex(h => h.includes('org') || h.includes('dept') || h.includes('affiliation'))
+
       const rows = []
       const existingEmails = new Set(trainers.map(t => (t.name || '').toLowerCase()))
       
       for (let i = 1; i < lines.length; i++) {
-        const cols = lines[i].split(',').map(c => c.trim())
-        if (cols.length < 3) continue
-        const firstName = cols[0] || `Faculty_${i}`
-        const lastName = cols[1] || `Staff`
-        const email = cols[2] || `user${i}@imd.gov.in`
-        const empId = cols[4] || ''
+        const cols = lines[i].split(',').map(c => c.replace(/^["']|["']$/g, '').trim())
+        if (cols.length < 2) continue
+        
+        let role = (roleIdx !== -1 && cols[roleIdx]) ? cols[roleIdx] : 'Trainee'
+        if (/trainer|faculty|instructor/i.test(role)) role = 'Trainer'
+        else role = 'Trainee'
+
+        const name = (nameIdx !== -1 && cols[nameIdx]) ? cols[nameIdx] : (cols[1] || `User_${i}`)
+        const email = (emailIdx !== -1 && cols[emailIdx]) ? cols[emailIdx] : (cols[2] || `user${i}@imd.gov.in`)
+        const organization = (orgIdx !== -1 && cols[orgIdx]) ? cols[orgIdx] : (cols[3] || 'Meteorology Division, IMD')
+
         let status = 'valid'
         let reason = 'Ready for ingestion'
-        if (!empId) {
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           status = 'invalid'
-          reason = 'Missing Employee ID'
-        } else if (existingEmails.has(email.toLowerCase()) || email.includes('rahul.sharma')) {
+          reason = 'Invalid or missing email address'
+        } else if (!name || name.trim().length === 0) {
+          status = 'invalid'
+          reason = 'Missing full name'
+        } else if (existingEmails.has(name.toLowerCase()) || email.includes('rahul.sharma')) {
           status = 'duplicate'
           reason = 'Email already registered in system'
         }
+
+        const autoId = role === 'Trainer' ? `TRR-${Math.floor(10000 + Math.random() * 90000)}` : `TRN-${Math.floor(10000 + Math.random() * 90000)}`
+        const tempPwd = `IMD#${Math.floor(1000 + Math.random() * 9000)}!x`
+
         rows.push({
           rowNum: i,
-          firstName,
-          lastName,
+          role,
+          name,
           email,
-          mobile: cols[3] || '+91 98000 00000',
-          employeeId: empId,
-          dept: cols[5] || 'Meteorology Division',
-          designation: cols[6] || 'Faculty Member',
-          expertise: cols[7] || 'Atmospheric Sciences',
-          experience: cols[9] || '5+ Years',
+          organization,
           status,
           reason,
-          autoId: `TRR-${Math.floor(10000 + Math.random() * 90000)}`,
-          tempPwd: `IMD#${Math.floor(1000 + Math.random() * 9000)}!x`
+          autoId,
+          tempPwd
         })
       }
       setBulkRows(rows.length > 0 ? rows : DEMO_BULK_DATASET)
@@ -543,38 +718,45 @@ export default function AdminDashboard({ onBack }) {
 
   const handleExecuteBulkImport = () => {
     setBulkStage('processing')
-    setBulkProgress(10)
-    setBulkStepMessage('Parsing rows and validating schema against MoES standards...')
+    setBulkProgress(15)
+    setBulkStepMessage('Parsing Role, Name, and Email attributes against central schema...')
 
     setTimeout(() => {
-      setBulkProgress(40)
-      setBulkStepMessage('Generating unique TRR-XXXXX IDs and bcrypt salt-hashing temp passwords...')
+      setBulkProgress(50)
+      setBulkStepMessage('Generating role-based TRR/TRN identifiers & salted temp passwords...')
     }, 600)
 
     setTimeout(() => {
-      setBulkProgress(75)
-      setBulkStepMessage('Executing transactional database inserts & queuing SMTP welcome emails...')
+      setBulkProgress(80)
+      setBulkStepMessage('Writing user records into directory & queuing SMTP onboarding dispatches...')
     }, 1200)
 
     setTimeout(() => {
       setBulkProgress(100)
-      setBulkStepMessage('All valid records provisioned and welcome emails dispatched!')
+      setBulkStepMessage('All valid records ingested and welcome credentials dispatched!')
       
       const validOnes = bulkRows.filter(r => r.status === 'valid')
       const failedOnes = bulkRows.filter(r => r.status !== 'valid')
       
-      // Add valid ones to local trainers or trainees state
-      if (bulkImportRole === 'Trainer') {
-        const newTrainers = validOnes.map(r => ({
-          name: `${r.firstName} ${r.lastName}`,
-          expertise: r.expertise || 'Atmospheric Sciences',
-          score: '91%',
-          trained: '0 trainees',
-          rating: '5.0/5',
-          status: 'Accredited'
-        }))
-        setTrainers(prev => [...newTrainers, ...prev])
-      }
+      const newTrainers = validOnes.filter(r => r.role === 'Trainer').map(r => ({
+        name: r.name,
+        expertise: r.organization || 'Atmospheric Sciences',
+        score: '92%',
+        trained: '0 trainees',
+        rating: '5.0/5',
+        status: 'Accredited'
+      }))
+      const newTrainees = validOnes.filter(r => r.role === 'Trainee').map(r => ({
+        id: r.autoId,
+        name: r.name,
+        dept: r.organization || 'Meteorology Division',
+        enrolled: '1 Enrolled',
+        score: '80%',
+        status: 'Active'
+      }))
+
+      if (newTrainers.length > 0) setTrainers(prev => [...newTrainers, ...prev])
+      if (newTrainees.length > 0) setTrainees(prev => [...newTrainees, ...prev])
 
       setBulkSummary({
         successCount: validOnes.length,
@@ -583,16 +765,16 @@ export default function AdminDashboard({ onBack }) {
         failedRows: failedOnes
       })
       setBulkStage('result')
-      setActionSuccessMsg(`Bulk Onboarding Complete: ${validOnes.length} created, ${failedOnes.length} skipped.`)
+      setActionSuccessMsg(`Bulk Ingestion Complete: ${validOnes.length} users created (${newTrainers.length} Trainers, ${newTrainees.length} Trainees), ${failedOnes.length} skipped.`)
       setTimeout(() => setActionSuccessMsg(''), 5000)
     }, 1800)
   }
 
   const handleDownloadErrorReport = () => {
     if (!bulkSummary.failedRows.length) return
-    let csv = `Row Number,First Name,Last Name,Email,Employee ID,Failure Reason\n`
+    let csv = `Row Number,Role,Name,Email,Organization,Failure Reason\n`
     bulkSummary.failedRows.forEach(r => {
-      csv += `${r.rowNum},"${r.firstName}","${r.lastName}","${r.email}","${r.employeeId}","${r.reason}"\n`
+      csv += `${r.rowNum},"${r.role}","${r.name}","${r.email}","${r.organization}","${r.reason}"\n`
     })
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
@@ -604,142 +786,81 @@ export default function AdminDashboard({ onBack }) {
     document.body.removeChild(link)
   }
 
-  const startCreateTrainee = () => {
-    setGeneratedTraineeId(`TRN-${Math.floor(10000 + Math.random() * 90000)}`)
-    setGeneratedTempPassword(`IMD#${Math.floor(1000 + Math.random() * 9000)}!k`)
-    setTraineeFormErrors({})
-    setUserMgmtStep('form-trainee')
+  const handleSingleRoleChange = (role) => {
+    setSingleUserRole(role)
+    if (role === 'Trainer') {
+      setGeneratedSingleUserId(`TRR-${Math.floor(10000 + Math.random() * 90000)}`)
+    } else {
+      setGeneratedSingleUserId(`TRN-${Math.floor(10000 + Math.random() * 90000)}`)
+    }
   }
 
-  const startCreateTrainer = () => {
-    setGeneratedTrainerId(`TRR-${Math.floor(10000 + Math.random() * 90000)}`)
-    setGeneratedTempPassword(`IMD#${Math.floor(1000 + Math.random() * 9000)}!t`)
-    setTrainerFormErrors({})
-    setUserMgmtStep('form-trainer')
-  }
-
-  const handleCreateTraineeSubmit = (e) => {
+  const handleSingleUserSubmit = (e) => {
     e.preventDefault()
     const errors = {}
-    if (!traineeFormData.firstName.trim()) errors.firstName = 'First name is required'
-    if (!traineeFormData.lastName.trim()) errors.lastName = 'Last name is required'
-    if (!traineeFormData.email.trim()) {
+    if (!singleUserName.trim()) {
+      errors.name = 'Full name is required'
+    }
+    if (!singleUserEmail.trim()) {
       errors.email = 'Official email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(traineeFormData.email.trim())) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(singleUserEmail.trim())) {
       errors.email = 'Enter a valid institutional email (e.g. name@imd.gov.in)'
     }
-    if (!traineeFormData.employeeId.trim()) errors.employeeId = 'Employee / Staff ID is required'
-    if (!traineeFormData.dept.trim()) errors.dept = 'Department is required'
-    if (!traineeFormData.designation.trim()) errors.designation = 'Designation is required'
 
     if (Object.keys(errors).length > 0) {
-      setTraineeFormErrors(errors)
+      setSingleUserErrors(errors)
       return
     }
 
-    const fullName = `${traineeFormData.firstName.trim()} ${traineeFormData.lastName.trim()}`
-    const newTraineeEntry = {
-      id: generatedTraineeId,
-      name: fullName,
-      dept: traineeFormData.dept,
-      enrolled: '1 Enrolled',
-      score: '80%',
+    const trimmedName = singleUserName.trim()
+    const trimmedEmail = singleUserEmail.trim()
+    const trimmedOrg = singleUserOrg.trim() || 'Meteorology Division, IMD'
+    const autoId = generatedSingleUserId || (singleUserRole === 'Trainer' ? `TRR-${Math.floor(10000 + Math.random() * 90000)}` : `TRN-${Math.floor(10000 + Math.random() * 90000)}`)
+
+    if (singleUserRole === 'Trainer') {
+      const newTrainerEntry = {
+        name: trimmedName,
+        expertise: trimmedOrg,
+        score: '92%',
+        trained: '0 trainees',
+        rating: '5.0/5',
+        status: 'Accredited'
+      }
+      setTrainers(prev => [newTrainerEntry, ...prev])
+    } else {
+      const newTraineeEntry = {
+        id: autoId,
+        name: trimmedName,
+        dept: trimmedOrg,
+        enrolled: '1 Enrolled',
+        score: '80%',
+        status: 'Active'
+      }
+      setTrainees(prev => [newTraineeEntry, ...prev])
+    }
+
+    setCreatedUserResult({
+      name: trimmedName,
+      role: singleUserRole,
+      userId: autoId,
+      email: trimmedEmail,
+      tempPassword: generatedTempPassword,
+      organization: trimmedOrg,
       status: 'Active'
-    }
-    setTrainees([newTraineeEntry, ...trainees])
-
-    setCreatedUserResult({
-      name: fullName,
-      role: 'Trainee',
-      userId: generatedTraineeId,
-      email: traineeFormData.email.trim(),
-      tempPassword: generatedTempPassword,
-      status: 'Active',
-      dept: traineeFormData.dept,
-      designation: traineeFormData.designation
     })
     setUserMgmtStep('success')
-    setActionSuccessMsg(`Trainee account ${generatedTraineeId} created successfully!`)
-    setTimeout(() => setActionSuccessMsg(''), 4000)
-  }
-
-  const handleCreateTrainerSubmit = (e) => {
-    e.preventDefault()
-    const errors = {}
-    if (!trainerFormData.firstName.trim()) errors.firstName = 'First name is required'
-    if (!trainerFormData.lastName.trim()) errors.lastName = 'Last name is required'
-    if (!trainerFormData.email.trim()) {
-      errors.email = 'Official email is required'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trainerFormData.email.trim())) {
-      errors.email = 'Enter a valid institutional email (e.g. dr.name@imd.gov.in)'
-    }
-    if (!trainerFormData.employeeId.trim()) errors.employeeId = 'Employee / Staff ID is required'
-    if (!trainerFormData.dept.trim()) errors.dept = 'Department is required'
-    if (!trainerFormData.designation.trim()) errors.designation = 'Designation is required'
-
-    if (Object.keys(errors).length > 0) {
-      setTrainerFormErrors(errors)
-      return
-    }
-
-    const fullName = `${trainerFormData.firstName.trim()} ${trainerFormData.lastName.trim()}`
-    const newTrainerEntry = {
-      name: fullName,
-      expertise: trainerFormData.expertise,
-      score: '92%',
-      trained: '0 trainees',
-      rating: '5.0/5',
-      status: 'Accredited'
-    }
-    setTrainers([newTrainerEntry, ...trainers])
-
-    setCreatedUserResult({
-      name: fullName,
-      role: 'Trainer',
-      userId: generatedTrainerId,
-      email: trainerFormData.email.trim(),
-      tempPassword: generatedTempPassword,
-      status: 'Active',
-      dept: trainerFormData.dept,
-      designation: trainerFormData.designation
-    })
-    setUserMgmtStep('success')
-    setActionSuccessMsg(`Trainer account ${generatedTrainerId} created successfully!`)
-    setTimeout(() => setActionSuccessMsg(''), 4000)
+    setActionSuccessMsg(`${singleUserRole} account ${autoId} created successfully for ${trimmedName}!`)
+    setTimeout(() => setActionSuccessMsg(''), 4500)
   }
 
   const handleCreateAnother = () => {
-    setTraineeFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      mobile: '',
-      employeeId: '',
-      dept: 'Meteorology Division',
-      designation: 'Scientific Officer',
-      skillLevel: 'Intermediate',
-      areasOfInterest: 'Radar Analysis & Satellite Climatology',
-      learningGoals: 'Master numerical prediction modeling and Doppler radar interpretation'
-    })
-    setTrainerFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      mobile: '',
-      employeeId: '',
-      dept: 'Atmospheric Sciences Wing',
-      designation: 'Senior Faculty / Lead Trainer',
-      expertise: 'Weather Data Analysis & NWP',
-      coreCompetencies: 'WRF Modeling, Python for Earth Science, Doppler Radar',
-      experience: '8+ Years',
-      certifications: 'WMO Senior Instructor Certified, IMD Lead Fellow',
-      domains: 'Meteorology & Numerical Modeling',
-      availability: 'Full-Time (Mon-Fri)'
-    })
-    setTraineeFormErrors({})
-    setTrainerFormErrors({})
+    setSingleUserName('')
+    setSingleUserEmail('')
+    setSingleUserErrors({})
     setCreatedUserResult(null)
-    setUserMgmtStep('select')
+    setGeneratedSingleUserId(singleUserRole === 'Trainer' ? `TRR-${Math.floor(10000 + Math.random() * 90000)}` : `TRN-${Math.floor(10000 + Math.random() * 90000)}`)
+    setGeneratedTempPassword(`IMD#${Math.floor(1000 + Math.random() * 9000)}!x`)
+    setUserMgmtStep('form')
   }
 
   const openTrainerProfile = () => {
@@ -777,6 +898,71 @@ export default function AdminDashboard({ onBack }) {
               <line x1="18" y1="20" x2="18" y2="10" />
               <line x1="12" y1="20" x2="12" y2="4" />
               <line x1="6" y1="20" x2="6" y2="14" />
+            </svg>
+          )
+        }
+      ]
+    },
+    {
+      group: 'Personnel & Access',
+      items: [
+        {
+          id: 'Approvals',
+          label: 'Approvals',
+          badge: `${totalPendingCount} Pending`,
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" />
+            </svg>
+          )
+        },
+        {
+          id: 'User Management',
+          label: 'User Management',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <line x1="19" y1="8" x2="19" y2="14" />
+              <line x1="22" y1="11" x2="16" y2="11" />
+            </svg>
+          )
+        },
+        {
+          id: 'Trainees',
+          label: 'Trainees',
+          badge: '2.4k',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          )
+        },
+        {
+          id: 'Trainers',
+          label: 'Trainers',
+          badge: trainers.length,
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c3 3 9 3 12 0v-5" />
+            </svg>
+          )
+        },
+        {
+          id: 'Deactivate / Suspend User',
+          label: 'Deactivate / Suspend',
+          badge: 'Security',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <line x1="17" y1="8" x2="23" y2="14" />
+              <line x1="23" y1="8" x2="17" y2="14" />
             </svg>
           )
         }
@@ -828,47 +1014,6 @@ export default function AdminDashboard({ onBack }) {
               <circle cx="12" cy="12" r="2" />
             </svg>
           )
-        }
-      ]
-    },
-    {
-      group: 'Personnel & Faculty',
-      items: [
-        {
-          id: 'User Management',
-          label: 'User Management',
-          icon: (
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <line x1="19" y1="8" x2="19" y2="14" />
-              <line x1="22" y1="11" x2="16" y2="11" />
-            </svg>
-          )
-        },
-        {
-          id: 'Trainees',
-          label: 'Trainees',
-          badge: '2.4k',
-          icon: (
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-          )
-        },
-        {
-          id: 'Trainers',
-          label: 'Trainers',
-          badge: trainers.length,
-          icon: (
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-              <path d="M6 12v5c3 3 9 3 12 0v-5" />
-            </svg>
-          )
         },
         {
           id: 'Trainer Matching',
@@ -880,41 +1025,19 @@ export default function AdminDashboard({ onBack }) {
               <path d="M8 12h8" />
             </svg>
           )
-        },
-        {
-          id: 'Deactivate / Suspend User',
-          label: 'Deactivate / Suspend User',
-          badge: 'Security',
-          icon: (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <line x1="17" y1="8" x2="23" y2="14" />
-              <line x1="23" y1="8" x2="17" y2="14" />
-            </svg>
-          )
         }
       ]
     },
     {
-      group: 'Governance',
+      group: 'Administration & System',
       items: [
         {
-          id: 'Announcements',
-          label: 'Announcements',
+          id: 'Settings',
+          label: 'Settings',
           icon: (
             <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-          )
-        },
-        {
-          id: 'Feedback',
-          label: 'Feedback',
-          icon: (
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
             </svg>
           )
         },
@@ -931,12 +1054,21 @@ export default function AdminDashboard({ onBack }) {
           )
         },
         {
-          id: 'Settings',
-          label: 'Settings',
+          id: 'Announcements',
+          label: 'Announcements',
           icon: (
             <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          )
+        },
+        {
+          id: 'Feedback',
+          label: 'Feedback',
+          icon: (
+            <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
           )
         }
@@ -1939,40 +2071,7 @@ export default function AdminDashboard({ onBack }) {
                       </div>
                     </div>
 
-                    {/* Card 3: Quick Onboarding Shortcuts */}
-                    <div className="admin-usermgmt-hub-card">
-                      <div className="hub-card-icon-box" style={{ background: '#FEF3C7', color: '#92400E' }}>
-                        ⚡
-                      </div>
-                      <div className="hub-card-body">
-                        <span className="hub-card-kicker">PROVISIONING ACTIONS</span>
-                        <h3 className="hub-card-title">Onboard New Personnel</h3>
-                        <p className="hub-card-desc">
-                          Choose between individual manual account creation or fast batch ingestion with CSV/Excel templates.
-                        </p>
-                      </div>
-                      <div className="hub-card-footer" style={{ display: 'flex', gap: 10 }}>
-                        <button
-                          type="button"
-                          className="btn-admin-action secondary"
-                          style={{ flex: 1, justifyContent: 'center' }}
-                          onClick={() => {
-                            setUserMgmtSubTab('single')
-                            setUserMgmtStep('select')
-                          }}
-                        >
-                          + Single User
-                        </button>
-                        <button
-                          type="button"
-                          className="btn-admin-action primary"
-                          style={{ flex: 1, justifyContent: 'center', background: '#2F6B3C' }}
-                          onClick={() => setUserMgmtSubTab('bulk')}
-                        >
-                          📤 Bulk Import
-                        </button>
-                      </div>
-                    </div>
+
                   </div>
 
                   {/* Regional Node Workforce Breakdown */}
@@ -2261,266 +2360,167 @@ export default function AdminDashboard({ onBack }) {
                           <span>SINGLE ACCOUNT PROVISIONING</span> • Interactive Authorization Form
                         </div>
                         <h3 className="admin-panel-title">
-                          {userMgmtStep === 'select' && 'Select Role to Provision'}
-                          {userMgmtStep === 'form-trainee' && 'Create Trainee Account'}
-                          {userMgmtStep === 'form-trainer' && 'Create Faculty & Trainer Account'}
-                          {userMgmtStep === 'success' && 'Account Provisioning Complete'}
+                          {userMgmtStep === 'success' ? 'Account Provisioning Complete' : 'Create User Account'}
                         </h3>
                         <p className="admin-panel-subtitle">
-                          Create individual accounts with auto-generated secure IDs, random salted temporary passwords, and automatic welcome email dispatch.
+                          {userMgmtStep === 'success'
+                            ? 'Authorized profile and credentials have been provisioned in the CapacityConnect database.'
+                            : 'Enter the role, full name, email, and organization to provision credentials with auto-generated ID and temporary password.'}
                         </p>
                       </div>
-                      {userMgmtStep === 'select' ? (
-                        <button
-                          type="button"
-                          className="btn-admin-action secondary"
-                          onClick={() => setUserMgmtSubTab('directory')}
-                        >
-                          ← Back to User Management Hub
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn-admin-action secondary"
-                          onClick={() => {
-                            setUserMgmtStep('select')
-                            setTraineeFormErrors({})
-                            setTrainerFormErrors({})
-                          }}
-                        >
-                          ← Back to Role Selection
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        className="btn-admin-action secondary"
+                        onClick={() => {
+                          setUserMgmtSubTab('directory')
+                          setUserMgmtStep('form')
+                          setSingleUserErrors({})
+                        }}
+                      >
+                        ← Back to User Management Hub
+                      </button>
                     </div>
 
-                    {/* STEP 1: SELECT ROLE (2 Large Modern Cards) */}
-                    {userMgmtStep === 'select' && (
-                      <div className="admin-create-user-selection-grid">
-                        {/* Create Trainee Card */}
-                        <div className="admin-create-user-role-card">
-                          <div className="admin-create-user-role-icon-box trainee-theme">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                              <circle cx="9" cy="7" r="4" />
-                              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                            </svg>
-                          </div>
-                          <div className="admin-create-user-role-info">
-                            <span className="admin-create-user-role-tag trainee-tag">Learner &amp; Trainee</span>
-                            <h3 className="admin-create-user-role-title">Create Trainee</h3>
-                            <p className="admin-create-user-role-desc">
-                              Provision learner credentials with automated skill gap mapping, cohort assignment, and portal access.
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            className="btn-admin-action primary admin-create-user-role-btn"
-                            onClick={startCreateTrainee}
-                          >
-                            Create Trainee Profile →
-                          </button>
-                        </div>
-
-                        {/* Create Trainer Card */}
-                        <div className="admin-create-user-role-card">
-                          <div className="admin-create-user-role-icon-box trainer-theme">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                              <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                            </svg>
-                          </div>
-                          <div className="admin-create-user-role-info">
-                            <span className="admin-create-user-role-tag trainer-tag">Faculty &amp; Instructor</span>
-                            <h3 className="admin-create-user-role-title">Create Trainer</h3>
-                            <p className="admin-create-user-role-desc">
-                              Provision faculty credentials with domain matching, teaching syllabus, assessment tools, and learner analytics.
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            className="btn-admin-action primary admin-create-user-role-btn"
-                            onClick={startCreateTrainer}
-                          >
-                            Create Faculty Profile →
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* STEP 2A: TRAINEE FORM */}
-                    {userMgmtStep === 'form-trainee' && (
-                      <form className="admin-create-user-form" onSubmit={handleCreateTraineeSubmit}>
-                        <div className="admin-create-user-form-header">
-                          <div className="admin-create-user-form-badge trainee-tag">Trainee Account Provisioning</div>
-                          <h3 className="admin-create-user-form-title">Trainee Profile Information</h3>
-                          <p className="admin-create-user-form-sub">
-                            Enter institutional and learning details for the new trainee. Login credentials will be generated automatically.
-                          </p>
-                        </div>
-
-                        {/* Section 1: Personal Info */}
+                    {/* SINGLE USER FORM */}
+                    {userMgmtStep !== 'success' && (
+                      <form className="admin-create-user-form" onSubmit={handleSingleUserSubmit}>
+                        {/* Section 1: Role Selection */}
                         <div className="admin-create-user-section">
                           <div className="admin-create-user-section-title">
-                            <span className="section-num">01</span> Personal Information
+                            <span className="section-num">01</span> Select Account Role <span className="req-star">*</span>
                           </div>
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>First Name <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Rahul"
-                                value={traineeFormData.firstName}
-                                onChange={(e) => {
-                                  setTraineeFormData({ ...traineeFormData, firstName: e.target.value })
-                                  if (traineeFormErrors.firstName) setTraineeFormErrors({ ...traineeFormErrors, firstName: '' })
-                                }}
-                              />
-                              {traineeFormErrors.firstName && <span className="admin-create-user-error-text">{traineeFormErrors.firstName}</span>}
+                          <div className="admin-create-user-selection-grid" style={{ marginTop: 12 }}>
+                            {/* Trainer Role Option */}
+                            <div
+                              className={`admin-create-user-role-card ${singleUserRole === 'Trainer' ? 'role-selected' : ''}`}
+                              onClick={() => handleSingleRoleChange('Trainer')}
+                              style={{
+                                cursor: 'pointer',
+                                border: singleUserRole === 'Trainer' ? '2px solid #2F6B3C' : '1px solid #DCE6DF',
+                                background: singleUserRole === 'Trainer' ? 'rgba(47, 107, 60, 0.05)' : '#FFFFFF'
+                              }}
+                            >
+                              <div className="admin-create-user-role-icon-box trainer-theme">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                                  <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                                </svg>
+                              </div>
+                              <div className="admin-create-user-role-info">
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                  <span className="admin-create-user-role-tag trainer-tag">Faculty &amp; Instructor</span>
+                                  <input
+                                    type="radio"
+                                    name="singleUserRoleRadio"
+                                    checked={singleUserRole === 'Trainer'}
+                                    onChange={() => handleSingleRoleChange('Trainer')}
+                                    style={{ accentColor: '#2F6B3C', transform: 'scale(1.2)' }}
+                                  />
+                                </div>
+                                <h3 className="admin-create-user-role-title" style={{ marginTop: 4 }}>Trainer</h3>
+                                <p className="admin-create-user-role-desc">
+                                  Faculty account with instructor permissions, syllabus management, and assessment evaluations.
+                                </p>
+                              </div>
                             </div>
-                            <div className="admin-form-group">
-                              <label>Last Name <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Sharma"
-                                value={traineeFormData.lastName}
-                                onChange={(e) => {
-                                  setTraineeFormData({ ...traineeFormData, lastName: e.target.value })
-                                  if (traineeFormErrors.lastName) setTraineeFormErrors({ ...traineeFormErrors, lastName: '' })
-                                }}
-                              />
-                              {traineeFormErrors.lastName && <span className="admin-create-user-error-text">{traineeFormErrors.lastName}</span>}
-                            </div>
-                          </div>
 
+                            {/* Trainee Role Option */}
+                            <div
+                              className={`admin-create-user-role-card ${singleUserRole === 'Trainee' ? 'role-selected' : ''}`}
+                              onClick={() => handleSingleRoleChange('Trainee')}
+                              style={{
+                                cursor: 'pointer',
+                                border: singleUserRole === 'Trainee' ? '2px solid #2F6B3C' : '1px solid #DCE6DF',
+                                background: singleUserRole === 'Trainee' ? 'rgba(47, 107, 60, 0.05)' : '#FFFFFF'
+                              }}
+                            >
+                              <div className="admin-create-user-role-icon-box trainee-theme">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                  <circle cx="9" cy="7" r="4" />
+                                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                              </div>
+                              <div className="admin-create-user-role-info">
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                  <span className="admin-create-user-role-tag trainee-tag">Learner &amp; Officer</span>
+                                  <input
+                                    type="radio"
+                                    name="singleUserRoleRadio"
+                                    checked={singleUserRole === 'Trainee'}
+                                    onChange={() => handleSingleRoleChange('Trainee')}
+                                    style={{ accentColor: '#2F6B3C', transform: 'scale(1.2)' }}
+                                  />
+                                </div>
+                                <h3 className="admin-create-user-role-title" style={{ marginTop: 4 }}>Trainee</h3>
+                                <p className="admin-create-user-role-desc">
+                                  Learner account with course enrollment, competency tracking, and assessment submissions.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Section 2: Person's Information */}
+                        <div className="admin-create-user-section">
+                          <div className="admin-create-user-section-title">
+                            <span className="section-num">02</span> Person Information
+                          </div>
                           <div className="admin-create-user-grid-2col">
                             <div className="admin-form-group">
-                              <label>Official Email <span className="req-star">*</span></label>
+                              <label>Full Name of Person <span className="req-star">*</span></label>
+                              <input
+                                type="text"
+                                placeholder={singleUserRole === 'Trainer' ? 'e.g. Dr. Vikram Sharma' : 'e.g. Sneha Patel'}
+                                value={singleUserName}
+                                onChange={(e) => {
+                                  setSingleUserName(e.target.value)
+                                  if (singleUserErrors.name) setSingleUserErrors({ ...singleUserErrors, name: '' })
+                                }}
+                              />
+                              {singleUserErrors.name && <span className="admin-create-user-error-text">{singleUserErrors.name}</span>}
+                            </div>
+                            <div className="admin-form-group">
+                              <label>Official Email Address <span className="req-star">*</span></label>
                               <input
                                 type="email"
-                                placeholder="e.g. rahul.sharma@imd.gov.in"
-                                value={traineeFormData.email}
+                                placeholder={singleUserRole === 'Trainer' ? 'e.g. vikram.sharma@imd.gov.in' : 'e.g. sneha.patel@imd.gov.in'}
+                                value={singleUserEmail}
                                 onChange={(e) => {
-                                  setTraineeFormData({ ...traineeFormData, email: e.target.value })
-                                  if (traineeFormErrors.email) setTraineeFormErrors({ ...traineeFormErrors, email: '' })
+                                  setSingleUserEmail(e.target.value)
+                                  if (singleUserErrors.email) setSingleUserErrors({ ...singleUserErrors, email: '' })
                                 }}
                               />
-                              {traineeFormErrors.email && <span className="admin-create-user-error-text">{traineeFormErrors.email}</span>}
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Mobile Number</label>
-                              <input
-                                type="tel"
-                                placeholder="e.g. +91 98765 43210"
-                                value={traineeFormData.mobile}
-                                onChange={(e) => setTraineeFormData({ ...traineeFormData, mobile: e.target.value })}
-                              />
+                              {singleUserErrors.email && <span className="admin-create-user-error-text">{singleUserErrors.email}</span>}
                             </div>
                           </div>
-                        </div>
 
-                        {/* Section 2: Organization Info */}
-                        <div className="admin-create-user-section">
-                          <div className="admin-create-user-section-title">
-                            <span className="section-num">02</span> Organization Information
-                          </div>
-                          <div className="admin-create-user-grid-3col">
-                            <div className="admin-form-group">
-                              <label>Employee / Staff ID <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. EMP-48201"
-                                value={traineeFormData.employeeId}
-                                onChange={(e) => {
-                                  setTraineeFormData({ ...traineeFormData, employeeId: e.target.value })
-                                  if (traineeFormErrors.employeeId) setTraineeFormErrors({ ...traineeFormErrors, employeeId: '' })
-                                }}
-                              />
-                              {traineeFormErrors.employeeId && <span className="admin-create-user-error-text">{traineeFormErrors.employeeId}</span>}
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Department <span className="req-star">*</span></label>
-                              <select
-                                value={traineeFormData.dept}
-                                onChange={(e) => {
-                                  setTraineeFormData({ ...traineeFormData, dept: e.target.value })
-                                  if (traineeFormErrors.dept) setTraineeFormErrors({ ...traineeFormErrors, dept: '' })
-                                }}
-                              >
-                                <option>Meteorology Division</option>
-                                <option>Climatology Unit</option>
-                                <option>Remote Sensing Lab</option>
-                                <option>Hydrology Division</option>
-                                <option>Numerical Modeling Unit</option>
-                                <option>Ocean Science Wing</option>
-                                <option>Seismology &amp; Geophysics</option>
-                              </select>
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Designation <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Scientific Assistant"
-                                value={traineeFormData.designation}
-                                onChange={(e) => {
-                                  setTraineeFormData({ ...traineeFormData, designation: e.target.value })
-                                  if (traineeFormErrors.designation) setTraineeFormErrors({ ...traineeFormErrors, designation: '' })
-                                }}
-                              />
-                              {traineeFormErrors.designation && <span className="admin-create-user-error-text">{traineeFormErrors.designation}</span>}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Section 3: Learning Profile */}
-                        <div className="admin-create-user-section">
-                          <div className="admin-create-user-section-title">
-                            <span className="section-num">03</span> Learning Profile
-                          </div>
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>Current Skill Level</label>
-                              <select
-                                value={traineeFormData.skillLevel}
-                                onChange={(e) => setTraineeFormData({ ...traineeFormData, skillLevel: e.target.value })}
-                              >
-                                <option>Beginner (Foundation)</option>
-                                <option>Intermediate (Practitioner)</option>
-                                <option>Advanced (Specialist)</option>
-                              </select>
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Areas of Interest</label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Radar Meteorology, Satellite Analytics, GIS"
-                                value={traineeFormData.areasOfInterest}
-                                onChange={(e) => setTraineeFormData({ ...traineeFormData, areasOfInterest: e.target.value })}
-                              />
-                            </div>
-                          </div>
-                          <div className="admin-form-group">
-                            <label>Learning Goals</label>
+                          <div className="admin-form-group" style={{ marginTop: 8 }}>
+                            <label>Organization / Affiliation / Department</label>
                             <input
                               type="text"
-                              placeholder="e.g. Complete Numerical Weather Prediction certification within 6 months"
-                              value={traineeFormData.learningGoals}
-                              onChange={(e) => setTraineeFormData({ ...traineeFormData, learningGoals: e.target.value })}
+                              placeholder="e.g. Meteorology Division, IMD HQ New Delhi"
+                              value={singleUserOrg}
+                              onChange={(e) => setSingleUserOrg(e.target.value)}
                             />
+                            <small style={{ color: '#597363', marginTop: 4, display: 'block', fontSize: 12 }}>
+                              Institutional affiliation (e.g. IMD, IITM, NCMRWF, INCOIS, or state nodal center).
+                            </small>
                           </div>
                         </div>
 
-                        {/* Section 4: Generated Credentials */}
+                        {/* Section 3: Automated Credentials Preview */}
                         <div className="admin-create-user-section account-info-section">
                           <div className="admin-create-user-section-title">
-                            <span className="section-num">04</span> Automated Credentials &amp; Access
+                            <span className="section-num">03</span> Automated Credentials &amp; Access
                           </div>
                           <div className="admin-create-user-grid-3col">
                             <div className="admin-form-group">
-                              <label>Generated User ID</label>
+                              <label>Auto-Generated ID</label>
                               <div className="admin-create-user-readonly-box">
                                 <span className="readonly-icon">🆔</span>
-                                <code>{generatedTraineeId}</code>
+                                <code>{generatedSingleUserId}</code>
                                 <span className="readonly-badge">Auto Generated</span>
                               </div>
                             </div>
@@ -2544,12 +2544,12 @@ export default function AdminDashboard({ onBack }) {
                           </div>
                         </div>
 
-                        {/* Actions Row */}
+                        {/* Form Actions */}
                         <div className="admin-create-user-actions-row">
                           <button
                             type="button"
                             className="btn-admin-action secondary"
-                            onClick={() => setUserMgmtStep('select')}
+                            onClick={() => setUserMgmtSubTab('directory')}
                           >
                             Cancel
                           </button>
@@ -2557,274 +2557,22 @@ export default function AdminDashboard({ onBack }) {
                             type="submit"
                             className="btn-admin-action primary"
                           >
-                            Create Trainee Profile ✓
+                            Create {singleUserRole} Account ✓
                           </button>
                         </div>
                       </form>
                     )}
 
-                    {/* STEP 2B: TRAINER FORM */}
-                    {userMgmtStep === 'form-trainer' && (
-                      <form className="admin-create-user-form" onSubmit={handleCreateTrainerSubmit}>
-                        <div className="admin-create-user-form-header">
-                          <div className="admin-create-user-form-badge trainer-tag">Faculty Account Provisioning</div>
-                          <h3 className="admin-create-user-form-title">Trainer Profile Information</h3>
-                          <p className="admin-create-user-form-sub">
-                            Enter institutional and faculty expertise details for the new trainer. Login credentials will be generated automatically.
-                          </p>
-                        </div>
-
-                        {/* Section 1: Personal Info */}
-                        <div className="admin-create-user-section">
-                          <div className="admin-create-user-section-title">
-                            <span className="section-num">01</span> Personal Information
-                          </div>
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>First Name <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Priya"
-                                value={trainerFormData.firstName}
-                                onChange={(e) => {
-                                  setTrainerFormData({ ...trainerFormData, firstName: e.target.value })
-                                  if (trainerFormErrors.firstName) setTrainerFormErrors({ ...trainerFormErrors, firstName: '' })
-                                }}
-                              />
-                              {trainerFormErrors.firstName && <span className="admin-create-user-error-text">{trainerFormErrors.firstName}</span>}
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Last Name <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Nair"
-                                value={trainerFormData.lastName}
-                                onChange={(e) => {
-                                  setTrainerFormData({ ...trainerFormData, lastName: e.target.value })
-                                  if (trainerFormErrors.lastName) setTrainerFormErrors({ ...trainerFormErrors, lastName: '' })
-                                }}
-                              />
-                              {trainerFormErrors.lastName && <span className="admin-create-user-error-text">{trainerFormErrors.lastName}</span>}
-                            </div>
-                          </div>
-
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>Official Email <span className="req-star">*</span></label>
-                              <input
-                                type="email"
-                                placeholder="e.g. dr.priya.nair@imd.gov.in"
-                                value={trainerFormData.email}
-                                onChange={(e) => {
-                                  setTrainerFormData({ ...trainerFormData, email: e.target.value })
-                                  if (trainerFormErrors.email) setTrainerFormErrors({ ...trainerFormErrors, email: '' })
-                                }}
-                              />
-                              {trainerFormErrors.email && <span className="admin-create-user-error-text">{trainerFormErrors.email}</span>}
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Mobile Number</label>
-                              <input
-                                type="tel"
-                                placeholder="e.g. +91 98765 12345"
-                                value={trainerFormData.mobile}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, mobile: e.target.value })}
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Section 2: Organization Info */}
-                        <div className="admin-create-user-section">
-                          <div className="admin-create-user-section-title">
-                            <span className="section-num">02</span> Organization Information
-                          </div>
-                          <div className="admin-create-user-grid-3col">
-                            <div className="admin-form-group">
-                              <label>Employee / Staff ID <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. FAC-90214"
-                                value={trainerFormData.employeeId}
-                                onChange={(e) => {
-                                  setTrainerFormData({ ...trainerFormData, employeeId: e.target.value })
-                                  if (trainerFormErrors.employeeId) setTrainerFormErrors({ ...trainerFormErrors, employeeId: '' })
-                                }}
-                              />
-                              {trainerFormErrors.employeeId && <span className="admin-create-user-error-text">{trainerFormErrors.employeeId}</span>}
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Department <span className="req-star">*</span></label>
-                              <select
-                                value={trainerFormData.dept}
-                                onChange={(e) => {
-                                  setTrainerFormData({ ...trainerFormData, dept: e.target.value })
-                                  if (trainerFormErrors.dept) setTrainerFormErrors({ ...trainerFormErrors, dept: '' })
-                                }}
-                              >
-                                <option>Atmospheric Sciences Wing</option>
-                                <option>Meteorology Division</option>
-                                <option>Remote Sensing &amp; Satellite Center</option>
-                                <option>Numerical Modeling &amp; HPC Unit</option>
-                                <option>Hydrological Research Wing</option>
-                                <option>Climate Research &amp; Services (CRS)</option>
-                              </select>
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Designation <span className="req-star">*</span></label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Senior Faculty / Scientist-F"
-                                value={trainerFormData.designation}
-                                onChange={(e) => {
-                                  setTrainerFormData({ ...trainerFormData, designation: e.target.value })
-                                  if (trainerFormErrors.designation) setTrainerFormErrors({ ...trainerFormErrors, designation: '' })
-                                }}
-                              />
-                              {trainerFormErrors.designation && <span className="admin-create-user-error-text">{trainerFormErrors.designation}</span>}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Section 3: Professional Profile */}
-                        <div className="admin-create-user-section">
-                          <div className="admin-create-user-section-title">
-                            <span className="section-num">03</span> Professional Profile
-                          </div>
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>Areas of Expertise</label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Weather Data Analysis &amp; NWP, Radar Climatology"
-                                value={trainerFormData.expertise}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, expertise: e.target.value })}
-                              />
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Core Competencies</label>
-                              <input
-                                type="text"
-                                placeholder="e.g. WRF Modeling, Python for Earth Science, Doppler Radar"
-                                value={trainerFormData.coreCompetencies}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, coreCompetencies: e.target.value })}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>Years of Experience</label>
-                              <select
-                                value={trainerFormData.experience}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, experience: e.target.value })}
-                              >
-                                <option>2 - 4 Years</option>
-                                <option>5 - 7 Years</option>
-                                <option>8+ Years</option>
-                                <option>12+ Years</option>
-                                <option>15+ Years (Senior Fellow)</option>
-                              </select>
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Certifications</label>
-                              <input
-                                type="text"
-                                placeholder="e.g. WMO Class I Certified, IMD Lead Fellow"
-                                value={trainerFormData.certifications}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, certifications: e.target.value })}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="admin-create-user-grid-2col">
-                            <div className="admin-form-group">
-                              <label>Training Domains</label>
-                              <input
-                                type="text"
-                                placeholder="e.g. Meteorology &amp; Numerical Modeling"
-                                value={trainerFormData.domains}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, domains: e.target.value })}
-                              />
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Availability</label>
-                              <select
-                                value={trainerFormData.availability}
-                                onChange={(e) => setTrainerFormData({ ...trainerFormData, availability: e.target.value })}
-                              >
-                                <option>Full-Time (Mon-Fri)</option>
-                                <option>Part-Time / Visiting</option>
-                                <option>Weekend Cohorts</option>
-                                <option>On-Demand Guest Lectures</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Section 4: Automated Credentials */}
-                        <div className="admin-create-user-section account-info-section">
-                          <div className="admin-create-user-section-title">
-                            <span className="section-num">04</span> Automated Credentials &amp; Access
-                          </div>
-                          <div className="admin-create-user-grid-3col">
-                            <div className="admin-form-group">
-                              <label>Generated User ID</label>
-                              <div className="admin-create-user-readonly-box">
-                                <span className="readonly-icon">🆔</span>
-                                <code>{generatedTrainerId}</code>
-                                <span className="readonly-badge">Auto Generated</span>
-                              </div>
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Temporary Password</label>
-                              <div className="admin-create-user-readonly-box">
-                                <span className="readonly-icon">🔒</span>
-                                <code>{generatedTempPassword}</code>
-                                <span className="readonly-badge">Salted</span>
-                              </div>
-                            </div>
-                            <div className="admin-form-group">
-                              <label>Account Status</label>
-                              <div className="admin-create-user-readonly-box">
-                                <span className="admin-status-pill excellent" style={{ margin: 0 }}>
-                                  ● Active
-                                </span>
-                                <small style={{ color: '#597363', marginLeft: 'auto' }}>Faculty Portal Access</small>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="admin-create-user-actions-row">
-                          <button
-                            type="button"
-                            className="btn-admin-action secondary"
-                            onClick={() => setUserMgmtStep('select')}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            className="btn-admin-action primary"
-                          >
-                            Create Faculty Profile ✓
-                          </button>
-                        </div>
-                      </form>
-                    )}
-
-                    {/* STEP 3: SUCCESS CONFIRMATION */}
+                    {/* SUCCESS CONFIRMATION SCREEN */}
                     {userMgmtStep === 'success' && createdUserResult && (
                       <div className="admin-create-user-success-wrap">
                         <div className="admin-create-user-success-card">
                           <div className="admin-create-user-success-badge-icon">
                             ✓
                           </div>
-                          <h3 className="admin-create-user-success-title">User Created Successfully</h3>
+                          <h3 className="admin-create-user-success-title">Account Created Successfully</h3>
                           <p className="admin-create-user-success-sub">
-                            Authorized profile and credentials have been provisioned in the CapacityConnect database.
+                            The new {createdUserResult.role.toLowerCase()} profile has been provisioned and login credentials generated.
                           </p>
 
                           {/* Credentials / Details Summary Table */}
@@ -2889,8 +2637,8 @@ export default function AdminDashboard({ onBack }) {
                               </div>
                             </div>
                             <div className="admin-create-user-summary-row">
-                              <span className="summary-label">Department / Unit</span>
-                              <span className="summary-value">{createdUserResult.dept}</span>
+                              <span className="summary-label">Organization / Affiliation</span>
+                              <span className="summary-value">{createdUserResult.organization}</span>
                             </div>
                             <div className="admin-create-user-summary-row">
                               <span className="summary-label">Account Status</span>
@@ -2905,7 +2653,7 @@ export default function AdminDashboard({ onBack }) {
                             <span className="email-notice-icon">✉️</span>
                             <div className="email-notice-text">
                               <strong>Login credentials dispatched</strong>
-                              <p>Login credentials have been sent to the user's registered email ({createdUserResult.email}). The user will be prompted to reset their temporary password upon initial authentication.</p>
+                              <p>Welcome credentials have been routed to <code>{createdUserResult.email}</code>. The user will be required to change their temporary password upon initial sign-in.</p>
                             </div>
                           </div>
 
@@ -2915,14 +2663,11 @@ export default function AdminDashboard({ onBack }) {
                               type="button"
                               className="btn-admin-action secondary"
                               onClick={() => {
-                                if (createdUserResult.role === 'Trainer') {
-                                  openTrainerProfile()
-                                } else {
-                                  setActiveTab('Trainees')
-                                }
+                                setUserMgmtSubTab('directory')
+                                setUserMgmtStep('form')
                               }}
                             >
-                              View Profile →
+                              ← Back to User Directory
                             </button>
                             <button
                               type="button"
@@ -2990,9 +2735,9 @@ export default function AdminDashboard({ onBack }) {
                         <div className="template-box-left">
                           <span className="template-icon">📑</span>
                           <div>
-                            <strong className="template-title">Official Onboarding Schema Templates</strong>
+                            <strong className="template-title">Official User Ingestion Template</strong>
                             <p className="template-desc">
-                              Pre-configured CSV and Excel templates with MoES/IMD data headers, validation constraints, and sample data.
+                              Pre-configured CSV and Excel templates with columns: <strong>Role</strong> (Trainer/Trainee), <strong>Name</strong>, <strong>Email</strong>, and <strong>Organization</strong>.
                             </p>
                           </div>
                         </div>
@@ -3000,14 +2745,14 @@ export default function AdminDashboard({ onBack }) {
                           <button
                             type="button"
                             className="btn-admin-action secondary"
-                            onClick={() => handleDownloadTemplate(bulkImportRole, 'csv')}
+                            onClick={() => handleDownloadTemplate('csv')}
                           >
                             📥 Download CSV Template
                           </button>
                           <button
                             type="button"
                             className="btn-admin-action secondary"
-                            onClick={() => handleDownloadTemplate(bulkImportRole, 'xlsx')}
+                            onClick={() => handleDownloadTemplate('xlsx')}
                           >
                             📥 Excel (.xlsx)
                           </button>
@@ -3018,33 +2763,8 @@ export default function AdminDashboard({ onBack }) {
                             onClick={handleLoadDemoCsv}
                             title="Instant 1-Click evaluation test"
                           >
-                            ✨ Load Demo Batch (10 Trainers)
+                            ✨ Load Demo Batch (10 Users)
                           </button>
-                        </div>
-                      </div>
-
-                      {/* Target Role Selector */}
-                      <div className="admin-bulk-role-selector">
-                        <label className="bulk-label">Target Role for Ingestion:</label>
-                        <div className="bulk-role-options">
-                          <label className={`bulk-role-pill ${bulkImportRole === 'Trainer' ? 'active' : ''}`}>
-                            <input
-                              type="radio"
-                              name="bulkRole"
-                              checked={bulkImportRole === 'Trainer'}
-                              onChange={() => setBulkImportRole('Trainer')}
-                            />
-                            <span>👨‍🏫 Faculty &amp; Instructors (TRR-XXXXX)</span>
-                          </label>
-                          <label className={`bulk-role-pill ${bulkImportRole === 'Trainee' ? 'active' : ''}`}>
-                            <input
-                              type="radio"
-                              name="bulkRole"
-                              checked={bulkImportRole === 'Trainee'}
-                              onChange={() => setBulkImportRole('Trainee')}
-                            />
-                            <span>🎓 Trainees &amp; Learners (TRN-XXXXX)</span>
-                          </label>
                         </div>
                       </div>
 
@@ -3070,7 +2790,7 @@ export default function AdminDashboard({ onBack }) {
                         </div>
                         <h4 className="dropzone-title">Drag &amp; Drop your CSV or Excel Spreadsheet</h4>
                         <p className="dropzone-subtitle">
-                          Automatic schema verification, duplicate detection, and instant client-side preview.
+                          Supported format: Role, Name, Email, Organization. Auto ID generation and validation will run instantly.
                         </p>
                         <div className="dropzone-pills">
                           <span>.CSV</span>
@@ -3098,7 +2818,7 @@ export default function AdminDashboard({ onBack }) {
                         <div>
                           <div className="admin-bulk-file-pill">
                             <span>📄 File: <strong>{bulkFile?.name}</strong> ({bulkFile?.size})</span>
-                            <span className="role-tag">{bulkImportRole} Track</span>
+                            <span className="role-tag">Multi-Role Batch Ingestion</span>
                           </div>
                           <h3 className="admin-panel-title" style={{ marginTop: 8 }}>Client-Side Validation &amp; Ingestion Preview</h3>
                           <p className="admin-panel-subtitle">
@@ -3149,32 +2869,28 @@ export default function AdminDashboard({ onBack }) {
                         <table className="admin-bulk-preview-table">
                           <thead>
                             <tr>
-                              <th style={{ width: '5%' }}># Row</th>
-                              <th style={{ width: '15%' }}>Staff Name</th>
-                              <th style={{ width: '16%' }}>Official Email</th>
-                              <th style={{ width: '9%' }}>Staff ID</th>
-                              <th style={{ width: '14%' }}>Department</th>
-                              <th style={{ width: '12%' }}>Designation</th>
-                              <th style={{ width: '10%' }}>Generated ID</th>
-                              <th style={{ width: '9%' }}>Auto Password</th>
-                              <th style={{ width: '10%' }}>Validation Status</th>
+                              <th style={{ width: '6%' }}># Row</th>
+                              <th style={{ width: '12%' }}>Role</th>
+                              <th style={{ width: '20%' }}>Full Name</th>
+                              <th style={{ width: '22%' }}>Official Email</th>
+                              <th style={{ width: '18%' }}>Organization / Affiliation</th>
+                              <th style={{ width: '11%' }}>Generated ID</th>
+                              <th style={{ width: '11%' }}>Auto Password</th>
+                              <th style={{ width: '12%' }}>Validation Status</th>
                             </tr>
                           </thead>
                           <tbody>
                             {bulkRows.map((row, idx) => (
                               <tr key={idx} className={`preview-row-${row.status}`}>
                                 <td><strong className="bulk-row-num">#{row.rowNum}</strong></td>
-                                <td><strong className="bulk-user-name">{row.firstName} {row.lastName}</strong></td>
-                                <td><span className="admin-email-text">{row.email}</span></td>
                                 <td>
-                                  {row.employeeId ? (
-                                    <code className="bulk-staff-badge">{row.employeeId}</code>
-                                  ) : (
-                                    <em style={{ color: '#DC2626', fontSize: 12 }}>Missing</em>
-                                  )}
+                                  <span className={`admin-create-user-role-pill ${row.role === 'Trainer' ? 'trainer' : 'trainee'}`}>
+                                    {row.role}
+                                  </span>
                                 </td>
-                                <td><span className="bulk-cell-text">{row.dept}</span></td>
-                                <td><span className="bulk-cell-sub">{row.designation}</span></td>
+                                <td><strong className="bulk-user-name">{row.name}</strong></td>
+                                <td><span className="admin-email-text">{row.email || <em style={{ color: '#DC2626' }}>Missing</em>}</span></td>
+                                <td><span className="bulk-cell-text">{row.organization}</span></td>
                                 <td><code className="admin-id-badge" style={{ whiteSpace: 'nowrap' }}>{row.autoId}</code></td>
                                 <td><code className="bulk-pwd-badge">{row.tempPwd}</code></td>
                                 <td>
@@ -3214,15 +2930,15 @@ export default function AdminDashboard({ onBack }) {
                       <div className="admin-bulk-stage-log-list">
                         <div className={`log-item ${bulkProgress >= 30 ? 'done' : 'active'}`}>
                           <span>{bulkProgress >= 30 ? '✔' : '⏳'}</span>
-                          <span>Row-by-row validation &amp; MoES data schema normalization</span>
+                          <span>Schema normalization for Role, Name, Email, and Organization</span>
                         </div>
                         <div className={`log-item ${bulkProgress >= 70 ? 'done' : bulkProgress >= 30 ? 'active' : ''}`}>
                           <span>{bulkProgress >= 70 ? '✔' : '⏳'}</span>
-                          <span>Automated TRR-XXXXX ID allocation &amp; salted bcrypt credential hashing</span>
+                          <span>Automated TRR/TRN ID allocation &amp; salted bcrypt credential hashing</span>
                         </div>
                         <div className={`log-item ${bulkProgress >= 100 ? 'done' : bulkProgress >= 70 ? 'active' : ''}`}>
                           <span>{bulkProgress >= 100 ? '✔' : '⏳'}</span>
-                          <span>Asynchronous SMTP welcome email dispatch with one-time reset tokens</span>
+                          <span>Asynchronous SMTP welcome email dispatch with initial credentials</span>
                         </div>
                       </div>
                     </div>
@@ -3268,18 +2984,24 @@ export default function AdminDashboard({ onBack }) {
                             <table className="admin-bulk-preview-table">
                               <thead>
                                 <tr>
-                                  <th style={{ width: '10%' }}>Row #</th>
-                                  <th style={{ width: '25%' }}>Staff Name</th>
-                                  <th style={{ width: '25%' }}>Email Address</th>
-                                  <th style={{ width: '40%' }}>Identified Validation Issue</th>
+                                  <th style={{ width: '8%' }}>Row #</th>
+                                  <th style={{ width: '14%' }}>Role</th>
+                                  <th style={{ width: '22%' }}>Full Name</th>
+                                  <th style={{ width: '22%' }}>Email Address</th>
+                                  <th style={{ width: '34%' }}>Identified Validation Issue</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {bulkSummary.failedRows.map((row, idx) => (
                                   <tr key={idx} className="preview-row-invalid">
                                     <td><strong className="bulk-row-num">#{row.rowNum}</strong></td>
-                                    <td><strong>{row.firstName} {row.lastName}</strong></td>
-                                    <td><span className="admin-email-text">{row.email}</span></td>
+                                    <td>
+                                      <span className={`admin-create-user-role-pill ${row.role === 'Trainer' ? 'trainer' : 'trainee'}`}>
+                                        {row.role}
+                                      </span>
+                                    </td>
+                                    <td><strong>{row.name}</strong></td>
+                                    <td><span className="admin-email-text">{row.email || 'None'}</span></td>
                                     <td><span className="admin-status-pill bad">✕ {row.reason}</span></td>
                                   </tr>
                                 ))}
@@ -4643,6 +4365,534 @@ export default function AdminDashboard({ onBack }) {
             </div>
           )}
 
+          {/* TAB: APPROVALS (SEPARATE TRAINER & TRAINEE PORTALS) */}
+          {activeTab === 'Approvals' && (
+            <div className="admin-card-panel admin-approvals-main-view">
+              {/* Header & KPI Summary Banner */}
+              <div className="admin-approvals-header">
+                <div className="admin-approvals-title-wrap">
+                  <div className="admin-approvals-badge-pill">
+                    <span className="live-pulse-dot" />
+                    <span>MoES Step 1 Onboarding Gateway</span>
+                  </div>
+                  <h2 className="admin-approvals-title">Registration &amp; Access Approvals</h2>
+                  <p className="admin-approvals-subtitle">
+                    Review initial access requests (Name, Email, Role, Organization / Affiliation) submitted by applicants before granting portal account creation.
+                  </p>
+                </div>
+                <div className="admin-approvals-kpi-grid">
+                  <div className="admin-app-kpi-card highlight-trainer">
+                    <div className="kpi-icon-bubble">🎓</div>
+                    <div className="kpi-data-col">
+                      <span className="kpi-num">{pendingTrainerCount}</span>
+                      <span className="kpi-lbl">Pending Trainers</span>
+                      <small className="kpi-subtag">Faculty Clearance</small>
+                    </div>
+                  </div>
+                  <div className="admin-app-kpi-card highlight-trainee">
+                    <div className="kpi-icon-bubble">📚</div>
+                    <div className="kpi-data-col">
+                      <span className="kpi-num">{pendingTraineeCount}</span>
+                      <span className="kpi-lbl">Pending Trainees</span>
+                      <small className="kpi-subtag">Learner Clearance</small>
+                    </div>
+                  </div>
+                  <div className="admin-app-kpi-card">
+                    <div className="kpi-icon-bubble">✅</div>
+                    <div className="kpi-data-col">
+                      <span className="kpi-num">
+                        {trainerApprovals.filter(t => t.status === 'Approved').length + traineeApprovals.filter(t => t.status === 'Approved').length}
+                      </span>
+                      <span className="kpi-lbl">Total Approved</span>
+                      <small className="kpi-subtag">Cleared for Account Creation</small>
+                    </div>
+                  </div>
+                  <div className="admin-app-kpi-card">
+                    <div className="kpi-icon-bubble">⏱️</div>
+                    <div className="kpi-data-col">
+                      <span className="kpi-num">2 Days</span>
+                      <span className="kpi-lbl">Standard SLA</span>
+                      <small className="kpi-subtag">Up to 2 working days</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Sub-Tab Navigation Bar */}
+              <div className="admin-approvals-nav-tabs">
+                <button
+                  type="button"
+                  className={`admin-app-tab-btn ${approvalSubTab === 'trainers' ? 'active' : ''}`}
+                  onClick={() => {
+                    setApprovalSubTab('trainers')
+                    setSelectedApprovalIds([])
+                  }}
+                >
+                  <span className="tab-icon">🎓</span>
+                  <span className="tab-title">Trainer Approvals</span>
+                  {pendingTrainerCount > 0 ? (
+                    <span className="admin-app-badge-counter alert">{pendingTrainerCount} Pending</span>
+                  ) : (
+                    <span className="admin-app-badge-counter clean">All Clear</span>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  className={`admin-app-tab-btn ${approvalSubTab === 'trainees' ? 'active' : ''}`}
+                  onClick={() => {
+                    setApprovalSubTab('trainees')
+                    setSelectedApprovalIds([])
+                  }}
+                >
+                  <span className="tab-icon">📚</span>
+                  <span className="tab-title">Trainee Approvals</span>
+                  {pendingTraineeCount > 0 ? (
+                    <span className="admin-app-badge-counter alert">{pendingTraineeCount} Pending</span>
+                  ) : (
+                    <span className="admin-app-badge-counter clean">All Clear</span>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  className={`admin-app-tab-btn ${approvalSubTab === 'audit' ? 'active' : ''}`}
+                  onClick={() => {
+                    setApprovalSubTab('audit')
+                    setSelectedApprovalIds([])
+                  }}
+                >
+                  <span className="tab-icon">📋</span>
+                  <span className="tab-title">Decision Audit Log</span>
+                  <span className="admin-app-badge-counter neutral">
+                    {trainerApprovals.filter(t => t.status !== 'Pending').length + traineeApprovals.filter(t => t.status !== 'Pending').length} Records
+                  </span>
+                </button>
+              </div>
+
+              {/* Toolbar Filters & Batch Operations */}
+              <div className="admin-approvals-toolbar">
+                <div className="toolbar-search-box">
+                  <span className="search-icon">🔍</span>
+                  <input
+                    type="text"
+                    placeholder={`Search by Name, Email, Token ID, Organization...`}
+                    value={approvalSearchQuery}
+                    onChange={(e) => setApprovalSearchQuery(e.target.value)}
+                  />
+                  {approvalSearchQuery && (
+                    <button type="button" className="btn-clear-search" onClick={() => setApprovalSearchQuery('')}>
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                <div className="toolbar-filters-group">
+                  <select
+                    value={approvalStatusFilter}
+                    onChange={(e) => setApprovalStatusFilter(e.target.value)}
+                    className="admin-select-filter"
+                  >
+                    <option value="All">All Statuses</option>
+                    <option value="Pending">Waiting for Approval</option>
+                    <option value="Approved">Approved &amp; Cleared</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+
+                  {selectedApprovalIds.length > 0 && (
+                    <div className="batch-actions-wrap">
+                      <button
+                        type="button"
+                        className="btn-batch-approve"
+                        onClick={handleBatchApprove}
+                      >
+                        ✓ Batch Approve ({selectedApprovalIds.length})
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-batch-clear"
+                        onClick={() => setSelectedApprovalIds([])}
+                      >
+                        Deselect
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* SUB-VIEW 1: TRAINER APPROVALS */}
+              {approvalSubTab === 'trainers' && (
+                <div className="admin-approvals-list-container">
+                  {(() => {
+                    const filteredTrainers = trainerApprovals.filter(item => {
+                      const matchSearch = !approvalSearchQuery ||
+                        item.name.toLowerCase().includes(approvalSearchQuery.toLowerCase()) ||
+                        item.id.toLowerCase().includes(approvalSearchQuery.toLowerCase()) ||
+                        item.email.toLowerCase().includes(approvalSearchQuery.toLowerCase()) ||
+                        (item.organization && item.organization.toLowerCase().includes(approvalSearchQuery.toLowerCase()))
+                      const matchStatus = approvalStatusFilter === 'All' || item.status === approvalStatusFilter
+                      return matchSearch && matchStatus
+                    })
+
+                    if (filteredTrainers.length === 0) {
+                      return (
+                        <div className="admin-approvals-empty-state">
+                          <div className="empty-icon">🎓</div>
+                          <h3>No Trainer Requests Found</h3>
+                          <p>No faculty access requests match your search or filter criteria.</p>
+                          <button
+                            type="button"
+                            className="btn-admin-action secondary"
+                            onClick={() => {
+                              setApprovalSearchQuery('')
+                              setApprovalStatusFilter('All')
+                            }}
+                          >
+                            Reset Filters
+                          </button>
+                        </div>
+                      )
+                    }
+
+                    return (
+                      <div className="admin-approvals-cards-grid">
+                        {filteredTrainers.map((item) => {
+                          const isSelected = selectedApprovalIds.includes(item.id)
+                          const isPending = item.status === 'Pending'
+
+                          return (
+                            <div
+                              key={item.id}
+                              className={`admin-approval-card ${isSelected ? 'selected' : ''} ${item.status.toLowerCase()}`}
+                            >
+                              {/* Card Header with Token & Status */}
+                              <div className="card-top-row">
+                                <div className="card-token-select">
+                                  {isPending && (
+                                    <input
+                                      type="checkbox"
+                                      className="app-card-checkbox"
+                                      checked={isSelected}
+                                      onChange={() => handleToggleSelectId(item.id)}
+                                    />
+                                  )}
+                                  <span className="token-pill">
+                                    <code>{item.id}</code>
+                                  </span>
+                                  <span className="role-pill trainer">Trainer</span>
+                                </div>
+                                <div className="card-status-badges">
+                                  <span className={`status-pill ${item.status.toLowerCase()}`}>
+                                    {item.status === 'Pending' && '⏳ Waiting for Approval'}
+                                    {item.status === 'Approved' && '✅ Approved'}
+                                    {item.status === 'Rejected' && '❌ Rejected'}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Trainer Profile Main Info */}
+                              <div className="card-body-meta">
+                                <div className="user-avatar-lead trainer">
+                                  {item.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                                </div>
+                                <div className="user-info-col">
+                                  <h4 className="user-name">{item.name}</h4>
+                                  <div className="user-designation" style={{ color: '#496653' }}>
+                                    ✉️ {item.email}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Step 1 Collected Details: Organization & SLA */}
+                              <div className="card-details-grid" style={{ gridTemplateColumns: '1fr' }}>
+                                <div className="detail-item">
+                                  <span className="detail-label">Organization / Affiliation:</span>
+                                  <span className="detail-val" style={{ fontSize: 13, color: '#11281A', fontWeight: 700 }}>
+                                    🏛️ {item.organization}
+                                  </span>
+                                </div>
+                                <div className="detail-item" style={{ marginTop: 4 }}>
+                                  <span className="detail-label">Request Submitted &amp; SLA:</span>
+                                  <span className="detail-val" style={{ color: '#496653' }}>
+                                    📅 {item.submissionDate} • ⏱️ <em>{item.slaTime}</em>
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Rejection or Approval Memo Info */}
+                              {item.status === 'Approved' && item.approvalMemo && (
+                                <div className="card-memo-banner approved">
+                                  <span>📜 <strong>Approval Clearance Memo:</strong> {item.approvalMemo} (Step 2 Unlocked)</span>
+                                </div>
+                              )}
+                              {item.status === 'Rejected' && item.rejectionReason && (
+                                <div className="card-memo-banner rejected">
+                                  <span>⚠️ <strong>Reason:</strong> {item.rejectionReason}</span>
+                                </div>
+                              )}
+
+                              {/* Card Action Buttons */}
+                              {isPending && (
+                                <div className="card-actions-row">
+                                  <button
+                                    type="button"
+                                    className="btn-action-approve"
+                                    style={{ flex: 1 }}
+                                    onClick={() => handleApproveRequest(item)}
+                                  >
+                                    ✓ Approve Trainer
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn-action-reject"
+                                    onClick={() => handleInitiateReject(item)}
+                                  >
+                                    ✕ Reject
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  })()}
+                </div>
+              )}
+
+              {/* SUB-VIEW 2: TRAINEE APPROVALS */}
+              {approvalSubTab === 'trainees' && (
+                <div className="admin-approvals-list-container">
+                  {(() => {
+                    const filteredTrainees = traineeApprovals.filter(item => {
+                      const matchSearch = !approvalSearchQuery ||
+                        item.name.toLowerCase().includes(approvalSearchQuery.toLowerCase()) ||
+                        item.id.toLowerCase().includes(approvalSearchQuery.toLowerCase()) ||
+                        item.email.toLowerCase().includes(approvalSearchQuery.toLowerCase()) ||
+                        (item.organization && item.organization.toLowerCase().includes(approvalSearchQuery.toLowerCase()))
+                      const matchStatus = approvalStatusFilter === 'All' || item.status === approvalStatusFilter
+                      return matchSearch && matchStatus
+                    })
+
+                    if (filteredTrainees.length === 0) {
+                      return (
+                        <div className="admin-approvals-empty-state">
+                          <div className="empty-icon">📚</div>
+                          <h3>No Trainee Requests Found</h3>
+                          <p>No learner access requests match your search or filter criteria.</p>
+                          <button
+                            type="button"
+                            className="btn-admin-action secondary"
+                            onClick={() => {
+                              setApprovalSearchQuery('')
+                              setApprovalStatusFilter('All')
+                            }}
+                          >
+                            Reset Filters
+                          </button>
+                        </div>
+                      )
+                    }
+
+                    return (
+                      <div className="admin-approvals-cards-grid">
+                        {filteredTrainees.map((item) => {
+                          const isSelected = selectedApprovalIds.includes(item.id)
+                          const isPending = item.status === 'Pending'
+
+                          return (
+                            <div
+                              key={item.id}
+                              className={`admin-approval-card ${isSelected ? 'selected' : ''} ${item.status.toLowerCase()}`}
+                            >
+                              {/* Card Header with Token & Status */}
+                              <div className="card-top-row">
+                                <div className="card-token-select">
+                                  {isPending && (
+                                    <input
+                                      type="checkbox"
+                                      className="app-card-checkbox"
+                                      checked={isSelected}
+                                      onChange={() => handleToggleSelectId(item.id)}
+                                    />
+                                  )}
+                                  <span className="token-pill">
+                                    <code>{item.id}</code>
+                                  </span>
+                                  <span className="role-pill trainee">Trainee</span>
+                                </div>
+                                <div className="card-status-badges">
+                                  <span className={`status-pill ${item.status.toLowerCase()}`}>
+                                    {item.status === 'Pending' && '⏳ Waiting for Approval'}
+                                    {item.status === 'Approved' && '✅ Approved'}
+                                    {item.status === 'Rejected' && '❌ Rejected'}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Trainee Profile Main Info */}
+                              <div className="card-body-meta">
+                                <div className="user-avatar-lead trainee">
+                                  {item.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                                </div>
+                                <div className="user-info-col">
+                                  <h4 className="user-name">{item.name}</h4>
+                                  <div className="user-designation" style={{ color: '#496653' }}>
+                                    ✉️ {item.email}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Step 1 Collected Details: Organization & SLA */}
+                              <div className="card-details-grid" style={{ gridTemplateColumns: '1fr' }}>
+                                <div className="detail-item">
+                                  <span className="detail-label">Organization / Affiliation:</span>
+                                  <span className="detail-val" style={{ fontSize: 13, color: '#11281A', fontWeight: 700 }}>
+                                    🏛️ {item.organization}
+                                  </span>
+                                </div>
+                                <div className="detail-item" style={{ marginTop: 4 }}>
+                                  <span className="detail-label">Request Submitted &amp; SLA:</span>
+                                  <span className="detail-val" style={{ color: '#496653' }}>
+                                    📅 {item.submissionDate} • ⏱️ <em>{item.slaTime}</em>
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Rejection or Approval Memo Info */}
+                              {item.status === 'Approved' && item.approvalMemo && (
+                                <div className="card-memo-banner approved">
+                                  <span>📜 <strong>Approval Clearance Memo:</strong> {item.approvalMemo} (Step 2 Unlocked)</span>
+                                </div>
+                              )}
+                              {item.status === 'Rejected' && item.rejectionReason && (
+                                <div className="card-memo-banner rejected">
+                                  <span>⚠️ <strong>Reason:</strong> {item.rejectionReason}</span>
+                                </div>
+                              )}
+
+                              {/* Card Action Buttons */}
+                              {isPending && (
+                                <div className="card-actions-row">
+                                  <button
+                                    type="button"
+                                    className="btn-action-approve"
+                                    style={{ flex: 1 }}
+                                    onClick={() => handleApproveRequest(item)}
+                                  >
+                                    ✓ Approve Trainee
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="btn-action-reject"
+                                    onClick={() => handleInitiateReject(item)}
+                                  >
+                                    ✕ Reject
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  })()}
+                </div>
+              )}
+
+              {/* SUB-VIEW 3: DECISION AUDIT LOG */}
+              {approvalSubTab === 'audit' && (
+                <div className="admin-approvals-audit-container">
+                  <div className="audit-header-actions">
+                    <div className="audit-info">
+                      <h3>MoES Platform Registration Approvals Audit Ledger</h3>
+                      <p>Record of all candidate approval and rejection decisions from Step 1 requests.</p>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-admin-action secondary"
+                      onClick={() => {
+                        let csv = `Token ID,Candidate Name,Email,Role,Organization / Affiliation,Decision,Official Memo / Order,Reason / Notes,Submission Date\n`
+                        const logs = [
+                          ...trainerApprovals.filter(t => t.status !== 'Pending').map(t => ({ ...t, role: 'Trainer' })),
+                          ...traineeApprovals.filter(t => t.status !== 'Pending').map(t => ({ ...t, role: 'Trainee' }))
+                        ]
+                        logs.forEach(l => {
+                          csv += `"${l.id}","${l.name}","${l.email}","${l.role}","${l.organization}","${l.status}","${l.approvalMemo || 'N/A'}","${l.rejectionReason || 'Access Granted'}","${l.submissionDate}"\n`
+                        })
+                        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+                        const url = URL.createObjectURL(blob)
+                        const link = document.createElement('a')
+                        link.href = url
+                        link.setAttribute('download', `registration_approvals_audit_${Date.now()}.csv`)
+                        document.body.appendChild(link)
+                        link.click()
+                        document.body.removeChild(link)
+                        setActionSuccessMsg('Downloaded Registration Approvals Audit Log (CSV)')
+                        setTimeout(() => setActionSuccessMsg(''), 4000)
+                      }}
+                    >
+                      📥 Export Audit Log (CSV)
+                    </button>
+                  </div>
+
+                  <div className="admin-approvals-table-wrap">
+                    <table className="admin-approvals-table">
+                      <thead>
+                        <tr>
+                          <th>Token ID</th>
+                          <th>Applicant Name &amp; Email</th>
+                          <th>Role</th>
+                          <th>Organization / Affiliation</th>
+                          <th>Decision</th>
+                          <th>Official Memo / Order</th>
+                          <th>Notes / Reason</th>
+                          <th>Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[
+                          ...trainerApprovals.filter(t => t.status !== 'Pending').map(t => ({ ...t, role: 'Trainer' })),
+                          ...traineeApprovals.filter(t => t.status !== 'Pending').map(t => ({ ...t, role: 'Trainee' }))
+                        ].map((row) => (
+                          <tr key={row.id}>
+                            <td>
+                              <span className="token-pill"><code>{row.id}</code></span>
+                            </td>
+                            <td>
+                              <strong>{row.name}</strong>
+                              <div style={{ fontSize: 11, color: '#688273' }}>{row.email}</div>
+                            </td>
+                            <td>
+                              <span className={`role-pill ${row.role.toLowerCase()}`}>{row.role}</span>
+                            </td>
+                            <td style={{ fontSize: 12.5 }}>{row.organization}</td>
+                            <td>
+                              <span className={`status-pill ${row.status.toLowerCase()}`}>
+                                {row.status === 'Approved' ? '✅ Approved' : '❌ Rejected'}
+                              </span>
+                            </td>
+                            <td>
+                              <code style={{ fontSize: 11, color: '#1B4332', fontWeight: 600 }}>
+                                {row.approvalMemo || 'REJ-NOTICE'}
+                              </code>
+                            </td>
+                            <td style={{ fontSize: 12, color: '#496653', maxWidth: 240 }}>
+                              {row.rejectionReason || 'Cleared for Account Creation'}
+                            </td>
+                            <td style={{ fontSize: 11.5, color: '#688273' }}>
+                              {row.submissionDate}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* TAB: SETTINGS */}
           {activeTab === 'Settings' && (
             <div className="admin-card-panel">
@@ -4719,6 +4969,7 @@ export default function AdminDashboard({ onBack }) {
                 <span className="admin-spotlight-group-title">Navigation Tabs</span>
                 {[
                   { id: 'Dashboard', icon: '📊', name: 'Dashboard Overview' },
+                  { id: 'Approvals', icon: '🛡️', name: 'Registration & Access Approvals (Trainers & Trainees)' },
                   { id: 'Analytics', icon: '📈', name: 'Institutional Analytics' },
                   { id: 'User Management', icon: '👥', name: 'User Management (Create Trainee / Trainer)' },
                   { id: 'Courses', icon: '📚', name: 'Courses Catalog' },
@@ -4727,6 +4978,7 @@ export default function AdminDashboard({ onBack }) {
                   { id: 'Trainers', icon: '👨‍🏫', name: 'Faculty & Trainers Directory' },
                   { id: 'Competencies', icon: '🎯', name: 'Competencies Framework & Radar' },
                   { id: 'Trainer Matching', icon: '🤖', name: 'AI Trainer Matching Engine' },
+                  { id: 'Deactivate / Suspend User', icon: '⚠️', name: 'Deactivate / Suspend User Access' },
                   { id: 'Reports', icon: '📑', name: 'Audit Reports & Funnel' }
                 ]
                   .filter(tab => !commandSearch || tab.name.toLowerCase().includes(commandSearch.toLowerCase()) || tab.id.toLowerCase().includes(commandSearch.toLowerCase()))
@@ -4750,6 +5002,17 @@ export default function AdminDashboard({ onBack }) {
               {/* Quick Actions */}
               <div className="admin-spotlight-group">
                 <span className="admin-spotlight-group-title">Quick Administrative Actions</span>
+                <div
+                  className="admin-spotlight-item"
+                  onClick={() => {
+                    setCommandPaletteOpen(false)
+                    setActiveTab('Approvals')
+                  }}
+                >
+                  <span className="admin-spotlight-item-icon">🛡️</span>
+                  <span className="admin-spotlight-item-name">Review Registration Approvals ({totalPendingCount} Pending)</span>
+                  <span className="admin-spotlight-item-badge">Action</span>
+                </div>
                 <div
                   className="admin-spotlight-item"
                   onClick={() => {
@@ -5150,6 +5413,113 @@ export default function AdminDashboard({ onBack }) {
                 onClick={handleConfirmSuspend}
               >
                 Confirm Access Suspension ⚠️
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* REJECTION REASON MODAL (FOR STEP 1 REQUESTS) */}
+      {rejectingApprovalItem && (
+        <div className="admin-modal-backdrop" onClick={() => setRejectingApprovalItem(null)}>
+          <div className="admin-modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 520 }}>
+            <button
+              type="button"
+              className="admin-modal-close-btn"
+              onClick={() => setRejectingApprovalItem(null)}
+            >
+              ✕
+            </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+              <span style={{ fontSize: 26 }}>⚠️</span>
+              <div>
+                <h2 className="admin-modal-title" style={{ margin: 0, color: '#DC2626' }}>
+                  Reject Step 1 Access Request
+                </h2>
+                <small style={{ color: '#688273' }}>
+                  Token: <code>{rejectingApprovalItem.id}</code>
+                </small>
+              </div>
+            </div>
+
+            {/* Target applicant banner */}
+            <div className="admin-deact-target-card" style={{ borderLeftColor: '#DC2626' }}>
+              <div className={`admin-user-avatar ${rejectingApprovalItem.role.toLowerCase()}`}>
+                {rejectingApprovalItem.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+              </div>
+              <div className="target-details">
+                <strong>{rejectingApprovalItem.name}</strong>
+                <span>{rejectingApprovalItem.role} • 🏛️ {rejectingApprovalItem.organization}</span>
+                <small>Email: {rejectingApprovalItem.email}</small>
+              </div>
+            </div>
+
+            {/* Preset Reason Selector */}
+            <div className="admin-form-group" style={{ marginTop: 16 }}>
+              <label>Reason for Rejection <span className="req-star">*</span></label>
+              <select
+                className="admin-deact-modal-select"
+                value={rejectionReasonInput}
+                onChange={(e) => setRejectionReasonInput(e.target.value)}
+              >
+                <option value="Non-institutional email domain. Please use your official organization email.">
+                  Non-institutional email domain (e.g. personal email used)
+                </option>
+                <option value="Unverified institutional affiliation. Please submit with official departmental email.">
+                  Unverified institutional affiliation or organization mismatch
+                </option>
+                <option value="Access quota full for the requested training center cohort.">
+                  Access quota full for requested training center cohort
+                </option>
+                <option value="Duplicate registration token or existing account already active.">
+                  Duplicate registration token or existing account already active
+                </option>
+                <option value="Other administrative discrepancy.">
+                  Other administrative discrepancy
+                </option>
+              </select>
+            </div>
+
+            {/* Custom Notes */}
+            <div className="admin-form-group" style={{ marginTop: 12 }}>
+              <label>Rejection Directive / Advisory Note for User</label>
+              <textarea
+                rows={3}
+                className="admin-deact-modal-textarea"
+                placeholder="Enter specific notes or contact directives for the applicant..."
+                value={rejectionReasonInput}
+                onChange={(e) => setRejectionReasonInput(e.target.value)}
+              />
+            </div>
+
+            {/* Escalation Advisory Notice */}
+            <div className="admin-deact-modal-guarantee" style={{ background: '#FEF2F2', borderColor: '#FECACA' }}>
+              <span className="guarantee-icon">ℹ️</span>
+              <div className="guarantee-text" style={{ color: '#991B1B' }}>
+                <strong>User Rejection Page:</strong>
+                <span>
+                  The applicant will see the official "Request Rejected" screen with instructions to contact the administrator, department head, or HR.
+                </span>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="admin-deact-modal-actions" style={{ marginTop: 18 }}>
+              <button
+                type="button"
+                className="btn-admin-action secondary"
+                onClick={() => setRejectingApprovalItem(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-action-reject"
+                style={{ padding: '10px 20px', fontWeight: 700 }}
+                onClick={handleConfirmReject}
+              >
+                Confirm Rejection ❌
               </button>
             </div>
           </div>
